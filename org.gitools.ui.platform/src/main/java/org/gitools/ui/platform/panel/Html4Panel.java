@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.platform.panel;
 
+import org.gitools.ui.platform.settings.Settings;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.UserAgentContext;
 import org.lobobrowser.html.gui.HtmlPanel;
@@ -32,6 +33,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
@@ -177,5 +180,9 @@ public class Html4Panel extends JPanel {
             }
         }
 
+        @Override
+        protected Proxy getProxy() {
+            return Settings.get().getProxy();
+        }
     }
 }

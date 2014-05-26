@@ -29,6 +29,8 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.*;
 import java.io.*;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -91,6 +93,12 @@ public class Settings extends Model {
 
     // SVG body bitmap limit
     private int svgBodyLimit = DEFAULT_SVG_BODY_LIMIT;
+
+    // Proxy settings
+    private boolean proxyEnable = false;
+    private String proxyHost = "";
+    private int proxyPort = 8080;
+
 
     private Settings() {
     }
@@ -301,6 +309,30 @@ public class Settings extends Model {
         return statisticsConsentmentVersion;
     }
 
+    public boolean isProxyEnable() {
+        return proxyEnable;
+    }
+
+    public void setProxyEnable(boolean proxyEnable) {
+        this.proxyEnable = proxyEnable;
+    }
+
+    public String getProxyHost() {
+        return proxyHost;
+    }
+
+    public void setProxyHost(String proxyHost) {
+        this.proxyHost = proxyHost;
+    }
+
+    public int getProxyPort() {
+        return proxyPort;
+    }
+
+    public void setProxyPort(int proxyPort) {
+        this.proxyPort = proxyPort;
+    }
+
     public void setStatisticsConsentmentVersion(String statisticsConsentmentVersion) {
         this.statisticsConsentmentVersion = statisticsConsentmentVersion;
     }
@@ -350,5 +382,23 @@ public class Settings extends Model {
      */
     public List<String> getRecentFiles() {
         return recentFiles;
+    }
+
+    public Proxy getProxy() {
+
+        if (isProxyEnable()) {
+
+            // Update system proxy
+            System.getProperties().put("http.proxyHost", getProxyHost());
+            System.getProperties().put("http.proxyPort", getProxyPort());
+
+            return new Proxy(Proxy.Type.HTTP, new InetSocketAddress(getProxyHost(), getProxyPort()));
+        }
+
+        // Update system proxy
+        System.getProperties().put("http.proxyHost", "");
+        System.getProperties().put("http.proxyPort", "");
+
+        return Proxy.NO_PROXY;
     }
 }
