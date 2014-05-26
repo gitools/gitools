@@ -100,6 +100,26 @@ public class Resource extends Model implements IResource {
         firePropertyChange(PROPERTY_PROPERTIES, oldValue, properties);
     }
 
+    /**
+     * Adds a property and overwrites if already exists
+     *
+     * @param property
+     */
+    public void addProperty(Property property) {
+        if (property == null) {
+            return;
+        }
+
+        for (Property p : properties) {
+            if (property.getName().equals(p.getName())) {
+                properties.remove(p);
+            }
+        }
+
+        properties.add(property);
+
+    }
+
     public IResourceLocator getLocator() {
         return locator;
     }

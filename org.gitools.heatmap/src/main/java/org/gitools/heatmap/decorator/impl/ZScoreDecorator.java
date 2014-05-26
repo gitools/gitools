@@ -244,7 +244,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
-
+                this.position = position;
                 return (value == null || Math.abs(value) <= getColorScale().getSigHalfAmplitude()) ?
                         null : Math.abs(value);
             }

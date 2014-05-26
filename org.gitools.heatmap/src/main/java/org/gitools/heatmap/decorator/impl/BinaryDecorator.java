@@ -147,6 +147,7 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
         return new NonEventToNullFunction<BinaryColorScale>(scale, "All 'true' values are events") {
             @Override
             public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
                 boolean satisfies = value != null && CutoffCmp.getFromName(getColorScale().getComparator()).compare(value, getColorScale().getCutoff());
                 return satisfies ? null : 1.0;
             }

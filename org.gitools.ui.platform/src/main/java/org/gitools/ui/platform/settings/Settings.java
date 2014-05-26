@@ -56,7 +56,13 @@ public class Settings extends Model {
     public static final String PROPERTY_PORT = "defaultPort";
     public static final String PROPERTY_IGV_ENABLED = "showIGVLink";
     public static final String PROPERTY_IGV_URL = "igvUrl";
+    public static final String PROPERTY_AUTHOR_NAME = "authorName";
+    public static final String PROPERTY_AUTHOR_EMAIL = "authorEmail";
+    public static final String PROPERTY_RECENT_FILES_NUMBER = "recentFilesNumber";
 
+
+    private String authorName = System.getProperty("user.name");
+    private String authorEmail = "";
     private String lastFilterPath = userPath;
     private String lastAnnotationPath = userPath;
     private String lastMapPath = userPath;
@@ -68,6 +74,7 @@ public class Settings extends Model {
     @XmlElementWrapper(name = "recentFiles")
     @XmlElement(name = "file")
     private List<String> recentFiles = new ArrayList<>();
+    private int recentFilesNumber = 5;
 
     private String version;
     private String uuid;
@@ -157,6 +164,22 @@ public class Settings extends Model {
 
     public void setVersion(String version) {
         this.version = version;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
     }
 
     public String getLastPath() {
@@ -365,7 +388,7 @@ public class Settings extends Model {
 
         recentFiles.add(fileName);
 
-        while (recentFiles.size() > 5) {
+        while (recentFiles.size() > recentFilesNumber) {
             recentFiles.remove(0);
         }
     }
@@ -382,6 +405,14 @@ public class Settings extends Model {
      */
     public List<String> getRecentFiles() {
         return recentFiles;
+    }
+
+    public int getRecentFilesNumber() {
+        return recentFilesNumber;
+    }
+
+    public void setRecentFilesNumber(int recentFilesNumber) {
+        this.recentFilesNumber = recentFilesNumber;
     }
 
     public Proxy getProxy() {

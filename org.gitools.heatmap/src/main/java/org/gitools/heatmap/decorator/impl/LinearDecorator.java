@@ -174,7 +174,7 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
-
+                this.position = position;
                 if (value == null) {
                     return null;
                 }

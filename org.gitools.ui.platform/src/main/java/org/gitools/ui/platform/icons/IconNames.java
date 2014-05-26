@@ -73,10 +73,17 @@ public class IconNames {
     public static final String edit16 = "/img/edit16.png";
     public static final String editHeatmap16 = "/img/editHeatmap16.png";
 
+    public static final String settings16 = "/img/settings16.png";
+    public static final String shortcuts16 = "/img/shortcuts16.png";
+
     public static final String moveUp16 = "/img/moveUp16.png";
     public static final String moveDown16 = "/img/moveDown16.png";
+    public static final String nextEventRows16 = "/img/nextEventRows16.png";
+    public static final String nextEventColumns16 = "/img/nextEventColumns16.png";
 
     public static final String add16 = "/img/add16.png";
+    public static final String remove16 = "/img/remove16.png";
+
 
     public static final String close16 = "/img/Close16.gif";
     public static final String close24 = "/img/Close24.gif";
