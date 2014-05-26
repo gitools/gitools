@@ -34,7 +34,7 @@ import java.text.AttributedString;
 
 public abstract class AbstractHeatmapDrawer {
 
-    public static final Color SELECTED_COLOR = new Color(0, 0, 128, 100);
+    public static final Color SELECTED_COLOR = new Color(0, 0, 128, 60);
 
     protected Heatmap heatmap;
     protected HeatmapDimension rows;
