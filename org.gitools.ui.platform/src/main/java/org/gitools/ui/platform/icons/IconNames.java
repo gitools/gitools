@@ -78,15 +78,16 @@ public class IconNames {
 
     public static final String moveUp16 = "/img/moveUp16.png";
     public static final String moveDown16 = "/img/moveDown16.png";
-    public static final String nextEventRows16 = "/img/nextEventRows16.png";
-    public static final String nextEventColumns16 = "/img/nextEventColumns16.png";
+    public static final String nextEventRight16 = "/img/nextEventRight16.png";
+    public static final String nextEventLeft16 = "/img/nextEventLeft16.png";
+    public static final String nextEventDown16 = "/img/nextEventDown16.png";
 
     public static final String add16 = "/img/add16.png";
     public static final String remove16 = "/img/remove16.png";
 
 
-    public static final String close16 = "/img/Close16.gif";
-    public static final String close24 = "/img/Close24.gif";
+    public static final String close16 = "/img/close16.png";
+    public static final String close24 = "/img/close24.png";
 
     public static final String save16 = "/img/Save16.gif";
     public static final String save24 = "/img/Save24.gif";

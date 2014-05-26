@@ -52,8 +52,8 @@ public class JumpToNextEventAction extends BaseAction {
         this.heatmap = heatmap;
         setSmallIconFromResource(
                 dimensionKey.equals(MatrixDimensionKey.ROWS) ?
-                    IconNames.nextEventRows16 :
-                    IconNames.nextEventColumns16
+                        IconNames.nextEventRight16 :
+                        IconNames.nextEventDown16
         );
 
     }
@@ -130,12 +130,12 @@ public class JumpToNextEventAction extends BaseAction {
 
         if (dimensionKey.equals(MatrixDimensionKey.ROWS)) {
             eventIterator =
-                    eventPosition.iterate(layer,rowsDim.subset(rows),columnsDim.subset(columns))
-                    .transform(eventFunction).iterator();
+                    eventPosition.iterate(layer, rowsDim.subset(rows), columnsDim.subset(columns))
+                            .transform(eventFunction).iterator();
         } else {
             eventIterator =
                     eventPosition.iterate(layer, columnsDim.subset(columns), rowsDim.subset(rows))
-                    .transform(eventFunction).iterator();
+                            .transform(eventFunction).iterator();
         }
     }
 

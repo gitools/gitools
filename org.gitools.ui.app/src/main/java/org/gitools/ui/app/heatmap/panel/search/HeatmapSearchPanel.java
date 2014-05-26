@@ -26,6 +26,7 @@ import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.core.utils.DocumentChangeListener;
+import org.gitools.ui.platform.icons.IconNames;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -477,7 +478,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         setFocusable(false);
         setRequestFocusEnabled(false);
 
-        closeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SearchClose.png"))); // NOI18N
+        closeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.close16))); // NOI18N
         closeBtn.setFocusable(false);
         closeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -485,11 +486,11 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             }
         });
 
-        prevBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SearchPrev.png"))); // NOI18N
+        prevBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.nextEventLeft16))); // NOI18N
         prevBtn.setText("Previous");
         prevBtn.setFocusable(false);
 
-        nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SearchNext.png"))); // NOI18N
+        nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.nextEventRight16))); // NOI18N
         nextBtn.setText("Next");
         nextBtn.setFocusable(false);
         nextBtn.setRequestFocusEnabled(false);
