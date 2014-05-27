@@ -49,6 +49,9 @@ public class Heatmap extends Resource implements IMatrixView {
     public static final String PROPERTY_ROWS = "rows";
     public static final String PROPERTY_COLUMNS = "columns";
     public static final String PROPERTY_LAYERS = "layers";
+    public static final String PROPERTY_AUTHOR_NAME = "authorName";
+    public static final String PROPERTY_AUTHOR_EMAIL = "authorEmail";
+
 
     @XmlTransient
     private PropertyChangeListener propertyListener;

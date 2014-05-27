@@ -33,6 +33,8 @@ public class HeatmapDetailsSection implements ISettingsSection {
     private JTextArea documentTitle;
     private JTextArea documentDescription;
     private JPanel root;
+    private JTextArea authorName;
+    private JTextArea authorEmail;
 
     public HeatmapDetailsSection(Heatmap heatmap) {
 
@@ -42,6 +44,8 @@ public class HeatmapDetailsSection implements ISettingsSection {
         Bindings.bind(documentTitle, model.getModel(Resource.PROPERTY_TITLE));
         Bindings.bind(documentDescription, model.getModel(Resource.PROPERTY_DESCRIPTION));
 
+        Bindings.bind(authorName, model.getModel(Heatmap.PROPERTY_AUTHOR_NAME));
+        Bindings.bind(authorEmail, model.getModel(Heatmap.PROPERTY_AUTHOR_EMAIL));
     }
 
     @Override

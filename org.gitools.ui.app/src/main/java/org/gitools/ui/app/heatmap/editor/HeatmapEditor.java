@@ -277,13 +277,14 @@ public class HeatmapEditor extends AbstractEditor {
 
         // Last saved and author info.
         heatmap.setLastSaved(new Date());
-        if (!Settings.get().getAuthorName().equals("")) {
-            heatmap.setAuthorName(Settings.get().getAuthorName());
-
-            if (!Settings.get().getAuthorEmail().equals("")) {
-                heatmap.setAuthorEmail(Settings.get().getAuthorEmail());
+        Settings settings = Settings.get();
+        if (heatmap.getAuthorName().equals("")) {
+            heatmap.setAuthorName(settings.getAuthorName());
+            if (!settings.getAuthorEmail().equals("")) {
+                heatmap.setAuthorEmail(settings.getAuthorEmail());
             }
         }
+
 
         try {
             ApplicationContext.getPersistenceManager().store(heatmap.getLocator(), heatmap, monitor);
