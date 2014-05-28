@@ -143,6 +143,8 @@
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:39px:noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:max(d;4px):noGrow"/>
+        <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:max(d;4px):grow"/>
         <constraints>
           <grid row="14" column="2" row-span="1" col-span="5" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -153,7 +155,7 @@
         <children>
           <component id="ef860" class="javax.swing.JLabel">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="5" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
@@ -161,28 +163,29 @@
               <text value="Data Options "/>
             </properties>
           </component>
-          <component id="27086" class="javax.swing.JLabel">
+          <component id="4d016" class="javax.swing.JLabel">
             <constraints>
-              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
-              <text value="Discard hidden data"/>
+              <font style="2"/>
+              <text value="Slower saving process"/>
             </properties>
           </component>
-          <component id="4b721" class="javax.swing.JCheckBox" binding="discardHidden">
+          <component id="1c764" class="javax.swing.JLabel">
             <constraints>
-              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
-              <horizontalAlignment value="0"/>
-              <text value=""/>
+              <font style="2"/>
+              <text value=" Removes not visible data"/>
             </properties>
           </component>
           <component id="80c13" class="javax.swing.JLabel">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
@@ -191,7 +194,7 @@
           </component>
           <component id="789c9" class="javax.swing.JCheckBox" binding="optimizeData">
             <constraints>
-              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
@@ -200,31 +203,23 @@
               <text value=""/>
             </properties>
           </component>
-          <component id="4d016" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <forms/>
-            </constraints>
-            <properties>
-              <text value="Slower saving process"/>
-            </properties>
-          </component>
-          <component id="1c764" class="javax.swing.JLabel">
+          <component id="27086" class="javax.swing.JLabel">
             <constraints>
               <grid row="6" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
-              <text value=" Removes not visible data"/>
+              <text value="Discard hidden data"/>
             </properties>
           </component>
-          <component id="9af09" class="javax.swing.JLabel">
+          <component id="4b721" class="javax.swing.JCheckBox" binding="discardHidden">
             <constraints>
-              <grid row="2" column="2" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
-              <text value="enable to improve performance"/>
+              <horizontalAlignment value="0"/>
+              <text value=""/>
             </properties>
           </component>
         </children>
