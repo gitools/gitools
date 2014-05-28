@@ -103,7 +103,7 @@ public class CmatrixMatrixFormat extends AbstractResourceFormat<IMatrix> {
 
         try {
 
-            DataOutputStream out = new DataOutputStream(resourceLocator.openOutputStream());
+            DataOutputStream out = new DataOutputStream(resourceLocator.openOutputStream(progressMonitor));
 
             int formatVersion = 0;
             out.writeInt(0);

@@ -48,6 +48,15 @@ public class CacheResourceLocator implements IResourceLocator {
     }
 
     @Override
+    public File getReadFile() {
+        return cachedFile == null ? originalLocator.getReadFile() : cachedFile;
+    }
+
+    public File getWriteFile() {
+        return originalLocator.getWriteFile();
+    }
+
+    @Override
     public String getBaseName() {
         return originalLocator.getBaseName();
     }
@@ -105,7 +114,12 @@ public class CacheResourceLocator implements IResourceLocator {
     }
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
-        return originalLocator.openOutputStream();
+    public OutputStream openOutputStream(IProgressMonitor monitor) throws IOException {
+        return originalLocator.openOutputStream(monitor);
+    }
+
+    @Override
+    public void close(IProgressMonitor monitor)  {
+        originalLocator.close(monitor);
     }
 }

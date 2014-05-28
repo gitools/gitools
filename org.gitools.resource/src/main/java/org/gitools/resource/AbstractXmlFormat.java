@@ -151,7 +151,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
             marshaller.marshal(resource, tmpFile);
 
             // Write the XML
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(monitor);
             InputStream in = new FileInputStream(tmpFile);
             org.apache.commons.io.IOUtils.copy(in, out);
 

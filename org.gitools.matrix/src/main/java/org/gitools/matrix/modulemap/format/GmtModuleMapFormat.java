@@ -82,7 +82,7 @@ public class GmtModuleMapFormat extends AbstractModuleMapFormat {
 
         try {
 
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(progressMonitor);
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             for (String module : moduleMap.getModules()) {

@@ -81,7 +81,7 @@ public class TcmModuleMapFormat extends AbstractModuleMapFormat {
         progressMonitor.begin("Saving modules...", moduleMap.getModules().size());
 
         try {
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(progressMonitor);
             final PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             for (String module : moduleMap.getModules()) {

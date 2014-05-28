@@ -39,6 +39,7 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.io.File;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -204,6 +205,11 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
 
         // Write the resource
         resourceFormat.write(resourceLocator, resource, progressMonitor);
+
+        // Close resourceLocator
+        if (!progressMonitor.isCancelled()) {
+            resourceLocator.close(progressMonitor);
+        }
 
     }
 

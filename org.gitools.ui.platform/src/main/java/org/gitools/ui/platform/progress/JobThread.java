@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.platform.progress;
 
+import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 
@@ -159,15 +160,18 @@ public class JobThread implements JobRunnable {
                     if (!monitor.isCancelled()) {
                         monitor.exception(e);
                     }
-                } catch (Throwable cause) {
-                    m.exception(cause);
+                }
+                catch (Throwable cause) {
+                    if (!(cause.getCause() instanceof CancellationException && m.isCancelled())) {
+                        m.exception(cause);
+                    }
                 }
 
                 done();
 
                 setThread(null);
 
-                if (monitor.getCause() != null) {
+                if (monitor.getCause() != null && !(monitor.getCause() instanceof CancellationException && monitor.isCancelled())) {
                     ExceptionGlassPane ed = new ExceptionGlassPane(parent, monitor.getCause());
                     ed.setVisible(true);
                 }

@@ -91,7 +91,7 @@ public class GmxModuleMapFormat extends AbstractModuleMapFormat {
         progressMonitor.begin("Saving module map...", moduleMap.getModules().size());
 
         try {
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(progressMonitor);
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             List<String> modules = newArrayList(moduleMap.getModules());

@@ -200,6 +200,11 @@ public class CompressMatrix extends AbstractMatrix<MatrixLayers<? extends IMatri
         return values;
     }
 
+    @Override
+    public boolean isChanged() {
+        return false;
+    }
+
     private static MatrixLayers createMatrixLayers(String[] headers) {
 
         // We assume that all the attributes are doubles.
@@ -210,6 +215,8 @@ public class CompressMatrix extends AbstractMatrix<MatrixLayers<? extends IMatri
         return new MatrixLayers<>(matrixLayers);
 
     }
+
+
 
 
 }

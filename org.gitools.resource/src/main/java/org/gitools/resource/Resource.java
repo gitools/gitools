@@ -41,6 +41,9 @@ public class Resource extends Model implements IResource {
      */
     protected String title;
 
+    @XmlTransient
+    protected boolean hasChanged = true;
+
     /**
      * long description *
      */
@@ -118,6 +121,11 @@ public class Resource extends Model implements IResource {
 
         properties.add(property);
 
+    }
+
+    @Override
+    public boolean isChanged() {
+        return hasChanged;
     }
 
     public IResourceLocator getLocator() {

@@ -42,6 +42,8 @@ import org.gitools.matrix.model.mtabixmatrix.MTabixMatrix;
 import org.gitools.utils.readers.text.CSVReader;
 import org.gitools.utils.readers.text.RawFlatTextWriter;
 import org.gitools.utils.translators.DoubleTranslator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
@@ -59,6 +61,7 @@ import java.util.zip.ZipFile;
 @ApplicationScoped
 public class TdmMatrixFormat extends AbstractMatrixFormat {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TdmMatrixFormat.class);
     public static final String EXSTENSION = "tdm";
 
     public TdmMatrixFormat() {
@@ -182,58 +185,46 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         return null;
     }
 
-
-
     @Override
     protected void writeResource(IResourceLocator resourceLocator, IMatrix results, IProgressMonitor monitor) throws PersistenceException {
 
         monitor.begin("Saving results...", results.getColumns().size());
 
         try {
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(monitor);
             Writer writer = new OutputStreamWriter(new BufferedOutputStream(out, BlockCompressedStreamConstants.DEFAULT_UNCOMPRESSED_BLOCK_SIZE * 100));
             writeCells(writer, results, monitor);
             writer.close();
-
-            writeMtabixIndex(resourceLocator, results);
-
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
+
+
+        try {
+            writeMtabixIndex(resourceLocator, results);
+        } catch (Exception e) {
+            LOGGER.warn("Error creating mtabix index", e);
+        }
+
 
     }
 
     private void writeMtabixIndex(IResourceLocator resourceLocator, IMatrix results) throws URISyntaxException, IOException, NoSuchAlgorithmException {
 
-        //TODO if results instanceof MtabixMatrix
+            IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
 
-        URL dataURL = resourceLocator.getURL();
-        if ("file".equals(dataURL.getProtocol())) {
+            Map<Integer, List<String>> identifiers = new HashMap<>(2);
+            identifiers.put(0, newArrayList(results.getColumns()));
+            identifiers.put(1, newArrayList(results.getRows()));
 
-            if (dataURL.getPath().endsWith("zip")) {
-                //TODO
-            } else {
+            MTabixConfig mtabixConfig = new MTabixConfig(
+                    resourceLocator.getWriteFile(),
+                    mtabix.getWriteFile(),
+                    new DefaultKeyParser(1, 0),
+                    identifiers);
 
-                if (dataURL.getPath().endsWith("gz")) {
-                    IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
-                    URL indexURL = mtabix.getURL();
-
-                    Map<Integer, List<String>> identifiers = new HashMap<>(2);
-                    identifiers.put(0, newArrayList(results.getColumns()));
-                    identifiers.put(1, newArrayList(results.getRows()));
-
-                    MTabixConfig mtabixConfig = new MTabixConfig(
-                            new File(dataURL.toURI()),
-                            new File(indexURL.toURI()),
-                            new DefaultKeyParser(1, 0),
-                            identifiers);
-
-                    MTabixIndex index = new MTabixIndex(mtabixConfig);
-                    index.buildIndex();
-                }
-
-            }
-        }
+            MTabixIndex index = new MTabixIndex(mtabixConfig);
+            index.buildIndex();
 
     }
 

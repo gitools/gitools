@@ -27,15 +27,24 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceFilter;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.locators.filters.FilterResourceLocator;
+import org.gitools.utils.progressmonitor.NullProgressMonitor;
+import org.zeroturnaround.zip.ZipUtil;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
-import java.util.zip.ZipOutputStream;
 
 public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
+
+    private File tmpFolder;
 
     private final String entryName;
 
@@ -62,19 +71,31 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
         String extensionWithFilters = referenceName.substring(extensionIndex);
 
         return new ZipResourceLocatorAdaptor(referenceName, referenceName, extensionWithFilters, getParentLocator()) {
+
             @Override
-            protected ZipOutputStream getZipOutputStream() throws IOException {
-                return ZipResourceLocatorAdaptor.this.getZipOutputStream();
+            public File getWriteFile() {
+                try {
+                    return new File(getTemporalFolder(), getEntryName());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
+            @Override
+            protected File getTemporalFolder() throws IOException {
+                return ZipResourceLocatorAdaptor.this.getTemporalFolder();
+            }
 
             @Override
-            public OutputStream openOutputStream() throws IOException {
-                return new NonClosableOutputStream(super.openOutputStream());
+            public void close(IProgressMonitor monitor) {
+            }
+
+            @Override
+            public OutputStream openOutputStream(IProgressMonitor monitor) throws IOException {
+                return new FileOutputStream(getWriteFile());
             }
         };
     }
-
 
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
@@ -92,61 +113,123 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
 
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
-        ZipOutputStream out = getZipOutputStream();
-        out.putNextEntry(new ZipEntry(entryName));
-        return out;
+    public OutputStream openOutputStream(IProgressMonitor monitor) throws IOException {
+
+        // Create a temporal folder
+        tmpFolder = createTemporalFolder(getURL());
+
+        // Extract all the files
+        monitor.title("Extracting to temporal folder...");
+        try {
+            ZipUtil.unpack(getParentLocator().openInputStream(new NullProgressMonitor()), tmpFolder);
+
+            // Check if we are doing a 'Save as...'
+            if (!getWriteFile().equals(getReadFile())) {
+
+                // Rename all entries
+                String inName = getReadFile().getName().replace("." + getExtension() + ".zip", "");
+                String toName = getBaseName();
+
+                renameAll(getTemporalFolder(), inName, toName);
+
+            }
+
+        } catch (FileNotFoundException e) {
+            // It's a all in memory resource
+        }
+
+        monitor.title("Copying files...");
+        return new FileOutputStream(new File(tmpFolder, entryName));
     }
 
-    private ZipOutputStream out;
+    @Override
+    public void close(IProgressMonitor monitor) {
 
-    protected ZipOutputStream getZipOutputStream() throws IOException {
+        try {
 
-        if (this.out == null) {
-            this.out = new ZipOutputStream(getParentLocator().openOutputStream()) {
-                @Override
-                public void close() throws IOException {
-                    super.close();
-                    ZipResourceLocatorAdaptor.this.out = null;
+            // Compress folder
+            monitor.title("Compressing files...");
+            ZipUtil.pack(getTemporalFolder(), getWriteFile(), Deflater.NO_COMPRESSION);
+
+            // Close temporal file
+            getParentLocator().close(monitor);
+
+            // Remove temporal folder
+            deleteFolder(getTemporalFolder());
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    protected File getTemporalFolder() throws IOException {
+        return tmpFolder;
+    }
+
+    protected String getEntryName() {
+        return entryName;
+    }
+
+    /**
+     *
+     * Creates a temporal folder. If the 'url' is a file then the temporal folder is
+     * created next to the file, otherwise is created at the system temporal folder.
+     *
+     * @param url
+     * @return
+     * @throws IOException
+     */
+    private File createTemporalFolder(URL url) throws IOException {
+
+        File tmpFolder;
+
+        if ("file".equals(url.getProtocol())) {
+            try {
+                File parentFolder = (new File(url.toURI())).getParentFile();
+                tmpFolder = File.createTempFile(getName(), "", parentFolder);
+            } catch (URISyntaxException e) {
+                tmpFolder = File.createTempFile("gitools" + getBaseName(), "");
+            }
+        } else {
+            tmpFolder = File.createTempFile("gitools" + getBaseName(), "");
+        }
+
+        tmpFolder.delete();
+        tmpFolder.mkdir();
+
+        return tmpFolder;
+    }
+
+    private static void renameAll(File folder, String inName, String toName) {
+
+        File[] files = folder.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f : files) {
+                String name = f.getName();
+                if (!f.isDirectory() && name.contains(inName)) {
+                    name = name.replace(inName, toName);
+                    File toFile = new File(f.getParentFile(), name);
+                    f.renameTo(toFile);
                 }
-            };
+            }
         }
-
-        return out;
     }
 
-    private class NonClosableOutputStream extends OutputStream {
 
-        private final OutputStream out;
-
-        private NonClosableOutputStream(OutputStream out) {
-            this.out = out;
+    private static void deleteFolder(File folder) {
+        File[] files = folder.listFiles();
+        if(files!=null) { //some JVMs return null for empty dirs
+            for(File f: files) {
+                if(f.isDirectory()) {
+                    deleteFolder(f);
+                } else {
+                    f.delete();
+                }
+            }
         }
-
-        @Override
-        public void write(int b) throws IOException {
-            this.out.write(b);
-        }
-
-        @Override
-        public void flush() throws IOException {
-            this.out.flush();
-        }
-
-        @Override
-        public void write(byte[] b) throws IOException {
-            this.out.write(b);
-        }
-
-        @Override
-        public void write(byte[] b, int off, int len) throws IOException {
-            this.out.write(b, off, len);
-        }
-
-        @Override
-        public void close() throws IOException {
-            // Ignore close
-        }
+        folder.delete();
     }
 
 }

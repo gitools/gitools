@@ -89,4 +89,5 @@ public class HashModuleMap extends Resource implements IModuleMap {
         sb.append(items.size()).append(" items");
         return sb.toString();
     }
+
 }

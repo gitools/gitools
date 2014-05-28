@@ -262,12 +262,18 @@ public class HeatmapEditor extends AbstractEditor {
         file = wiz.getPathAsFile();
         setFile(file);
 
-        heatmap.setLocator(new UrlResourceLocator(file));
+        IResourceLocator fromLocator = heatmap.getLocator();
+        if  (fromLocator == null) {
+            heatmap.setLocator(new UrlResourceLocator(file));
+        } else {
+            heatmap.setLocator(new UrlResourceLocator(fromLocator.getReadFile(), file));
+        }
+
         heatmap.setData(new ResourceReference<>("data", heatmap.getData().get()));
         HeatmapDimension rows = heatmap.getRows();
         HeatmapDimension columns = heatmap.getColumns();
-        rows.setAnnotationsReference(new ResourceReference<>(rows.getId() + "-annotations", rows.getAnnotations()));
-        columns.setAnnotationsReference(new ResourceReference<>(columns.getId() + "-annotations", columns.getAnnotations()));
+        rows.setAnnotationsReference(new ResourceReference<>(rows.getId().toString().toLowerCase() + "-annotations", rows.getAnnotations()));
+        columns.setAnnotationsReference(new ResourceReference<>(columns.getId().toString().toLowerCase() + "-annotations", columns.getAnnotations()));
 
         doSave(monitor);
 

@@ -27,6 +27,7 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 import org.gitools.ui.app.genomespace.dm.HttpUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -44,6 +45,16 @@ public class GsResourceLocator implements IResourceLocator {
     @Override
     public URL getURL() {
         return parentLocator.getURL();
+    }
+
+    @Override
+    public File getReadFile() {
+        return parentLocator.getReadFile();
+    }
+
+    @Override
+    public File getWriteFile() {
+        return parentLocator.getWriteFile();
     }
 
     @Override
@@ -109,7 +120,13 @@ public class GsResourceLocator implements IResourceLocator {
     }
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
-        return parentLocator.openOutputStream();
+    public OutputStream openOutputStream(IProgressMonitor monitor) throws IOException {
+        return parentLocator.openOutputStream(monitor);
+    }
+
+
+    @Override
+    public void close(IProgressMonitor monitor) {
+        parentLocator.close(monitor);
     }
 }

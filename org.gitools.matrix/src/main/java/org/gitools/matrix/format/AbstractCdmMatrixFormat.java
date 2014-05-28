@@ -126,7 +126,7 @@ public abstract class AbstractCdmMatrixFormat extends AbstractMatrixFormat {
         monitor.begin("Saving matrix...", matrix.getColumns().size());
 
         try {
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(monitor);
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             IMatrixLayer<Double> layer = matrix.getLayers().iterator().next();

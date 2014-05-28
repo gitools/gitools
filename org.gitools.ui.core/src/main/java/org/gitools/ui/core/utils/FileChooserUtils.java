@@ -26,6 +26,7 @@ import com.alee.utils.swing.DialogOptions;
 import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.Application;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 
@@ -65,9 +66,13 @@ public class FileChooserUtils {
 
     private static FileChoose selectFileAWT(String title, String currentPath, String fileName, int mode) {
 
-        FileDialog dialog = new java.awt.FileDialog((java.awt.Frame) null, title, (mode == MODE_OPEN ? FileDialog.LOAD : FileDialog.SAVE));
+        final FileDialog dialog = new java.awt.FileDialog(Application.get(), title, (mode == MODE_OPEN ? FileDialog.LOAD : FileDialog.SAVE));
         dialog.setDirectory(currentPath);
         dialog.setMultipleMode(false);
+        dialog.setAlwaysOnTop(true);
+        dialog.requestFocus();
+        dialog.toFront();
+        dialog.repaint();
         dialog.setVisible(true);
 
         if (fileName != null) {

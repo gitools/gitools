@@ -26,6 +26,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceFilter;
 import org.gitools.api.resource.IResourceLocator;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -54,6 +55,16 @@ public abstract class FilterResourceLocator implements IResourceLocator {
     @Override
     public URL getURL() {
         return resourceLocator.getURL();
+    }
+
+    @Override
+    public File getReadFile() {
+        return resourceLocator.getReadFile();
+    }
+
+    @Override
+    public File getWriteFile() {
+        return resourceLocator.getWriteFile();
     }
 
     @Override
@@ -92,8 +103,8 @@ public abstract class FilterResourceLocator implements IResourceLocator {
     }
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
-        return getParentLocator().openOutputStream();
+    public OutputStream openOutputStream(IProgressMonitor progressMonitor) throws IOException {
+        return getParentLocator().openOutputStream(progressMonitor);
     }
 
     @Override
@@ -101,6 +112,8 @@ public abstract class FilterResourceLocator implements IResourceLocator {
         return resourceLocator;
     }
 
-
-
+    @Override
+    public void close(IProgressMonitor monitor) {
+        resourceLocator.close(monitor);
+    }
 }

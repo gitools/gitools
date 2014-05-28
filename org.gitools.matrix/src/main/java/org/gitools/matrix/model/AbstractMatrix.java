@@ -33,6 +33,8 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers<? extends IMatrixL
     private Map<MatrixDimensionKey, MD> identifiers;
     private ML layers;
 
+    private transient Map<ICacheKey, Object> cache;
+
     @Override
     public IMatrixPosition newPosition() {
         return new MatrixPosition(this);
@@ -103,8 +105,6 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers<? extends IMatrixL
             layer.detach();
         }
     }
-
-    transient Map<ICacheKey, Object> cache;
 
     public <T> void setCache(ICacheKey<T> key, T value) {
         this.getCacheMap().put(key, value);

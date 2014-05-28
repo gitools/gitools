@@ -113,7 +113,18 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers<IMatrixLayer>, HashM
         }
 
         result.put(identifier, value);
+        hasChanged = true;
 
+    }
+
+    /**
+     *  You must call this method after load all values into the matrix.
+     *  Some implementations must prepare the matrix to be read and improve
+     *  the read performance. Also the @see isChanged() will be true only
+     *  if there is any change after this method has been call.
+     */
+    public void init() {
+        this.hasChanged = false;
     }
 
     public void addLayer(IMatrixLayer layer) {
@@ -150,7 +161,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers<IMatrixLayer>, HashM
             }
         }
 
-
+        this.hasChanged = true;
     }
 
     private static HashMatrixDimension[] createHashMatrixDimensions(MatrixDimensionKey[] identifiers) {
@@ -216,6 +227,11 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers<IMatrixLayer>, HashM
         @Override
         public <T> void set(IMatrixLayer<T> layer, T value, String... identifiers) {
             throw new UnsupportedOperationException("The subset matrix are read only matrix");
+        }
+
+        @Override
+        public boolean isChanged() {
+            return false;
         }
     }
 }

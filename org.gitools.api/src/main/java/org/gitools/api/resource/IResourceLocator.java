@@ -24,6 +24,8 @@ package org.gitools.api.resource;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 
+import java.io.Closeable;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -35,6 +37,10 @@ import java.net.URL;
 public interface IResourceLocator {
 
     URL getURL();
+
+    File getReadFile();
+
+    File getWriteFile();
 
     String getBaseName();
 
@@ -59,5 +65,7 @@ public interface IResourceLocator {
 
     InputStream openInputStream(IProgressMonitor monitor) throws IOException;
 
-    OutputStream openOutputStream() throws IOException;
+    OutputStream openOutputStream(IProgressMonitor monitor) throws IOException;
+
+    void close(IProgressMonitor monitor);
 }

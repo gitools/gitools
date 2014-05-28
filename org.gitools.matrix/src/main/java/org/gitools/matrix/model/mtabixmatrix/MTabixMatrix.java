@@ -71,6 +71,7 @@ public class MTabixMatrix extends HashMatrix {
             indexedCache.put(layer.getId(), CacheBuilder.newBuilder().build(new BlockLoader(l)));
         }
 
+        hasChanged = false;
     }
 
     @Override

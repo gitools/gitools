@@ -90,7 +90,7 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
             resourceReference.setChanged(true);
         }
 
-        if (resourceReference.isChanged()) {
+        if (resourceReference.get().isChanged()) {
             dependencies.add(resourceReference);
         }
 

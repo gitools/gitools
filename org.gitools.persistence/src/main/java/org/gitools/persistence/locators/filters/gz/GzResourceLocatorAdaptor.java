@@ -66,8 +66,8 @@ public class GzResourceLocatorAdaptor extends FilterResourceLocator {
 
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
-        return new BlockCompressedOutputStream(getParentLocator().openOutputStream(), null);
+    public OutputStream openOutputStream(IProgressMonitor monitor) throws IOException {
+        return new BlockCompressedOutputStream(getParentLocator().openOutputStream(monitor), null);
     }
 
 }
