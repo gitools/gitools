@@ -25,6 +25,7 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
+import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -43,6 +44,7 @@ import org.gitools.ui.app.heatmap.panel.search.HeatmapSearchPanel;
 import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.pages.common.SaveHeatmapFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -220,16 +222,22 @@ public class HeatmapEditor extends AbstractEditor {
         }
         name = name.replaceAll("\\.", "_");
 
-        SaveFileWizard wiz = SaveFileWizard.createSimple(
-                "Save heatmap",
-                name,
-                Settings.get().getLastPath(),
-                new FileFormat[]{
-                        new FileFormat("Heatmap, single file (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false),
-                        new FileFormat("Heatmap, multiple files (*.heatmap)", HeatmapFormat.EXTENSION, false, false)
-                }
-        );
+        SaveHeatmapFilePage page = new SaveHeatmapFilePage();
+        page.setTitle("Save heatmap as");
+        page.setFileNameWithoutExtension(name);
+        page.setFolder(Settings.get().getLastPath());
+        page.setFormats(new FileFormat[]{
+                new FileFormat("Heatmap, single file (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false),
+                new FileFormat("Heatmap, multiple files (*.heatmap)", HeatmapFormat.EXTENSION, false, false)
+        });
+        if (heatmap.getRows().size() == heatmap.getContents().getRows().size() &&
+                heatmap.getColumns().size() == heatmap.getContents().getColumns().size()) {
+            page.enableDiscardHidden(false);
+        } else {
+            page.suggestDiscardHidden();
+        }
 
+        SaveFileWizard wiz = SaveFileWizard.createCustom(page);
 
         final WizardDialog dlg = new WizardDialog(Application.get(), wiz);
 
@@ -278,9 +286,9 @@ public class HeatmapEditor extends AbstractEditor {
         // Last saved and author info.
         heatmap.setLastSaved(new Date());
         Settings settings = Settings.get();
-        if (heatmap.getAuthorName().equals("")) {
+        if (Strings.isNullOrEmpty(heatmap.getAuthorName())) {
             heatmap.setAuthorName(settings.getAuthorName());
-            if (!settings.getAuthorEmail().equals("")) {
+            if (!Strings.isNullOrEmpty(settings.getAuthorEmail())) {
                 heatmap.setAuthorEmail(settings.getAuthorEmail());
             }
         }

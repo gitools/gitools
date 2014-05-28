@@ -28,7 +28,6 @@ import org.gitools.ui.core.utils.FileFormatFilter;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -37,23 +36,26 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.regex.Pattern;
 
-public class SaveFilePage extends AbstractWizardPage {
+public class SaveHeatmapFilePage extends SaveFilePage {
 
     private static Pattern VALID_FILENAME_CHARACTER = Pattern.compile("[^A-Za-z0-9_\\-]");
     private FileFormat[] formats;
-    private javax.swing.JButton browseFileBtn;
-    private javax.swing.JButton browseFolderBtn;
-    private javax.swing.JTextField fileName;
-    private javax.swing.JTextField folder;
-    private javax.swing.JComboBox format;
-    private javax.swing.JLabel formatLabel;
-    private javax.swing.JTextField path;
+    private JButton browseFileBtn;
+    private JButton browseFolderBtn;
+    private JTextField fileName;
+    private JTextField folder;
+    private JComboBox format;
+    private JLabel formatLabel;
+    private JTextField path;
     private JPanel rootPanel;
+    private JCheckBox discardHidden;
+    private JPanel dataOptionsPanel;
+    private JCheckBox optimizeData;
 
     /**
      * Creates new form SaveFilePageOLDOLDOLD
      */
-    public SaveFilePage() {
+    public SaveHeatmapFilePage() {
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SAVE, 96));
 
         initComponents();
@@ -79,6 +81,7 @@ public class SaveFilePage extends AbstractWizardPage {
                 updateGeneratedFile();
             }
         });
+
     }
 
     private void updateGeneratedFile() {
@@ -182,22 +185,22 @@ public class SaveFilePage extends AbstractWizardPage {
         fileName.setFocusCycleRoot(true);
 
         browseFolderBtn.setText("Browse...");
-        browseFolderBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        browseFolderBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 browseFolderBtnActionPerformed(evt);
             }
         });
 
         path.setEditable(false);
 
-        browseFileBtn.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        browseFileBtn.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 browseFileBtnActionPerformed(evt);
             }
         });
     }
 
-    private void browseFolderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFolderBtnActionPerformed
+    private void browseFolderBtnActionPerformed(ActionEvent evt) {//GEN-FIRST:event_browseFolderBtnActionPerformed
         File selPath = FileChooserUtils.selectPath("Select folder", folder.getText());
 
         if (selPath != null) {
@@ -205,7 +208,7 @@ public class SaveFilePage extends AbstractWizardPage {
         }
     }
 
-    private void browseFileBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFileBtnActionPerformed
+    private void browseFileBtnActionPerformed(ActionEvent evt) {//GEN-FIRST:event_browseFileBtnActionPerformed
         FileFormatFilter ff = new FileFormatFilter("Known files") {
             @Override
             public boolean accept(boolean directory, String fileName) {
@@ -247,6 +250,26 @@ public class SaveFilePage extends AbstractWizardPage {
                     format.setSelectedItem(f);
                 }
         }
+    }
+
+    public boolean isDiscardHidden() {
+        return discardHidden.isSelected();
+    }
+
+    public void enableDiscardHidden(boolean b) {
+        discardHidden.setEnabled(b);
+    }
+
+    public boolean isOptimizeData() {
+        return optimizeData.isSelected();
+    }
+
+    public void enabledOptimizeData(boolean b) {
+        optimizeData.setEnabled(b);
+    }
+
+    public void suggestDiscardHidden() {
+        setMessage(MessageStatus.INFO, "Discard hidden data to improve file performance (big data files).");
     }
 
 }

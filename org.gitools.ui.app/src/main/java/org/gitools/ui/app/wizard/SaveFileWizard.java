@@ -41,6 +41,10 @@ public class SaveFileWizard extends AbstractWizard {
         addPage(getSaveFilePage());
     }
 
+    public void setSaveFilePage(SaveFilePage saveFilePage) {
+        this.page = saveFilePage;
+    }
+
     public SaveFilePage getSaveFilePage() {
         if (page == null) {
             page = new SaveFilePage();
@@ -74,6 +78,12 @@ public class SaveFileWizard extends AbstractWizard {
 
     public static SaveFileWizard createSimple(String title, String fileName, String folder, FileFormat fileFormat) {
         return createSimple(title, fileName, folder, new FileFormat[]{ fileFormat });
+    }
+
+    public static SaveFileWizard createCustom(SaveFilePage page) {
+        SaveFileWizard wiz = new SaveFileWizard();
+        wiz.setSaveFilePage(page);
+        return wiz;
     }
 
 
