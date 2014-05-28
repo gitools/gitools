@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions.file;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.core.Application;
@@ -30,6 +31,7 @@ import org.gitools.ui.platform.settings.Settings;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+import java.util.List;
 
 public class OpenFileFromFilesystemAction extends AbstractAction {
 
@@ -52,7 +54,23 @@ public class OpenFileFromFilesystemAction extends AbstractAction {
         IResourceFormat format = null;
 
         String fileName = file.getAbsolutePath();
-        CommandLoadFile loadFile = new CommandLoadFile(fileName, format);
+        CommandLoadFile loadFile = new CommandLoadFile(fileName, format) {
+            @Override
+            public void execute(IProgressMonitor monitor) throws CommandException {
+
+                if (!file.exists()) {
+
+                    Settings settings = Settings.get();
+                    List<String> recentFiles = settings.getRecentFiles();
+                    recentFiles.remove(file.getAbsolutePath());
+                    settings.setRecentFiles(recentFiles);
+                    settings.save();
+                    throw new RuntimeException("File not found: " + file.getAbsolutePath());
+                }
+
+                super.execute(monitor);
+            }
+        };
         JobThread.execute(Application.get(), loadFile);
 
         Settings.get().addRecentFile(fileName);

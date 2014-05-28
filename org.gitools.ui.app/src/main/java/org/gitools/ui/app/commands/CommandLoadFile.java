@@ -59,7 +59,6 @@ import org.gitools.ui.app.genomespace.GsResourceLocator;
 import org.gitools.ui.app.genomespace.dm.HttpUtils;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.dialog.MessageUtils;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.utils.color.ColorRegistry;
 
@@ -129,11 +128,8 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
         } catch (Exception e) {
 
             if (!(e.getCause() instanceof CancellationException)) {
-                MessageUtils.showErrorMessage(Application.get(), "<html>This file format either not supported or is malformed.<br>" +
-                        (!StringUtils.isEmpty(e.getCause().getMessage()) ? "<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" + e.getCause().getMessage() + "</strong></div>" : "") +
-                        "Check the supported file formats at the <strong>'User guide'</strong> on <a href='http://www.gitools.org'>www.gitools.org</a><br></html>", e);
-
-                Application.get().trackException("Bad file format: " + e.getCause().getMessage());
+                String error = !StringUtils.isEmpty(e.getCause().getMessage()) ? e.getCause().getMessage() : "";
+                throw new RuntimeException(error);
             }
             setExitStatus(1);
             return;
