@@ -42,7 +42,6 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
 
     private static final AffineTransformOp TRANSFORM_OP = new AffineTransformOp(AffineTransform.getScaleInstance(1, 1), AffineTransformOp.TYPE_BILINEAR);
 
-    private VisibleRect visibleRect;
     private BufferedImage bufferedImage;
 
     private boolean redrawBufferedImage = true;
@@ -51,7 +50,6 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
     public HeatmapLayerBodyDrawer(Heatmap heatmap) {
         super(heatmap);
 
-        visibleRect = new VisibleRect();
         svgLimit = Settings.get().getSvgBodyLimit();
 
         PropertyChangeListener redrawImageListener = new PropertyChangeListener() {
@@ -90,13 +88,13 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
         int colEnd = (clip.x - box.x + clip.width + cellWidth - 1) / cellWidth;
         colEnd = colEnd < columns.size() ? colEnd : columns.size();
 
-        if (isPictureMode() && ((columns.size()*rows.size()) <= svgLimit)) {
+        if (isPictureMode() && ((columns.size() * rows.size()) <= svgLimit)) {
             redraw(g, box, rowsGridSize, columnsGridSize, cellWidth, cellHeight, rowStart, rowEnd, colStart, colEnd);
             return;
         }
 
-        VisibleRect newRect = new VisibleRect(rowStart, rowEnd, colStart, colEnd, box.width, box.height);
-        redrawBufferedImage = !JobThread.isRunning() && (redrawBufferedImage || !newRect.equals(visibleRect));
+        OnScreenRect newRect = new OnScreenRect(rowStart, rowEnd, colStart, colEnd, box.width, box.height);
+        redrawBufferedImage = !JobThread.isRunning() && (redrawBufferedImage || !newRect.equals(getOnScreenRect()));
 
         if (redrawBufferedImage || isPictureMode()) {
 
@@ -117,7 +115,7 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
 
             Application.get().setCursorNormal();
 
-            visibleRect = newRect;
+            setOnScreenRect(newRect);
             redrawBufferedImage = false;
 
         }
@@ -220,45 +218,5 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
         }
 
         return new Point(x, y);
-    }
-
-    private class VisibleRect {
-        public final int rowStart;
-        public final int rowEnd;
-        public final int colStart;
-        public final int colEnd;
-        public final int width;
-        public final int height;
-
-        public VisibleRect(int rowStart, int rowEnd, int colStart, int colEnd, int width, int height) {
-            this.rowStart = rowStart;
-            this.rowEnd = rowEnd;
-            this.colStart = colStart;
-            this.colEnd = colEnd;
-            this.width = width;
-            this.height = height;
-        }
-
-        public VisibleRect() {
-            this(0, 0, 0, 0, 0, 0);
-        }
-
-        @Override
-        public boolean equals(Object obj) {
-            if (obj instanceof VisibleRect) {
-
-                VisibleRect rect = (VisibleRect) obj;
-
-                return (this.rowStart == rect.rowStart &&
-                        this.rowEnd == rect.rowEnd &&
-                        this.colStart == rect.colStart &&
-                        this.colEnd == rect.colEnd &&
-                        this.width == rect.width &&
-                        this.height == rect.height);
-
-            }
-
-            return false;
-        }
     }
 }

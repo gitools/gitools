@@ -22,8 +22,8 @@
 package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode;
 import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.interaction.Interaction;
 import org.gitools.ui.platform.os.OSProperties;
 
 import javax.swing.*;
@@ -40,7 +40,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     private final HeatmapPanel panel;
     private final HeatmapBodyPanel bodyPanel;
 
-    private HeatmapPanelInputProcessor.Mode mode;
+    private Interaction interaction;
     private Point point;
     private HeatmapPosition coord;
 
@@ -74,7 +74,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         this.ip = inputProcessor;
         keyboardController = new HeatmapKeyboardController(heatmap, inputProcessor);
 
-        this.mode = Mode.none;
+        this.interaction = Interaction.none;
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
@@ -103,8 +103,8 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & shiftMask) != 0);
 
-        mode = shiftDown ? Mode.selectingRowsAndCols : Mode.dragging;
-        switch (mode) {
+        interaction = shiftDown ? Interaction.selectingRowsAndCols : Interaction.dragging;
+        switch (interaction) {
             case dragging:
                 updateLeadSelection(e);
                 dragHeatmap(e, true);
@@ -120,7 +120,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     @Override
     public void mouseReleased(MouseEvent e) {
         panel.mouseReleased(e);
-        mode = Mode.none;
+        interaction = Interaction.none;
     }
 
     @Override
@@ -172,12 +172,12 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
             wheelPosition = null;
         }
 
-        mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
+        interaction = (ctrlDown) ? Interaction.zooming : Interaction.scrolling;
 
-        if (mode == Mode.scrolling) {
+        if (interaction == Interaction.scrolling) {
             ip.scroll(unitsToScroll, shiftDown);
 
-        } else if (mode == Mode.zooming) {
+        } else if (interaction == Interaction.zooming) {
 
             ip.zoomHeatmap(unitsToScroll > 0 ? 1 : -1);
         }

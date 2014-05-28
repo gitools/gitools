@@ -133,7 +133,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
     }
 
     @Override
-    public void populateDetails(List<DetailsDecoration> details, String identifier) {
+    public void populateDetails(List<DetailsDecoration> details, String identifier, boolean selected) {
         String value = (identifier == null ? "None" : getIdentifierTransform().apply(identifier));
 
         DetailsDecoration decoration = new DetailsDecoration(
@@ -143,6 +143,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
                 value,
                 getValueUrl()
         );
+        decoration.setSelected(selected);
 
         decoration.setReference(this);
         details.add(decoration);

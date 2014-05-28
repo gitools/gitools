@@ -157,7 +157,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     }
 
     @Override
-    public void populateDetails(List<DetailsDecoration> details, String identifier) {
+    public void populateDetails(List<DetailsDecoration> details, String identifier, boolean selected) {
 
         DetailsDecoration decoration = new DetailsDecoration(getTitle(), getDescription(), getDescriptionUrl(), null, getValueUrl());
         decoration.setReference(this);
@@ -166,6 +166,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
             reset();
             decorate(decoration, getColoredLabel(identifier), true);
         }
+        decoration.setSelected(selected);
 
         details.add(decoration);
     }

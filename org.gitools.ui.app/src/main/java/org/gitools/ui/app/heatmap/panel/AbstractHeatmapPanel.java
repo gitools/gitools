@@ -79,7 +79,7 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS, HeatmapDimension.PROPERTY_HIGHLIGHTED_LABELS)) {
+        if (isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS, HeatmapDimension.PROPERTY_HIGHLIGHTED)) {
             if (getDrawer() instanceof HeatmapHeaderDrawer) {
                 ((HeatmapHeaderDrawer) getDrawer()).update();
             }

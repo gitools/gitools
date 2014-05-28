@@ -50,7 +50,6 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
         int lastIndex = lastVisibleIndex(box, clip);
 
         Decoration decoration = new Decoration();
-        decoration.setHighlightColor(getHeatmapDimension().getHighlightingColor());
 
         g.setFont(header.getFont());
 
@@ -67,9 +66,6 @@ public class HeatmapDecoratorHeaderDrawer extends AbstractHeatmapHeaderDrawer<He
             for (String annotation : header.getAnnotationLabels()) {
                 decoration.reset();
                 header.decorate(decoration, identifier, annotation, false);
-                if (isHighlightedIndex(index)) {
-                    decoration.highlight();
-                }
                 paintCell(decoration, index, offset, annotationWidth, g, box);
                 offset += annotationWidth + 1;
             }

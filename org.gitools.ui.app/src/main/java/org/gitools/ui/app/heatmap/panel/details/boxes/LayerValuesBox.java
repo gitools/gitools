@@ -50,8 +50,8 @@ import static org.gitools.heatmap.AbstractMatrixViewDimension.*;
 import static org.gitools.heatmap.HeatmapLayer.*;
 import static org.gitools.heatmap.HeatmapLayers.PROPERTY_LAYERS;
 import static org.gitools.heatmap.HeatmapLayers.PROPERTY_TOP_LAYER;
-import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode.movingSelected;
-import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.getInteractionMode;
+import static org.gitools.ui.core.interaction.Interaction.movingSelected;
+import static org.gitools.ui.core.interaction.InteractionStatus.getInteractionStatus;
 import static org.gitools.utils.events.EventUtils.isAny;
 
 
@@ -74,7 +74,7 @@ public class LayerValuesBox extends DetailsBox {
         PropertyChangeListener updateLayers = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
-                if ((getInteractionMode() != movingSelected) &&
+                if ((getInteractionStatus() != movingSelected) &&
 
                         (isAny(evt, HeatmapDimension.class,
                                 PROPERTY_FOCUS,

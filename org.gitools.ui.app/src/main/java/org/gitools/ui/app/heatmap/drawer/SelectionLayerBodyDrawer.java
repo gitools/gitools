@@ -36,8 +36,8 @@ public class SelectionLayerBodyDrawer extends HeatmapLayerBodyDrawer {
     public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
         if (!isPictureMode()) {
-            drawSelectedAndFocus(g, box, rows, true);
-            drawSelectedAndFocus(g, box, columns, false);
+            drawSelectedHighlightedAndFocus(g, box, rows, true, HIGHLIGHT_POLICY_AVOID);
+            drawSelectedHighlightedAndFocus(g, box, columns, false, HIGHLIGHT_POLICY_AVOID);
         }
 
     }

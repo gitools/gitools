@@ -129,7 +129,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
     }
 
     @Override
-    public void populateDetails(List<DetailsDecoration> details, String index) {
+    public void populateDetails(List<DetailsDecoration> details, String index, boolean selected) {
 
         String intersection = null;
 
@@ -156,7 +156,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
             if (index != null) {
                 decorate(decoration, index, annotation, true);
             }
-
+            decoration.setSelected(selected);
             details.add(decoration);
         }
 

@@ -57,12 +57,10 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
 
         int clipStart = clip.y - box.y;
         int clipEnd = clipStart + clip.height;
+
         int count = heatmapDimension.size();
-
         int start = (clipStart - height) / height;
-
         int end = (clipEnd + height - 1) / height;
-
         start = start > 0 ? start : 0;
         end = end < count ? end : count;
 
@@ -89,7 +87,7 @@ public class HeatmapTextLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heatmap
             String label = getLabel(index);
             String matrixLabel = heatmapDimension.getLabel(index);
 
-            Color bgColor = heatmapDimension.isHighlighted(matrixLabel) ? getHeatmapDimension().getHighlightingColor() : header.getBackgroundColor();
+            Color bgColor = header.getBackgroundColor();
 
             g.setColor(gridColor);
             g.fillRect(x, y + cellHeight, width, gridSize);

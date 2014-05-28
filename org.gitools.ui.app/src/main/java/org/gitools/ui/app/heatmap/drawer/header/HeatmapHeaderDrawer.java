@@ -128,10 +128,15 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
             g.rotate(radianAngle90);
             g.translate(-totalSize, 0);
             g.fillRect(box.x, box.y, box.width, box.height);
-            for (AbstractHeatmapDrawer d : drawers) {
+            for (AbstractHeatmapHeaderDrawer d : drawers) {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.height, sz.width);
                 d.draw(g, box2, clip2.intersection(box2));
+                if (!isPictureMode()) {
+                    int mode = heatmapDimension.getHighlightedHeaders().contains(d.getHeader().getTitle()) ?
+                            HIGHLIGHT_POLICY_FORCE : HIGHLIGHT_POLICY_NORMAL;
+                    drawSelectedHighlightedAndFocus(g, box2, heatmapDimension, true, mode);
+                }
                 x += box2.width;
             }
         } else {
@@ -139,16 +144,17 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
             int y = box.y;
 
             Dimension sz;
-            for (AbstractHeatmapDrawer d : drawers) {
+            for (AbstractHeatmapHeaderDrawer d : drawers) {
                 sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, clip.width - x, sz.height);
                 d.draw(g, box2, clip.intersection(box2));
+                if (!isPictureMode()) {
+                    int mode = heatmapDimension.getHighlightedHeaders().contains(d.getHeader().getTitle()) ?
+                            HIGHLIGHT_POLICY_FORCE : HIGHLIGHT_POLICY_NORMAL;
+                    drawSelectedHighlightedAndFocus(g, box2, heatmapDimension, true, mode);
+                }
                 x += sz.width;
             }
-        }
-
-        if (!isPictureMode()) {
-            drawSelectedAndFocus(g, box, heatmapDimension, true);
         }
     }
 

@@ -60,8 +60,6 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         int lastIndex = lastVisibleIndex(box, clip);
 
         Decoration decoration = new Decoration();
-        decoration.setHighlightColor(getHeatmapDimension().getHighlightingColor());
-
         int cellWidth = header.getSize();
 
         int startGroupIndex = firstIndex;
@@ -81,9 +79,6 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
             decoration.reset();
             boolean highlighted = isHighlightedIndex(startGroupIndex);
             header.decorate(decoration, groupLabel, false);
-            if (highlighted) {
-                decoration.highlight();
-            }
 
             int fullSize = getHeatmapDimension().getFullSize();
             //gridSize = 0 (no grid) if same group

@@ -305,7 +305,7 @@ public abstract class HeatmapHeader extends Model {
 
     }
 
-    public void populateDetails(List<DetailsDecoration> details, String identifier) {
+    public void populateDetails(List<DetailsDecoration> details, String identifier, boolean selected) {
     }
 
     public abstract Function<String, String> getIdentifierTransform();

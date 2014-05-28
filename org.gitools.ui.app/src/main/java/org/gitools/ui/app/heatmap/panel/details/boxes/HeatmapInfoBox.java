@@ -44,8 +44,9 @@ import java.util.List;
 import static org.apache.commons.lang.StringUtils.capitalize;
 import static org.gitools.heatmap.HeatmapDimension.PROPERTY_HEADERS;
 import static org.gitools.heatmap.HeatmapDimension.PROPERTY_VISIBLE;
-import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode.movingSelected;
-import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.getInteractionMode;
+import static org.gitools.ui.core.interaction.Interaction.highlighting;
+import static org.gitools.ui.core.interaction.Interaction.movingSelected;
+import static org.gitools.ui.core.interaction.InteractionStatus.isInteracting;
 import static org.gitools.utils.events.EventUtils.isAny;
 
 
@@ -69,7 +70,7 @@ public class HeatmapInfoBox extends DetailsBox {
             public void propertyChange(PropertyChangeEvent evt) {
                 if ((isAny(evt, HeatmapDimension.class,
                         PROPERTY_HEADERS,
-                        PROPERTY_VISIBLE)) && (getInteractionMode() != movingSelected)) {
+                        PROPERTY_VISIBLE))) {
                     update();
                 }
             }
@@ -88,6 +89,9 @@ public class HeatmapInfoBox extends DetailsBox {
     @Override
     public void update() {
 
+        if (this.isCollapsed() || isInteracting(movingSelected, highlighting)) {
+            return;
+        }
 
         Heatmap heatmap = getHeatmap();
         this.setTitle(heatmap.getTitle());

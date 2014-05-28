@@ -40,8 +40,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.gitools.heatmap.HeatmapDimension.*;
-import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode.movingSelected;
-import static org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.getInteractionMode;
+import static org.gitools.ui.core.interaction.Interaction.highlighting;
+import static org.gitools.ui.core.interaction.Interaction.movingSelected;
+import static org.gitools.ui.core.interaction.InteractionStatus.isInteracting;
 import static org.gitools.utils.events.EventUtils.isAny;
 
 public class DimensionBox extends DetailsBox {
@@ -66,7 +67,8 @@ public class DimensionBox extends DetailsBox {
                         PROPERTY_FOCUS,
                         PROPERTY_HEADERS,
                         PROPERTY_SELECTED,
-                        PROPERTY_VISIBLE)) && (getInteractionMode() != movingSelected)) {
+                        PROPERTY_SELECTED_HEADER,
+                        PROPERTY_VISIBLE))) {
                     update();
                 }
             }
@@ -75,6 +77,10 @@ public class DimensionBox extends DetailsBox {
 
     @Override
     public void update() {
+
+        if (isInteracting(movingSelected, highlighting)) {
+            return;
+        }
 
         String lead = dimension.getFocus();
         String label = StringUtils.capitalize(dimension.getId().getLabel());
@@ -96,6 +102,11 @@ public class DimensionBox extends DetailsBox {
 
     @Override
     protected void onMouseSingleClick(DetailsDecoration propertyItem) {
+        Object reference = propertyItem.getReference();
+        if (reference instanceof HeatmapHeader) {
+            dimension.setSelectedHeader((HeatmapHeader) reference);
+            new DimensionHeaderHighlightAction(dimension, (HeatmapHeader) reference).actionPerformed(null);
+        }
     }
 
     @Override

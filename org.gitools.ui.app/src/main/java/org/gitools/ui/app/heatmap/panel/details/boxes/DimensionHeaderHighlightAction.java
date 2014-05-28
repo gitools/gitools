@@ -19,18 +19,17 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.plugins.mutex.actions;
+package org.gitools.ui.app.heatmap.panel.details.boxes;
 
-import org.gitools.plugins.mutex.MutualExclusiveBookmark;
-import org.gitools.plugins.mutex.ui.IMutualExclusiveAction;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -40,26 +39,23 @@ import static org.gitools.ui.core.interaction.Interaction.highlighting;
 import static org.gitools.ui.core.interaction.Interaction.none;
 import static org.gitools.ui.core.interaction.InteractionStatus.setInteractionStatus;
 
-public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implements IMutualExclusiveAction {
 
-    MutualExclusiveBookmark bookmark;
+public class DimensionHeaderHighlightAction extends HeatmapAction implements IHeatmapDimensionAction {
+
 
     private static ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
+    private HeatmapDimension dimension;
+    private HeatmapHeader header;
     private ScheduledFuture<?> updating = null;
 
-    public HighlightMutualExclusiveBookmarkAction(MutualExclusiveBookmark bookmark) {
-        super("<html><i>Highlight</i> mutual exclusive</html>");
-        this.bookmark = bookmark;
+    public DimensionHeaderHighlightAction(HeatmapDimension dimension, HeatmapHeader header) {
+        super("<html><i>Highlight</i> heatmap header</html>");
+        this.dimension = dimension;
+        this.header = header;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
-        setInteractionStatus(highlighting);
-
-        final List<String> rows = new ArrayList<>(bookmark.getRows());
-
-        final List<String> columns = new ArrayList<>(bookmark.getColumns());
 
         final Color color = getHeatmap().getRows().getHighlightingColor();
 
@@ -74,17 +70,22 @@ public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implem
 
                 int maxAlpha = color.getAlpha();
                 int step = maxAlpha / 16;
+                if (step < 1) {
+                    step = 1;
+                }
 
-                getHeatmap().getRows().setHighlightedLabels(new HashSet<String>(rows));
-                getHeatmap().getColumns().setHighlightedLabels(new HashSet<String>(columns));
+                HashSet<String> highlighted = new HashSet<>();
+                highlighted.add(header.getTitle());
+                dimension.setHighlightedHeaders(highlighted);
 
                 for (int i = 0; i < maxAlpha; i = i + step) {
                     try {
-                        Thread.currentThread().sleep(50);
+                        setInteractionStatus(highlighting);
+                        Thread.currentThread().sleep(100);
                         Color c = new Color(
-                            color.getRed(),
-                            color.getGreen(),
-                            color.getBlue(),
+                                color.getRed(),
+                                color.getGreen(),
+                                color.getBlue(),
                                 maxAlpha - i);
                         getHeatmap().getRows().setHighlightingColor(c);
                         getHeatmap().getColumns().setHighlightingColor(c);
@@ -94,12 +95,12 @@ public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implem
                     }
                 }
 
-                getHeatmap().getRows().setHighlightedLabels(new HashSet<String>());
-                getHeatmap().getColumns().setHighlightedLabels(new HashSet<String>());
                 getHeatmap().getRows().resetHighlightColor();
-
+                getHeatmap().getColumns().resetHighlightColor();
                 setInteractionStatus(none);
 
+
+                dimension.setHighlightedHeaders(new HashSet<String>());
             }
         };
         updating = EXECUTOR.schedule(runnable, 10, TimeUnit.MILLISECONDS);
@@ -108,7 +109,7 @@ public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implem
     }
 
     @Override
-    public void onConfigure(MutualExclusiveBookmark object, HeatmapPosition position) {
-        bookmark = object;
+    public void onConfigure(HeatmapDimension object, HeatmapPosition position) {
+        dimension = object;
     }
 }
