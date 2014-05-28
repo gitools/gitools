@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.popupmenus;
 
+import org.apache.commons.lang.StringUtils;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.data.FastSortValueAction;
@@ -28,7 +29,6 @@ import org.gitools.ui.app.actions.data.GroupSelectionAction;
 import org.gitools.ui.app.actions.data.HideSelectionAction;
 import org.gitools.ui.app.actions.data.ShowAllAction;
 import org.gitools.ui.app.actions.edit.*;
-import org.gitools.ui.app.actions.toolbar.HeatmapSearchAction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.BaseAction;
 import org.gitools.ui.core.actions.PopupSectionTitleAction;
@@ -37,6 +37,8 @@ import org.gitools.ui.platform.icons.IconNames;
 public class PopupMenuActions {
 
     private static ActionSet getHeatmapMenu(MatrixDimensionKey dimensionKey) {
+
+        String dimensionLabel = StringUtils.capitalize(dimensionKey.getLabel());
 
         return new ActionSet(new BaseAction[]{
 
@@ -65,12 +67,13 @@ public class PopupMenuActions {
                 Actions.sortByHeader,
                 Actions.invertOrder,
 
+                //BaseAction.separator,
+                //new HeatmapSearchAction(dimensionKey),
                 BaseAction.separator,
-                new HeatmapSearchAction(dimensionKey),
-
-                BaseAction.separator,
+                new PopupSectionTitleAction(dimensionLabel + " headers"),
                 new AddHeaderAction(dimensionKey),
                 new EditHeaderAction(dimensionKey, "<html><i>Edit</i> header</html>"),
+                new RemoveHeaderAction(dimensionKey, "Remove " + dimensionLabel + " header")
 
 
         });
