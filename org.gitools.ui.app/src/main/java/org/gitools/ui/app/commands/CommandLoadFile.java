@@ -68,6 +68,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CancellationException;
 
 import static org.gitools.api.ApplicationContext.getPersistenceManager;
@@ -79,6 +81,7 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
     private IResourceFormat format = null;
     private final String rowsAnnotations;
     private final String columnsAnnotations;
+    private static List<AbstractCommand> afterLoadCommands;
 
     public CommandLoadFile(ResourceReference reference) {
         this(reference.getLocator(), reference.getResourceFormat());
@@ -110,6 +113,7 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
         this.locator = locator;
         this.rowsAnnotations = rowsAnnotations;
         this.columnsAnnotations = columnsAnnotations;
+        this.afterLoadCommands = new ArrayList<>();
     }
 
     @Override
@@ -142,7 +146,7 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
         afterLoad(resource, monitor);
     }
 
-    public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
+    public void afterLoad(IResource resource, final IProgressMonitor monitor) throws CommandException {
 
         monitor.begin("Initializing editor ...", 1);
         final AbstractEditor editor = createEditor(resource, monitor);
@@ -153,6 +157,14 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
             public void run() {
                 Application.get().getEditorsPanel().addEditor(editor);
                 Application.get().refresh();
+
+                for (AbstractCommand command : afterLoadCommands) {
+                    try {
+                        command.execute(monitor);
+                    } catch (CommandException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -315,6 +327,10 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
 
     private static void loadAnnotations(File file, HeatmapDimension hdim) {
         hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), getPersistenceManager().getFormat(AnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
+    }
+
+    public void addAfterLoadCommand(AbstractCommand command) {
+        afterLoadCommands.add(command);
     }
 
 }

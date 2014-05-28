@@ -135,6 +135,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
             JobRunnable loadFile = new CommandConvertAndLoadCsvFile(reader) {
                 @Override
                 public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
+                    addAfterLoadCommand(new CommandEditAllColorScales());
                     callback.afterLoad(resource, monitor);
                 }
             };
