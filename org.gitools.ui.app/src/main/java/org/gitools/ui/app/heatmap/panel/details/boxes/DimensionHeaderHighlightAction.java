@@ -60,6 +60,7 @@ public class DimensionHeaderHighlightAction extends HeatmapAction implements IHe
         final Color color = getHeatmap().getRows().getHighlightingColor();
 
         if (updating != null && !updating.isDone()) {
+            reset();
             updating.cancel(true);
         }
 
@@ -95,9 +96,7 @@ public class DimensionHeaderHighlightAction extends HeatmapAction implements IHe
                     }
                 }
 
-                getHeatmap().getRows().resetHighlightColor();
-                getHeatmap().getColumns().resetHighlightColor();
-                setInteractionStatus(none);
+                reset();
 
 
                 dimension.setHighlightedHeaders(new HashSet<String>());
@@ -106,6 +105,12 @@ public class DimensionHeaderHighlightAction extends HeatmapAction implements IHe
         updating = EXECUTOR.schedule(runnable, 10, TimeUnit.MILLISECONDS);
 
 
+    }
+
+    private void reset() {
+        getHeatmap().getRows().resetHighlightColor();
+        getHeatmap().getColumns().resetHighlightColor();
+        setInteractionStatus(none);
     }
 
     @Override

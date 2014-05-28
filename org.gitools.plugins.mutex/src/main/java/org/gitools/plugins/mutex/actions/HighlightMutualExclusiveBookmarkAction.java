@@ -64,6 +64,7 @@ public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implem
         final Color color = getHeatmap().getRows().getHighlightingColor();
 
         if (updating != null && !updating.isDone()) {
+            reset();
             updating.cancel(true);
         }
 
@@ -94,9 +95,7 @@ public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implem
                     }
                 }
 
-                getHeatmap().getRows().setHighlightedLabels(new HashSet<String>());
-                getHeatmap().getColumns().setHighlightedLabels(new HashSet<String>());
-                getHeatmap().getRows().resetHighlightColor();
+                reset();
 
                 setInteractionStatus(none);
 
@@ -105,6 +104,12 @@ public class HighlightMutualExclusiveBookmarkAction extends HeatmapAction implem
         updating = EXECUTOR.schedule(runnable, 10, TimeUnit.MILLISECONDS);
 
 
+    }
+
+    private void reset() {
+        getHeatmap().getRows().setHighlightedLabels(new HashSet<String>());
+        getHeatmap().getColumns().setHighlightedLabels(new HashSet<String>());
+        getHeatmap().getRows().resetHighlightColor();
     }
 
     @Override
