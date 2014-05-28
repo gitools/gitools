@@ -72,7 +72,9 @@ public class ResourceReference<R extends IResource> {
         this.resourceClass = resourceClass;
         this.resource = resource;
         this.locator = null;
-        this.resourceFormat = null;
+
+        String extension = ApplicationContext.getPersistenceManager().getDefaultExtension(resourceClass);
+        this.resourceFormat = ApplicationContext.getPersistenceManager().getFormat(extension, resourceClass);
     }
 
     public final R get() {

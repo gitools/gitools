@@ -93,6 +93,10 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
         this(file, null, null);
     }
 
+    public CommandLoadFile(URL url) {
+        this(new GsResourceLocator(new UrlResourceLocator(url)), null, null);
+    }
+
     public CommandLoadFile(String file, IResourceFormat resourceFormat) {
         this(file);
         this.format = resourceFormat;

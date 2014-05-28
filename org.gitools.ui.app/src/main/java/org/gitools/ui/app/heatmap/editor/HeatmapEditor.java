@@ -29,13 +29,18 @@ import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.format.HeatmapFormat;
+import org.gitools.matrix.model.MatrixWrapper;
 import org.gitools.persistence.locators.UrlResourceLocator;
+import org.gitools.ui.app.commands.Command;
+import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.heatmap.panel.ColorScalePanel;
 import org.gitools.ui.app.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
@@ -44,6 +49,7 @@ import org.gitools.ui.app.heatmap.panel.search.HeatmapSearchPanel;
 import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.EditorsPanel;
 import org.gitools.ui.core.pages.common.SaveHeatmapFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.icons.IconNames;
@@ -64,9 +70,8 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
-import java.util.Date;
+import java.util.*;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
 
 public class HeatmapEditor extends AbstractEditor {
@@ -262,6 +267,41 @@ public class HeatmapEditor extends AbstractEditor {
         file = wiz.getPathAsFile();
         setFile(file);
 
+
+        // Data matrix
+        IMatrix data = heatmap.getData().get();
+
+        if (page.isDiscardHidden()) {
+
+            // Discard hidden data
+            data = new MatrixWrapper(data) {
+                @Override
+                public IMatrixDimension getColumns() {
+                    return heatmap.getColumns();
+                }
+
+                @Override
+                public IMatrixDimension getRows() {
+                    return heatmap.getRows();
+                }
+
+                @Override
+                public boolean isChanged() {
+                    return true;
+                }
+            };
+
+        } else if (page.isOptimizeData()) {
+
+            // Optimize mtabix index
+            data = new MatrixWrapper(data) {
+                @Override
+                public boolean isChanged() {
+                    return true;
+                }
+            };
+        }
+
         IResourceLocator fromLocator = heatmap.getLocator();
         if  (fromLocator == null) {
             heatmap.setLocator(new UrlResourceLocator(file));
@@ -269,7 +309,7 @@ public class HeatmapEditor extends AbstractEditor {
             heatmap.setLocator(new UrlResourceLocator(fromLocator.getReadFile(), file));
         }
 
-        heatmap.setData(new ResourceReference<>("data", heatmap.getData().get()));
+        heatmap.setData(new ResourceReference<>("data", data));
         HeatmapDimension rows = heatmap.getRows();
         HeatmapDimension columns = heatmap.getColumns();
         rows.setAnnotationsReference(new ResourceReference<>(rows.getId().toString().toLowerCase() + "-annotations", rows.getAnnotations()));
@@ -309,6 +349,22 @@ public class HeatmapEditor extends AbstractEditor {
         setDirty(false);
         Settings.get().addRecentFile(file.getAbsolutePath());
         Settings.get().save();
+
+        // Force to reload the data after save
+        if (heatmap.getData().get().isChanged()) {
+
+            monitor.title("Reloading the heatmap...");
+
+            CommandLoadFile loadFile = new CommandLoadFile(heatmap.getLocator().getURL());
+            try {
+                loadFile.execute(monitor);
+            } catch (Command.CommandException e) {
+                throw new RuntimeException(e);
+            }
+
+            EditorsPanel editorPanel = Application.get().getEditorsPanel();
+            editorPanel.removeEditor(this);
+        }
     }
 
     @Override
@@ -352,8 +408,6 @@ public class HeatmapEditor extends AbstractEditor {
         }
 
         heatmap = null;
-
-        System.gc();
 
         return true;
     }
