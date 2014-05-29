@@ -85,8 +85,8 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
         WebPanel container = getContainer();
         container.removeAll();
 
-        int maxValueLength = convertToCharacters(getWidth() - 15) - maxValueLength(details);
-        maxValueLength = (maxValueLength < 8 ? 8 : maxValueLength);
+        int maxValueLength = convertToCharacters(getWidth() - 15) - maxValueLength(details) - 5;
+        //maxValueLength = (maxValueLength < 12 ? 12 : maxValueLength);
 
         double columns[] = {5, TableLayout.PREFERRED, 3, TableLayout.FILL, 5};
         double rows[] = new double[3 + details.size() * 2];
@@ -233,7 +233,8 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
         int max = MINIMUM_VALUE_LENGTH;
 
         for (DetailsDecoration property : details) {
-            int length = property.getFormatedValue().length();
+            int length = property.getName().length();
+
 
             if (length > max) {
                 max = length;
