@@ -22,7 +22,9 @@
 package org.gitools.ui.app.wizard;
 
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.ui.core.pages.common.BasicSaveFilePage;
 import org.gitools.ui.core.pages.common.SaveFilePage;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 
 import java.io.File;
@@ -47,7 +49,7 @@ public class SaveFileWizard extends AbstractWizard {
 
     public SaveFilePage getSaveFilePage() {
         if (page == null) {
-            page = new SaveFilePage();
+            page = new BasicSaveFilePage();
         }
         return page;
     }
@@ -99,5 +101,9 @@ public class SaveFileWizard extends AbstractWizard {
         page.setFormats(fileFormats);
         page.setFormatsVisible(fileFormats.length > 1);
         return wiz;
+    }
+
+    public void setMessage(MessageStatus status, String s) {
+        page.setMessage(status, s);
     }
 }

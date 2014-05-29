@@ -24,6 +24,7 @@ package org.gitools.ui.app.wizard;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.FileFormats;
+import org.gitools.ui.core.pages.common.BasicSaveFilePage;
 import org.gitools.ui.core.pages.common.ExportHeatmapLabelsPage;
 import org.gitools.ui.core.pages.common.PatternSourcePage;
 import org.gitools.ui.core.pages.common.SaveFilePage;
@@ -40,7 +41,7 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard {
 
     private ExportHeatmapLabelsPage sourcePage;
     private PatternSourcePage patPage;
-    private SaveFilePage savePage;
+    private BasicSaveFilePage savePage;
 
     public ExportHeatmapLabelsWizard(Heatmap hm) {
         this.hm = hm;
@@ -57,7 +58,7 @@ public class ExportHeatmapLabelsWizard extends AbstractWizard {
         patPage.setAnnSeparationModel(new String[]{"\t", ",", ";"});
         addPage(patPage);
 
-        savePage = new SaveFilePage();
+        savePage = new BasicSaveFilePage();
         savePage.setTitle("Select destination file");
         savePage.setFolder(Settings.get().getLastExportPath());
         savePage.setFormats(supportedFormats);

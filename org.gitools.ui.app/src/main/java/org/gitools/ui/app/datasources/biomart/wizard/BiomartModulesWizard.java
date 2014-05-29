@@ -25,10 +25,10 @@ import org.gitools.api.persistence.FileFormat;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.matrix.FileFormats;
+import org.gitools.ui.core.pages.common.BasicSaveFilePage;
+import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.Settings;
-import org.gitools.ui.core.pages.common.SaveFilePage;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
@@ -41,7 +41,7 @@ public class BiomartModulesWizard extends AbstractWizard {
 
     private BiomartAttributePage dataAttributePage;
 
-    private SaveFilePage saveFilePage;
+    private BasicSaveFilePage saveFilePage;
 
     private BiomartService biomartService;
 
@@ -93,7 +93,7 @@ public class BiomartModulesWizard extends AbstractWizard {
         addPage(filterListPage);
 
         // Destination
-        saveFilePage = new SaveFilePage();
+        saveFilePage = new BasicSaveFilePage();
         saveFilePage.setTitle("Select destination file");
         saveFilePage.setFolder(Settings.get().getLastMapPath());
         saveFilePage.setFormats(supportedFormats);

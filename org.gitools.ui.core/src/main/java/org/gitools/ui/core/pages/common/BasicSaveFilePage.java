@@ -37,92 +37,50 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.regex.Pattern;
 
-public class SaveHeatmapFilePage extends AbstractWizardPage implements SaveFilePage {
+public class BasicSaveFilePage extends AbstractWizardPage implements SaveFilePage {
 
     protected static Pattern VALID_FILENAME_CHARACTER = Pattern.compile("[^A-Za-z0-9_\\-]");
     protected FileFormat[] formats;
-    private JButton browseFileBtn;
-    private JButton browseFolderBtn;
-    private JTextField fileName;
-    private JTextField folder;
-    private JComboBox format;
-    private JLabel formatLabel;
-    private JTextField path;
+    private javax.swing.JButton browseFileBtn;
+    private javax.swing.JButton browseFolderBtn;
+    private javax.swing.JTextField fileName;
+    private javax.swing.JTextField folder;
+    private javax.swing.JComboBox format;
+    private javax.swing.JLabel formatLabel;
+    private javax.swing.JTextField path;
     private JPanel rootPanel;
-    private JCheckBox discardHidden;
-    private JPanel dataOptionsPanel;
-    private JCheckBox optimizeData;
 
-    public SaveHeatmapFilePage() {
+    /**
+     * Creates new form SaveFilePageOLDOLDOLD
+     */
+    public BasicSaveFilePage() {
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SAVE, 96));
 
         initComponents();
 
     }
 
-    protected void initComponents() {
-        fileName.setFocusCycleRoot(true);
+    @Override
+    public void updateGeneratedFile() {
+        File file = getPathAsFile();
+        String fn = file.getAbsolutePath();
+        path.setText(fn);
+        if (file.exists()) {
+            setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists and will be overwritten");
+            setComplete(true);
+        } else {
+            setMessage(MessageStatus.INFO, "");
+        }
 
-        browseFolderBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                browseFolderBtnActionPerformed(evt);
-            }
-        });
-
-        path.setEditable(false);
-
-        browseFileBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                browseFileBtnActionPerformed(evt);
-            }
-        });
-
-        fileName.getDocument().addDocumentListener(new DocumentChangeListener() {
-            @Override
-            protected void update(DocumentEvent e) {
-                setComplete(!fileName.getText().isEmpty());
-                updateGeneratedFile();
-            }
-        });
-
-        folder.getDocument().addDocumentListener(new DocumentChangeListener() {
-            @Override
-            protected void update(DocumentEvent e) {
-                updateGeneratedFile();
-            }
-        });
-
-        format.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateGeneratedFile();
-            }
-        });
+        FileFormat fmt = getFormat();
+        if (formats != null && formats.length > 1 && fmt != null && !fmt.checkExtension(fn)) {
+            setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
+        }
     }
 
     @Override
     public JComponent createControls() {
         return rootPanel;
-    }
-
-    public boolean isDiscardHidden() {
-        return discardHidden.isSelected();
-    }
-
-    public void enableDiscardHidden(boolean b) {
-        discardHidden.setEnabled(b);
-    }
-
-    public boolean isOptimizeData() {
-        return optimizeData.isSelected();
-    }
-
-    public void enabledOptimizeData(boolean b) {
-        optimizeData.setEnabled(b);
-    }
-
-    public void suggestDiscardHidden() {
-        setMessage(MessageStatus.INFO, "Discard hidden data to improve file performance (big data files).");
     }
 
     /**
@@ -193,24 +151,6 @@ public class SaveHeatmapFilePage extends AbstractWizardPage implements SaveFileP
         return sb.toString();
     }
 
-    @Override
-    public void updateGeneratedFile() {
-        File file = getPathAsFile();
-        String fn = file.getAbsolutePath();
-        path.setText(fn);
-        if (file.exists()) {
-            setMessage(MessageStatus.WARN, "File " + file.getName() + " already exists and will be overwritten");
-            setComplete(true);
-        } else {
-            setMessage(MessageStatus.INFO, "");
-        }
-
-        FileFormat fmt = getFormat();
-        if (formats != null && formats.length > 1 && fmt != null && !fmt.checkExtension(fn)) {
-            setMessage(MessageStatus.WARN, "The file extension doesn't match the selected format");
-        }
-    }
-
     /**
      * Returns the full path as a file
      */
@@ -223,6 +163,48 @@ public class SaveHeatmapFilePage extends AbstractWizardPage implements SaveFileP
         }
 
         return new File(folderName, getFileName());
+    }
+
+    protected void initComponents() {
+
+
+        fileName.setFocusCycleRoot(true);
+
+        browseFolderBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseFolderBtnActionPerformed(evt);
+            }
+        });
+
+        path.setEditable(false);
+
+        browseFileBtn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                browseFileBtnActionPerformed(evt);
+            }
+        });
+
+        fileName.getDocument().addDocumentListener(new DocumentChangeListener() {
+            @Override
+            protected void update(DocumentEvent e) {
+                setComplete(!fileName.getText().isEmpty());
+                updateGeneratedFile();
+            }
+        });
+
+        folder.getDocument().addDocumentListener(new DocumentChangeListener() {
+            @Override
+            protected void update(DocumentEvent e) {
+                updateGeneratedFile();
+            }
+        });
+
+        format.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateGeneratedFile();
+            }
+        });
     }
 
     protected void browseFolderBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_browseFolderBtnActionPerformed
@@ -276,6 +258,5 @@ public class SaveHeatmapFilePage extends AbstractWizardPage implements SaveFileP
                 }
         }
     }
-
 
 }

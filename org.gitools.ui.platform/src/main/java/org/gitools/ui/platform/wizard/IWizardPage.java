@@ -32,6 +32,12 @@ public interface IWizardPage {
 
     void setId(String id);
 
+    void setTitle(String title);
+
+    void setMessage(String message);
+
+    void setMessage(MessageStatus status, String message);
+
     IWizard getWizard();
 
     void setWizard(IWizard wizard);

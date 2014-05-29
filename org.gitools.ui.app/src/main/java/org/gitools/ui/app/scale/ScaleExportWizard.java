@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.scale;
 
+import org.gitools.ui.core.pages.common.BasicSaveFilePage;
 import org.gitools.ui.core.pages.common.SaveFilePage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.utils.colorscale.IColorScale;
@@ -28,11 +29,11 @@ import org.gitools.utils.colorscale.NumericColorScale;
 
 public class ScaleExportWizard extends AbstractWizard {
 
-    private final SaveFilePage savePage;
+    private final BasicSaveFilePage savePage;
     private final ScaleExportConfigPage configPage;
 
     public ScaleExportWizard() {
-        savePage = new SaveFilePage();
+        savePage = new BasicSaveFilePage();
         configPage = new ScaleExportConfigPage();
     }
 

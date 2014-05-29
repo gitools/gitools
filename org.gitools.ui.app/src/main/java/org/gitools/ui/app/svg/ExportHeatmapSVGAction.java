@@ -68,7 +68,7 @@ public class ExportHeatmapSVGAction extends HeatmapAction {
         drawer.setPictureMode(true);
 
         if ((hm.getColumns().size()*hm.getRows().size()) > Settings.get().getSvgBodyLimit()) {
-            saveWiz.getSaveFilePage().setMessage(MessageStatus.WARN, "The body of the heatmap will be drawn as a bitmap because there are more than " + Settings.get().getSvgBodyLimit() + " cells." );
+            saveWiz.setMessage(MessageStatus.WARN, "The body of the heatmap will be drawn as a bitmap because there are more than " + Settings.get().getSvgBodyLimit() + " cells.");
         }
 
         WizardDialog dlg = new WizardDialog(Application.get(), saveWiz);
