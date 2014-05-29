@@ -201,7 +201,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
 
         try {
-            writeMtabixIndex(resourceLocator, results);
+            writeMtabixIndex(resourceLocator, results, monitor);
         } catch (Exception e) {
             LOGGER.warn("Error creating mtabix index", e);
         }
@@ -209,7 +209,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
     }
 
-    private void writeMtabixIndex(IResourceLocator resourceLocator, IMatrix results) throws URISyntaxException, IOException, NoSuchAlgorithmException {
+    private void writeMtabixIndex(IResourceLocator resourceLocator, IMatrix results, IProgressMonitor monitor) throws URISyntaxException, IOException, NoSuchAlgorithmException {
 
             IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
 
@@ -225,6 +225,7 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
             MTabixIndex index = new MTabixIndex(mtabixConfig);
             index.buildIndex();
+            mtabix.close(monitor);
 
     }
 
