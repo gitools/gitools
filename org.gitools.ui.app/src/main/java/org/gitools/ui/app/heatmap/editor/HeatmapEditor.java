@@ -32,6 +32,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
@@ -302,11 +303,11 @@ public class HeatmapEditor extends AbstractEditor {
             };
         }
 
-        IResourceLocator fromLocator = heatmap.getLocator();
-        if  (fromLocator == null) {
-            heatmap.setLocator(new UrlResourceLocator(file));
+        IResourceLocator toLocator;
+        if  (heatmap.getLocator() == null) {
+            toLocator = new UrlResourceLocator(file);
         } else {
-            heatmap.setLocator(new UrlResourceLocator(fromLocator.getReadFile(), file));
+            toLocator = new UrlResourceLocator(heatmap.getLocator().getReadFile(), file);
         }
 
         heatmap.setData(new ResourceReference<>("data", data));
@@ -315,12 +316,16 @@ public class HeatmapEditor extends AbstractEditor {
         rows.setAnnotationsReference(new ResourceReference<>(rows.getId().toString().toLowerCase() + "-annotations", rows.getAnnotations()));
         columns.setAnnotationsReference(new ResourceReference<>(columns.getId().toString().toLowerCase() + "-annotations", columns.getAnnotations()));
 
-        doSave(monitor);
+        doSave(toLocator, monitor);
 
     }
 
     @Override
     public void doSave(IProgressMonitor monitor) {
+        doSave(heatmap.getLocator(), monitor);
+    }
+
+    private void doSave(IResourceLocator toLocator, IProgressMonitor monitor) {
 
         File file = getFile();
         if (file == null) {
@@ -341,7 +346,7 @@ public class HeatmapEditor extends AbstractEditor {
 
 
         try {
-            ApplicationContext.getPersistenceManager().store(heatmap.getLocator(), heatmap, monitor);
+            ApplicationContext.getPersistenceManager().store(toLocator, heatmap, monitor);
         } catch (PersistenceException ex) {
             monitor.exception(ex);
         }
@@ -351,11 +356,11 @@ public class HeatmapEditor extends AbstractEditor {
         Settings.get().save();
 
         // Force to reload the data after save
-        if (heatmap.getData().get().isChanged()) {
+        if (!toLocator.equals(heatmap.getLocator()) || heatmap.getData().get().isChanged()) {
 
             monitor.title("Reloading the heatmap...");
 
-            CommandLoadFile loadFile = new CommandLoadFile(heatmap.getLocator().getURL());
+            CommandLoadFile loadFile = new CommandLoadFile(toLocator.getURL());
             try {
                 loadFile.execute(monitor);
             } catch (Command.CommandException e) {

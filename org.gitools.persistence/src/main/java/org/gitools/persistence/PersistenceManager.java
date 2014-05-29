@@ -180,7 +180,7 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
         subTask.end();
 
         // Set the original locator without the filters.
-        resource.setLocator(resourceLocator);
+        resource.setLocator(filteredResourceLocator);
 
         return resource;
     }

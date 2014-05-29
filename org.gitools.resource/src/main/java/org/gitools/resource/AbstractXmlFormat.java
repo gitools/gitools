@@ -21,6 +21,7 @@
  */
 package org.gitools.resource;
 
+import org.apache.commons.io.IOUtils;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -35,13 +36,15 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractXmlFormat<R extends IResource> extends AbstractResourceFormat<R> {
-    private List<ResourceReference> dependencies;
+    private List<ResourceReference<? extends IResource>> dependencies;
 
     protected AbstractXmlFormat(String extension, Class<R> resourceClass) {
         super(extension, resourceClass);
@@ -122,9 +125,68 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
     public void afterWrite(OutputStream out, IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException {
 
         // Force write the dependencies
-        for (ResourceReference dependency : dependencies) {
+        for (ResourceReference<? extends IResource> dependency : dependencies) {
+
             IResourceLocator dependencyLocator = resourceLocator.getReferenceLocator(dependency.getLocator().getName());
-            ApplicationContext.getPersistenceManager().store(dependencyLocator, dependency.get(), dependency.getResourceFormat(), progressMonitor);
+
+            if (dependency.get().isChanged()) {
+
+                // Rewrite the resource
+                ApplicationContext.getPersistenceManager().store(dependencyLocator, dependency.get(), dependency.getResourceFormat(), progressMonitor);
+
+            } else {
+
+                if (!resourceLocator.equals(resource.getLocator())) {
+
+                    // We are in a 'Save as...'
+                    String fromName = resource.getLocator().getBaseName();
+                    String toName = resourceLocator.getBaseName();
+
+                    String dependencyName = dependency.getLocator().getName().replace(toName, fromName);
+                    IResourceLocator fromLocator = resource.getLocator().getReferenceLocator(dependencyName);
+
+                    if (!(fromLocator.isContainer() && dependencyLocator.isContainer())) {
+
+                        File output = dependencyLocator.getWriteFile();
+
+                        // Copy file to file
+                        try {
+
+                            if (!output.exists()) {
+                                output.createNewFile();
+                            }
+
+                            IOUtils.copy(fromLocator.openInputStream(progressMonitor), new FileOutputStream(output));
+
+                            fromLocator.close(progressMonitor);
+                            dependencyLocator.close(progressMonitor);
+
+                        } catch (IOException e) {
+                            throw new PersistenceException(e);
+                        }
+
+                        //TODO Do this properly
+                        // Copy the mtabix file if it's present
+                        if (dependencyName.endsWith("tdm.gz")) {
+
+                            fromLocator = resource.getLocator().getReferenceLocator(dependencyName + ".mtabix");
+                            output = new File(output.getParentFile(), dependency.getLocator().getName() + ".mtabix");
+
+                            try {
+
+                                output.createNewFile();
+                                IOUtils.copy(fromLocator.openInputStream(progressMonitor), new FileOutputStream(output));
+                                fromLocator.close(progressMonitor);
+
+                            } catch (Exception e) {
+                                output.delete();
+                            }
+                        }
+                    }
+
+                }
+
+            }
         }
     }
 

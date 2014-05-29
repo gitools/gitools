@@ -34,9 +34,9 @@ import java.util.List;
 
 public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference> {
     private final IResourceLocator resourceLocator;
-    private final List<ResourceReference> dependencies;
+    private final List<ResourceReference<? extends IResource>> dependencies;
 
-    public ResourceReferenceXmlAdapter(List<ResourceReference> dependencies, IResourceLocator resourceLocator) {
+    public ResourceReferenceXmlAdapter(List<ResourceReference<? extends IResource>> dependencies, IResourceLocator resourceLocator) {
         super();
         this.resourceLocator = resourceLocator;
         this.dependencies = dependencies;
@@ -90,9 +90,7 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
             resourceReference.setChanged(true);
         }
 
-        if (resourceReference.get().isChanged()) {
-            dependencies.add(resourceReference);
-        }
+        dependencies.add(resourceReference);
 
         IResourceLocator referenceLocator = resourceReference.getLocator();
         return new ResourceReferenceXmlElement(null, referenceLocator.getName());
