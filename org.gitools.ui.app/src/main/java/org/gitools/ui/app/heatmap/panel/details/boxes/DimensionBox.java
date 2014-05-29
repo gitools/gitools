@@ -28,6 +28,8 @@ import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.actions.edit.AddHeaderAction;
 import org.gitools.ui.app.actions.edit.EditHeaderAction;
+import org.gitools.ui.app.heatmap.panel.details.boxes.actions.DimensionHeaderHighlightAction;
+import org.gitools.ui.app.heatmap.panel.details.boxes.actions.SelectHeaderAction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
@@ -77,8 +79,12 @@ public class DimensionBox extends DetailsBox {
 
     @Override
     public void update() {
+        update(false);
+    }
 
-        if (isInteracting(movingSelected, highlighting)) {
+    private void update(boolean force) {
+
+        if (!force && isInteracting(movingSelected, highlighting)) {
             return;
         }
 
@@ -104,8 +110,11 @@ public class DimensionBox extends DetailsBox {
     protected void onMouseSingleClick(DetailsDecoration propertyItem) {
         Object reference = propertyItem.getReference();
         if (reference instanceof HeatmapHeader) {
-            dimension.setSelectedHeader((HeatmapHeader) reference);
-            new DimensionHeaderHighlightAction(dimension, (HeatmapHeader) reference).actionPerformed(null);
+            HeatmapHeader header = (HeatmapHeader) reference;
+            dimension.setSelectedHeader(header);
+            new SelectHeaderAction(dimension, header).actionPerformed(null);
+            new DimensionHeaderHighlightAction(dimension, header).actionPerformed(null);
+            update(true);
         }
     }
 

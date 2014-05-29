@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.heatmap.panel.details.boxes;
+package org.gitools.ui.app.heatmap.panel.details.boxes.actions;
 
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -46,7 +46,8 @@ public class DimensionHeaderHighlightAction extends HeatmapAction implements IHe
     private static ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
     private HeatmapDimension dimension;
     private HeatmapHeader header;
-    private ScheduledFuture<?> updating = null;
+    private static ScheduledFuture<?> updating = null;
+    private static Highlighter highlighter = null;
 
     public DimensionHeaderHighlightAction(HeatmapDimension dimension, HeatmapHeader header) {
         super("<html><i>Highlight</i> heatmap header</html>");
@@ -57,49 +58,33 @@ public class DimensionHeaderHighlightAction extends HeatmapAction implements IHe
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        final Color color = getHeatmap().getRows().getHighlightingColor();
-
-        if (updating != null && !updating.isDone()) {
-            reset();
-            updating.cancel(true);
+        if (highlighter == null) {
+            highlighter = new Highlighter(dimension, header);
+        } else {
+            highlighter.switchTarget(dimension, header);
         }
+
 
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
 
-
-                int maxAlpha = color.getAlpha();
-                int step = maxAlpha / 16;
-                if (step < 1) {
-                    step = 1;
-                }
-
-                HashSet<String> highlighted = new HashSet<>();
-                highlighted.add(header.getTitle());
-                dimension.setHighlightedHeaders(highlighted);
-
-                for (int i = 0; i < maxAlpha; i = i + step) {
+                while(highlighter.getAlpha() > 0) {
                     try {
+
                         setInteractionStatus(highlighting);
                         Thread.currentThread().sleep(100);
-                        Color c = new Color(
-                                color.getRed(),
-                                color.getGreen(),
-                                color.getBlue(),
-                                maxAlpha - i);
-                        getHeatmap().getRows().setHighlightingColor(c);
-                        getHeatmap().getColumns().setHighlightingColor(c);
+                        highlighter.highlight();
 
                     } catch (InterruptedException e1) {
                         e1.printStackTrace();
                     }
                 }
 
-                reset();
+                highlighter.resetDimension();
+                highlighter = null;
+                setInteractionStatus(none);
 
-
-                dimension.setHighlightedHeaders(new HashSet<String>());
             }
         };
         updating = EXECUTOR.schedule(runnable, 10, TimeUnit.MILLISECONDS);
@@ -107,14 +92,78 @@ public class DimensionHeaderHighlightAction extends HeatmapAction implements IHe
 
     }
 
-    private void reset() {
-        getHeatmap().getRows().resetHighlightColor();
-        getHeatmap().getColumns().resetHighlightColor();
-        setInteractionStatus(none);
-    }
 
     @Override
     public void onConfigure(HeatmapDimension object, HeatmapPosition position) {
         dimension = object;
+    }
+
+
+    static class Highlighter {
+        static private HeatmapDimension dimension;
+        static private Color color;
+        final int maxAlpha;
+        static int alpha;
+        static int step;
+        static String header;
+
+        Highlighter(HeatmapDimension dimension, HeatmapHeader header) {
+
+            switchTarget(dimension, header);
+
+            this.color = dimension.getHighlightingColor();
+
+            maxAlpha = color.getAlpha();
+
+            alpha = maxAlpha;
+            step = maxAlpha / 16;
+            if (step < 1) {
+                step = 1;
+            }
+
+
+        }
+
+        private void highlight() {
+            Color c = new Color(
+                    color.getRed(),
+                    color.getGreen(),
+                    color.getBlue(),
+                    alpha);
+            alpha -= step;
+            dimension.setHighlightingColor(c);
+
+        }
+
+        public int getAlpha() {
+            return alpha;
+        }
+
+        public void switchTarget(HeatmapDimension dimension, HeatmapHeader target) {
+
+            header = target.getTitle();
+
+            if (this.dimension == null) {
+                this.dimension = dimension;
+            } else if (!this.dimension.equals(dimension)) {
+                resetDimension();
+                this.dimension = dimension;
+            }
+            resetAlpha();
+
+            HashSet<String> highlighted = new HashSet<>();
+            highlighted.add(target.getTitle());
+            this.dimension.setHighlightedHeaders(highlighted);
+        }
+
+        public void resetAlpha() {
+            alpha = maxAlpha;
+        }
+
+        private void resetDimension() {
+            dimension.setHighlightedHeaders(new HashSet<String>());
+            dimension.resetHighlightColor();
+        }
+
     }
 }
