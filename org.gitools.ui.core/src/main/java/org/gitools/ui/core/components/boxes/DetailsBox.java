@@ -86,7 +86,7 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
         container.removeAll();
 
         int maxValueLength = convertToCharacters(getWidth() - 15) - maxValueLength(details) - 5;
-        //maxValueLength = (maxValueLength < 12 ? 12 : maxValueLength);
+        maxValueLength = (maxValueLength < 8 ? 8 : maxValueLength);
 
         double columns[] = {5, TableLayout.PREFERRED, 3, TableLayout.FILL, 5};
         double rows[] = new double[3 + details.size() * 2];

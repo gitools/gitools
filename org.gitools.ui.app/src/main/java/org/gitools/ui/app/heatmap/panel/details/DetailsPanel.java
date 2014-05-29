@@ -78,6 +78,9 @@ public class DetailsPanel extends JXTaskPaneContainer {
 
         boxes = new ListOrderedMap();
 
+        layersBox = new LayerValuesBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap);
+        registerBox(layersBox);
+
         columnsBox = new DimensionBox("Column", PopupMenuActions.DETAILS_COLUMNS, heatmap, heatmap.getColumns());
         columnsBox.setCollapsed(true);
         registerBox(columnsBox);
@@ -85,9 +88,6 @@ public class DetailsPanel extends JXTaskPaneContainer {
         rowsBox = new DimensionBox("Row", PopupMenuActions.DETAILS_ROWS, heatmap, heatmap.getRows());
         rowsBox.setCollapsed(true);
         registerBox(rowsBox);
-
-        layersBox = new LayerValuesBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap);
-        registerBox(layersBox);
 
         initPluginBoxes(heatmap);
 
