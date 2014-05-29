@@ -72,6 +72,9 @@ public abstract class AbstractProcessorTest<A extends Analysis> {
         IResourceFormat<IMatrix> format = getPersistenceManager().getFormat("tdm", IMatrix.class);
         getPersistenceManager().store(tmpLocator, matrixToStore, format, getProgressMonitor());
 
+        File indexFile = new File(tmpFile.getAbsolutePath() + ".mtabix");
+        indexFile.deleteOnExit();
+
         // Load the results from the temporal file
         return new ResourceReference<>(tmpLocator, format).get();
     }
