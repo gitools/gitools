@@ -59,6 +59,13 @@ public interface IMatrixDimension extends Iterable<String> {
 
     boolean contains(String identifier);
 
+    /**
+     * Returns a view of the current dimension with only the given identifiers.
+     * The identifiers can be in a different order depending on the implementation.
+     *
+     * @param identifiers
+     * @return
+     */
     IMatrixDimension subset(Set<String> identifiers);
 
     public IMatrixDimension from(String fromIdentifier);

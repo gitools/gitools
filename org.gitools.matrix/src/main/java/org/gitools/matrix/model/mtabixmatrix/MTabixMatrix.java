@@ -25,6 +25,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import edu.upf.bg.mtabix.MTabixBlock;
+import edu.upf.bg.mtabix.MTabixConfig;
 import edu.upf.bg.mtabix.MTabixIndex;
 import static edu.upf.bg.mtabix.compress.BlockCompressedFilePointerUtil.getBlockAddress;
 import edu.upf.bg.mtabix.compress.BlockCompressedInputStream;
@@ -109,11 +110,12 @@ public class MTabixMatrix extends HashMatrix {
     }
 
     private static IMatrixDimension[] createMTabixDimensions(MTabixIndex index, MatrixDimensionKey[] dimensions) {
-        HashMatrixDimension[] result = new HashMatrixDimension[dimensions.length];
+        MTabixMatrixDimension[] result = new MTabixMatrixDimension[dimensions.length];
 
-        int[] keys = index.getConfig().getKeyParser().getKeys();
+        MTabixConfig config = index.getConfig();
+        int[] keys = config.getKeyParser().getKeys();
         for (int k=0; k < keys.length; k++) {
-            result[keys[k]] = new HashMatrixDimension(dimensions[keys[k]], index.getIndexIdentifiers().get(k));
+            result[keys[k]] = new MTabixMatrixDimension(dimensions[keys[k]], index.getIndexIdentifiers().get(k));
         }
 
         return result;

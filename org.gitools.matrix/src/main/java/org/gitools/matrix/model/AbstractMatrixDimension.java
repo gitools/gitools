@@ -122,11 +122,11 @@ public abstract class AbstractMatrixDimension extends Model implements IMatrixDi
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || !(o instanceof IMatrixDimension)) return false;
 
-        AbstractMatrixDimension strings = (AbstractMatrixDimension) o;
+        IMatrixDimension strings = (IMatrixDimension) o;
 
-        return id.equals(strings.id);
+        return id.equals(strings.getId());
 
     }
 
