@@ -42,10 +42,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class MTabixMatrix extends HashMatrix {
     private static final Logger LOGGER = LoggerFactory.getLogger(MTabixMatrix.class);
@@ -79,10 +76,17 @@ public class MTabixMatrix extends HashMatrix {
     public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
 
         if (indexedLayers.contains(layer.getId())) {
-            MTabixBlock block = index.getBlock(identifiers);
-            if (block != null) {
-                MTabixBlockValues matrixBlock = indexedCache.get(layer.getId()).getUnchecked(block.getFilePointer());
-                return (T) matrixBlock.get(identifiers);
+            try {
+
+                MTabixBlock block = index.getBlock(identifiers);
+
+                if (block != null) {
+                    MTabixBlockValues matrixBlock = indexedCache.get(layer.getId()).getUnchecked(block.getFilePointer());
+                    return (T) matrixBlock.get(identifiers);
+                }
+
+            } catch (NoSuchElementException e) {
+                return null;
             }
         }
 
