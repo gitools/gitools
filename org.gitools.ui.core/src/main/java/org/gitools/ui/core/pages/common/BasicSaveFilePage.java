@@ -41,14 +41,15 @@ public class BasicSaveFilePage extends AbstractWizardPage implements SaveFilePag
 
     protected static Pattern VALID_FILENAME_CHARACTER = Pattern.compile("[^A-Za-z0-9_\\-]");
     protected FileFormat[] formats;
-    private javax.swing.JButton browseFileBtn;
-    private javax.swing.JButton browseFolderBtn;
-    private javax.swing.JTextField fileName;
-    private javax.swing.JTextField folder;
-    private javax.swing.JComboBox format;
-    private javax.swing.JLabel formatLabel;
-    private javax.swing.JTextField path;
+
     private JPanel rootPanel;
+    private JTextField fileName;
+    private JTextField folder;
+    private JButton browseFileBtn;
+    private JButton browseFolderBtn;
+    private JLabel formatLabel;
+    private JTextField path;
+    private JComboBox format;
 
     /**
      * Creates new form SaveFilePageOLDOLDOLD

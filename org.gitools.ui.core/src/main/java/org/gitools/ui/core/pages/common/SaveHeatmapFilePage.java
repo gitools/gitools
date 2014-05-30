@@ -41,17 +41,18 @@ public class SaveHeatmapFilePage extends AbstractWizardPage implements SaveFileP
 
     protected static Pattern VALID_FILENAME_CHARACTER = Pattern.compile("[^A-Za-z0-9_\\-]");
     protected FileFormat[] formats;
-    private JButton browseFileBtn;
-    private JButton browseFolderBtn;
+    private JPanel rootPanel;
     private JTextField fileName;
     private JTextField folder;
-    private JComboBox format;
+    private JButton browseFileBtn;
+    private JButton browseFolderBtn;
     private JLabel formatLabel;
     private JTextField path;
-    private JPanel rootPanel;
-    private JCheckBox discardHidden;
+    private JComboBox format;
     private JPanel dataOptionsPanel;
     private JCheckBox optimizeData;
+    private JCheckBox discardHidden;
+
 
     public SaveHeatmapFilePage() {
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_SAVE, 96));
