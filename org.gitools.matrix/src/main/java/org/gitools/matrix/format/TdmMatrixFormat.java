@@ -34,6 +34,8 @@ import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
+
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
@@ -247,10 +249,41 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         IMatrixDimension columns = resultsMatrix.getColumns();
         IMatrixDimension rows = resultsMatrix.getRows();
 
+        IMatrixLayers layers = resultsMatrix.getLayers();
+        String[] values = new String[layers.size()];
         for (String column : columns) {
 
             for (String row : rows) {
-                writeLine(out, resultsMatrix, column, row, progressMonitor);
+                boolean allNulls = true;
+                for (int l=0; l < layers.size(); l++) {
+                    IMatrixLayer layer = layers.get(l);
+                    Object value = resultsMatrix.get(layer, row, column);
+
+                    //TODO Use IMatrixLayer translator
+                    if (value instanceof Double) {
+                        Double v = (Double) value;
+                        values[l] = DoubleTranslator.get().valueToString(v);
+                        allNulls = false;
+                    } else if (value != null) {
+                        values[l] = value.toString();
+                        allNulls = false;
+                    } else {
+                        values[l] = "-";
+                    }
+                }
+
+                if (!allNulls) {
+                    out.writeValue(column);
+                    out.writeSeparator();
+                    out.writeValue(row);
+
+                    for (int l = 0; l < layers.size(); l++) {
+                        out.writeSeparator();
+                        out.writeValue(values[l]);
+                    }
+                    
+                    out.writeNewLine();
+                }
             }
             progressMonitor.worked(1);
             if (progressMonitor.isCancelled()) {
@@ -258,33 +291,6 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
             }
         }
 
-    }
-
-    private void writeLine(RawFlatTextWriter out, IMatrix resultsMatrix, String column, String row, IProgressMonitor progressMonitor) {
-
-        out.writeQuotedValue(column);
-        out.writeSeparator();
-        out.writeQuotedValue(row);
-
-        for (IMatrixLayer layer : resultsMatrix.getLayers()) {
-            out.writeSeparator();
-
-            Object value = resultsMatrix.get(layer, row, column);
-
-            //TODO Use IMatrixLayer translator
-            if (value instanceof Double) {
-                Double v = (Double) value;
-                out.write(DoubleTranslator.get().valueToString(v));
-            } else if (value instanceof Integer) {
-                out.writeValue(value.toString());
-            } else if (value != null) {
-                out.writeValue(value.toString());
-            } else {
-                out.writeValue("-");
-            }
-        }
-
-        out.writeNewLine();
     }
 
     @Deprecated
