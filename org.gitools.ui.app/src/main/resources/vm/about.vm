@@ -27,28 +27,13 @@
 
         <p><b>Development:</b></p>
         <p>Biomedical Genomics Laboratory<br>
-		Parc de Recerca Biomedica de Barcelona (PRBB)</p>
+		Parc de Recerca Biomedica de Barcelona (PRBB)<br>
+		<a href="http://bg.upf.edu" target="_external">http://bg.upf.edu</a><br><br>
+		Download: <a href="http://www.gitools.org" target="_external">http://www.gitools.org</a><br>
+        Source code: <a href="http://www.github.com/gitools/gitools" target="_external">http://www.github.com/gitools/gitools</a>
+		</a>
+		</p>
 
-		<p><b>Developers:</b></p>
-		<ul>
-			<li>Christian Perez-Llamas</li>
-			<li>Jordi Deu-Pons</li>
-			<li>Michael P Schroeder</li>
-			<li>Xavier Rafael-Pons</li>
-		</ul>
 
-		<p><b>Principal Investigator:</b></p>
-		<ul>
-			<li>Nuria Lopez-Bigas</li>
-		</ul>
-
-		<p><b>Acknowledgements:</b></p>
-		<ul>
-			<li>Sonja Haenzelmann</li>
-			<li>Khademul Islam</li>
-			<li>Gunes Gundem</li>
-			<li>Alba Jene</li>
-			<li>Sophia Derdak</li>
-		</ul>
 	</body>
 </html>
