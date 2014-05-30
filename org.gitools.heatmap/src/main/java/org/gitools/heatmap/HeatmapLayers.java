@@ -81,26 +81,25 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     public void init(IMatrix matrix) {
         IMatrixLayers<?> matrixLayers = matrix.getLayers();
 
-        // Reorder layers
-        List<HeatmapLayer> orderedLayers = new ArrayList<>(this.layers.size());
-        for (IMatrixLayer layer : matrixLayers) {
-            HeatmapLayer orderedLayer = null;
+        // Check if there is a new data layer
+        for (IMatrixLayer dataLayer : matrixLayers) {
+
+            HeatmapLayer newLayer = null;
             for (HeatmapLayer heatmapLayer : this.layers) {
-                if (heatmapLayer.getId().equals(layer.getId())) {
-                    orderedLayer = heatmapLayer;
+                if (heatmapLayer.getId().equals(dataLayer.getId())) {
+                    newLayer = heatmapLayer;
                     break;
                 }
             }
 
             // This is a new layer
-            if (orderedLayer == null) {
+            if (newLayer == null) {
                 Decorator defaultDecorator = new LinearDecorator();
-                orderedLayer = new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator);
+                newLayer = new HeatmapLayer(dataLayer.getId(), dataLayer.getValueClass(), defaultDecorator);
+                this.layers.add(newLayer);
             }
 
-            orderedLayers.add(orderedLayer);
         }
-        this.layers = orderedLayers;
 
         initTransient();
 
