@@ -145,42 +145,39 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
                     String dependencyName = dependency.getLocator().getName().replace(toName, fromName);
                     IResourceLocator fromLocator = resource.getLocator().getReferenceLocator(dependencyName);
 
-                    if (!(fromLocator.isContainer() && dependencyLocator.isContainer())) {
+                    File output = dependencyLocator.getWriteFile();
 
-                        File output = dependencyLocator.getWriteFile();
+                    // Copy file to file
+                    try {
 
-                        // Copy file to file
-                        try {
-
-                            if (!output.exists()) {
-                                output.createNewFile();
-                            }
-
-                            IOUtils.copy(fromLocator.openInputStream(progressMonitor), new FileOutputStream(output));
-
-                            fromLocator.close(progressMonitor);
-                            dependencyLocator.close(progressMonitor);
-
-                        } catch (IOException e) {
-                            throw new PersistenceException(e);
+                        if (!output.exists()) {
+                            output.createNewFile();
                         }
 
-                        //TODO Do this properly
-                        // Copy the mtabix file if it's present
-                        if (dependencyName.endsWith("tdm.gz")) {
+                        IOUtils.copy(fromLocator.openInputStream(progressMonitor), new FileOutputStream(output));
 
-                            fromLocator = resource.getLocator().getReferenceLocator(dependencyName + ".mtabix");
-                            output = new File(output.getParentFile(), dependency.getLocator().getName() + ".mtabix");
+                        fromLocator.close(progressMonitor);
+                        dependencyLocator.close(progressMonitor);
 
-                            try {
+                    } catch (IOException e) {
+                        throw new PersistenceException(e);
+                    }
 
-                                output.createNewFile();
-                                IOUtils.copy(fromLocator.openInputStream(progressMonitor), new FileOutputStream(output));
-                                fromLocator.close(progressMonitor);
+                    //TODO Do this properly
+                    // Copy the mtabix file if it's present
+                    if (dependencyName.endsWith("tdm.gz")) {
 
-                            } catch (Exception e) {
-                                output.delete();
-                            }
+                        fromLocator = resource.getLocator().getReferenceLocator(dependencyName + ".mtabix");
+                        output = new File(output.getParentFile(), dependency.getLocator().getName() + ".mtabix");
+
+                        try {
+
+                            output.createNewFile();
+                            IOUtils.copy(fromLocator.openInputStream(progressMonitor), new FileOutputStream(output));
+                            fromLocator.close(progressMonitor);
+
+                        } catch (Exception e) {
+                            output.delete();
                         }
                     }
 

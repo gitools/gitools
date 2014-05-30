@@ -34,7 +34,7 @@ import java.net.URL;
 
 public abstract class FilterResourceLocator implements IResourceLocator {
 
-    private final String name;
+    private String name;
     private String baseName;
     private final String extension;
     private final IResourceLocator resourceLocator;
@@ -47,9 +47,7 @@ public abstract class FilterResourceLocator implements IResourceLocator {
         this.name = name;
         this.extension = extension;
         this.resourceLocator = resourceLocator;
-
-        int startExtension = name.lastIndexOf(extension);
-        this.baseName = (startExtension == 0 ? name : name.substring(0, startExtension - 1));
+        setBaseName(name, extension);
     }
 
     @Override
@@ -72,9 +70,22 @@ public abstract class FilterResourceLocator implements IResourceLocator {
         return baseName;
     }
 
+    protected void setBaseName(String baseName) {
+        this.baseName = baseName;
+    }
+
+    protected void setBaseName(String name, String extension) {
+        int startExtension = name.lastIndexOf(extension);
+        this.baseName = (startExtension == 0 ? name : name.substring(0, startExtension - 1));
+    }
+
     @Override
     public String getName() {
         return name;
+    }
+
+    protected void setName(String name) {
+        this.name = name;
     }
 
     @Override

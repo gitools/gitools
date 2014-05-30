@@ -46,7 +46,7 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
 
     private File tmpFolder;
 
-    private final String entryName;
+    private String entryName;
 
     public ZipResourceLocatorAdaptor(String entryName, IResourceFilter filter, IResourceLocator resourceLocator) {
         super(filter, resourceLocator);
@@ -108,6 +108,19 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
             }
         }
 
+        // Exact match not found. Return the first with the same extension.
+        String extension = getExtension();
+        in.close();
+        in = new ZipInputStream(getParentLocator().openInputStream(progressMonitor));
+        while ((entry = in.getNextEntry()) != null) {
+            if (entry.getName().endsWith(extension)) {
+                entryName = entry.getName();
+                setName(entryName);
+                setBaseName(entryName, extension);
+                return in;
+            }
+        }
+
         throw new PersistenceException("Entry '" + entryName + "' not found in '" + getParentLocator().getURL() + "'");
     }
 
@@ -117,26 +130,6 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
 
         // Create a temporal folder
         tmpFolder = createTemporalFolder(getURL());
-
-        // Extract all the files
-        monitor.title("Extracting to temporal folder...");
-        try {
-            ZipUtil.unpack(getParentLocator().openInputStream(new NullProgressMonitor()), tmpFolder);
-
-            // Check if we are doing a 'Save as...'
-            if (!getWriteFile().equals(getReadFile())) {
-
-                // Rename all entries
-                String inName = getReadFile().getName().replace("." + getExtension() + ".zip", "");
-                String toName = getBaseName();
-
-                renameAll(getTemporalFolder(), inName, toName);
-
-            }
-
-        } catch (FileNotFoundException e) {
-            // It's a all in memory resource
-        }
 
         monitor.title("Copying files...");
         return new FileOutputStream(new File(tmpFolder, entryName));
