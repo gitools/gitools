@@ -107,11 +107,19 @@ public class HeatmapInfoBox extends DetailsBox {
         int columns = heatmap.getColumns().size();
         int visibleColumns = heatmap.getContents().getColumns().size();
 
-        if (rows != visibleRows || columns != visibleColumns) {
-            details.add(new DetailsDecoration("Size (visible)", rows + " x " + columns));
+        boolean showShownData = (rows != visibleRows || columns != visibleColumns);
+
+        DetailsDecoration alldata = new DetailsDecoration("Size (all data)", visibleRows + " x " + visibleColumns);
+
+        if (showShownData) {
+            DetailsDecoration shown = new DetailsDecoration("Size (shown)", rows + " x " + columns);
+            shown.setSelected(true);
+            details.add(shown);
+        } else {
+            alldata.setSelected(true);
         }
 
-        details.add(new DetailsDecoration("Size (all data)", visibleRows + " x " + visibleColumns));
+        details.add(alldata);
 
         if (heatmap.getLastSaved() != null) {
             details.add(new DetailsDecoration("Last saved", heatmap.getLastSaved().toString()));
