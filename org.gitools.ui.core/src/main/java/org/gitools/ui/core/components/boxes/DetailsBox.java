@@ -54,6 +54,7 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
     private static final int MINIMUM_VALUE_LENGTH = 12;
     private final JPanel actionsPanel;
     private WebPanel container;
+    private JPanel updatingPanel = new JPanel();
 
 
     /**
@@ -71,6 +72,12 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
         for (BaseAction action : bottomActionSet.getActions()) {
             actionsPanel.add(ActionSetUtils.createActionButton(action));
         }
+
+        fillUpdatingPanel();
+    }
+
+    protected void fillUpdatingPanel() {
+        updatingPanel.add(new JLabel("Updating..."));
     }
 
 
@@ -79,6 +86,15 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
     protected abstract void onMouseDoubleClick(DetailsDecoration propertyItem);
 
     protected abstract void onMouseRightClick(DetailsDecoration propertyItem, MouseEvent e);
+
+    public void drawUpdating() {
+        WebPanel container = getContainer();
+        container.removeAll();
+        container.setLayout(new HorizontalLayout());
+        container.add(updatingPanel);
+        container.repaint();
+
+    }
 
     public void draw(List<DetailsDecoration> details) {
 

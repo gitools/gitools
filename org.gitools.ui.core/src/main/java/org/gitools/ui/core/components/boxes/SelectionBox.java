@@ -116,6 +116,7 @@ public class SelectionBox extends DetailsBox {
             updating.cancel(true);
             //return;
         }
+        drawUpdating();
 
         Runnable runnable = new Runnable() {
             @Override
