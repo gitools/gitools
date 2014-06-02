@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-class JobProgressGlassPane extends GitoolsGlassPane {
+class JobProgressGlassPane extends GitoolsGlassPane implements IProgressComponent {
 
     public JobProgressGlassPane(Window parent, boolean showGitoolsTips) {
         super(parent);
@@ -82,6 +82,7 @@ class JobProgressGlassPane extends GitoolsGlassPane {
     }
 
 
+    @Override
     public void addCancelListener(CancelListener listener) {
         listeners.add(listener);
     }
@@ -159,25 +160,30 @@ class JobProgressGlassPane extends GitoolsGlassPane {
         super.start();
     }
 
+    @Override
     public void setMessage(String msg) {
         msgLabel.setText(msg);
         infoLabel.setText("");
     }
 
+    @Override
     public void setMessage(String msg, String info) {
         msgLabel.setText(msg);
         infoLabel.setText(info);
     }
 
+    @Override
     public void setInfo(String info) {
         tipsLabel.setText("");
         infoLabel.setText(info);
     }
 
+    @Override
     public void setWork(int work) {
         progressBar.setMaximum(work);
     }
 
+    @Override
     public void setProgress(int progress) {
         if (progress == 0) {
             progressBar.setIndeterminate(true);
@@ -188,18 +194,23 @@ class JobProgressGlassPane extends GitoolsGlassPane {
     }
 
 
+    @Override
     public void mouseClicked(MouseEvent e) {
     }
 
+    @Override
     public void mousePressed(MouseEvent e) {
     }
 
+    @Override
     public void mouseReleased(MouseEvent e) {
     }
 
+    @Override
     public void mouseEntered(MouseEvent e) {
     }
 
+    @Override
     public void mouseExited(MouseEvent e) {
     }
 
