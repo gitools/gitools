@@ -127,7 +127,7 @@
           </component>
         </children>
       </scrollpane>
-      <component id="49886" class="javax.swing.JLabel">
+      <component id="49886" class="javax.swing.JLabel" binding="previewLabel">
         <constraints>
           <grid row="2" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="9" fill="0" indent="0" use-parent-layout="false"/>
           <forms defaultalign-vert="false"/>

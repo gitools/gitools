@@ -50,6 +50,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     private JButton previewRowIdsButton;
     private JButton previewColumnIdsButton;
     private JFormattedTextField valueNameBox;
+    private JLabel previewLabel;
     private List<FileHeader> allheaders;
     private List<List<FileField>> preview;
     private FileHeader lastSelected;
@@ -134,6 +135,8 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     }
 
     private void updateRowIdHeader() {
+        previewLabel.setText("Row ids preview");
+
         FileHeader newHeader = allheaders.get((int) rowIdsSpinner.getValue() - 1);
         FileHeader oldHeader = rowIdsHeader;
 
@@ -230,6 +233,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
 
     private void updateColumnIdPreview() {
 
+        previewLabel.setText("Column ids preview");
 
         int rowPos = (int) rowIdsSpinner.getModel().getValue() - 1;
         StringBuilder html = new StringBuilder("");
@@ -252,6 +256,8 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     }
 
     private void updateColumnPreview(FileHeader selectedValue) {
+
+        previewLabel.setText("Data column preview");
 
 
         if (selectedValue == null)
