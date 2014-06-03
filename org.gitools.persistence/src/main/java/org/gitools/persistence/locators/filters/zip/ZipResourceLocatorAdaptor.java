@@ -131,6 +131,26 @@ public class ZipResourceLocatorAdaptor extends FilterResourceLocator {
         // Create a temporal folder
         tmpFolder = createTemporalFolder(getURL());
 
+        // Extract all the files
+        monitor.title("Extracting to temporal folder...");
+        try {
+            ZipUtil.unpack(getParentLocator().openInputStream(new NullProgressMonitor()), tmpFolder);
+
+            // Check if we are doing a 'Save as...'
+            if (!getWriteFile().equals(getReadFile())) {
+
+                // Rename all entries
+                String inName = getReadFile().getName().replace("." + getExtension() + ".zip", "");
+                String toName = getBaseName();
+
+                renameAll(getTemporalFolder(), inName, toName);
+
+            }
+
+        } catch (FileNotFoundException e) {
+            // It's a all in memory resource
+        }
+
         monitor.title("Copying files...");
         return new FileOutputStream(new File(tmpFolder, entryName));
     }
