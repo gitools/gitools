@@ -175,12 +175,12 @@ public class Main {
                 } else {
 
                     if (Strings.isNullOrEmpty(Settings.get().getStatisticsConsentmentVersion()) ||
-                            (!Settings.get().isAllowUsageStatistics() && !Application.getAppVersion().equals(Settings.get().getStatisticsConsentmentVersion()))) {
+                            (!Settings.get().isAllowUsageStatistics() && !Application.getGitoolsVersion().equals(Settings.get().getStatisticsConsentmentVersion()))) {
 
                         Settings.get().setAllowUsageStatistics(true);
                         JPanel panel = new GitoolsSatsSection(Settings.get()).getPanel();
                         JOptionPane.showMessageDialog(Application.get(), panel, "Statistics", JOptionPane.QUESTION_MESSAGE);
-                        Settings.get().setStatisticsConsentmentVersion(Application.getAppVersion());
+                        Settings.get().setStatisticsConsentmentVersion(Application.getGitoolsVersion().toString());
 
                     } else {
 
@@ -208,7 +208,7 @@ public class Main {
     }
 
     private static WebProgressDialog createProgressDialog() {
-        final WebProgressDialog progress = new WebProgressDialog(null, "Loading Gitools " + Application.getAppVersion());
+        final WebProgressDialog progress = new WebProgressDialog(null, "Loading Gitools " + Application.getGitoolsVersion());
 
         progress.setIconImage(new ImageIcon(IconNames.class.getResource(IconNames.logoNoText)).getImage());
         progress.setShowProgressBar(false);
@@ -234,7 +234,7 @@ public class Main {
 
             WebLabel label = new WebLabel("<html><body>" +
                     "<br/><center>" +
-                    "<b>Gitools v. " + Application.getAppVersion() + "</b>" +
+                    "<b>Gitools v. " + Application.getGitoolsVersion() + "</b>" +
                     "</center><br/></body</html>");
             label.setHorizontalAlignment(SwingConstants.CENTER);
             add(label, BorderLayout.CENTER);

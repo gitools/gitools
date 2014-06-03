@@ -25,6 +25,7 @@ import com.brsanthu.googleanalytics.EventHit;
 import com.brsanthu.googleanalytics.ExceptionHit;
 import com.brsanthu.googleanalytics.GoogleAnalytics;
 import org.apache.commons.lang.StringUtils;
+import org.gitools.resource.SemanticVersion;
 import org.gitools.ui.core.components.StatusBar;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.editor.EditorsPanel;
@@ -45,15 +46,15 @@ public class Application extends JFrame implements IApplicationTracking {
     private static final long serialVersionUID = -6899584212813749990L;
 
     private static final String appName;
-    private static final String appVersion;
+    private static final SemanticVersion appVersion;
     private static final String appTracking;
     private static final GoogleAnalytics analytics;
 
     static {
         appName = "Gitools";
         appTracking = "UA-7111176-2";
-        appVersion = StringUtils.defaultIfEmpty(Application.class.getPackage().getImplementationVersion(), "SNAPSHOT");
-        analytics = new GoogleAnalytics(appTracking, appName, appVersion);
+        appVersion = new SemanticVersion(StringUtils.defaultIfEmpty(Application.class.getPackage().getImplementationVersion(), SemanticVersion.SNAPSHOT));
+        analytics = new GoogleAnalytics(appTracking, appName, appVersion.toString());
         analytics.getDefaultRequest().clientId(Settings.get().getUuid());
     }
 
@@ -92,7 +93,7 @@ public class Application extends JFrame implements IApplicationTracking {
         return appName;
     }
 
-    public static String getAppVersion() {
+    public static SemanticVersion getGitoolsVersion() {
         return appVersion;
     }
 
@@ -176,8 +177,9 @@ public class Application extends JFrame implements IApplicationTracking {
 
     boolean isNewerGitoolsAvailable() throws Exception {
 
-        String thisVersion = Application.getAppVersion();
-        if (thisVersion.toLowerCase().contains("snapshot")) {
+        SemanticVersion thisVersion = Application.getGitoolsVersion();
+
+        if (thisVersion.toString().equals(SemanticVersion.SNAPSHOT)) {
             return false;
         }
 
@@ -193,8 +195,9 @@ public class Application extends JFrame implements IApplicationTracking {
         latestVersion = in.readLine();
         in.close();
 
+        SemanticVersion latest = new SemanticVersion(latestVersion);
 
-        return !latestVersion.equals(thisVersion);
+        return latest.isNewerThan(thisVersion);
     }
 
     public EditorsPanel getEditorsPanel() {

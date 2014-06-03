@@ -24,6 +24,7 @@ package org.gitools.heatmap.plugins;
 
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.plugins.IPlugin;
+import org.gitools.resource.SemanticVersion;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -86,45 +87,6 @@ public abstract class AbstractPlugin extends Model implements Serializable, IPlu
     @Override
     public String toString() {
         return id;
-    }
-
-    private class SemanticVersion {
-
-        int major;
-        int minor;
-        int bug;
-
-        public SemanticVersion(String version) {
-            String[] parts = version.split("\\.");
-            major = Integer.valueOf(parts[0]);
-            minor = Integer.valueOf(parts[1]);
-            bug = Integer.valueOf(parts[2]);
-        }
-
-        public int getMajor() {
-            return major;
-        }
-
-        public int getMinor() {
-            return minor;
-        }
-
-        public int getBug() {
-            return bug;
-        }
-
-        public boolean isNewerThan(SemanticVersion otherVersion) {
-
-            if (this.major > otherVersion.getMajor()) {
-                return true;
-            } else if (this.minor > otherVersion.getMinor()) {
-                return true;
-            } else if (this.bug > otherVersion.getBug()) {
-                return true;
-            }
-
-            return false;
-        }
     }
 
     @Override

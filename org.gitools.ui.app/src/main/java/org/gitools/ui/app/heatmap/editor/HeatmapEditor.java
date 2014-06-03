@@ -32,7 +32,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.persistence.FileFormat;
-import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
@@ -71,8 +70,9 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
-import java.util.*;
+import java.util.Date;
 import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
 
 public class HeatmapEditor extends AbstractEditor {
@@ -221,6 +221,8 @@ public class HeatmapEditor extends AbstractEditor {
             Settings.get().setLastPath(file.getParent());
         }
 
+        heatmap.setGitoolsVersion(Application.getGitoolsVersion());
+
         String name = getName();
         int heatmapExt = name.indexOf(".heatmap");
         if (heatmapExt != -1) {
@@ -333,6 +335,8 @@ public class HeatmapEditor extends AbstractEditor {
             return;
         }
 
+
+        heatmap.setGitoolsVersion(Application.getGitoolsVersion());
 
         // Last saved and author info.
         heatmap.setLastSaved(new Date());

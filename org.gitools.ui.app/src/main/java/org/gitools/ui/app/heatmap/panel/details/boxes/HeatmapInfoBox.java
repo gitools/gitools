@@ -30,6 +30,7 @@ import org.gitools.ui.app.actions.edit.EditHeaderAction;
 import org.gitools.ui.app.actions.edit.HeatmapSettingsAction;
 import org.gitools.ui.app.actions.help.SettingsAction;
 import org.gitools.ui.app.actions.help.ShortcutsAction;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
@@ -96,7 +97,17 @@ public class HeatmapInfoBox extends DetailsBox {
         Heatmap heatmap = getHeatmap();
         this.setTitle(heatmap.getTitle());
 
+
         List<DetailsDecoration> details = new ArrayList<>();
+
+        if (heatmap.getGitoolsVersion().isNewerThan(Application.getGitoolsVersion())) {
+
+            String warningText = "You may be loosing data because " +
+                    "this heatmap has been created with a newer version (" + heatmap.getGitoolsVersion().toString() + ") " +
+                    "than you are currently using.";
+            DetailsDecoration warningDetail = new DetailsDecoration("WARNING", warningText, null, "Using old version: " + warningText, "http://www.gitools.org/downlaod");
+            details.add(warningDetail);
+        }
 
         if (heatmap.getDescription() != null && heatmap.getDescription().length() > 0) {
             details.add(new DetailsDecoration("Description", heatmap.getDescription()));

@@ -75,6 +75,8 @@ public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<
     @Override
     public void doSave(IProgressMonitor monitor) {
 
+        resource.setGitoolsVersion(Application.getGitoolsVersion());
+
         File file = getFile();
         if (file == null) {
             doSaveAs(monitor);
@@ -98,6 +100,8 @@ public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<
 
     @Override
     public void doSaveAs(IProgressMonitor monitor) {
+
+        resource.setGitoolsVersion(Application.getGitoolsVersion());
 
         File file = getFile();
         if (file != null) {

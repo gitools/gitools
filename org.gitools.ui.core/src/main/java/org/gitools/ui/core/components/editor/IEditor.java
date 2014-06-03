@@ -35,11 +35,11 @@ public interface IEditor<M> extends IView {
      */
     void doSave(IProgressMonitor monitor);
 
+    void doSaveAs(IProgressMonitor monitor);
+
     boolean isSaveAsAllowed();
 
     boolean isSaveAllowed();
-
-    void doSaveAs(IProgressMonitor monitor);
 
     /**
      * Called when editor gets visible
