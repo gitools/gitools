@@ -31,9 +31,6 @@ import javax.xml.bind.annotation.XmlTransient;
 public class SemanticVersion {
 
     @XmlTransient
-    public static final String SNAPSHOT = "SNAPSHOT";
-
-    @XmlTransient
     public static final String OLD_VERSION = "oldVersion";
 
 
@@ -71,7 +68,7 @@ public class SemanticVersion {
 
         initialized = true;
 
-        if (version.equals(SNAPSHOT) || version.equals(OLD_VERSION)) {
+        if (version.equals(OLD_VERSION)) {
             return;
         }
 
@@ -111,16 +108,29 @@ public class SemanticVersion {
         }
 
         if (this.major > other.getMajor()) {
-            // newer major release
+            // this is a newer major release
             return true;
 
+        } else if (this.major < other.getMajor()) {
+            //other is newer
+            return false;
+
         } else if (this.minor > other.getMinor()) {
-            //newer minor release
+            //this is newer minor release
             return true;
+
+        } else if (this.minor < other.getMinor()) {
+            //other is newer minor release
+            return false;
 
         } else if (this.bug > other.getBug()) {
             //newer bug release
             return true;
+
+        } else if (this.bug < other.getBug()) {
+            //other is newer bug release
+            return false;
+
         } else if (this.special.equals("") && !other.getSpecial().equals("")) {
             //user using development version - official release available
             return true;

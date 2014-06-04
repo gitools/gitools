@@ -24,7 +24,6 @@ package org.gitools.ui.core;
 import com.brsanthu.googleanalytics.EventHit;
 import com.brsanthu.googleanalytics.ExceptionHit;
 import com.brsanthu.googleanalytics.GoogleAnalytics;
-import org.apache.commons.lang.StringUtils;
 import org.gitools.resource.SemanticVersion;
 import org.gitools.ui.core.components.StatusBar;
 import org.gitools.ui.core.components.editor.AbstractEditor;
@@ -190,10 +189,6 @@ public class Application extends JFrame implements IApplicationTracking {
     boolean isNewerGitoolsAvailable() throws Exception {
 
         SemanticVersion thisVersion = Application.getGitoolsVersion();
-
-        if (thisVersion.toString().equals(SemanticVersion.SNAPSHOT)) {
-            return false;
-        }
 
         URL latestUrl = new URL("http://www.gitools.org/downloads/latest.txt");
 
