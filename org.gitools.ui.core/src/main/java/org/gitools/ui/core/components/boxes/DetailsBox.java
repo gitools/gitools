@@ -177,16 +177,17 @@ public abstract class DetailsBox extends Box {
         label.setCursor(new Cursor(Cursor.HAND_CURSOR));
         label.addMouseListener(new PropertyMouseListener(detail));
 
+        if (StringUtils.isNotEmpty(detail.getDescription())) {
+            String description = "<html><body width=\"300px\">" + detail.getDescription() + "</body></html>";
+            TooltipManager.setTooltip(label, description, TooltipWay.down, 0);
+        }
+
         if (!StringUtils.isEmpty(detail.getDescriptionLink())) {
             DetailsWebLinkLabel webLabel = new DetailsWebLinkLabel("", JLabel.TRAILING);
             webLabel.setIcon(IconNames.INFO_ICON);
             webLabel.setLink(detail.getDescriptionLink(), false);
+            TooltipManager.setTooltip(webLabel, detail.getDescriptionLink(), TooltipWay.down, 0);
             return new GroupPanel(GroupingType.fillFirst, 5, webLabel, label);
-        }
-
-        if (StringUtils.isNotEmpty(detail.getDescription())) {
-            String description = "<html><body width=\"300px\">" + detail.getDescription() + "</body></html>";
-            TooltipManager.setTooltip(label, description, TooltipWay.down, 0);
         }
 
         return label;
