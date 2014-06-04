@@ -44,14 +44,13 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
     private final boolean textVisible;
     private List<String> colors;
     private List<String> ids;
-    private String pattern;
     private boolean autoGenerateColors;
 
-    public CommandAddHeaderColoredLabels(String heatmap, String side, String pattern, List<String> colors, List<String> ids, boolean autoGenerateColors, boolean textVisible) {
-        super(heatmap, side);
+    public CommandAddHeaderColoredLabels(String heatmap, String side, String pattern, List<String> colors, List<String> ids,
+                                         boolean autoGenerateColors, boolean textVisible, String sort) {
+        super(heatmap, side, sort, pattern);
         this.colors = colors;
         this.ids = ids;
-        this.pattern = pattern;
         this.autoGenerateColors = autoGenerateColors;
         this.textVisible = textVisible;
     }
@@ -105,9 +104,13 @@ public class CommandAddHeaderColoredLabels extends CommandAddHeader {
 
         hdim.addHeader(header);
 
+        applySort();
+
         Application.get().refresh();
 
-        setExitStatus(0);
+        if (sort != null)
+
+            setExitStatus(0);
     }
 
     @Deprecated

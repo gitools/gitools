@@ -62,7 +62,7 @@ public class AddHeaderColoredLabelsTool extends AddHeaderTool {
 
     @Override
     protected Command newJob() {
-        return new CommandAddHeaderColoredLabels(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible);
+        return new CommandAddHeaderColoredLabels(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible, sort);
     }
 
 }
