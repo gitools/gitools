@@ -22,6 +22,7 @@
 package org.gitools.ui.platform.panel;
 
 import org.gitools.ui.platform.settings.Settings;
+import org.gitools.utils.HttpUtils;
 import org.lobobrowser.html.FormInput;
 import org.lobobrowser.html.UserAgentContext;
 import org.lobobrowser.html.gui.HtmlPanel;
@@ -32,10 +33,7 @@ import org.w3c.dom.html2.HTMLElement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.io.File;
-import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -90,16 +88,7 @@ public class Html4Panel extends JPanel {
         } else if ("save".equalsIgnoreCase(rel)) {
             performSave(href);
         } else if ("_external".equalsIgnoreCase(target)) {
-            try {
-                URI uri = new URI(href);
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().browse(uri);
-                } else {
-                    JOptionPane.showInputDialog(getRootPane(), "Copy this URL into your web browser", uri.toString());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            HttpUtils.openURLInBrowser(href, getRootPane());
             throw new LinkVetoException();
         } else {
             return true;

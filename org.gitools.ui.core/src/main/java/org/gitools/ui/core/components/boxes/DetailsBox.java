@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.core.components.boxes;
 
-import com.alee.extended.label.WebLinkLabel;
 import com.alee.extended.layout.TableLayout;
 import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
@@ -49,7 +48,7 @@ import java.util.List;
 /**
  * Create a property table panel
  */
-public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Box {
+public abstract class DetailsBox extends Box {
     private static final int DEFAULT_MARGIN = 20;
     private static final int MINIMUM_VALUE_LENGTH = 12;
     private final JPanel actionsPanel;
@@ -179,7 +178,7 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
         label.addMouseListener(new PropertyMouseListener(detail));
 
         if (!StringUtils.isEmpty(detail.getDescriptionLink())) {
-            WebLinkLabel webLabel = new WebLinkLabel("", JLabel.TRAILING);
+            DetailsWebLinkLabel webLabel = new DetailsWebLinkLabel("", JLabel.TRAILING);
             webLabel.setIcon(IconNames.INFO_ICON);
             webLabel.setLink(detail.getDescriptionLink(), false);
             return new GroupPanel(GroupingType.fillFirst, 5, webLabel, label);
@@ -213,7 +212,7 @@ public abstract class DetailsBox extends org.gitools.ui.core.components.boxes.Bo
         if (StringUtils.isEmpty(property.getValueLink())) {
             label = new WebLabel(abbreviatedValue);
         } else {
-            WebLinkLabel webLabel = new WebLinkLabel(abbreviatedValue);
+            DetailsWebLinkLabel webLabel = new DetailsWebLinkLabel(abbreviatedValue);
             webLabel.setLink(property.getValueLink(), false);
             label = webLabel;
         }

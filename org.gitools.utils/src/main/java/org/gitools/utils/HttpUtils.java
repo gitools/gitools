@@ -23,8 +23,11 @@ package org.gitools.utils;
 
 import com.google.common.net.HttpHeaders;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 
 public class HttpUtils {
@@ -52,5 +55,23 @@ public class HttpUtils {
             return Long.parseLong(contentLengthString);
         }
 
+    }
+
+    public static void openURLInBrowser(String href, Component component) {
+        openURLInBrowser(href, component, false);
+    }
+
+    public static void openURLInBrowser(String href, Component component, boolean forcePreview) {
+        try {
+            URI uri = new URI(href);
+            if (!forcePreview && Desktop.isDesktopSupported()) {
+                Desktop.getDesktop().browse(uri);
+            } else {
+                JOptionPane.showInputDialog(component, "Copy the URL into your browser",
+                        "Copy & Open URL", JOptionPane.INFORMATION_MESSAGE, null, null, uri.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -142,7 +142,7 @@ public class HeatmapInfoBox extends DetailsBox {
 
 
             details.add(new DetailsDecoration("Author", "Last saved by this author",
-                    null, authorName, authorName));
+                    null, authorName, authorEmail));
 
         }
 
