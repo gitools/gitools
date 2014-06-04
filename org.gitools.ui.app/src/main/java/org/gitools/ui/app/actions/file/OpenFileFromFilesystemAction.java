@@ -68,11 +68,10 @@ public class OpenFileFromFilesystemAction extends AbstractAction {
                     throw new RuntimeException("File not found: " + file.getAbsolutePath());
                 }
 
-                if (format == null) {
-                    throw new RuntimeException("Unrecognized file extension: " + file.getAbsolutePath());
-                }
 
                 super.execute(monitor);
+
+
             }
         };
         JobThread.execute(Application.get(), loadFile);
