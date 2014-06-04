@@ -51,7 +51,7 @@ public class OpenFileFromFilesystemAction extends AbstractAction {
         Settings.get().setLastPath(file.getParent());
         Settings.get().save();
 
-        IResourceFormat format = null;
+        final IResourceFormat format = null;
 
         String fileName = file.getAbsolutePath();
         CommandLoadFile loadFile = new CommandLoadFile(fileName, format) {
@@ -66,6 +66,10 @@ public class OpenFileFromFilesystemAction extends AbstractAction {
                     settings.setRecentFiles(recentFiles);
                     settings.save();
                     throw new RuntimeException("File not found: " + file.getAbsolutePath());
+                }
+
+                if (format == null) {
+                    throw new RuntimeException("Unrecognized file extension: " + file.getAbsolutePath());
                 }
 
                 super.execute(monitor);
