@@ -75,6 +75,18 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         this.font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
     }
 
+    public HeatmapLayer(IMatrixLayer layer) {
+        super(layer.getId(), layer.getValueClass(), layer.getName(), layer.getDescription());
+        this.setAggregator(layer.getAggregator());
+        this.setSortDirection(layer.getSortDirection());
+
+        if (this.decorator == null) {
+            this.decorator = new LinearDecorator();
+        }
+        this.font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
+
+    }
+
     public Decorator getDecorator() {
         return decorator;
     }
