@@ -37,9 +37,11 @@ import org.gitools.ui.platform.settings.Settings;
 import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Properties;
 
 public class Application extends JFrame implements IApplicationTracking {
 
@@ -50,10 +52,20 @@ public class Application extends JFrame implements IApplicationTracking {
     private static final String appTracking;
     private static final GoogleAnalytics analytics;
 
+    private static String test;
+
     static {
         appName = "Gitools";
         appTracking = "UA-7111176-2";
-        appVersion = new SemanticVersion(StringUtils.defaultIfEmpty(Application.class.getPackage().getImplementationVersion(), SemanticVersion.SNAPSHOT));
+
+        Properties settings = new Properties();
+        try {
+            settings.load(Application.class.getResourceAsStream("/settings.properties"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        appVersion = new SemanticVersion(settings.getProperty("version"));
         analytics = new GoogleAnalytics(appTracking, appName, appVersion.toString());
         analytics.getDefaultRequest().clientId(Settings.get().getUuid());
     }
