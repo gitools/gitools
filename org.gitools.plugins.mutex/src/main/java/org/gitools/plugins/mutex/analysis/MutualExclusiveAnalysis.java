@@ -26,21 +26,27 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 public class MutualExclusiveAnalysis extends Analysis {
 
     private String layer;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> results;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IModuleMap> testGroupsModuleMap;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IModuleMap> weightGroupsModuleMap;
 
     private IMatrixDimension testDimension;

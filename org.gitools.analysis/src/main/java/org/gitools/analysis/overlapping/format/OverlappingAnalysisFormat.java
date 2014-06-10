@@ -21,8 +21,13 @@
  */
 package org.gitools.analysis.overlapping.format;
 
+import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.resource.AbstractXmlFormat;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -37,4 +42,15 @@ public class OverlappingAnalysisFormat extends AbstractXmlFormat<OverlappingAnal
         super(EXTENSION, OverlappingAnalysis.class);
     }
 
+    @Override
+    protected void writeResource(IResourceLocator resourceLocator, OverlappingAnalysis resource, IProgressMonitor monitor) throws PersistenceException {
+
+        //TODO Find a better solution for this error
+        resource.getSourceData().get();
+        resource.getFilteredData().get();
+        resource.getCellResults().get();
+
+
+        super.writeResource(resourceLocator, resource, monitor);
+    }
 }

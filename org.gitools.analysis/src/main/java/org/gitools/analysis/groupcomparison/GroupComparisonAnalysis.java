@@ -29,11 +29,13 @@ import org.gitools.analysis.stats.test.Test;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,9 +67,12 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
 
     private String mtc;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<? extends IMatrix> data;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<? extends IMatrix> results;
+
     private Double nullConversion;
 
 

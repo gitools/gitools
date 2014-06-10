@@ -21,8 +21,12 @@
  */
 package org.gitools.analysis.htest.oncodrive.format;
 
+import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.resource.AbstractXmlFormat;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -35,5 +39,15 @@ public class OncodriveAnalysisFormat extends AbstractXmlFormat<OncodriveAnalysis
 
     public OncodriveAnalysisFormat() {
         super(EXTENSION, OncodriveAnalysis.class);
+    }
+
+    @Override
+    protected void writeResource(IResourceLocator resourceLocator, OncodriveAnalysis resource, IProgressMonitor monitor) throws PersistenceException {
+
+        //TODO Find a better solution for this error
+        resource.getData().get();
+        resource.getResults().get();
+
+        super.writeResource(resourceLocator, resource, monitor);
     }
 }

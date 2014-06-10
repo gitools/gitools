@@ -25,8 +25,10 @@ import org.gitools.analysis.Analysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
 public class CombinationAnalysis extends Analysis {
@@ -37,10 +39,13 @@ public class CombinationAnalysis extends Analysis {
 
     private boolean transposeData;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IModuleMap> groupsMap;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> results;
 
     public CombinationAnalysis() {

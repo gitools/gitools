@@ -225,7 +225,8 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
         //TODO use filters interface or register at PersistenceInitialization
         if (resourceFormat.isDefaultExtension()) {
             if (resourceFormat.isContainer()) {
-                registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + ZipResourceFilter.SUFFIX);
+                //registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + ZipResourceFilter.SUFFIX);
+                registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension());
             } else {
                 registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + GzResourceFilter.SUFFIX);
             }

@@ -364,6 +364,9 @@ public class HeatmapEditor extends AbstractEditor {
 
             monitor.title("Reloading the heatmap...");
 
+            EditorsPanel editorPanel = Application.get().getEditorsPanel();
+            editorPanel.removeEditor(this);
+
             CommandLoadFile loadFile = new CommandLoadFile(toLocator.getURL());
             try {
                 loadFile.execute(monitor);
@@ -371,8 +374,6 @@ public class HeatmapEditor extends AbstractEditor {
                 throw new RuntimeException(e);
             }
 
-            EditorsPanel editorPanel = Application.get().getEditorsPanel();
-            editorPanel.removeEditor(this);
         }
     }
 

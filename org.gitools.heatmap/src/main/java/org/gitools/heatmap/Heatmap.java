@@ -320,4 +320,6 @@ public class Heatmap extends Resource implements IMatrixView {
     public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
+
+
 }

@@ -21,6 +21,7 @@
  */
 package org.gitools.resource;
 
+import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl;
 import org.apache.commons.io.IOUtils;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
@@ -34,6 +35,7 @@ import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -76,7 +78,7 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
 
     public void beforeWrite(OutputStream out, IResourceLocator resourceLocator, R resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException {
         dependencies = new ArrayList<>();
-        marshaller.setAdapter(new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
+        marshaller.setAdapter(ResourceReferenceXmlAdapter.class, new ResourceReferenceXmlAdapter(dependencies, resourceLocator));
     }
 
     /**
@@ -129,9 +131,10 @@ public abstract class AbstractXmlFormat<R extends IResource> extends AbstractRes
 
             IResourceLocator dependencyLocator = resourceLocator.getReferenceLocator(dependency.getLocator().getName());
 
-            if (dependency.get().isChanged()) {
+            if (dependency.isChanged()) {
 
                 // Rewrite the resource
+                dependency.get();
                 ApplicationContext.getPersistenceManager().store(dependencyLocator, dependency.get(), dependency.getResourceFormat(), progressMonitor);
 
             } else {

@@ -28,6 +28,7 @@ import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.matrix.geneset.GeneSet;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
@@ -52,22 +53,26 @@ public class HtestAnalysis extends Analysis {
 
     private ToolConfig testConfig;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IModuleMap> moduleMap;
 
     private int minModuleSize;
 
     private int maxModuleSize;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
 
     private String layer;
 
     private String mtc;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<GeneSet> population;
 
     private Double populationDefaultValue;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> results;
 
     protected HtestAnalysis() {

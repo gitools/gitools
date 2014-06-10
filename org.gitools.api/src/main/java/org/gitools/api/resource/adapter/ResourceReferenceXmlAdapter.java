@@ -33,6 +33,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.List;
 
 public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference> {
+
     private final IResourceLocator resourceLocator;
     private final List<ResourceReference<? extends IResource>> dependencies;
 

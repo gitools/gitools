@@ -24,6 +24,7 @@ package org.gitools.analysis.overlapping;
 import org.gitools.analysis.Analysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 
@@ -96,18 +97,21 @@ public class OverlappingAnalysis extends Analysis {
      * Data source file
      */
     @XmlElement
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> sourceData;
 
     /**
      * Filtered data file
      */
     @XmlElement
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> filteredData;
 
     /**
      * Results
      */
     @XmlElement
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> cellResults;
 
     public OverlappingAnalysis() {

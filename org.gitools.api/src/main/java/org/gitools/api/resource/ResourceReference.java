@@ -32,7 +32,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 public class ResourceReference<R extends IResource> {
 
     private transient boolean loaded = false;
-    private transient boolean changed = true;
+    private transient boolean changed = false;
 
 
     private transient R resource;

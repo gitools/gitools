@@ -25,10 +25,15 @@ import org.gitools.analysis.Analysis;
 import org.gitools.analysis.correlation.methods.PearsonCorrelationMethod;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Properties;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class CorrelationAnalysis extends Analysis {
 
@@ -43,8 +48,10 @@ public class CorrelationAnalysis extends Analysis {
 
     private int attributeIndex;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> data;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IMatrix> results;
 
     public CorrelationAnalysis() {
