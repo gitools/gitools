@@ -22,60 +22,43 @@
 package org.gitools.ui.app.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.heatmap.Heatmap;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
+import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.dialog.MessageUtils;
-import org.gitools.ui.core.components.editor.AbstractEditor;
 
 import java.util.concurrent.CancellationException;
 
-public abstract class CommandAddHeader extends AbstractCommand {
+public abstract class CommandAddHeader extends CommandHeatmap {
 
     protected final String side;
-    protected String heatmapid;
-    protected final String LAST = "last";
     protected final String COLUMNS = "COLUMNS";
     protected final String ROWS = "ROWS";
 
-    protected Heatmap heatmap;
     protected HeatmapDimension hdim;
+    protected SortDirection sort;
+    protected String pattern;
 
-    public CommandAddHeader(String heatmap, String side) {
-        this.heatmapid = heatmap;
+
+    public CommandAddHeader(String heatmap, String side, String sort, String pattern) {
+        super(heatmap);
         this.side = side;
+        this.pattern = pattern;
+        if (sort.toLowerCase().contains("asc")) {
+            this.sort = SortDirection.ASCENDING;
+        } else if (sort.toLowerCase().contains("desc")) {
+            this.sort = SortDirection.ASCENDING;
+        }
     }
 
     @Override
     public void execute(IProgressMonitor monitor) throws CommandException {
 
-        Application appframe = Application.get();
-
-        String availableHeatmaps = "<br/>Available hetamaps: ";
         try {
-            monitor.begin("Adding header ...", 1);
-            if (heatmapid.equals(LAST)) {
-                AbstractEditor e = appframe.getEditorsPanel().getSelectedEditor();
-                if (e instanceof HeatmapEditor) {
-                    heatmap = ((HeatmapEditor) e).getModel();
-                }
-            } else {
-                for (AbstractEditor e : appframe.getEditorsPanel().getEditors()) {
-                    if (e instanceof HeatmapEditor) {
-                        if (e.getName().equals(heatmapid)) {
-                            heatmap = ((HeatmapEditor) e).getModel();
-                        } else {
-                            availableHeatmaps += "<br/>- " + e.getName();
-                        }
-                    }
-                }
-            }
 
-            if (heatmap == null) {
-                throw new Exception("No such heatmap loaded: " + heatmapid + availableHeatmaps);
-            }
-
+            findHeatmap(monitor);
 
             switch (side) {
                 case ROWS:
@@ -105,5 +88,12 @@ public abstract class CommandAddHeader extends AbstractCommand {
 
         setExitStatus(0);
         return;
+    }
+
+    protected void applySort() {
+        if (sort != null) {
+            MatrixViewSorter.sortByLabel(heatmap, hdim.getId().equals(MatrixDimensionKey.ROWS), pattern, sort,
+                    false, hdim.getId().equals(MatrixDimensionKey.COLUMNS), pattern, sort, false);
+        }
     }
 }

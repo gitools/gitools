@@ -51,7 +51,7 @@ public class OpenFileFromFilesystemAction extends AbstractAction {
         Settings.get().setLastPath(file.getParent());
         Settings.get().save();
 
-        IResourceFormat format = null;
+        final IResourceFormat format = null;
 
         String fileName = file.getAbsolutePath();
         CommandLoadFile loadFile = new CommandLoadFile(fileName, format) {
@@ -68,7 +68,10 @@ public class OpenFileFromFilesystemAction extends AbstractAction {
                     throw new RuntimeException("File not found: " + file.getAbsolutePath());
                 }
 
+
                 super.execute(monitor);
+
+
             }
         };
         JobThread.execute(Application.get(), loadFile);

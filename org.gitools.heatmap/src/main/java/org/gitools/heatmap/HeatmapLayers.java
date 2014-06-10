@@ -27,9 +27,7 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.view.IMatrixViewLayers;
-import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
-import org.gitools.heatmap.decorator.impl.LinearDecorator;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.utils.events.EventUtils;
 
@@ -74,8 +72,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     public void initLayer(IMatrixLayer layer) {
-        Decorator defaultDecorator = new LinearDecorator();
-        this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
+        this.layers.add(new HeatmapLayer(layer));
     }
 
     public void init(IMatrix matrix) {
@@ -94,9 +91,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
             // This is a new layer
             if (newLayer == null) {
-                Decorator defaultDecorator = new LinearDecorator();
-                newLayer = new HeatmapLayer(dataLayer.getId(), dataLayer.getValueClass(), defaultDecorator);
-                this.layers.add(newLayer);
+                this.layers.add(new HeatmapLayer(dataLayer));
             }
 
         }

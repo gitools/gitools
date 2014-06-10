@@ -123,7 +123,8 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
             try {
                 getConfigWizard().run(monitor);
             } catch (Exception e) {
-                new CommandException(e);
+                handleException(e);
+                return;
             }
             return;
         }
@@ -134,16 +135,28 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
             monitor.begin("Loading ...", 1);
             resource = loadResource(monitor);
         } catch (Exception e) {
-
-            if (!(e.getCause() instanceof CancellationException)) {
-                String error = !StringUtils.isEmpty(e.getCause().getMessage()) ? e.getCause().getMessage() : "";
-                throw new RuntimeException(error);
-            }
-            setExitStatus(1);
+            handleException(e);
             return;
         }
 
         afterLoad(resource, monitor);
+    }
+
+    private void handleException(Exception e) {
+        if (!(e.getCause() instanceof CancellationException)) {
+            String error = "";
+            if (e.getCause() != null) {
+                error = StringUtils.isBlank(e.getCause().getMessage()) ? "" : e.getCause().getMessage();
+            }
+
+            if ("".equals(error) && StringUtils.isNotBlank(e.getMessage())) {
+                error = e.getMessage();
+            }
+
+            throw new RuntimeException(error);
+        }
+        setExitStatus(1);
+        return;
     }
 
     public void afterLoad(IResource resource, final IProgressMonitor monitor) throws CommandException {

@@ -44,6 +44,6 @@ public class AddHeaderTextLabelsTool extends AddHeaderTool {
 
     @Override
     protected Command newJob() {
-        return new CommandAddHeaderTextLabels(heatmap, side.name(), pattern);
+        return new CommandAddHeaderTextLabels(heatmap, side.name(), pattern, sort);
     }
 }

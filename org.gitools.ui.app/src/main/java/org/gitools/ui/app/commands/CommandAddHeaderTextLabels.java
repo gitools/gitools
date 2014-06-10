@@ -27,11 +27,8 @@ import org.gitools.ui.core.Application;
 
 public class CommandAddHeaderTextLabels extends CommandAddHeader {
 
-    private final String pattern;
-
-    public CommandAddHeaderTextLabels(String heatmap, String side, String pattern) {
-        super(heatmap, side);
-        this.pattern = pattern;
+    public CommandAddHeaderTextLabels(String heatmap, String side, String pattern, String sort) {
+        super(heatmap, side, sort, pattern);
     }
 
     @Override
@@ -45,6 +42,8 @@ public class CommandAddHeaderTextLabels extends CommandAddHeader {
         HeatmapTextLabelsHeader header = new HeatmapTextLabelsHeader();
         header.setLabelPattern(pattern);
         hdim.addHeader(header);
+
+        applySort();
 
         Application.get().refresh();
 
