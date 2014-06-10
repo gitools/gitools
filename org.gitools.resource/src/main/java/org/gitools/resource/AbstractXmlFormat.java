@@ -21,7 +21,6 @@
  */
 package org.gitools.resource;
 
-import com.sun.xml.internal.bind.v2.runtime.JAXBContextImpl;
 import org.apache.commons.io.IOUtils;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
@@ -35,7 +34,6 @@ import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
