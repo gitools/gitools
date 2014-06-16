@@ -28,6 +28,7 @@ import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.geneset.GeneSet;
+import org.gitools.matrix.geneset.GeneSetFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
@@ -112,7 +113,7 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
         // Population
         File populationFile = dataFilterPage.getPopulationFile();
         if (populationFile != null) {
-            analysis.setPopulation(new ResourceReference<>(new UrlResourceLocator(populationFile), GeneSet.class));
+            analysis.setPopulation(new ResourceReference<>(new UrlResourceLocator(populationFile), new GeneSetFormat()));
             analysis.setPopulationDefaultValue(dataFilterPage.getPopulationDefaultValue());
         }
 
