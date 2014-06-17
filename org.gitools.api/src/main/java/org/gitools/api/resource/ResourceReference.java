@@ -90,40 +90,44 @@ public class ResourceReference<R extends IResource> {
         return resource;
     }
 
-    public final String getBaseName() {
+    public String getBaseName() {
         return baseName;
     }
 
-    public final IResourceLocator getLocator() {
+    public void setBaseName(String baseName) {
+        this.baseName = baseName;
+    }
+
+    public IResourceLocator getLocator() {
         return locator;
     }
 
-    public final Class<? extends IResource> getResourceClass() {
+    public Class<? extends IResource> getResourceClass() {
         return this.resourceClass;
     }
 
-    public final void setLocator(IResourceLocator locator) {
+    public void setLocator(IResourceLocator locator) {
         this.locator = locator;
         this.baseName = locator.getBaseName();
     }
 
-    public final IResourceFormat getResourceFormat() {
+    public IResourceFormat getResourceFormat() {
         return this.resourceFormat;
     }
 
-    public final boolean isLoaded() {
+    public boolean isLoaded() {
         return loaded;
     }
 
 
-    public final void unload() {
+    public void unload() {
         resource = onBeforeUnload(resource);
         loaded = false;
         resource = null;
         resource = onAfterUnload();
     }
 
-    public final R load(IProgressMonitor progressMonitor) throws PersistenceException {
+    public R load(IProgressMonitor progressMonitor) throws PersistenceException {
 
         resource = onBeforeLoad(resource);
         IResource loadedResource = ApplicationContext.getPersistenceManager().load(locator, resourceFormat, progressMonitor);

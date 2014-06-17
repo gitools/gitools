@@ -270,6 +270,12 @@ public class HeatmapEditor extends AbstractEditor {
         file = wiz.getPathAsFile();
         setFile(file);
 
+        IResourceLocator toLocator;
+        if  (heatmap.getLocator() == null) {
+            toLocator = new UrlResourceLocator(file);
+        } else {
+            toLocator = new UrlResourceLocator(heatmap.getLocator().getReadFile(), file);
+        }
 
         // Data matrix
         IMatrix data = heatmap.getData().get();
@@ -294,6 +300,8 @@ public class HeatmapEditor extends AbstractEditor {
                 }
             };
 
+            heatmap.setData(new ResourceReference<>("data", data));
+
         } else if (page.isOptimizeData()) {
 
             // Optimize mtabix index
@@ -303,16 +311,19 @@ public class HeatmapEditor extends AbstractEditor {
                     return true;
                 }
             };
-        }
 
-        IResourceLocator toLocator;
-        if  (heatmap.getLocator() == null) {
-            toLocator = new UrlResourceLocator(file);
+            heatmap.setData(new ResourceReference<>("data", data));
+
         } else {
-            toLocator = new UrlResourceLocator(heatmap.getLocator().getReadFile(), file);
+
+            IResourceLocator locator = heatmap.getData().getLocator();
+            heatmap.setData(new ResourceReference<>("data", data));
+            heatmap.getData().setLocator(locator);
+            heatmap.getData().setChanged(data.isChanged());
+            heatmap.getData().setBaseName(toLocator.getBaseName() + "-data");
+
         }
 
-        heatmap.setData(new ResourceReference<>("data", data));
         HeatmapDimension rows = heatmap.getRows();
         HeatmapDimension columns = heatmap.getColumns();
         rows.setAnnotationsReference(new ResourceReference<>(rows.getId().toString().toLowerCase() + "-annotations", rows.getAnnotations()));
