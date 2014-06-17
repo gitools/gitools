@@ -72,7 +72,7 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
 
         // First force all the dependencies to load data into memory
         // this is important when we are overwriting a ZIP file
-        resourceReference.get();
+        IResource resource = resourceReference.get();
 
         IPersistenceManager pm = ApplicationContext.getPersistenceManager();
 
@@ -88,7 +88,7 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
             // It's a ZIP container. Set the resource locator.
             String extension = pm.getDefaultExtension(resourceReference.getResourceClass());
             resourceReference.setLocator(resourceLocator.getReferenceLocator(resourceReference.getBaseName() + "." + extension));
-            resourceReference.setChanged(true);
+            resourceReference.setChanged(resource.isChanged());
         }
 
         dependencies.add(resourceReference);
