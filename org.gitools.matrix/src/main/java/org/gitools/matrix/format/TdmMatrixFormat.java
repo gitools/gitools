@@ -137,54 +137,52 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     private MTabixIndex readMtabixIndex(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws IOException, URISyntaxException {
 
         // Check if we are using mtabix
-       URL dataURL = resourceLocator.getURL();
-        if ("file".equals(dataURL.getProtocol())) {
+        URL dataURL = resourceLocator.getURL();
 
-            URL indexURL = null;
+        URL indexURL = null;
 
-            if (!dataURL.getPath().endsWith("zip")) {
-                IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
-                indexURL = mtabix.getURL();
-            } else {
-                ZipFile zipFile = new ZipFile(new File(dataURL.toURI()));
-                ZipEntry entry = zipFile.getEntry(resourceLocator.getName() + ".gz.mtabix");
+        if (!dataURL.getPath().endsWith("zip")) {
+            IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
+            indexURL = mtabix.getURL();
+        } else {
+            //ZipFile zipFile = new ZipFile(new File(dataURL.toURI()));
+            ZipFile zipFile = new ZipFile(resourceLocator.getReadFile());
+            ZipEntry entry = zipFile.getEntry(resourceLocator.getName() + ".gz.mtabix");
 
-                if (entry == null) {
-                    return null;
-                }
-
-                // Copy index to a temporal file
-                File indexFile = File.createTempFile("gitools-cache-", "zip_mtabix");
-                indexFile.deleteOnExit();
-                IOUtils.copy(zipFile.getInputStream(entry), new FileOutputStream(indexFile));
-                indexURL = indexFile.toURL();
-
-                // Copy data to a temporal file
-                File dataFile = File.createTempFile("gitools-cache-", "zip_bgz");
-                dataFile.deleteOnExit();
-
-                InputStream dataStream = resourceLocator.getParentLocator().openInputStream(progressMonitor);
-
-                IOUtils.copy(dataStream, new FileOutputStream(dataFile));
-                dataURL = dataFile.toURL();
-
-            }
-
-            File dataFile = new File(dataURL.toURI());
-            File indexFile = new File(indexURL.toURI());
-
-            if (!indexFile.exists()) {
+            if (entry == null) {
                 return null;
             }
 
-            MTabixConfig mtabixConfig = new MTabixConfig(dataFile, indexFile, new DefaultKeyParser(1, 0));
-            MTabixIndex index = new MTabixIndex(mtabixConfig);
-            index.loadIndex();
+            // Copy index to a temporal file
+            File indexFile = File.createTempFile("gitools-cache-", "zip_mtabix");
+            indexFile.deleteOnExit();
+            IOUtils.copy(zipFile.getInputStream(entry), new FileOutputStream(indexFile));
+            indexURL = indexFile.toURL();
 
-            return index;
+            // Copy data to a temporal file
+            File dataFile = File.createTempFile("gitools-cache-", "zip_bgz");
+            dataFile.deleteOnExit();
+
+            InputStream dataStream = resourceLocator.getParentLocator().openInputStream(progressMonitor);
+
+            IOUtils.copy(dataStream, new FileOutputStream(dataFile));
+            dataURL = dataFile.toURL();
+
         }
 
-        return null;
+        File dataFile = new File(dataURL.toURI());
+        File indexFile = new File(indexURL.toURI());
+
+        if (!indexFile.exists()) {
+            return null;
+        }
+
+        MTabixConfig mtabixConfig = new MTabixConfig(dataFile, indexFile, new DefaultKeyParser(1, 0));
+        MTabixIndex index = new MTabixIndex(mtabixConfig);
+        index.loadIndex();
+
+        return index;
+
     }
 
     @Override
