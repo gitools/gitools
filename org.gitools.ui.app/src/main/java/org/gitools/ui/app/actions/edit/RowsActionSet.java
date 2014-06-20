@@ -54,6 +54,7 @@ public class RowsActionSet extends HeatmapDynamicActionSet {
         menu.add(Actions.sortByRowsAnnotation);
         menu.add(Actions.sortRowsByValue);
         menu.add(Actions.sortRowsByMutualExclusion);
+        menu.add(Actions.sortByPredefinedListRowsAction);
 
         // Visibility
         menu.addSeparator();

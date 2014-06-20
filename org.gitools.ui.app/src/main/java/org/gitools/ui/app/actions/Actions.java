@@ -103,6 +103,10 @@ public class Actions {
 
     public static final BaseAction sortByColumnsAnnotation = new SortByAnnotationAction(COLUMNS);
 
+    public static final BaseAction sortByPredefinedListRowsAction = new SortByPredefinedListAction(ROWS);
+
+    public static final BaseAction sortByPredefinedListColumnsAction = new SortByPredefinedListAction(COLUMNS);
+
     public static final BaseAction sortByHeader = new SortByHeaderAction();
 
     public static final BaseAction invertOrder = new InvertOrderAction();
