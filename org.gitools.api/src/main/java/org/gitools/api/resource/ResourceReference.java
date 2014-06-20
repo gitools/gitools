@@ -108,7 +108,10 @@ public class ResourceReference<R extends IResource> {
 
     public void setLocator(IResourceLocator locator) {
         this.locator = locator;
-        this.baseName = locator.getBaseName();
+
+        if (locator != null) {
+            this.baseName = locator.getBaseName();
+        }
     }
 
     public IResourceFormat getResourceFormat() {
