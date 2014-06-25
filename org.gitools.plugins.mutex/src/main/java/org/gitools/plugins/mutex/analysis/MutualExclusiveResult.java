@@ -21,12 +21,14 @@
  */
 package org.gitools.plugins.mutex.analysis;
 
-import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.matrix.model.matrix.element.LayerDef;
 
 
-public class MutualExclusiveResult extends SimpleResult {
+public class MutualExclusiveResult {
 
+    private int N;
+    private double mutexPvalue;
+    private double coocPvalue;
     private int coverage;
     private int signal;
     private double signalCoverageRatio;
@@ -34,19 +36,49 @@ public class MutualExclusiveResult extends SimpleResult {
     private double expectedVar;
     private double zscore;
 
-    public MutualExclusiveResult(int N, double twoTailPvalue, int coverage, int signal, double expectedMean, double expectedVar) {
-        super(N, twoTailPvalue);
-
+    public MutualExclusiveResult(int N, double mutexPvalue, double coocPvalue, int coverage, int signal, double expectedMean, double expectedVar) {
+        this.N = N;
+        this.mutexPvalue = mutexPvalue;
+        this.coocPvalue = coocPvalue;
         this.coverage = coverage;
         this.signal = signal;
         this.signalCoverageRatio = (double) signal / (double) coverage;
         this.expectedMean = expectedMean;
         this.expectedVar = expectedVar;
-        this.zscore = (this.coverage-this.expectedMean) / Math.sqrt(this.expectedVar);
+        this.zscore = (this.coverage - this.expectedMean) / Math.sqrt(this.expectedVar);
     }
 
     public MutualExclusiveResult() {
-        super(0, 0.0);
+        this.N = 0;
+        this.mutexPvalue = 0.0;
+        this.coocPvalue = 0.0;
+    }
+
+    @LayerDef(id = "N", name = "N", description = "Number of elements")
+    public int getN() {
+        return N;
+    }
+
+    public void setN(int n) {
+        N = n;
+    }
+
+    @LayerDef(id = "mutexPvalue", name = "Mut-ex p-value", description = "Mutual exclusive empirical p-value")
+    public double getMutexPvalue() {
+        return mutexPvalue;
+    }
+
+    public void setMutexPvalue(double mutexPvalue) {
+        this.mutexPvalue = mutexPvalue;
+    }
+
+    @LayerDef(id = "coocPvalue", name = "Co-oc p-value", description = "Co-occurrence empirical p-value")
+    public double getCoocPvalue() {
+        return coocPvalue;
+    }
+
+    public void setCoocPvalue(double coocPvalue) {
+        this.coocPvalue = coocPvalue;
     }
 
     @LayerDef(id = "coverage", name = "Observed coverage", description = "Observed coverage")

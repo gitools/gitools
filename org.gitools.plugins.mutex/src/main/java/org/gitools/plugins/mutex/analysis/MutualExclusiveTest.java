@@ -22,9 +22,7 @@
 package org.gitools.plugins.mutex.analysis;
 
 import org.apache.commons.math3.stat.StatUtils;
-import org.gitools.analysis.stats.test.AbstractTest;
 import org.gitools.analysis.stats.test.WeightedRandPerm;
-import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.api.analysis.IProgressMonitor;
 
 import java.util.HashSet;
@@ -32,25 +30,23 @@ import java.util.Random;
 import java.util.Set;
 
 
-public class MutualExclusiveTest extends AbstractTest {
+public class MutualExclusiveTest {
 
     Random random;
+    private String name;
 
 
     public MutualExclusiveTest() {
-        super("mutualExclusive", MutualExclusiveResult.class);
+        name = "mutualExclusive";
         this.random = new Random(849);
     }
 
-    @Override
-    public Class<? extends SimpleResult> getResultClass() {
+    public Class getResultClass() {
         return MutualExclusiveResult.class;
     }
 
     /**
-     *
-     *
-     * @param draws Array with count of events per item
+     * @param draws      Array with count of events per item
      * @param weights
      * @param coverage
      * @param signal
@@ -64,13 +60,19 @@ public class MutualExclusiveTest extends AbstractTest {
         WeightedRandPerm permutator = new WeightedRandPerm(random, weights);
 
         double[] measurements = new double[iterations];
-        int events = 0;
+        int greaterEvents = 0;
+        int smallerEvents = 0;
+        int equalEevents = 0;
         for (int i = 0; i < iterations; i++) {
             measurements[i] = simulation(samplesCount, draws, permutator);
-            if (measurements[i] >= coverage) {
-                events++;
+            if (measurements[i] > coverage) {
+                greaterEvents++;
+            } else if (measurements[i] < coverage) {
+                smallerEvents++;
+            } else {
+                equalEevents++;
             }
-            if ((i+1) % 100 == 0) {
+            if ((i + 1) % 100 == 0) {
                 monitor.worked(100);
                 if (monitor.isCancelled()) {
                     break;
@@ -78,12 +80,16 @@ public class MutualExclusiveTest extends AbstractTest {
             }
         }
 
-        double p = (double) events / (double) iterations;
+        double mutexEvents = (double) greaterEvents + (double) equalEevents;
+        double coocEvents = (double) smallerEvents + (double) equalEevents;
+
+        double mutexP = mutexEvents == 0.0 ? 1.0 / ((double) iterations) : mutexEvents / (double) iterations;
+        double coocP = coocEvents == 0 ? 1.0 / ((double) iterations) : coocEvents / (double) iterations;
 
         double var = StatUtils.variance(measurements);
         double mean = StatUtils.mean(measurements);
 
-        return new MutualExclusiveResult(samplesCount, p, coverage, signal, mean, var);
+        return new MutualExclusiveResult(samplesCount, mutexP, coocP, coverage, signal, mean, var);
 
     }
 

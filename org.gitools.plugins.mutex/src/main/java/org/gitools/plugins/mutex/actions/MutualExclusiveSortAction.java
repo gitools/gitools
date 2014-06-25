@@ -21,7 +21,6 @@
  */
 package org.gitools.plugins.mutex.actions;
 
-import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
@@ -35,7 +34,6 @@ import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
-import org.gitools.plugins.mutex.analysis.MutualExclusiveTest;
 import org.gitools.plugins.mutex.sort.MutualExclusiveMatrixViewSorter;
 import org.gitools.plugins.mutex.ui.MutualExclusionSortPage;
 import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
@@ -112,8 +110,8 @@ public class MutualExclusiveSortAction extends HeatmapAction {
 
 
                     //DIALOG
-                    LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(new MutualExclusiveTest().getResultClass());
-                    MutualExclusiveResult result = (MutualExclusiveResult) adapter.get(resultsMatrix, resultsMatrix.newPosition());
+                    LayerAdapter<MutualExclusiveResult> adapter = new LayerAdapter<>(MutualExclusiveResult.class);
+                    MutualExclusiveResult result = adapter.get(resultsMatrix, resultsMatrix.newPosition());
 
 
                     MutualExclusiveBookmark bookmark = (dimensionKey == MatrixDimensionKey.ROWS) ?

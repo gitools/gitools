@@ -41,13 +41,14 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
     private JLabel colNbLabel;
     private JTextArea descriptionTextArea;
     private JLabel layerLabel;
-    private JLabel pvalueLabe;
+    private JLabel mutexPvalueLabel;
     private JLabel zscoreLabel;
     private JLabel signalLabel;
     private JLabel coverageLabel;
     private JLabel ratioLabel;
     private JLabel meanLabel;
     private JLabel varianceLabel;
+    private JLabel coocPValueLabel;
     private boolean delete = false;
     private List<String> forbiddenNames;
     private MutualExclusiveBookmark bookmark;
@@ -143,9 +144,9 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
             return;
         }
         if (!uniqueName()) {
-                setMessage(MessageStatus.ERROR, "There is already an item with this name");
-                setComplete(false);
-                return;
+            setMessage(MessageStatus.ERROR, "There is already an item with this name");
+            setComplete(false);
+            return;
         } else {
             setMessage(MessageStatus.INFO, "Save to heatmap or discard");
         }
@@ -170,9 +171,10 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
         String rows = bookmark.getRows() == null ? "-" : String.valueOf(bookmark.getRows().size());
         String cols = bookmark.getColumns() == null ? "-" : String.valueOf(bookmark.getColumns().size());
         rowNbLabel.setText(fill(rows));
-        colNbLabel.setText(fill( cols ));
-        layerLabel.setText(fill( bookmark.getLayerId() ));
-        pvalueLabe.setText(fill( result.getTwoTailPvalue()));
+        colNbLabel.setText(fill(cols));
+        layerLabel.setText(fill(bookmark.getLayerId()));
+        mutexPvalueLabel.setText(fill(result.getMutexPvalue()));
+        coocPValueLabel.setText(fill(result.getCoocPvalue()));
         zscoreLabel.setText(fill(result.getZscore()));
         signalLabel.setText(fill(result.getSignal()));
         coverageLabel.setText(fill(result.getCoverage()));

@@ -232,7 +232,7 @@
           <text value="Ratio"/>
         </properties>
       </component>
-      <component id="a731e" class="javax.swing.JLabel" binding="pvalueLabe">
+      <component id="a731e" class="javax.swing.JLabel" binding="mutexPvalueLabel">
         <constraints>
           <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>
@@ -241,31 +241,13 @@
           <text value="pvalue"/>
         </properties>
       </component>
-      <component id="8bee9" class="javax.swing.JLabel" binding="zscoreLabel">
-        <constraints>
-          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <text value="zscorevalue"/>
-        </properties>
-      </component>
       <component id="53d83" class="javax.swing.JLabel">
         <constraints>
           <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>
         </constraints>
         <properties>
-          <text value="P-Value"/>
-        </properties>
-      </component>
-      <component id="75966" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <text value="Z score"/>
+          <text value="MutEx P-Value"/>
         </properties>
       </component>
       <component id="1a099" class="javax.swing.JLabel">
@@ -302,6 +284,42 @@
         </constraints>
         <properties>
           <text value="variancevalue"/>
+        </properties>
+      </component>
+      <component id="75966" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Z score"/>
+        </properties>
+      </component>
+      <component id="8bee9" class="javax.swing.JLabel" binding="zscoreLabel">
+        <constraints>
+          <grid row="4" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="zscorevalue"/>
+        </properties>
+      </component>
+      <component id="8d5b3" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="Co-occurence P-Value"/>
+        </properties>
+      </component>
+      <component id="bf75" class="javax.swing.JLabel" binding="coocPValueLabel">
+        <constraints>
+          <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <text value="pvalue"/>
         </properties>
       </component>
     </children>

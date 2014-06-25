@@ -25,10 +25,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
 import org.gitools.plugins.mutex.MutualExclusivePlugin;
-import org.gitools.plugins.mutex.actions.ApplyMutualExclusiveBookmarkAction;
-import org.gitools.plugins.mutex.actions.HighlightMutualExclusiveBookmarkAction;
-import org.gitools.plugins.mutex.actions.RemoveMutualExclusiveAction;
-import org.gitools.plugins.mutex.actions.SelectTestedMutualExclusiveAction;
+import org.gitools.plugins.mutex.actions.*;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.BaseAction;
@@ -48,6 +45,7 @@ public class MutualExclusiveBox extends DetailsBox {
     private final MutualExclusivePlugin plugin;
 
     public static final ActionSet ACTIONS = new ActionSet(new BaseAction[]{
+            new ViewMutualExclusiveResultsAction(),
             new ApplyMutualExclusiveBookmarkAction(),
             new SelectTestedMutualExclusiveAction(),
             BaseAction.separator,
@@ -80,7 +78,7 @@ public class MutualExclusiveBox extends DetailsBox {
     @Override
     public void update() {
 
-        this.setVisible(isVisible());
+        //this.setVisible(isVisible());
 
         if (!isVisible() || isCollapsed()) {
             return;
@@ -93,7 +91,7 @@ public class MutualExclusiveBox extends DetailsBox {
             DetailsDecoration d =
                     new DetailsDecoration(key + " p-value",
                             bookmark.getDescription(),
-                            Double.toString(bookmark.getResult().getTwoTailPvalue()));
+                            Double.toString(bookmark.getResult().getMutexPvalue()));
             d.setReference(key);
             details.add(d);
         }

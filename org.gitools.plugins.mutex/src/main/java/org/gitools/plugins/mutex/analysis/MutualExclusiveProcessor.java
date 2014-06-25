@@ -24,7 +24,6 @@ package org.gitools.plugins.mutex.analysis;
 import com.google.common.primitives.Doubles;
 import com.google.common.primitives.Ints;
 import org.gitools.analysis.AnalysisProcessor;
-import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
@@ -100,7 +99,7 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
         final IMatrixDimension resultTestDimension = new HashMatrixDimension(ROWS, testGroups.getModules());
 
         final MutualExclusiveTest test = new MutualExclusiveTest();
-        final LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(test.getResultClass());
+        final LayerAdapter<MutualExclusiveResult> adapter = new LayerAdapter<>(MutualExclusiveResult.class);
 
         IMatrix resultsMatrix = new HashMatrix(
                 adapter.getMatrixLayers(),
@@ -139,7 +138,7 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
                     break;
                 }
                 //sets monitor.worked
-                SimpleResult r = test.processTest(draws, weights, coverage, signal, iterations, monitor);
+                MutualExclusiveResult r = test.processTest(draws, weights, coverage, signal, iterations, monitor);
 
                 if (monitor.isCancelled()) {
                     break;
