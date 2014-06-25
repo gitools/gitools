@@ -78,8 +78,6 @@ public class MutualExclusiveBox extends DetailsBox {
     @Override
     public void update() {
 
-        //this.setVisible(isVisible());
-
         if (!isVisible() || isCollapsed()) {
             return;
         }
