@@ -62,6 +62,8 @@ public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<Enrich
             }
         }
 
+        heatmap.setCache(EnrichmentAnalysis.CACHE_KEY_ENHRICHMENT, analysis);
+
         return heatmap;
     }
 

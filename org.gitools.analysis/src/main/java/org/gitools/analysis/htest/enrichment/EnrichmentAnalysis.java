@@ -22,6 +22,8 @@
 package org.gitools.analysis.htest.enrichment;
 
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.api.matrix.CacheKey;
+import org.gitools.api.matrix.ICacheKey;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -33,6 +35,8 @@ import java.io.Serializable;
 public class EnrichmentAnalysis extends HtestAnalysis implements Serializable {
 
     private boolean discardNonMappedRows;
+
+    public static ICacheKey<EnrichmentAnalysis> CACHE_KEY_ENHRICHMENT = new CacheKey<>();
 
     public EnrichmentAnalysis() {
     }

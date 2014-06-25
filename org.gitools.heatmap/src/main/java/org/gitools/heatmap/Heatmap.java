@@ -138,7 +138,7 @@ public class Heatmap extends Resource implements IMatrixView {
         }
 
         // Detach heatmap cache
-        this.cache = null;
+        //this.cache = null;
 
         // Detach layers cache
         for (HeatmapLayer layer : layers) {

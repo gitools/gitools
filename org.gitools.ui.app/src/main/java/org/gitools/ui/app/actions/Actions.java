@@ -147,6 +147,8 @@ public class Actions {
 
     public static final BaseAction heatmapSettings = new HeatmapSettingsAction();
 
+    public static final BaseAction viewEnrichmentModuleData = new ViewEnrichmentModuleDataAction();
+
 
     private Actions() {
     }

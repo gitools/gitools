@@ -67,6 +67,11 @@ public class PopupMenuActions {
                 Actions.sortByHeader,
                 Actions.invertOrder,
 
+                // Data-specific
+                new PopupSectionTitleAction("Data-specific"),
+                Actions.viewEnrichmentModuleData,
+
+
                 //BaseAction.separator,
                 //new HeatmapSearchAction(dimensionKey),
                 BaseAction.separator,
