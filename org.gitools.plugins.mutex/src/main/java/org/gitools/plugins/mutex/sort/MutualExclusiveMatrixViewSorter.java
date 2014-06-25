@@ -60,7 +60,7 @@ public class MutualExclusiveMatrixViewSorter {
                 function,
                 monitor));
 
-        monitor.begin("Sorting rows...", rows.size());
+        monitor.begin("Sorting rows...", values.size());
 
         PropertyChangeListener[] listeners = columns.getPropertyChangeListeners();
         if (!showProgress) {
@@ -76,6 +76,10 @@ public class MutualExclusiveMatrixViewSorter {
 
             if (monitor.isCancelled()) {
                 break;
+            }
+
+            if (!values.contains(row)) {
+                continue;
             }
 
             position.set(rows, row);
