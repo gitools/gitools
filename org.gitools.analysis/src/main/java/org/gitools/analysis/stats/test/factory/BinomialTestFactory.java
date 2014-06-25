@@ -24,7 +24,7 @@ package org.gitools.analysis.stats.test.factory;
 import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.stats.test.BinomialTest;
 import org.gitools.analysis.stats.test.BinomialTest.AproximationMode;
-import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 
 public class BinomialTestFactory extends TestFactory {
 
@@ -60,7 +60,7 @@ public class BinomialTestFactory extends TestFactory {
 
 
     @Override
-    public Test create() {
+    public EnrichmentTest create() {
         return new BinomialTest(aproxMode);
     }
 

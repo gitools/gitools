@@ -24,7 +24,7 @@ package org.gitools.analysis.stats.test;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.SimpleResult;
 
-public interface Test {
+public interface EnrichmentTest {
 
     String getName();
 

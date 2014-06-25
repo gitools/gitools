@@ -22,12 +22,12 @@
 package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
-import org.gitools.analysis.stats.test.Test;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
@@ -63,9 +63,9 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
     }
 
     private static class TestElement {
-        public final Test test;
+        public final EnrichmentTest test;
 
-        public TestElement(Test test) {
+        public TestElement(EnrichmentTest test) {
             this.test = test;
         }
 
@@ -74,7 +74,7 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
             return this.test.getName();
         }
 
-        public Test getTest() {
+        public EnrichmentTest getTest() {
             return this.test;
         }
     }
@@ -123,7 +123,7 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
         }
     }
 
-    public Test getTest() {
+    public EnrichmentTest getTest() {
         TestElement testElement = (TestElement) testCb.getModel().getSelectedItem();
         return testElement.getTest();
     }

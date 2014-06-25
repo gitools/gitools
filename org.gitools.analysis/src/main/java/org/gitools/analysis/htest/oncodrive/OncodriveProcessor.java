@@ -23,10 +23,9 @@ package org.gitools.analysis.htest.oncodrive;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
-import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
-import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.ZscoreTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.SimpleResult;
@@ -62,8 +61,8 @@ public class OncodriveProcessor implements AnalysisProcessor {
         Date startTime = new Date();
 
         IMatrix data = analysis.getData().get();
-        final IMatrixLayer<Double> layer =  data.getLayers().get(analysis.getLayer());
-        final Test test = TestFactory.createFactory(analysis.getTestConfig()).create();
+        final IMatrixLayer<Double> layer = data.getLayers().get(analysis.getLayer());
+        final EnrichmentTest test = TestFactory.createFactory(analysis.getTestConfig()).create();
         final LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(test.getResultClass());
         final IModuleMap moduleMap = (analysis.getModuleMap().get() == null ? new HashModuleMap().addMapping("All data columns", data.getColumns()) : analysis.getModuleMap().get());
         final IMatrixDimension genes = data.getRows();
@@ -93,7 +92,7 @@ public class OncodriveProcessor implements AnalysisProcessor {
 
             Set<String> background = analysis.getPopulation().get();
 
-            missingBackgroundItems.addAll( background );
+            missingBackgroundItems.addAll(background);
 
             for (String item : genes) {
                 missingBackgroundItems.remove(item);

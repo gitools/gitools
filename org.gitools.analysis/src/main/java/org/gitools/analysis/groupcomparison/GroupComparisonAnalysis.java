@@ -25,7 +25,7 @@ import org.gitools.analysis.Analysis;
 import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroupEnum;
-import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
@@ -88,7 +88,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         this.testConfig = testConfig;
     }
 
-    public Test getTest() {
+    public EnrichmentTest getTest() {
         TestFactory tf = TestFactory.createFactory(testConfig);
         return tf.create();
     }

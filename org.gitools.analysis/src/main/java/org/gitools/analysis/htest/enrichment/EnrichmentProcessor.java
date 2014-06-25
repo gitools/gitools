@@ -22,10 +22,9 @@
 package org.gitools.analysis.htest.enrichment;
 
 import com.google.common.base.Function;
-import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
-import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.ZscoreTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.results.SimpleResult;
@@ -65,9 +64,9 @@ public class EnrichmentProcessor implements AnalysisProcessor {
         final IMatrixLayer<Double> layer = data.getLayers().get(analysis.getLayer());
 
         final TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
-        final ThreadLocal<Test> test = new ThreadLocal<Test>() {
+        final ThreadLocal<EnrichmentTest> test = new ThreadLocal<EnrichmentTest>() {
             @Override
-            protected Test initialValue() {
+            protected EnrichmentTest initialValue() {
                 return testFactory.create();
             }
         };
@@ -105,7 +104,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                 background = intersection(background, moduleMap.getItems());
             }
 
-            missingBackgroundItems.addAll( background );
+            missingBackgroundItems.addAll(background);
 
             for (String item : items) {
                 missingBackgroundItems.remove(item);

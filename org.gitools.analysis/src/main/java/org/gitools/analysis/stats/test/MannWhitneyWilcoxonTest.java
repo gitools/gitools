@@ -33,7 +33,7 @@ import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 
 
-public class MannWhitneyWilcoxonTest extends AbstractTest {
+public class MannWhitneyWilcoxonTest extends AbstractEnrichmentTest {
 
     private NaturalRanking naturalRanking;
 

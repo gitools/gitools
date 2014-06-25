@@ -22,7 +22,7 @@
 package org.gitools.analysis.stats.test.factory;
 
 import org.gitools.analysis.ToolConfig;
-import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -173,5 +173,5 @@ public abstract class TestFactory {
         return toolConfig;
     }
 
-    public abstract Test create();
+    public abstract EnrichmentTest create();
 }

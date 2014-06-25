@@ -35,7 +35,7 @@ import java.util.Random;
 import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Iterables.*;
 
-public class ZscoreTest extends AbstractTest {
+public class ZscoreTest extends AbstractEnrichmentTest {
 
     private final Statistic statCalc;
 

@@ -24,12 +24,12 @@ package org.gitools.analysis.stats.test;
 import org.gitools.analysis.stats.test.results.CommonResult;
 import org.gitools.analysis.stats.test.results.SimpleResult;
 
-public abstract class AbstractTest implements Test {
+public abstract class AbstractEnrichmentTest implements EnrichmentTest {
 
     private String name;
     private Class<? extends SimpleResult> resultClass;
 
-    protected AbstractTest(String name, Class<? extends SimpleResult> resultClass) {
+    protected AbstractEnrichmentTest(String name, Class<? extends SimpleResult> resultClass) {
         this.name = name;
         this.resultClass = resultClass;
     }

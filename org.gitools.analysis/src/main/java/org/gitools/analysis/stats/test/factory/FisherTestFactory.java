@@ -22,8 +22,8 @@
 package org.gitools.analysis.stats.test.factory;
 
 import org.gitools.analysis.ToolConfig;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.FisherTest;
-import org.gitools.analysis.stats.test.Test;
 
 public final class FisherTestFactory extends TestFactory {
 
@@ -33,7 +33,7 @@ public final class FisherTestFactory extends TestFactory {
 
 
     @Override
-    public Test create() {
+    public EnrichmentTest create() {
         return new FisherTest();
     }
 

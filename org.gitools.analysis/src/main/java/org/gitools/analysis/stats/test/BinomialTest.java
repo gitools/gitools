@@ -30,7 +30,7 @@ import org.gitools.analysis.stats.test.results.CommonResult;
 import static com.google.common.base.Predicates.notNull;
 import static com.google.common.collect.Iterables.filter;
 
-public class BinomialTest extends AbstractTest {
+public class BinomialTest extends AbstractEnrichmentTest {
 
     private static final int exactSizeLimit = 100000;
 
@@ -179,7 +179,7 @@ public class BinomialTest extends AbstractTest {
             BinomialDistribution distribution = new BinomialDistribution(n, p);
 
             leftPvalue = distribution.cumulativeProbability(observed);
-            rightPvalue = observed > 0 ? distribution.cumulativeProbability(observed-1, n) : 1.0;
+            rightPvalue = observed > 0 ? distribution.cumulativeProbability(observed - 1, n) : 1.0;
             twoTailPvalue = leftPvalue + rightPvalue;
             twoTailPvalue = twoTailPvalue > 1.0 ? 1.0 : twoTailPvalue;
         }
