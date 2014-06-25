@@ -47,9 +47,11 @@ public class OverlappingAnalysisFormat extends AbstractXmlFormat<OverlappingAnal
 
         //TODO Find a better solution for this error
         resource.getSourceData().get();
-        resource.getFilteredData().get();
         resource.getCellResults().get();
 
+        if (resource.getFilteredData() != null) {
+            resource.getFilteredData().get();
+        }
 
         super.writeResource(resourceLocator, resource, monitor);
     }

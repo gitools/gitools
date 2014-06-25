@@ -47,6 +47,7 @@ public class OncodriveAnalysisFormat extends AbstractXmlFormat<OncodriveAnalysis
         //TODO Find a better solution for this error
         resource.getData().get();
         resource.getResults().get();
+        resource.getModuleMap().get();
 
         super.writeResource(resourceLocator, resource, monitor);
     }

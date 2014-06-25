@@ -106,7 +106,6 @@ public class BdmModuleMapFormat extends AbstractModuleMapFormat {
                 monitor.worked(1);
             }
             pw.close();
-            out.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
         }

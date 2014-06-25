@@ -95,7 +95,7 @@ public class GmtModuleMapFormat extends AbstractModuleMapFormat {
                 progressMonitor.worked(1);
             }
 
-            out.close();
+            pw.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
         }

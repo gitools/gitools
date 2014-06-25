@@ -96,7 +96,6 @@ public class TcmModuleMapFormat extends AbstractModuleMapFormat {
             }
 
             pw.close();
-            out.close();
 
         } catch (Exception e) {
             throw new PersistenceException(e);

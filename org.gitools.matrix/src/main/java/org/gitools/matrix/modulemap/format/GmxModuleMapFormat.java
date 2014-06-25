@@ -135,7 +135,7 @@ public class GmxModuleMapFormat extends AbstractModuleMapFormat {
                 line.clear();
             }
 
-            out.close();
+            pw.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
