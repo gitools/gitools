@@ -29,6 +29,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.ui.app.analysis.htest.editor.AbstractHtestAnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
@@ -78,11 +79,15 @@ public class ViewEnrichmentModuleDataAction extends HeatmapAction implements IHe
                 HeatmapEditor heatmapEditor = getOpenInEditor(data);
                 if (heatmapEditor != null) {
                     epanel.setSelectedEditor(heatmapEditor);
-                    Heatmap dataHeatmap = heatmapEditor.getModel();
-                    dataHeatmap.getRows().show(moduleItems);
                 } else {
-                    throw new RuntimeException("Please, first open the analysis data heatmap");
+                    monitor.begin("Creating new heatmap from data ...", 1);
+                    heatmapEditor = new HeatmapEditor(AbstractHtestAnalysisEditor.newDataHeatmap(analysis));
+                    epanel.addEditor(heatmapEditor);
+                    heatmapEditor.setName(analysis.getTitle() + "-data");
                 }
+                Heatmap dataHeatmap = heatmapEditor.getModel();
+                dataHeatmap.getRows().show(moduleItems);
+                Application.get().setStatusText("Module '" + moduleId + "' shown.");
             }
         });
 
@@ -104,11 +109,11 @@ public class ViewEnrichmentModuleDataAction extends HeatmapAction implements IHe
 
     @Override
     public void onConfigure(HeatmapDimension dimension, HeatmapPosition position) {
-        boolean enable = getHeatmap().getCache(EnrichmentAnalysis.CACHE_KEY_ENHRICHMENT) != null &&
+        boolean enable = getHeatmap().getMetadata(EnrichmentAnalysis.CACHE_KEY_ENHRICHMENT) != null &&
                 dimension.getId().equals(MatrixDimensionKey.ROWS);
         setEnabled(enable);
         if (enable) {
-            this.analysis = getHeatmap().getCache(EnrichmentAnalysis.CACHE_KEY_ENHRICHMENT);
+            this.analysis = getHeatmap().getMetadata(EnrichmentAnalysis.CACHE_KEY_ENHRICHMENT);
             this.moduleId = dimension.getLabel(position.getRow());
         }
         this.setName("<html><i>View</i> data for '" + StringUtils.abbreviate(moduleId, 25) + "' module</html>");

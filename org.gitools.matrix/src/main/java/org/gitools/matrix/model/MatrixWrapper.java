@@ -21,13 +21,7 @@
  */
 package org.gitools.matrix.model;
 
-import org.gitools.api.matrix.ICacheKey;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixLayers;
-import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.*;
 import org.gitools.api.resource.IResourceLocator;
 
 public abstract class MatrixWrapper implements IMatrix {
@@ -89,13 +83,13 @@ public abstract class MatrixWrapper implements IMatrix {
     }
 
     @Override
-    public <T> void setCache(ICacheKey<T> key, T value) {
-        wrapMatrix.setCache(key, value);
+    public <T> void setMetadata(IKey<T> key, T value) {
+        wrapMatrix.setMetadata(key, value);
     }
 
     @Override
-    public <T> T getCache(ICacheKey<T> key) {
-        return wrapMatrix.getCache(key);
+    public <T> T getMetadata(IKey<T> key) {
+        return wrapMatrix.getMetadata(key);
     }
 
     @Override

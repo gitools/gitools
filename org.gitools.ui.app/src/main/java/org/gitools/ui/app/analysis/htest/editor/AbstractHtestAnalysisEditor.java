@@ -190,7 +190,10 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
 
     @Deprecated
     protected Heatmap createDataHeatmap(T analysis) {
+        return newDataHeatmap(analysis);
+    }
 
+    public static Heatmap newDataHeatmap(HtestAnalysis analysis) {
         IMatrix data = analysis.getData().get();
 
         if (data instanceof Heatmap) {

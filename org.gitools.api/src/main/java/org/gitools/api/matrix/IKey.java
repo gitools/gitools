@@ -21,5 +21,7 @@
  */
 package org.gitools.api.matrix;
 
-public class CacheKey<T> implements ICacheKey<T> {
+import java.io.Serializable;
+
+public interface IKey<T> extends Serializable {
 }

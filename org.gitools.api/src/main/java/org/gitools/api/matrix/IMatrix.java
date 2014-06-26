@@ -50,9 +50,9 @@ public interface IMatrix extends IResource {
      */
     void detach();
 
-    <T> void setCache(ICacheKey<T> key, T value);
+    <T> void setMetadata(IKey<T> key, T value);
 
-    <T> T getCache(ICacheKey<T> key);
+    <T> T getMetadata(IKey<T> key);
 
     IMatrixDimension getRows();
 

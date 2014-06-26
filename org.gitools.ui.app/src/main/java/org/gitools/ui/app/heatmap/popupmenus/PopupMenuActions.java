@@ -42,6 +42,10 @@ public class PopupMenuActions {
 
         return new ActionSet(new BaseAction[]{
 
+                // Analysis specific
+                Actions.viewEnrichmentModuleData,
+
+                // Data selection
                 new PopupSectionTitleAction("Selection"),
                 BaseAction.separator,
                 Actions.selectAllAction,
@@ -66,11 +70,6 @@ public class PopupMenuActions {
                 new FastSortValueAction(dimensionKey == MatrixDimensionKey.COLUMNS ? MatrixDimensionKey.ROWS : MatrixDimensionKey.COLUMNS),
                 Actions.sortByHeader,
                 Actions.invertOrder,
-
-                // Data-specific
-                new PopupSectionTitleAction("Data-specific"),
-                Actions.viewEnrichmentModuleData,
-
 
                 //BaseAction.separator,
                 //new HeatmapSearchAction(dimensionKey),

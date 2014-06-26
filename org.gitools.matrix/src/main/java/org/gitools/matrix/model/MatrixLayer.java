@@ -23,7 +23,7 @@ package org.gitools.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.analysis.IAggregator;
-import org.gitools.api.matrix.ICacheKey;
+import org.gitools.api.matrix.IKey;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.ValueTranslator;
@@ -211,17 +211,17 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
         this.cache = null;
     }
 
-    transient Map<ICacheKey, Object> cache;
+    transient Map<IKey, Object> cache;
 
-    public <T> void setCache(ICacheKey<T> key, T value) {
+    public <T> void setCache(IKey<T> key, T value) {
         this.getCacheMap().put(key, value);
     }
 
-    public <T> T getCache(ICacheKey<T> key) {
+    public <T> T getCache(IKey<T> key) {
         return (T) this.getCacheMap().get(key);
     }
 
-    private Map<ICacheKey, Object> getCacheMap() {
+    private Map<IKey, Object> getCacheMap() {
         if (cache == null) {
             cache = new HashMap<>();
         }

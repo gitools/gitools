@@ -50,8 +50,8 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class MutualExclusiveProcessor implements AnalysisProcessor {
 
-    private final static CacheKey<Map<MatrixDimensionKey, Map<String, Double>>> CACHEKEY =
-            new CacheKey<Map<MatrixDimensionKey, Map<String, Double>>>() {
+    private final static Key<Map<MatrixDimensionKey, Map<String, Double>>> CACHEKEY =
+            new Key<Map<MatrixDimensionKey, Map<String, Double>>>() {
             };
 
     private final MutualExclusiveAnalysis analysis;

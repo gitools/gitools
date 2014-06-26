@@ -280,21 +280,21 @@ public class Heatmap extends Resource implements IMatrixView {
     }
 
 
-    transient Map<ICacheKey, Object> cache;
+    transient Map<IKey, Object> metadata;
 
-    public <T> void setCache(ICacheKey<T> key, T value) {
+    public <T> void setMetadata(IKey<T> key, T value) {
         this.getCacheMap().put(key, value);
     }
 
-    public <T> T getCache(ICacheKey<T> key) {
+    public <T> T getMetadata(IKey<T> key) {
         return (T) this.getCacheMap().get(key);
     }
 
-    private Map<ICacheKey, Object> getCacheMap() {
-        if (cache == null) {
-            cache = new HashMap<>();
+    private Map<IKey, Object> getCacheMap() {
+        if (metadata == null) {
+            metadata = new HashMap<>();
         }
-        return cache;
+        return metadata;
     }
 
     public Date getLastSaved() {
