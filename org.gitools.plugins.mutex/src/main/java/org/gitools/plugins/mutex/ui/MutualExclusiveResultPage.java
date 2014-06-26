@@ -29,6 +29,7 @@ import org.gitools.plugins.mutex.MutualExclusiveBookmark;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+import org.gitools.utils.formatter.HeatmapTextFormatter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -149,7 +150,7 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
             setComplete(false);
             return;
         } else {
-            setMessage(MessageStatus.INFO, "Save to heatmap or discard");
+            setMessage(MessageStatus.INFO, "Click 'OK' add result to heatmap or 'Cancel' to discard");
         }
 
         setComplete(true);
@@ -160,7 +161,8 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
     }
 
     private String fill(Double d) {
-        return "<html><b>" + Double.toString(d) + "</b></html>";
+
+        return "<html><b>" + HeatmapTextFormatter.TWO_DECIMALS.format(d) + "</b></html>";
     }
 
     private String fill(Integer i) {
