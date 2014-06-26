@@ -21,6 +21,7 @@
  */
 package org.gitools.plugins.mutex.analysis;
 
+import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.stat.StatUtils;
 import org.gitools.analysis.stats.test.WeightedRandPerm;
 import org.gitools.api.analysis.IProgressMonitor;
@@ -32,6 +33,8 @@ import java.util.Set;
 
 public class MutualExclusiveTest {
 
+    private static final NormalDistribution NORMAL = new NormalDistribution();
+    ;
     Random random;
     private String name;
 
@@ -80,16 +83,17 @@ public class MutualExclusiveTest {
             }
         }
 
-        double mutexEvents = (double) greaterEvents + (double) equalEevents;
-        double coocEvents = (double) smallerEvents + (double) equalEevents;
-
-        double mutexP = mutexEvents == 0.0 ? 1.0 / ((double) iterations) : mutexEvents / (double) iterations;
-        double coocP = coocEvents == 0 ? 1.0 / ((double) iterations) : coocEvents / (double) iterations;
+        int mutexEvents = greaterEvents + equalEevents;
+        int coocEvents = smallerEvents + equalEevents;
 
         double var = StatUtils.variance(measurements);
         double mean = StatUtils.mean(measurements);
 
-        return new MutualExclusiveResult(samplesCount, mutexP, coocP, coverage, signal, mean, var);
+        double zscore = (coverage - mean) / Math.sqrt(var);
+        double coocP = NORMAL.cumulativeProbability(zscore);   // leftPValue
+        double mutexP = 1.0 - coocP;                           // rightPValue
+
+        return new MutualExclusiveResult(samplesCount, zscore, mutexP, coocP, coverage, signal, mean, var, mutexEvents, coocEvents);
 
     }
 

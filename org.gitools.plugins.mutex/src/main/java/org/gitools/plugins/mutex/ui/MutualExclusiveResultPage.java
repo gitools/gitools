@@ -24,6 +24,7 @@ package org.gitools.plugins.mutex.ui;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -168,6 +169,9 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
 
 
     private void assignLabels() {
+
+        LayerAdapter<MutualExclusiveResult> adapter = new LayerAdapter<>(MutualExclusiveResult.class);
+
         String rows = bookmark.getRows() == null ? "-" : String.valueOf(bookmark.getRows().size());
         String cols = bookmark.getColumns() == null ? "-" : String.valueOf(bookmark.getColumns().size());
         rowNbLabel.setText(fill(rows));

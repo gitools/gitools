@@ -31,21 +31,28 @@ public class MutualExclusiveResult {
     private double coocPvalue;
     private int coverage;
     private int signal;
+    private int nPermMutex;
+    private int nPermCooc;
     private double signalCoverageRatio;
     private double expectedMean;
     private double expectedVar;
     private double zscore;
 
-    public MutualExclusiveResult(int N, double mutexPvalue, double coocPvalue, int coverage, int signal, double expectedMean, double expectedVar) {
+    public MutualExclusiveResult(int N, double zscore, double mutexPvalue, double coocPvalue,
+                                 int coverage, int signal,
+                                 double expectedMean, double expectedVar,
+                                 int nPermMutex, int nPermCooc) {
         this.N = N;
         this.mutexPvalue = mutexPvalue;
         this.coocPvalue = coocPvalue;
         this.coverage = coverage;
         this.signal = signal;
+        this.nPermMutex = nPermMutex;
+        this.nPermCooc = nPermCooc;
         this.signalCoverageRatio = (double) signal / (double) coverage;
         this.expectedMean = expectedMean;
         this.expectedVar = expectedVar;
-        this.zscore = (this.coverage - this.expectedMean) / Math.sqrt(this.expectedVar);
+        this.zscore = zscore;
     }
 
     public MutualExclusiveResult() {
@@ -63,7 +70,7 @@ public class MutualExclusiveResult {
         N = n;
     }
 
-    @LayerDef(id = "mutexPvalue", name = "Mut-ex p-value", description = "Mutual exclusive empirical p-value")
+    @LayerDef(id = "mutexPvalue", name = "Mut-Ex p-value", description = "Mutual exclusive p-value")
     public double getMutexPvalue() {
         return mutexPvalue;
     }
@@ -72,7 +79,7 @@ public class MutualExclusiveResult {
         this.mutexPvalue = mutexPvalue;
     }
 
-    @LayerDef(id = "coocPvalue", name = "Co-oc p-value", description = "Co-occurrence empirical p-value")
+    @LayerDef(id = "coocPvalue", name = "Co-oc p-value", description = "Co-occurrence p-value")
     public double getCoocPvalue() {
         return coocPvalue;
     }
@@ -81,7 +88,7 @@ public class MutualExclusiveResult {
         this.coocPvalue = coocPvalue;
     }
 
-    @LayerDef(id = "coverage", name = "Observed coverage", description = "Observed coverage")
+    @LayerDef(id = "coverage", name = "Observed coverage", description = "Observed coverage (items with signal)")
     public int getCoverage() {
         return coverage;
     }
@@ -90,7 +97,7 @@ public class MutualExclusiveResult {
         this.coverage = coverage;
     }
 
-    @LayerDef(id = "signal", name = "Observed signal", description = "Observed signal")
+    @LayerDef(id = "signal", name = "Observed signal", description = "Observed signal in data (positive events)")
     public int getSignal() {
         return signal;
     }
@@ -133,5 +140,23 @@ public class MutualExclusiveResult {
 
     public void setZscore(double zscore) {
         this.zscore = zscore;
+    }
+
+    @LayerDef(id = "n-perm-mutex", name = "N perm mut-ex ", description = "Permutations with signal >= observed")
+    public int getnPermMutex() {
+        return nPermMutex;
+    }
+
+    public void setnPermMutex(int nPermMutex) {
+        this.nPermMutex = nPermMutex;
+    }
+
+    @LayerDef(id = "n-perm-cooc", name = "N perm co-oc ", description = "Permutations with signal <= observed")
+    public int getnPermCooc() {
+        return nPermCooc;
+    }
+
+    public void setnPermCooc(int nPermCooc) {
+        this.nPermCooc = nPermCooc;
     }
 }
