@@ -30,9 +30,9 @@ public class ColorGenerator {
 
             0x498991, 0xC08840, 0x9F9274, 0x579575, 0x646C4A, 0x6F6621, 0x6E3F5F, 0x4F64B0, 0xA89050, 0xC45923, 0x187399, 0x945381, 0x959E5C, 0xAF5714, 0x478396, 0x907294, 0x426c7a, 0x878166, 0xAEA480, 0xFFFFD3, 0xE9D5A4, 0xA29877};
 
-    private final Color[] palette;
+    private Color[] palette;
     private int index = -1;
-    private final ColorRegistry colorRegistry;
+    private ColorRegistry colorRegistry;
 
     private ArrayList<Color> used = new ArrayList<>();
 

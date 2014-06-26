@@ -37,6 +37,7 @@ import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.application.IApplicationTracking;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.Settings;
+import org.gitools.utils.color.ColorRegistry;
 
 import javax.swing.*;
 import java.awt.*;
@@ -55,6 +56,7 @@ public class Application extends JFrame implements IApplicationTracking {
     private static final SemanticVersion appVersion;
     private static final String appTracking;
     private static final GoogleAnalytics analytics;
+    private static ColorRegistry colorRegistry = ColorRegistry.get();
 
     private static String test;
 

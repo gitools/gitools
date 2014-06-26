@@ -24,10 +24,7 @@ package org.gitools.ui.app.heatmap.popupmenus;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.app.actions.Actions;
-import org.gitools.ui.app.actions.data.FastSortValueAction;
-import org.gitools.ui.app.actions.data.GroupSelectionAction;
-import org.gitools.ui.app.actions.data.HideSelectionAction;
-import org.gitools.ui.app.actions.data.ShowAllAction;
+import org.gitools.ui.app.actions.data.*;
 import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.BaseAction;
@@ -44,6 +41,7 @@ public class PopupMenuActions {
 
                 // Analysis specific
                 Actions.viewEnrichmentModuleData,
+                new ViewGroupComparisonResultDataAction(),
 
                 // Data selection
                 new PopupSectionTitleAction("Selection"),

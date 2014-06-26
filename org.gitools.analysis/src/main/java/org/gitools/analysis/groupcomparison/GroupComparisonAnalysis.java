@@ -27,7 +27,9 @@ import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroupEnum;
 import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.matrix.IKey;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.Key;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 
@@ -40,6 +42,11 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class GroupComparisonAnalysis extends Analysis implements Serializable {
+
+    @XmlTransient
+    public static IKey<GroupComparisonAnalysis> CACHE_KEY_GC_ANALYSIS = new Key<>();
+
+
     private String sizeAttrName;
 
     private String pvalueAttrName;

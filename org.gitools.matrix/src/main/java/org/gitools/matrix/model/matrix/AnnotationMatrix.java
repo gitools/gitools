@@ -106,13 +106,13 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
         return getLayers().get(label);
     }
 
-    public void setAnnotation(String identifier, String label, String value) {
+    public void setAnnotation(String dimensionId, String annotationLabel, String annotationValue) {
 
-        if (getLayer(label) == null) {
-            addLayer(new MatrixLayer<>(label, String.class));
+        if (getLayer(annotationLabel) == null) {
+            addLayer(new MatrixLayer<>(annotationLabel, String.class));
         }
 
-        set(getLayer(label), value, identifier);
+        set(getLayer(annotationLabel), annotationValue, dimensionId);
     }
 
     @Override

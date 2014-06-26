@@ -26,7 +26,9 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.matrix.filter.PatternFunction;
+import org.gitools.utils.color.ColorRegistry;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -216,4 +218,11 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     public String getAnnotationMetadata(String metadataKey, String annotationKey) {
         return getHeatmapDimension().getAnnotations().getAnnotationMetadata(metadataKey, annotationKey);
     }
+
+    void afterUnmarshal(Unmarshaller u, Object parent) {
+        for (ColoredLabel cl : coloredLabels) {
+            ColorRegistry.get().registerId(cl.getValue(), cl.getColor());
+        }
+    }
+
 }

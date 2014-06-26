@@ -139,6 +139,8 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                 final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
                 editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
+                editor.getModel().setMetadata(GroupComparisonAnalysis.CACHE_KEY_GC_ANALYSIS, analysis);
+
                 editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable() {
@@ -153,7 +155,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
     }
 
     @Deprecated
-    private Heatmap createDataHeatmap(GroupComparisonAnalysis analysis) {
+    public static Heatmap createDataHeatmap(GroupComparisonAnalysis analysis) {
 
         IMatrix data = analysis.getData().get();
         if (Heatmap.class.isAssignableFrom(data.getClass())) {
@@ -161,20 +163,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
         }
 
         Heatmap heatmap = new Heatmap(data);
-        /*
-        heatmap.setTitle(analysis.getTitle() + " (data)");
 
-        if (analysis.getRowAnnotations() != null) {
-            heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
-        }
-        if (analysis.getRowHeaders() != null)
-            copyHeaders(heatmap.getRows(), analysis.getRowHeaders());
-
-        if (analysis.getColumnAnnotations() != null) {
-            heatmap.getColumns().addAnnotations(analysis.getColumnAnnotations());
-        }
-        if (analysis.getColumnHeaders() != null)
-            copyHeaders(heatmap.getColumns(), analysis.getColumnHeaders());*/
 
         return heatmap;
     }

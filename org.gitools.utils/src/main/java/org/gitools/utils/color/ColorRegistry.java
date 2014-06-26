@@ -25,7 +25,7 @@ import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class ColorRegistry {
+public class ColorRegistry {
 
     private static ColorRegistry instance;
 
@@ -36,7 +36,7 @@ public final class ColorRegistry {
         return instance;
     }
 
-    private static final Map<String, Color> registry = new HashMap<>();
+    private static Map<String, Color> registry = new HashMap<>();
 
     static {
         get().registerId("", Color.WHITE);
