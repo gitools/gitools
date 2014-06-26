@@ -25,10 +25,10 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.PatternFunction;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.wizard.ExportHeatmapLabelsWizard;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -116,7 +116,7 @@ public class ExportAnnotationAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText("Annotation exported.");
+        Application.get().showNotification("Annotation exported.", 2000);
     }
 
 }

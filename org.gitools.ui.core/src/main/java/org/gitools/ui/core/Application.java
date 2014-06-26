@@ -220,19 +220,32 @@ public class Application extends JFrame implements IApplicationTracking {
         return toolBar;
     }
 
-    public void setStatusText(String text) {
+
+    /**
+     * @param text
+     * @param displayTime miliseconds
+     */
+    public void showNotification(String text, int displayTime) {
         WebNotificationPopup popup = new WebNotificationPopup();
         popup.setIcon(NotificationIcon.clock.getIcon());
         popup.setContent (new WebLabel(text));
-        popup.setDisplayTime(5000);
-        setStatusText(popup);
+        popup.setDisplayTime(displayTime);
+        showNotificationPopup(popup);
     }
 
-    public void setStatusTextPermanent(String text, NotificationOption... options) {
+    /**
+     *
+     * @param text
+     */
+    public void showNotification(String text) {
+        showNotification(text, 4000);
+    }
+
+    public void showNotificationPermanent(String text, NotificationOption... options) {
         NotificationManager.showNotification(text, options);
     }
 
-    public void setStatusText(WebNotificationPopup popup) {
+    public void showNotificationPopup(WebNotificationPopup popup) {
         NotificationManager.showNotification(popup);
     }
 

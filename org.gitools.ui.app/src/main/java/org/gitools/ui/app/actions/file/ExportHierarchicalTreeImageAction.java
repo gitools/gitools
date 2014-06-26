@@ -26,16 +26,16 @@ import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.matrix.FileFormats;
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramPanel;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.editor.EditorsPanel;
 import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import javax.imageio.ImageIO;
@@ -117,7 +117,7 @@ public class ExportHierarchicalTreeImageAction extends AbstractAction {
             }
         });
 
-        Application.get().setStatusText("Image created.");
+        Application.get().showNotification("Image created.", 2000);
     }
 
     @Override

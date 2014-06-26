@@ -29,9 +29,9 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.matrix.filter.FilterByLabelPredicate;
 import org.gitools.matrix.filter.PatternFunction;
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.dialog.filter.StringAnnotationsFilterPage;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -92,6 +92,6 @@ public class FilterByAnnotationsAction extends AbstractAction {
             }
         });
 
-        Application.get().setStatusText("Filter by annotations done.");
+        Application.get().showNotification("Annotations filter applied.");
     }
 }

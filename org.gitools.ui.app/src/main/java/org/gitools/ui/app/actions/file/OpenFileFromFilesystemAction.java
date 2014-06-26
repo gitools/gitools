@@ -78,6 +78,6 @@ public class OpenFileFromFilesystemAction extends AbstractAction {
 
         Settings.get().addRecentFile(fileName);
         Settings.get().save();
-        Application.get().setStatusText("Loaded " + fileName + ".");
+        Application.get().showNotification("Loaded " + fileName + ".");
     }
 }

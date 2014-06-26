@@ -29,13 +29,13 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.core.components.editor.EditorsPanel;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -99,7 +99,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
         final CombinationAnalysis analysis = getModel();
 
         if (analysis.getGroupsMap() == null) {
-            Application.get().setStatusText("Analysis doesn't contain a groups file.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain a groups file.");
             return;
         }
 
@@ -111,7 +111,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
         final CombinationAnalysis analysis = getModel();
 
         if (analysis.getData() == null) {
-            Application.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain data.");
             return;
         }
 
@@ -128,7 +128,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
                         @Override
                         public void run() {
                             editorPanel.addEditor(editor);
-                            Application.get().setStatusText("New heatmap created.");
+                            Application.get().showNotification("Combination data heatmap created.");
                         }
                     });
 
@@ -143,7 +143,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
 
         final CombinationAnalysis analysis = getModel();
         if (analysis.getResults() == null) {
-            Application.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain results.");
             return;
         }
 
@@ -164,7 +164,7 @@ public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysi
                         @Override
                         public void run() {
                             editorPanel.addEditor(editor);
-                            Application.get().setStatusText("Heatmap for combination results created.");
+                            Application.get().showNotification("Heatmap for combination results created.");
                         }
                     });
                 } catch (Exception e) {

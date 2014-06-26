@@ -30,12 +30,12 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.impl.CorrelationDecorator;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.core.components.editor.EditorsPanel;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -89,7 +89,7 @@ public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysi
     private void newDataHeatmap() {
         final CorrelationAnalysis analysis = getModel();
         if (analysis.getData() == null) {
-            Application.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain data.");
             return;
         }
 
@@ -108,7 +108,7 @@ public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysi
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("New heatmap created.");
+                        Application.get().showNotification("Correlation data heatmap created.");
                     }
                 });
             }
@@ -118,7 +118,7 @@ public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysi
     private void newResultsHeatmap() {
         final CorrelationAnalysis analysis = getModel();
         if (analysis.getResults() == null) {
-            Application.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain results.");
             return;
         }
 
@@ -141,7 +141,7 @@ public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysi
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("Heatmap for correlation results created.");
+                        Application.get().showNotification("Heatmap for correlation results created.");
                     }
                 });
             }

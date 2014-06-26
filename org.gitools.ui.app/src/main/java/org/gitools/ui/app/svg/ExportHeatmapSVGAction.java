@@ -104,7 +104,7 @@ public class ExportHeatmapSVGAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText("Image created.");
+        Application.get().showNotification("Image created.", 2000);
     }
 
 

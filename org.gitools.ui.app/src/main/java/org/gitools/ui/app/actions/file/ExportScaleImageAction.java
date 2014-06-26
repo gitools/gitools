@@ -28,12 +28,12 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.matrix.FileFormats;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.scale.ScaleExportWizard;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.colorscale.ColorScaleDrawer;
 import org.gitools.utils.colorscale.IColorScale;
@@ -121,6 +121,6 @@ public class ExportScaleImageAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText("Image created.");
+        Application.get().showNotification("Image created.", 2000);
     }
 }

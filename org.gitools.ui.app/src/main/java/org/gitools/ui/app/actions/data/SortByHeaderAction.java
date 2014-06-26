@@ -27,10 +27,10 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.sort.SortByLabelComparator;
-import org.gitools.ui.core.actions.HeatmapAction;
-import org.gitools.ui.core.HeatmapPosition;
-import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -55,13 +55,15 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
             return;
         }
 
+        String sortedBy = header.isSortAscending() ? ASCENDING.toString() : DESCENDING.toString();
+
+
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 HeatmapDimension dimension = header.getHeatmapDimension();
-
                 dimension.sort(new SortByLabelComparator(
                         header.isSortAscending() ? ASCENDING : DESCENDING,
                         new ToLowerCaseFunction(header.getIdentifierTransform()),
@@ -73,7 +75,7 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
             }
         });
 
-        Application.get().setStatusText("Sort done.");
+        Application.get().showNotification("Annotation sorting applied (" + sortedBy + ")");
     }
 
     @Override

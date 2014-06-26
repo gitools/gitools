@@ -26,9 +26,9 @@ import org.gitools.analysis.Analysis;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -81,8 +81,6 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
                         Application.get().refresh();
                     }
                 });
-
-                Application.get().setStatusText("Ok.");
             }
         });
     }

@@ -30,12 +30,12 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.core.components.editor.EditorsPanel;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -95,7 +95,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
         final GroupComparisonAnalysis analysis = getModel();
 
         if (analysis.getData() == null) {
-            Application.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain data.");
             return;
         }
 
@@ -113,7 +113,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("New heatmap created.");
+                        Application.get().showNotification("Data heatmap created.");
                     }
                 });
             }
@@ -125,7 +125,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
         final GroupComparisonAnalysis analysis = getModel();
 
         if (analysis.getResults() == null) {
-            Application.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain results.");
             return;
         }
 
@@ -145,7 +145,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("Heatmap for group comparison results created.");
+                        Application.get().showNotification("Heatmap for group comparison results created.");
                     }
                 });
             }

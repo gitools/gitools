@@ -140,7 +140,7 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
                 }
             };
             JobThread.execute(Application.get(), loadFile);
-            Application.get().setStatusText("Done.");
+            Application.get().showNotification("Data imported.");
         } else {
             throw new RuntimeException("Premature finish");
         }

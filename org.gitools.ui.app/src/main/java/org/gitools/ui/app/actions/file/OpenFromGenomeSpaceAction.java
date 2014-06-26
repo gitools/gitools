@@ -22,11 +22,11 @@
 package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.lang.StringUtils;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.genomespace.GSFileBrowser;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.json.JSONException;
@@ -60,7 +60,7 @@ public class OpenFromGenomeSpaceAction extends AbstractAction {
             if (!StringUtils.isEmpty(fileURL)) {
                 JobRunnable loadFile = new CommandLoadFile(fileURL);
                 JobThread.execute(Application.get(), loadFile);
-                Application.get().setStatusText("Done.");
+                Application.get().showNotification("File loaded");
             }
 
         } catch (IOException e1) {

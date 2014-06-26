@@ -53,9 +53,10 @@ public class SelectAllAction extends HeatmapAction implements IHeatmapHeaderActi
         if (header != null) {
             HeatmapDimension dimension = header.getHeatmapDimension();
             dimension.selectAll();
+            Application.get().showNotification("Selected all " + dimension.getId().getLabel() + "s");
+
         }
 
-        Application.get().setStatusText("Selected all.");
     }
 
     @Override

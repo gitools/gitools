@@ -53,9 +53,9 @@ public class UnselectAllAction extends HeatmapAction implements IHeatmapHeaderAc
         if (header != null) {
             HeatmapDimension dimension = header.getHeatmapDimension();
             dimension.getSelected().clear();
-        }
+            Application.get().showNotification("Unselected all " + dimension.getId().getLabel() + "s");
 
-        Application.get().setStatusText("Unselected all.");
+        }
     }
 
     @Override

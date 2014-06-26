@@ -25,14 +25,14 @@ import org.apache.commons.lang.ArrayUtils;
 import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.core.actions.HeatmapAction;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.dialog.BookmarkEditPage;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.actions.IPanelAction;
 import org.gitools.ui.core.components.editor.IEditor;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.PageDialog;
 
 import javax.swing.*;
@@ -177,7 +177,7 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
 
                         if (page.isDelete()) {
                             bookmarks.removeBookmark(page.getBookmark());
-                            Application.get().setStatusText("Bookmark " + bookmark.getName() + " removed.");
+                            Application.get().showNotification("Bookmark " + bookmark.getName() + " removed.");
                         } else {
                             bookmarks.removeBookmark(bookmark);
                             bookmarks.add(page.getBookmark());
@@ -186,7 +186,7 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
                     } else {
                         if (!bookmark.equals(NO_OPTION)) {
                             getHeatmap().applyBookmark(bookmark);
-                            Application.get().setStatusText("Bookmark " + bookmark.getName() + " applied.");
+                            Application.get().showNotificationPermanent("Bookmark " + bookmark.getName() + " applied.");
                         }
                     }
 

@@ -96,14 +96,14 @@ public class JumpToNextEventAction extends BaseAction {
             } else {
                 found = true;
                 reset();
-                Application.get().setStatusText("Reached end.");
+                Application.get().showNotification("Last event reached", 3000);
             }
         }
 
         if (position != null) {
             heatmap.getRows().setFocus(position.get(heatmap.getRows()));
             heatmap.getColumns().setFocus(position.get(heatmap.getColumns()));
-            Application.get().setStatusText("Jumped to event " + eventCount);
+            Application.get().showNotification("Jumped to event " + eventCount, 1000);
         }
     }
 

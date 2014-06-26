@@ -22,7 +22,6 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
@@ -54,8 +53,6 @@ public class MoveDownLayerAction extends HeatmapAction implements IHeatmapLayerA
 
         // Fire headers events
         getHeatmap().getLayers().updateLayers();
-
-        Application.get().setStatusText("Move down layer '" + layer.getName() + "'");
     }
 
     private int getHeaderCurrentIndex() {

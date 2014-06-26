@@ -23,7 +23,6 @@ package org.gitools.ui.app.actions.data;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.commands.DetectCategoriesCommand;
-import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -47,7 +46,6 @@ public class DetectCategoriesAction extends HeatmapAction {
 
         JobThread.execute(getParentWindow(), new DetectCategoriesCommand(heatmap));
 
-        Application.get().setStatusText("Sort done.");
     }
 
 

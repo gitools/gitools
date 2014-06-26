@@ -66,7 +66,7 @@ public class SortByAnnotationAction extends HeatmapDimensionAction {
             }
         });
 
-        Application.get().setStatusText("Sort done.");
+        Application.get().showNotification("Annotation sorting applied");
     }
 
 }

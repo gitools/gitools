@@ -126,17 +126,18 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
         final T analysis = getModel();
 
         if (analysis.getModuleMap() == null) {
-            Application.get().setStatusText("Analysis doesn't contain a groups file.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain a groups (modules) file.");
             return;
         }
 
         JobThread.execute(Application.get(), new CommandLoadFile(analysis.getModuleMap()));
+        Application.get().showNotificationPermanent("Heatmap from module files created");
     }
 
     protected void newDataHeatmap() {
         final T analysis = getModel();
         if (analysis.getData() == null) {
-            Application.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain data.");
             return;
         }
 
@@ -153,7 +154,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
                     public void run() {
                         editorPanel.addEditor(editor);
                         editor.setName(analysis.getTitle() + "-data");
-                        Application.get().setStatusText("New heatmap created.");
+                        Application.get().showNotification("Heatmap from data created.");
                     }
                 });
             }
@@ -163,7 +164,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
     protected void newResultsHeatmap() {
         final T analysis = getModel();
         if (analysis.getResults() == null) {
-            Application.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain results.");
             return;
         }
 
@@ -178,7 +179,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("Heatmap results created.");
+                        Application.get().showNotification("Heatmap results created.");
                     }
                 });
             }

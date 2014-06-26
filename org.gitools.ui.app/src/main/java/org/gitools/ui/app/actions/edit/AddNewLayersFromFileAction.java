@@ -67,6 +67,7 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
     };
 
     public static FileFormatFilter[] FILE_FORMAT_FILTERS;
+
     static {
 
         List<FileFormatFilter> filters = new ArrayList<>();
@@ -98,7 +99,7 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
 
     @Override
     public boolean isEnabledByModel(Object model) {
-        return (model instanceof Heatmap) && (((Heatmap)model).getContents() instanceof HashMatrix);
+        return (model instanceof Heatmap) && (((Heatmap) model).getContents() instanceof HashMatrix);
     }
 
     @Override
@@ -152,7 +153,7 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
             }
         };
         JobThread.execute(Application.get(), loadFile);
-        Application.get().setStatusText("Done.");
+        Application.get().showNotification("New data layer added");
     }
 
     private static void copyLayerValues(IMatrix fromMatrix, IMatrixLayer fromLayer, IMatrix toMatrix, IMatrixLayer toLayer) {

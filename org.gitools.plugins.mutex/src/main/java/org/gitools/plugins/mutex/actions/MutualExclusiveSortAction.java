@@ -140,7 +140,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                 }
             }
         });
-        Application.get().setStatusText("Sorted.");
+        Application.get().showNotification("Mutual exclusive sorting applied.");
     }
 
     private void prepareAnalysis(MutualExclusiveAnalysis analysis, IMatrixDimension testDimension, ArrayList<String> selected, Heatmap hm) {

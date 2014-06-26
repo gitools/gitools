@@ -40,11 +40,11 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.sort.SortByLabelComparator;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.analysis.clustering.ClusteringWizard;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramEditor;
 import org.gitools.ui.app.commands.CommandAddHeaderColoredLabels;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -80,25 +80,25 @@ public class ClusteringAction extends HeatmapAction {
             @Override
             public void run(IProgressMonitor monitor) {
 
-                    // Cluster data
-                    Clusters results = method.cluster(wiz.getClusterData(), monitor);
+                // Cluster data
+                Clusters results = method.cluster(wiz.getClusterData(), monitor);
 
-                    // Target dimension
-                    HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
+                // Target dimension
+                HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
 
-                    // Annotations
-                    AnnotationMatrix annotationMatrix = clusteringDimension.getAnnotations();
+                // Annotations
+                AnnotationMatrix annotationMatrix = clusteringDimension.getAnnotations();
 
-                    if (method instanceof HierarchicalMethod) {
-                        processHierarchical(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method, heatmap);
+                if (method instanceof HierarchicalMethod) {
+                    processHierarchical(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method, heatmap);
 
-                    } else {
-                        processKMeans(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method, heatmap);
-                    }
+                } else {
+                    processKMeans(results, clusteringDimension, annotationMatrix, wiz.getClusteringLayer(), method, heatmap);
+                }
             }
         });
 
-        Application.get().setStatusText("Clusters created");
+        Application.get().showNotificationPermanent("Clusters and bookmarks created and applied");
     }
 
     private static void processKMeans(Clusters results, HeatmapDimension clusteringDimension, AnnotationMatrix annotationMatrix, String layerId, ClusteringMethod method, Heatmap heatmap) {
@@ -140,7 +140,7 @@ public class ClusteringAction extends HeatmapAction {
         rootCluster.setName("");
 
         Map<Integer, List<HierarchicalCluster>> clustersMapPerLevel = new HashMap<>();
-        int maxLevel=0;
+        int maxLevel = 0;
         while (maxLevel < 15) {
             maxLevel++;
 
@@ -233,7 +233,7 @@ public class ClusteringAction extends HeatmapAction {
 
             String clusterName = annotations.getAnnotation(identifier, prefix + level);
 
-            for (int l = level - 1; l>=1 && clusterName==null; l--) {
+            for (int l = level - 1; l >= 1 && clusterName == null; l--) {
                 clusterName = annotations.getAnnotation(identifier, prefix + l);
             }
 

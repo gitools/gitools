@@ -31,12 +31,12 @@ import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.impl.LinearDecorator;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.core.components.editor.EditorsPanel;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -94,7 +94,7 @@ public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysi
     private void newDataHeatmap() {
         final OverlappingAnalysis analysis = getModel();
         if (analysis.getSourceData() == null) {
-            Application.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain data.");
             return;
         }
 
@@ -110,7 +110,7 @@ public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysi
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("New heatmap created.");
+                        Application.get().showNotification("Heatmap from data created.");
                     }
                 });
             }
@@ -120,7 +120,7 @@ public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysi
     private void newResultsHeatmap() {
         final OverlappingAnalysis analysis = getModel();
         if (analysis.getCellResults() == null) {
-            Application.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain results.");
             return;
         }
 
@@ -143,7 +143,7 @@ public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysi
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("Heatmap for results created.");
+                        Application.get().showNotification("Heatmap for results created.");
                     }
                 });
             }

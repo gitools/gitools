@@ -39,7 +39,6 @@ import org.gitools.ui.platform.wizard.PageDialog;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
-import java.util.Collection;
 
 import static com.google.common.collect.Collections2.filter;
 
@@ -89,7 +88,7 @@ public class SortByPredefinedListAction extends AbstractAction {
                 ArrayList<String> newOrder = new ArrayList<>();
 
                 for (String input : page.getValues()) {
-                    for (String output :  filter(heatmapDimension.toList(), new FilterByLabelPredicate(
+                    for (String output : filter(heatmapDimension.toList(), new FilterByLabelPredicate(
                             patternFunction,
                             Sets.newHashSet(input),
                             page.isUseRegexChecked()))) {
@@ -105,6 +104,6 @@ public class SortByPredefinedListAction extends AbstractAction {
             }
         });
 
-        Application.get().setStatusText("Sort by predefined list done.");
+        Application.get().showNotification("Sorting by predefined list applied.");
     }
 }

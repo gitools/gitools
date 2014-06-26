@@ -68,7 +68,7 @@ public class InvertOrderAction extends HeatmapAction implements IHeatmapHeaderAc
             }
         });
 
-        Application.get().setStatusText("Sort done.");
+        Application.get().showNotification("Inverted order of " + header.getHeatmapDimension().getId().getLabel() + "s");
     }
 
     @Override

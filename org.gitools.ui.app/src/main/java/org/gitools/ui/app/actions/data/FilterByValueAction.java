@@ -92,6 +92,6 @@ public class FilterByValueAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText("Filter applied.");
+        Application.get().showNotification("Value filter applied.");
     }
 }

@@ -26,13 +26,13 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.FileFormats;
-import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.app.heatmap.drawer.HeatmapDrawer;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import javax.imageio.ImageIO;
@@ -103,7 +103,7 @@ public class ExportHeatmapImageAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText("Image created.");
+        Application.get().showNotification("Image created.", 2000);
     }
 
 

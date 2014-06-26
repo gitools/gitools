@@ -25,7 +25,6 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
-import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 
@@ -54,8 +53,6 @@ public class MoveDownHeaderAction extends HeatmapDimensionAction implements IHea
 
         // Fire headers events
         getDimension().updateHeaders();
-
-        Application.get().setStatusText("Move down header '" + header.getTitle() + "'");
     }
 
     private int getHeaderCurrentIndex() {

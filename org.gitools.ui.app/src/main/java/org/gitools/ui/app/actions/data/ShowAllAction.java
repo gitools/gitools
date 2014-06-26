@@ -23,9 +23,9 @@ package org.gitools.ui.app.actions.data;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 
@@ -48,7 +48,7 @@ public class ShowAllAction extends HeatmapDimensionAction {
 
         dimension.showAll();
 
-        Application.get().setStatusText(dimension + " " + getDimensionLabel());
+        Application.get().showNotification("All " + getDimensionLabel() + "s shown in original order");
 
     }
 }

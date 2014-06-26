@@ -29,11 +29,11 @@ import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.MatrixViewSorter;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
-import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -94,7 +94,7 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
             }
         });
 
-        Application.get().setStatusText("Sorted.");
+        Application.get().showNotification(getDimension().getId().getLabel() + "s sorted (" + sort.toString() + ")");
     }
 
     @Override
@@ -109,11 +109,11 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
 
         int otherSize = otherDimension.getSelected().size();
         String dimCount = (otherSize > 0 ?
-                Integer.toString(otherSize) + " " + dimension.getLabel() + (otherSize > 1 ? "s" : ""):
+                Integer.toString(otherSize) + " " + dimension.getLabel() + (otherSize > 1 ? "s" : "") :
                 "all " + dimension.getLabel() + "s"
         );
 
-        setName("<html><i>Sort</i> " + dimCount + " " + currentSort.toString().substring(0,3).toLowerCase() + ". by " + selected + " '" + layer + "'</html>");
+        setName("<html><i>Sort</i> " + dimCount + " " + currentSort.toString().substring(0, 3).toLowerCase() + ". by " + selected + " '" + layer + "'</html>");
 
     }
 }
