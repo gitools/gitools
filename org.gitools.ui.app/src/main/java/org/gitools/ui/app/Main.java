@@ -28,6 +28,7 @@ import com.alee.laf.checkbox.WebCheckBoxStyle;
 import com.alee.laf.label.WebLabel;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.progressbar.WebProgressBar;
+import com.alee.managers.notification.NotificationManager;
 import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.heatmap.plugins.PluginManager;
@@ -69,6 +70,7 @@ public class Main {
         // Initialize look and feel
         WebLookAndFeel.install();
         WebLookAndFeel.initializeManagers();
+        NotificationManager.setLocation(NotificationManager.NORTH_EAST);
         WebCheckBoxStyle.animated = false;
 
         // Splash screen , loading dialog

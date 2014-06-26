@@ -21,6 +21,11 @@
  */
 package org.gitools.ui.core;
 
+import com.alee.laf.label.WebLabel;
+import com.alee.managers.notification.NotificationIcon;
+import com.alee.managers.notification.NotificationManager;
+import com.alee.managers.notification.NotificationOption;
+import com.alee.managers.notification.WebNotificationPopup;
 import com.brsanthu.googleanalytics.EventHit;
 import com.brsanthu.googleanalytics.ExceptionHit;
 import com.brsanthu.googleanalytics.GoogleAnalytics;
@@ -216,8 +221,19 @@ public class Application extends JFrame implements IApplicationTracking {
     }
 
     public void setStatusText(String text) {
-        statusBar.setText(text);
-        repaint();
+        WebNotificationPopup popup = new WebNotificationPopup();
+        popup.setIcon ( NotificationIcon.information.getIcon () );
+        popup.setContent (new WebLabel(text));
+        popup.setDisplayTime(3000);
+        setStatusText(popup);
+    }
+
+    public void setStatusTextPermanent(String text, NotificationOption... options) {
+        NotificationManager.showNotification(text, options);
+    }
+
+    public void setStatusText(WebNotificationPopup popup) {
+        NotificationManager.showNotification(popup);
     }
 
     public void refresh() {
