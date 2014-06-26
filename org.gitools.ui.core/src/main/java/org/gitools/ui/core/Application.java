@@ -222,9 +222,9 @@ public class Application extends JFrame implements IApplicationTracking {
 
     public void setStatusText(String text) {
         WebNotificationPopup popup = new WebNotificationPopup();
-        popup.setIcon ( NotificationIcon.information.getIcon () );
+        popup.setIcon(NotificationIcon.clock.getIcon());
         popup.setContent (new WebLabel(text));
-        popup.setDisplayTime(3000);
+        popup.setDisplayTime(5000);
         setStatusText(popup);
     }
 

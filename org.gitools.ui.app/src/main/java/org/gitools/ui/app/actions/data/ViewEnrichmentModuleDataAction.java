@@ -87,7 +87,7 @@ public class ViewEnrichmentModuleDataAction extends HeatmapAction implements IHe
                 }
                 Heatmap dataHeatmap = heatmapEditor.getModel();
                 dataHeatmap.getRows().show(moduleItems);
-                Application.get().setStatusText("Module '" + moduleId + "' shown.");
+                Application.get().setStatusTextPermanent("Module '" + moduleId + "' shown.");
             }
         });
 
