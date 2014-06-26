@@ -26,6 +26,7 @@ import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
+import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -34,6 +35,7 @@ import org.gitools.utils.formatter.HeatmapTextFormatter;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MutualExclusiveResultPage extends AbstractWizardPage {
@@ -56,6 +58,8 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
     private MutualExclusiveBookmark bookmark;
     private MutualExclusiveResult result;
     boolean creating;
+    private Heatmap heatmap;
+    private String oldName;
 
     public Bookmark getBookmark() {
         return bookmark;
@@ -64,9 +68,11 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
 
     public MutualExclusiveResultPage(Heatmap heatmap, MutualExclusiveBookmark bookmark) {
         super();
+        this.heatmap = heatmap;
         this.setTitle("Mutual Exclusive result");
         this.result = bookmark.getResult();
         this.bookmark = bookmark;
+        this.oldName = bookmark.getName();
 
         if (bookmark.getDescription().equals("")) {
             StringBuilder sb = new StringBuilder("Sorted and tested:\n");
@@ -80,7 +86,12 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
 
         setMessage(MessageStatus.INFO, "Choose a name for the Bookmark");
 
+
         //BOOKMARK NAME
+
+        forbiddenNames = new ArrayList<>();
+        forbiddenNames.add("Mutex result");
+        forbiddenNames.add("");
         nameField.setText(bookmark.getName());
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -146,7 +157,7 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
             return;
         }
         if (!uniqueName()) {
-            setMessage(MessageStatus.ERROR, "There is already an item with this name");
+            setMessage(MessageStatus.WARN, "Please choose a unique name for the result or click cancel to discard");
             setComplete(false);
             return;
         } else {
@@ -190,13 +201,13 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
     }
 
     private boolean uniqueName() {
-/*        for (Bookmark b : existingBookmarks.getAll()) {
-            if (oldName != null && !oldName.equals(bookmark.getName()) && b.getName().equals(bookmark.getName())) {
+        MutualExclusivePlugin mutualExclusivePlugin = (MutualExclusivePlugin) heatmap.getPluggedBoxes().get(MutualExclusivePlugin.NAME);
+        for (String s : mutualExclusivePlugin.getKeys()) {
+            if (oldName != null && !oldName.toLowerCase().equals(bookmark.getName().toLowerCase()) && s.toLowerCase().equals(bookmark.getName().toLowerCase())) {
                 return false;
             }
-        }*/
-        //return (!forbiddenNames.contains(bookmark.getName()));
-        return true;
+        }
+        return (!forbiddenNames.contains(bookmark.getName()));
     }
 
     @Override
