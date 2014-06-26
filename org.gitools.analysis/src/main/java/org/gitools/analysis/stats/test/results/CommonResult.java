@@ -50,7 +50,7 @@ public abstract class CommonResult extends SimpleResult implements Serializable 
         N = n;
     }
 
-    @LayerDef(id = "left-p-value", name = "Left P-Value", description = "P-Value for alternative hipothesis lower than")
+    @LayerDef(id = "left-p-value", name = "Left P-Value", description = "P-Value for alternative hipothesis 'lower than'")
     public double getLeftPvalue() {
         return leftPvalue;
     }
@@ -59,7 +59,7 @@ public abstract class CommonResult extends SimpleResult implements Serializable 
         this.leftPvalue = leftPvalue;
     }
 
-    @LayerDef(id = "right-p-value", name = "Right P-Value", description = "P-Value for alternative hipothesis greater than")
+    @LayerDef(id = "right-p-value", name = "Right P-Value", description = "P-Value for alternative hipothesis 'greater than'")
     public double getRightPvalue() {
         return rightPvalue;
     }
@@ -68,7 +68,7 @@ public abstract class CommonResult extends SimpleResult implements Serializable 
         this.rightPvalue = rightPvalue;
     }
 
-    @LayerDef(id = "corrected-left-p-value", name = "Corrected left P-Value", description = "Corrected P-Value for alternative hipothesis lower than")
+    @LayerDef(id = "corrected-left-p-value", name = "Corrected left P-Value", description = "Corrected P-Value for alternative hipothesis 'lower than'")
     public double getCorrLeftPvalue() {
         return corrLeftPvalue;
     }
@@ -77,7 +77,7 @@ public abstract class CommonResult extends SimpleResult implements Serializable 
         this.corrLeftPvalue = corrLeftPvalue;
     }
 
-    @LayerDef(id = "corrected-right-p-value", name = "Corrected right P-Value", description = "Corrected P-Value for alternative hipothesis greater than")
+    @LayerDef(id = "corrected-right-p-value", name = "Corrected right P-Value", description = "Corrected P-Value for alternative hipothesis 'greater than'")
     public double getCorrRightPvalue() {
         return corrRightPvalue;
     }

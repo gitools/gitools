@@ -28,6 +28,8 @@ public class GroupComparisonResult extends CommonResult {
 
     private int N_group1;
     private int N_group2;
+    private double mean1;
+    private double mean2;
     private double U1;
     private double U2;
     private double pValueLogSum;
@@ -36,11 +38,16 @@ public class GroupComparisonResult extends CommonResult {
         super(0, 0.0, 0.0, 0.0);
     }
 
-    public GroupComparisonResult(int N, int N_group1, int N_group2, double leftPvalue, double rightPvalue, double twoTailPvalue, double U1, double U2) {
+    public GroupComparisonResult(int N, int N_group1, int N_group2,
+                                 double leftPvalue, double rightPvalue, double twoTailPvalue,
+                                 double mean1, double mean2,
+                                 double U1, double U2) {
 
         super(N, leftPvalue, rightPvalue, twoTailPvalue);
         this.N_group1 = N_group1;
         this.N_group2 = N_group2;
+        this.mean1 = mean1;
+        this.mean2 = mean2;
         this.U1 = U1;
         this.U2 = U2;
         pValueLogSum = Math.log10(leftPvalue) - Math.log10(rightPvalue);
@@ -72,6 +79,24 @@ public class GroupComparisonResult extends CommonResult {
 
     public void setpValueLogSum(double pValueLogSum) {
         this.pValueLogSum = pValueLogSum;
+    }
+
+    @LayerDef(id = "mean-group1", name = "Mean Group 1", description = "Mean of elements in group 1")
+    public double getMean1() {
+        return mean1;
+    }
+
+    public void setMean1(double mean1) {
+        this.mean1 = mean1;
+    }
+
+    @LayerDef(id = "mean-group2", name = "Mean Group 2", description = "Mean of elements in group 2")
+    public double getMean2() {
+        return mean2;
+    }
+
+    public void setMean2(double mean2) {
+        this.mean2 = mean2;
     }
 
 

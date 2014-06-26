@@ -25,27 +25,44 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.IMatrixPredicate;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
+import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+@XmlAccessorType(XmlAccessType.FIELD)
 public class ValueFilterFunction implements IMatrixPredicate<Double> {
 
-    protected IMatrixLayer layer;
+    protected String layerId;
+
+    @XmlJavaTypeAdapter(CutoffCmpXmlAdapter.class)
     protected CutoffCmp comparator;
+
     protected Double cutoffValue;
     protected Double nullConversion;
 
+    public ValueFilterFunction() {
+        //JAXB requirement
+    }
+
     public ValueFilterFunction(IMatrixLayer layer, CutoffCmp comparator, Double cutoffValue, Double nullConversion) {
-        this.layer = layer;
+        this.layerId = layer.getId();
         this.comparator = comparator;
         this.cutoffValue = cutoffValue;
         this.nullConversion = nullConversion;
     }
 
-    public IMatrixLayer getLayer() {
-        return layer;
+    public String getLayerId() {
+        return layerId;
     }
 
     public void setLayer(IMatrixLayer layer) {
-        this.layer = layer;
+        this.layerId = layer.getId();
+    }
+
+    public void setLayer(String layerId) {
+        this.layerId = layerId;
     }
 
     public CutoffCmp getComparator() {
@@ -66,7 +83,7 @@ public class ValueFilterFunction implements IMatrixPredicate<Double> {
 
     @Override
     public String toString() {
-        return layer.getId() + " " + comparator.toString() + " " + cutoffValue;
+        return layerId + " " + comparator.toString() + " " + cutoffValue;
     }
 
     public Double getNullConversion() {
@@ -88,7 +105,7 @@ public class ValueFilterFunction implements IMatrixPredicate<Double> {
             }
         }
 
-        return  comparator.compare(value, cutoffValue);
+        return comparator.compare(value, cutoffValue);
 
     }
 }

@@ -31,10 +31,10 @@ import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.resource.Property;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.IWizardPage;
 import org.gitools.utils.CloneUtils;
 
@@ -143,6 +143,7 @@ public class GroupComparisonAnalysisWizard extends AnalysisWizard<GroupCompariso
      */
     private void updateAnalysisDetails() {
         List<Property> analysisAttributes = new ArrayList<>();
+        analysisAttributes.add(new Property("Data layer", createAnalysis().getLayerName()));
         analysisAttributes.add(new Property("Grouping type", groupingPage.getGroupingType().toString()));
 
         String title = "Group Comparison";

@@ -203,7 +203,7 @@ public class ValueFilterPage extends AbstractWizardPage {
         sb.append("<ul>");
         for (ValueFilterFunction c : getCriteriaList()) {
             sb.append("<li>");
-            sb.append(c.getLayer().getId());
+            sb.append(c.getLayerId());
             sb.append(" ");
             sb.append(c.getComparator().getLongName());
             sb.append(" ");

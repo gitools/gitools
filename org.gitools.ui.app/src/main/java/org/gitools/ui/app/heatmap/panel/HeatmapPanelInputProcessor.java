@@ -25,6 +25,7 @@ import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.event.KeyEvent;
@@ -228,6 +229,8 @@ public class HeatmapPanelInputProcessor {
         Set<String> cols = mv.getColumns().getSelected();
 
         hideSelected(rows, cols);
+
+        Application.get().showNotification("Selected items hidden");
 
     }
 

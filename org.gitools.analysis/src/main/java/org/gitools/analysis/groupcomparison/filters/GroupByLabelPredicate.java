@@ -25,24 +25,35 @@ import com.google.common.base.Function;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.IMatrixPredicate;
+import org.gitools.api.matrix.MatrixDimensionKey;
 
+import javax.xml.bind.annotation.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GroupByLabelPredicate implements IMatrixPredicate<Double> {
 
-    private IMatrixDimension dimension;
+    private MatrixDimensionKey dimensionKey;
+
+    @XmlElementWrapper
+    @XmlElement(name = "id")
     private Set<String> groupIdentifiers;
 
+    public GroupByLabelPredicate() {
+        //JAXB requirement
+    }
+
     public GroupByLabelPredicate(IMatrixDimension dimension, Set<String> identifiers) {
-        this.dimension = dimension;
+        this.dimensionKey = dimension.getId();
         this.groupIdentifiers = identifiers;
     }
 
     public GroupByLabelPredicate(IMatrixDimension dimension, String groupAnnotation, Function<String, String> dimensionFunction) {
         groupIdentifiers = new HashSet<>();
-        this.dimension = dimension;
+        this.dimensionKey = dimension.getId();
         for (String identifier : dimension) {
             if (Objects.equals(dimensionFunction.apply(identifier), groupAnnotation)) {
                 groupIdentifiers.add(identifier);
@@ -51,7 +62,7 @@ public class GroupByLabelPredicate implements IMatrixPredicate<Double> {
     }
 
     public boolean apply(Double value, IMatrixPosition position) {
-        return groupIdentifiers.contains(position.get(dimension));
+        return groupIdentifiers.contains(position.get(dimensionKey));
     }
 
     public Set<String> getGroupIdentifiers() {

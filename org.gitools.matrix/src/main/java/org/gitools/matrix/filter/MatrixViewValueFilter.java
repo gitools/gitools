@@ -24,6 +24,7 @@ package org.gitools.matrix.filter;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Sets;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
@@ -70,7 +71,8 @@ public class MatrixViewValueFilter {
 
                 for (ValueFilterFunction criteria : criteriaList) {
 
-                    double value = MatrixUtils.doubleValue(matrixView.get(criteria.getLayer(), position));
+                    IMatrixLayer layer = matrixView.getLayers().get(criteria.getLayerId());
+                    double value = MatrixUtils.doubleValue(matrixView.get(layer, position));
                     boolean critRes = criteria.getComparator().compare(value, criteria.getCutoffValue());
                     critAnd &= critRes;
                     critOr |= critRes;

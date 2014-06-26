@@ -87,7 +87,7 @@ class ValueFilterCriteriaTableModel implements TableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         switch (columnIndex) {
             case 0:
-                return criteriaList.get(rowIndex).getLayer().getId();
+                return criteriaList.get(rowIndex).getLayerId();
             case 1:
                 return criteriaList.get(rowIndex).getComparator();
             case 2:

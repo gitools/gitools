@@ -93,7 +93,7 @@ class DataIntegrationCriteriaTableModel implements TableModel {
             case 0:
                 return criteriaList.get(rowIndex).getOperator();
             case 1:
-                return criteriaList.get(rowIndex).getLayer().getId();
+                return criteriaList.get(rowIndex).getLayerId();
             case 2:
                 return criteriaList.get(rowIndex).getComparator();
             case 3:

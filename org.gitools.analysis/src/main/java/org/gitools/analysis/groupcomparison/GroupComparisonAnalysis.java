@@ -31,10 +31,7 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -61,6 +58,8 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     @XmlTransient
     private boolean copyAnnotation = false;
 
+    @XmlElementWrapper()
+    @XmlElement(name = "group")
     private List<DimensionGroup> groups;
 
     private ToolConfig testConfig;

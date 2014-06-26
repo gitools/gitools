@@ -26,6 +26,7 @@ import com.google.common.primitives.Doubles;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.exception.ConvergenceException;
 import org.apache.commons.math3.exception.MaxCountExceededException;
+import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.ranking.NaNStrategy;
 import org.apache.commons.math3.stat.ranking.NaturalRanking;
 import org.apache.commons.math3.stat.ranking.TiesStrategy;
@@ -54,6 +55,9 @@ public class MannWhitneyWilcoxonTest extends AbstractEnrichmentTest {
 
         final double[] z = concatenateSamples(x, y);
         final double[] ranks = naturalRanking.rank(z);
+
+        double mean1 = StatUtils.mean(x);
+        double mean2 = StatUtils.mean(y);
 
         double sumRankX = 0;
 
@@ -88,12 +92,12 @@ public class MannWhitneyWilcoxonTest extends AbstractEnrichmentTest {
         double rightTail = firstGreater ? oneTail : 1 - oneTail;
         double twoTail = 2 * oneTail;
 
-        return new GroupComparisonResult(x.length + y.length, x.length, y.length, leftTail, rightTail, twoTail, U1, U2);
+        return new GroupComparisonResult(x.length + y.length, x.length, y.length, leftTail, rightTail, twoTail, mean1, mean2, U1, U2);
 
     }
 
     public static GroupComparisonResult getNullResult(int n, int n1, int n2) {
-        return new GroupComparisonResult(n, n1, n2, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN);
+        return new GroupComparisonResult(n, n1, n2, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN, Double.NaN);
     }
 
     /**
