@@ -51,14 +51,7 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
         }
 
         final HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
-        if (annotationValue.equals("")) {
-            dimension.show(new Predicate<String>() {
-                @Override
-                public boolean apply(String input) {
-                    return !isNullOrEmpty(coloredHeader.getIdentifierTransform().apply(input));
-                }
-            });
-        } else {
+
             dimension.show(new Predicate<String>() {
                 @Override
                 public boolean apply(String input) {
@@ -66,7 +59,6 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
                     return !(value != null && value.equals(annotationValue));
                 }
             });
-        }
 
     }
 
