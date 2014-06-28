@@ -61,13 +61,33 @@ public class GroupSelectionAction extends HeatmapDimensionAction implements IHea
         List<String> selected = newArrayList(dimension.getSelected());
         List<String> notSelected = newArrayList(filter(dimension, not(in(dimension.getSelected()))));
 
-        int split = dimension.indexOf(identifier) - selected.indexOf(identifier);
+        int split = dimension.indexOf(identifier) - selected.indexOf(identifier) - 1;
+        if (split < 0) {
+            split = 0;
+        }
+
+        int selectedAfterSplit = 0;
+        int selectedBeforeSplit = 0;
+        for (String s : selected) {
+            if (dimension.indexOf(s) > split) {
+                selectedAfterSplit++;
+            } else {
+                selectedBeforeSplit++;
+            }
+        }
+
+        if (selectedBeforeSplit > 0) {
+            //group after selected index:
+            split++;
+        }
+
+
 
         List<String> newOrder = newArrayList(
                 concat(
-                        notSelected.subList(0, split),
+                        notSelected.subList(0, split - selectedBeforeSplit),
                         selected,
-                        notSelected.subList(split, notSelected.size())
+                        notSelected.subList(split - selectedBeforeSplit, notSelected.size())
                 ));
 
         dimension.show(newOrder);
