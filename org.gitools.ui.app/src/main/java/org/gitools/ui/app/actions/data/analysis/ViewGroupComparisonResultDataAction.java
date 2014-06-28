@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.actions.data;
+package org.gitools.ui.app.actions.data.analysis;
 
 import org.apache.commons.lang.StringUtils;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
