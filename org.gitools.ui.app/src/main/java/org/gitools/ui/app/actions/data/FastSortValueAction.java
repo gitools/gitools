@@ -90,24 +90,21 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
 
                 monitor.begin("Sorting ...", 1);
                 MatrixViewSorter.sortByValue(heatmap, criteriaArray, getDimension().getId() == ROWS, getDimension().getId() != ROWS, monitor);
+                Application.get().showNotification(getDimension().getId().getLabel() + "s sorted (" + sort.toString() + ")");
 
             }
         });
 
-        Application.get().showNotification(getDimension().getId().getLabel() + "s sorted (" + sort.toString() + ")");
     }
 
     @Override
     public void onConfigure(HeatmapDimension sortDimension, HeatmapPosition position) {
 
-        Heatmap heatmap = getHeatmap();
-        HeatmapDimension otherDimension = heatmap.getRows() == sortDimension ? heatmap.getColumns() : heatmap.getRows();
-
         String layer = getHeatmap().getLayers().getTopLayer().getName();
 
         String selected = (sortDimension.getSelected().size() > 0 ? "selected " : "aggregated ");
 
-        int otherSize = otherDimension.getSelected().size();
+        int otherSize = sortDimension.getSelected().size();
         String dimCount = (otherSize > 0 ?
                 Integer.toString(otherSize) + " " + dimension.getLabel() + (otherSize > 1 ? "s" : "") :
                 "all " + dimension.getLabel() + "s"

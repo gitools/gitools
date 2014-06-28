@@ -66,7 +66,7 @@ public class PopupMenuActions {
 
                 new PopupSectionTitleAction("Sorting"),
                 BaseAction.separator,
-                new FastSortValueAction(dimensionKey == MatrixDimensionKey.COLUMNS ? MatrixDimensionKey.ROWS : MatrixDimensionKey.COLUMNS),
+                new FastSortValueAction(dimensionKey == MatrixDimensionKey.ROWS ? MatrixDimensionKey.ROWS : MatrixDimensionKey.COLUMNS),
                 Actions.sortByHeader,
                 Actions.invertOrder,
 
