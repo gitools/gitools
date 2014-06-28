@@ -40,8 +40,15 @@ public class AggregationSortByValueComparator implements Comparator<String> {
 
     private MatrixLayers<IMatrixLayer<Double>> aggregationLayers;
     private IMatrix aggregationMatrix;
+    private final IMatrixDimension sortDimension;
+    private Set sortIdentifiers;
+    private final int firstPosition;
 
-    public AggregationSortByValueComparator(IMatrix matrix, IMatrixDimension sortDimension, Set<String> sortIdentifiers, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers, IProgressMonitor progressMonitor, Iterable<IMatrixLayer<Double>> layers) {
+    public AggregationSortByValueComparator(IMatrix matrix, IMatrixDimension sortDimension, Set<String> sortIdentifiers, int firstPosition, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers, IProgressMonitor progressMonitor, Iterable<IMatrixLayer<Double>> layers) {
+        this.sortDimension = sortDimension;
+
+        this.sortIdentifiers = sortIdentifiers;
+        this.firstPosition = firstPosition;
 
         aggregationLayers = new MatrixLayers<>(layers);
         aggregationMatrix = new HashMatrix(
@@ -76,6 +83,27 @@ public class AggregationSortByValueComparator implements Comparator<String> {
     @Override
     public int compare(String idx1, String idx2) {
 
+        // 1. If idx1 or idx2 is not in aggregationMatrix compare position
+        boolean before1 = sortDimension.indexOf(idx1) < firstPosition;
+        boolean before2 = sortDimension.indexOf(idx2) < firstPosition;
+
+        if (!sortIdentifiers.contains(idx1) && !sortIdentifiers.contains(idx2)) {
+            if (before1 != before2) {
+                return before1 ? -1 : 1;
+            } else {
+                return 0;
+            }
+        } else if (!sortIdentifiers.contains(idx1)) {
+            return before1 ? -1 : 1;
+        }
+        else if (!sortIdentifiers.contains(idx2)) {
+            return before2 ? 1 : -1;
+        }
+
+
+
+
+        // 2. Compare all layers of aggregated items
         for (IMatrixLayer<Double> layer : aggregationLayers) {
 
             int compare = layer.getSortDirection().compare(

@@ -27,8 +27,10 @@ import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.matrix.filter.PatternFunction;
+import org.gitools.matrix.sort.AggregationFunction;
 import org.gitools.matrix.sort.AggregationSortByValueComparator;
 import org.gitools.matrix.sort.SortByLabelComparator;
+import org.gitools.utils.aggregation.MinAggregator;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import java.util.Set;
@@ -53,6 +55,21 @@ public abstract class MatrixViewSorter {
         }
     }
 
+    private static int firstSortedPosition(IMatrixViewDimension sortDimension) {
+        int firstPosition = -1;
+        if (sortDimension.getSelected().size() > 0) {
+            for (String id : sortDimension.getSelected()) {
+                int pos  = sortDimension.indexOf(id);
+                if (firstPosition < 0 || pos < firstPosition) {
+                    firstPosition = pos;
+                }
+            }
+        } else {
+            firstPosition = 0;
+        }
+        return firstPosition;
+    }
+
     private static void sortByValue(final IMatrixView matrixView,
                                     final IMatrixViewDimension sortDimension, Set<String> sortSelection,
                                     final IMatrixViewDimension aggregationDimension, Set<String> aggregationSelection,
@@ -60,11 +77,12 @@ public abstract class MatrixViewSorter {
                                     final IProgressMonitor progressMonitor
     ) {
 
-
+        int firstPosition = firstSortedPosition(sortDimension);
         sortDimension.sort(new AggregationSortByValueComparator(
                 matrixView,
                 sortDimension,
                 sortSelection,
+                firstPosition,
                 aggregationDimension,
                 aggregationSelection,
                 progressMonitor,

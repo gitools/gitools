@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.data.*;
+import org.gitools.ui.app.actions.data.analysis.ViewGroupComparisonResultDataAction;
 import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.BaseAction;
