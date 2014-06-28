@@ -125,7 +125,7 @@ public class ClusteringAction extends HeatmapAction {
         clusteringDimension.addHeader(header);
 
         // Sort the header
-        clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), false));
+        clusteringDimension.sort(new SortByLabelComparator(clusteringDimension, SortDirection.ASCENDING, new PatternFunction(sortLabel, clusteringDimension.getAnnotations()), -1, false));
 
         // Bookmark current sort
         addBookmarkKMeans(clusteringDimension, layerId, heatmap, (KMeansPlusPlusMethod) method);
@@ -182,7 +182,7 @@ public class ClusteringAction extends HeatmapAction {
             header.setSize(7);
             header.setAnnotationPattern("${" + annotationPrefix + l + "}");
             clusteringDimension.addHeader(header);
-            clusteringDimension.sort(new SortByLabelComparator(SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationPrefix, clusteringDimension.getAnnotations()), false));
+            clusteringDimension.sort(new SortByLabelComparator(clusteringDimension, SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationPrefix, clusteringDimension.getAnnotations()), -1, false));
         }
 
         // Bookmark current sort

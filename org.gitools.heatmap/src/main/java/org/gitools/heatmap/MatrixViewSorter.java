@@ -91,7 +91,15 @@ public abstract class MatrixViewSorter {
 
     }
 
-    public static void sortByLabel(Heatmap heatmap, boolean sortRows, String rowsPattern, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, String colsPattern, SortDirection colsDirection, boolean colsNumeric) {
+    public static void sortByLabel(Heatmap heatmap,
+                                   boolean sortRows,
+                                   String rowsPattern,
+                                   SortDirection rowsDirection,
+                                   boolean rowsNumeric,
+                                   boolean sortCols,
+                                   String colsPattern,
+                                   SortDirection colsDirection,
+                                   boolean colsNumeric) {
 
         if (sortRows) {
             sortByLabel(heatmap.getRows(), rowsDirection, rowsPattern, rowsNumeric);
@@ -102,8 +110,15 @@ public abstract class MatrixViewSorter {
         }
     }
 
-    private static void sortByLabel(HeatmapDimension sortDimension, SortDirection direction, String pattern, boolean asNumeric) {
-        sortDimension.sort(new SortByLabelComparator(direction, new PatternFunction(pattern, sortDimension.getAnnotations()), asNumeric));
+    public static void sortByLabel(HeatmapDimension sortDimension, SortDirection direction, String pattern, boolean asNumeric) {
+        int firstPosition = firstSortedPosition(sortDimension);
+        sortDimension.sort(
+                new SortByLabelComparator(
+                        sortDimension,
+                        direction,
+                        new PatternFunction(pattern, sortDimension.getAnnotations()),
+                        firstPosition,
+                        asNumeric));
     }
 
 }
