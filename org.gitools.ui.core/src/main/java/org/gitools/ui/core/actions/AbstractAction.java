@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.core.actions;
 
+import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.core.Application;
 
 import javax.swing.*;
@@ -79,5 +81,13 @@ public abstract class AbstractAction extends BaseAction {
             return Application.get();
         }
         return parentWindow;
+    }
+
+    protected String coloredHeaderLabel(HeatmapHeader header, ColoredLabel coloredLabel) {
+        String label = (coloredLabel == null ? "" : coloredLabel.getDisplayedLabel());
+        if (label.equals("")) {
+            label = "'empty' " + header.getTitle();
+        }
+        return label;
     }
 }

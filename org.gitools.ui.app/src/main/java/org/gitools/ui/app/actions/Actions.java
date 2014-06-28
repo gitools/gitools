@@ -73,6 +73,8 @@ public class Actions {
     public static final BaseAction openIntegrativeGenomicViewerAction = new OpenIntegrativeGenomicViewerAction();
     public static final BaseAction selectAllAction = new SelectAllAction();
     public static final BaseAction selectLabelHeaderAction = new SelectLabelHeaderAction();
+    public static final BaseAction unselectLabelHeaderAction = new UnselectLabelHeaderAction();
+
     public static final BaseAction unselectAllAction = new UnselectAllAction();
     public static final BaseAction addRowHeader = new AddHeaderAction(ROWS);
     public static final BaseAction addColumnHeader = new AddHeaderAction(COLUMNS);
@@ -120,8 +122,6 @@ public class Actions {
     public static final BaseAction sortRowsByMutualExclusion = new MutualExclusiveSortAction(ROWS);
 
     public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ROWS);
-
-    public static final BaseAction hideEmptyLabelHeaderAction = new HideEmptyLabelHeaderAction();
 
     public static final BaseAction showOnlyHeaderAction = new ShowOnlyLabelHeaderAction();
 

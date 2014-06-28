@@ -32,6 +32,8 @@ import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 
 import java.awt.event.ActionEvent;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 
 public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {
 
@@ -49,13 +51,22 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
         }
 
         final HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
-        dimension.show(new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                String value = coloredHeader.getColoredLabel(input).getValue();
-                return !(value != null && value.equals(annotationValue));
-            }
-        });
+        if (annotationValue.equals("")) {
+            dimension.show(new Predicate<String>() {
+                @Override
+                public boolean apply(String input) {
+                    return !isNullOrEmpty(coloredHeader.getIdentifierTransform().apply(input));
+                }
+            });
+        } else {
+            dimension.show(new Predicate<String>() {
+                @Override
+                public boolean apply(String input) {
+                    String value = coloredHeader.getColoredLabel(input).getValue();
+                    return !(value != null && value.equals(annotationValue));
+                }
+            });
+        }
 
     }
 
@@ -69,8 +80,10 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
             annotationValue = position.getHeaderAnnotation();
 
             ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
+            String label = coloredHeaderLabel(header, coloredLabel);
 
-            setName("<html><i>Hide</i> all <b>" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "</b> labels</html>");
+
+            setName("<html><i>Hide</i> all <b>" + label + "</b> labels</html>");
         }
 
     }
