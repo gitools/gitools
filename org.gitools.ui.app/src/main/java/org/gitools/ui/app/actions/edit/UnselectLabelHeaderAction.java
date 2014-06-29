@@ -28,6 +28,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.AbstractAction;
@@ -83,6 +84,11 @@ public class UnselectLabelHeaderAction extends AbstractAction implements IHeatma
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
+
+        if(header instanceof HierarchicalClusterHeatmapHeader) {
+            header = ((HierarchicalClusterHeatmapHeader) header).getInteractionLevelHeader();
+        }
+
         HeatmapDimension dimension = header.getHeatmapDimension();
         setEnabled(header instanceof HeatmapColoredLabelsHeader &&
                 dimension.getSelected().contains(position.get(dimension)));

@@ -37,6 +37,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.matrix.sort.SortByLabelComparator;
@@ -166,8 +167,9 @@ public class ClusteringAction extends HeatmapAction {
 
         // Hierarchical clustering
         int depth = FastMath.min(10, maxLevel);
+        HierarchicalClusterHeatmapHeader hierarchicalHeader = new HierarchicalClusterHeatmapHeader(clusteringDimension);
         for (int l = depth; l >= 1; l--) {
-            HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
+            HeatmapColoredLabelsHeader levelHeader = new HeatmapColoredLabelsHeader(clusteringDimension);
 
             List<HierarchicalCluster> clusters = clustersMapPerLevel.get(l);
             List<ColoredLabel> coloredLabels = new ArrayList<>(clusters.size());
@@ -175,15 +177,19 @@ public class ClusteringAction extends HeatmapAction {
                 coloredLabels.add(new ColoredLabel(cluster.getName(), new Color(cluster.getColor())));
             }
 
-            header.setClusters(coloredLabels);
+            levelHeader.setClusters(coloredLabels);
 
 
-            header.setTitle(annotationPrefix + l);
-            header.setSize(7);
-            header.setAnnotationPattern("${" + annotationPrefix + l + "}");
-            clusteringDimension.addHeader(header);
+            levelHeader.setTitle(annotationPrefix + l);
+            levelHeader.setSize(7);
+            levelHeader.setAnnotationPattern("${" + annotationPrefix + l + "}");
             clusteringDimension.sort(new SortByLabelComparator(clusteringDimension, SortDirection.ASCENDING, new HierarchicalSortFunction(l, annotationPrefix, clusteringDimension.getAnnotations()), -1, false));
+            hierarchicalHeader.addLevel(levelHeader);
         }
+        hierarchicalHeader.setTitle("Cluster " + layerId);
+        hierarchicalHeader.setHierarchicalCluster(rootCluster);
+        clusteringDimension.addHeader(hierarchicalHeader);
+
 
         // Bookmark current sort
         addBookmarkHierarchical(clusteringDimension, layerId, heatmap, (HierarchicalMethod) method);

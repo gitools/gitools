@@ -26,6 +26,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.data.*;
 import org.gitools.ui.app.actions.data.analysis.ViewGroupComparisonResultDataAction;
+import org.gitools.ui.app.actions.data.analysis.ViewHierarchicalClusterDendogramAction;
 import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.BaseAction;
@@ -43,6 +44,7 @@ public class PopupMenuActions {
                 // Analysis specific
                 Actions.viewEnrichmentModuleData,
                 new ViewGroupComparisonResultDataAction(),
+                new ViewHierarchicalClusterDendogramAction(),
 
                 // Data selection
                 new PopupSectionTitleAction("Selection"),

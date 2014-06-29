@@ -22,12 +22,10 @@
 package org.gitools.ui.app.heatmap.drawer.header;
 
 import com.google.common.collect.Lists;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.heatmap.header.*;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.ui.core.HeatmapPosition;
@@ -66,6 +64,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 d = new HeatmapColoredLabelsDrawer(getHeatmap(), heatmapDimension, (HeatmapColoredLabelsHeader) h);
             } else if (h instanceof HeatmapDecoratorHeader) {
                 d = new HeatmapDecoratorHeaderDrawer(getHeatmap(), heatmapDimension, (HeatmapDecoratorHeader) h);
+            } else if (h instanceof HierarchicalClusterHeatmapHeader) {
+                d = new HierarchicalClusterHeaderDrawer(getHeatmap(), heatmapDimension, (HierarchicalClusterHeatmapHeader) h);
             }
 
             if (d != null) {
@@ -195,6 +195,10 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
+                    if (d instanceof HierarchicalClusterHeaderDrawer) {
+                        int index = ((HierarchicalClusterHeaderDrawer) d).getDrawerIndexFromPoint(p, x, y);
+                        ((HierarchicalClusterHeaderDrawer) d).getHeader().setInteractionLevel(index);
+                    }
                     return d.getHeader();
                 }
                 y += sz.height;
@@ -204,6 +208,10 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
+                    if (d instanceof HierarchicalClusterHeaderDrawer) {
+                        int index = ((HierarchicalClusterHeaderDrawer) d).getDrawerIndexFromPoint(p, x, y);
+                        ((HierarchicalClusterHeaderDrawer) d).getHeader().setInteractionLevel(index);
+                    }
                     return d.getHeader();
                 }
                 x += sz.width;

@@ -27,17 +27,7 @@ import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.util.HashSet;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
-
-import static org.gitools.ui.core.interaction.Interaction.highlighting;
-import static org.gitools.ui.core.interaction.Interaction.none;
-import static org.gitools.ui.core.interaction.InteractionStatus.setInteractionStatus;
 
 
 public class SelectHeaderAction extends HeatmapAction implements IHeatmapDimensionAction {

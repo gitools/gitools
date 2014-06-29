@@ -27,7 +27,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.matrix.sort.SortByLabelComparator;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.HeatmapAction;
@@ -81,6 +81,8 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
 
         this.header = header;
+
+        setEnabled(!(header instanceof HierarchicalClusterHeatmapHeader));
 
         if (header instanceof HeatmapDecoratorHeader) {
             ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderAnnotation());

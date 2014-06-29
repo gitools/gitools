@@ -25,6 +25,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.app.heatmap.panel.settings.headers.ColorScaleSection;
@@ -74,7 +75,8 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
 
         List<ISettingsSection> sections = new ArrayList<>();
 
-        sections.add(new DetailsSection(header));
+        DetailsSection headerDetails = new DetailsSection(header);
+        sections.add(headerDetails);
 
         if (header instanceof HeatmapDecoratorHeader) {
             sections.add(new ColorScaleSection((HeatmapDecoratorHeader) header));
@@ -82,6 +84,10 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
         } else if (header instanceof HeatmapColoredLabelsHeader) {
             sections.add(new ColoredLabelsGroupsPage(((HeatmapColoredLabelsHeader)header).getClusters()));
             sections.add(new FormatSection(false, true, header));
+        } else if (header instanceof HierarchicalClusterHeatmapHeader) {
+            for (HeatmapColoredLabelsHeader level : ((HierarchicalClusterHeatmapHeader) header).getLevels()) {
+                sections.add(new ColoredLabelsGroupsPage(level.getClusters(), level.getTitle()));
+            }
         } else {
             sections.add(new FormatSection(true, false, header));
         }

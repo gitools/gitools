@@ -98,7 +98,7 @@ public abstract class HeatmapHeader extends Model {
 
     }
 
-    HeatmapHeader(HeatmapDimension heatmapDimension) {
+    public HeatmapHeader(HeatmapDimension heatmapDimension) {
         this.heatmapDimension = heatmapDimension;
         this.title = "";
         this.size = 100;

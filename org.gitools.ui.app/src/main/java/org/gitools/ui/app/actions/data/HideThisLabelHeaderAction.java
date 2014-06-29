@@ -26,13 +26,12 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 
 import java.awt.event.ActionEvent;
-
-import static com.google.common.base.Strings.isNullOrEmpty;
 
 
 public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmapHeaderAction {
@@ -64,6 +63,11 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
+
+        if(header instanceof HierarchicalClusterHeatmapHeader) {
+            header = ((HierarchicalClusterHeatmapHeader) header).getInteractionLevelHeader();
+        }
+
         setEnabled(header instanceof HeatmapColoredLabelsHeader);
 
         if (header instanceof HeatmapColoredLabelsHeader) {
