@@ -87,6 +87,7 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
             sections.add(new FormatSection(false, true, header));
         } else if (header instanceof HierarchicalClusterHeatmapHeader) {
             sections.add(headerDetails);
+            sections.add(new FormatSection(false, false, header));
             for (HeatmapColoredLabelsHeader level : ((HierarchicalClusterHeatmapHeader) header).getClusterLevels()) {
                 sections.add(new ColoredLabelsGroupsPage(level.getClusters(), level.getTitle()));
             }

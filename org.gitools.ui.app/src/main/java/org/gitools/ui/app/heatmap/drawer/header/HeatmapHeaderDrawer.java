@@ -194,10 +194,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
-                    if (d instanceof HierarchicalClusterHeaderDrawer) {
-                        int index = ((HierarchicalClusterHeaderDrawer) d).getDrawerIndexFromPoint(p, x, y);
-                        ((HierarchicalClusterHeaderDrawer) d).getHeader().setInteractionLevel(index);
-                    }
+                    d.configure(p, x, y);
                     return d.getHeader();
                 }
                 y += sz.height;
@@ -207,10 +204,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
-                    if (d instanceof HierarchicalClusterHeaderDrawer) {
-                        int index = ((HierarchicalClusterHeaderDrawer) d).getDrawerIndexFromPoint(p, x, y);
-                        ((HierarchicalClusterHeaderDrawer) d).getHeader().setInteractionLevel(index);
-                    }
+                    d.configure(p, x, y);
                     return d.getHeader();
                 }
                 x += sz.width;

@@ -27,6 +27,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 
 import javax.xml.bind.annotation.*;
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,9 +103,23 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         return clusterLevels.size() > 0 ? clusterLevels.get(0).isForceLabelColor() : true;
     }
 
+
     public void setForceLabelColor(boolean forceLabelColor) {
         for (HeatmapColoredLabelsHeader level : clusterLevels) {
             level.setSeparationGrid(forceLabelColor);
+        }
+    }
+
+    @Override
+    public Font getFont() {
+        return clusterLevels.size() > 0 ? clusterLevels.get(0).getFont() : null;
+
+    }
+
+    @Override
+    public void setFont(Font font) {
+        for (HeatmapColoredLabelsHeader level : clusterLevels) {
+            level.setFont(font);
         }
     }
 
@@ -140,7 +155,6 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         if (interactionLevel < 0) {
             return null;
         }
-        //Lists.reverse(clusterLevels).get(interactionLevel);
         return clusterLevels.get(interactionLevel);
     }
 

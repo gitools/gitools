@@ -112,7 +112,7 @@ public class HierarchicalClusterHeaderDrawer extends AbstractHeatmapHeaderDrawer
                 y += sz.height;
             }
         } else {
-            for (AbstractHeatmapDrawer d : drawers) {
+            for (AbstractHeatmapDrawer d : Lists.reverse(drawers)) {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
@@ -122,6 +122,13 @@ public class HierarchicalClusterHeaderDrawer extends AbstractHeatmapHeaderDrawer
             }
         }
         return 0;
+    }
+
+
+    @Override
+    public void configure(Point p, int x, int y) {
+        int index = getDrawerIndexFromPoint(p, x, y);
+        getHeader().setInteractionLevel(index);
     }
 
 }

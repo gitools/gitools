@@ -154,4 +154,16 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         return index;
     }
 
+
+    /**
+     * Configure the header and drawer if necessary according to where
+     * the user has clicked in the heatmap header
+     * @param p
+     * @param x
+     * @param y
+     */
+    public void configure(Point p, int x, int y) {
+        // override if neccessary
+    }
+
 }
