@@ -129,7 +129,7 @@ public class HierarchicalClusterer {
             if (child.getChildren().isEmpty()) {
                 child.setName(JOINER.join(child.getIdentifiers()));
             } else {
-                child.setName(child.getParent().getName() + createLabel(i, digits));
+                child.setName(child.getParentName() + createLabel(i, digits));
             }
             Color colorChild = nameClusters(child.getChildren(), level+1);
             child.setColor(colorChild.getRGB());

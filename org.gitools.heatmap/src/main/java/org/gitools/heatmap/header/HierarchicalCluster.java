@@ -49,7 +49,7 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
 
     private Set<String> identifiers;
 
-    private HierarchicalCluster parent;
+    private String parentName;
 
     private List<HierarchicalCluster> children;
 
@@ -58,6 +58,10 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
     private Double weight = 0.0;
 
     private int color;
+
+    public HierarchicalCluster() {
+        //JAXB requirement
+    }
 
     public HierarchicalCluster(String... identifiers) {
         this.identifiers = Sets.newHashSet(identifiers);
@@ -89,12 +93,8 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
         this.children = children;
     }
 
-    public HierarchicalCluster getParent() {
-        return parent;
-    }
-
     public void setParent(HierarchicalCluster parent) {
-        this.parent = parent;
+        this.parentName = parent.getName();
     }
 
     public Set<String> getIdentifiers() {
@@ -111,6 +111,9 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
 
     public void setName(String name) {
         this.name = name;
+        for (HierarchicalCluster child : children) {
+            child.setParentName(name);
+        }
     }
 
     public void addChild(HierarchicalCluster cluster) {
@@ -209,5 +212,13 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
         }
 
         return result;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 }

@@ -44,7 +44,7 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
     @XmlTransient
     private boolean reportAllLevels;
 
-    @XmlTransient
+    @XmlElement
     private HierarchicalCluster hierarchicalCluster;
 
     public HierarchicalClusterHeatmapHeader() {
