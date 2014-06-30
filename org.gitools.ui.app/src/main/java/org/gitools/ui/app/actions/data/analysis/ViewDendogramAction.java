@@ -21,10 +21,12 @@
  */
 package org.gitools.ui.app.actions.data.analysis;
 
+import com.google.common.base.Strings;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
@@ -41,15 +43,15 @@ import org.gitools.ui.platform.progress.JobThread;
 import java.awt.event.ActionEvent;
 
 
-public class ViewHierarchicalClusterDendogramAction extends HeatmapAction implements IHeatmapHeaderAction {
+public class ViewDendogramAction extends HeatmapAction implements IHeatmapHeaderAction {
 
     private HierarchicalClusterHeatmapHeader header;
+    private String clusterName = "";
 
 
-    public ViewHierarchicalClusterDendogramAction() {
-        super("<html><i>ViewHierarchicalClusterDendogramAction</i></html>");
+    public ViewDendogramAction() {
+        super("<html><i>ViewDendogramAction</i></html>");
         setSmallIconFromResource(IconNames.view16);
-
     }
 
     @Override
@@ -58,10 +60,13 @@ public class ViewHierarchicalClusterDendogramAction extends HeatmapAction implem
             return;
         }
 
+        final HierarchicalCluster cluster = header.getHierarchicalCluster(clusterName);
+
+
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) throws Exception {
-                Application.get().getEditorsPanel().addEditor(new DendrogramEditor(header.getHierarchicalCluster()));
+                Application.get().getEditorsPanel().addEditor(new DendrogramEditor(cluster));
             }
         });
 
@@ -91,7 +96,17 @@ public class ViewHierarchicalClusterDendogramAction extends HeatmapAction implem
 
             this.header = (HierarchicalClusterHeatmapHeader) header;
 
-            this.setName("<html><i>View</i> hierarchical clustering dendogram</html>");
+            if (!Strings.isNullOrEmpty(position.getHeaderAnnotation())) {
+
+                this.clusterName = position.getHeaderAnnotation();
+                this.setName("<html><i>View</i> <b>" + clusterName + "</b> dendogram</html>");
+
+            } else {
+
+                this.clusterName = "";
+                this.setName("<html><i>View</i> <b>entire</b> hierarchical dendogram</html>");
+            }
+
 
         }
 

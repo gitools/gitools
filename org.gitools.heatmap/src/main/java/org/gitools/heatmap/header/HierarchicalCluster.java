@@ -38,6 +38,7 @@
 package org.gitools.heatmap.header;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 import org.gitools.api.analysis.Clusters;
 
@@ -220,5 +221,34 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
 
     public void setParentName(String parentName) {
         this.parentName = parentName;
+    }
+
+    public HierarchicalCluster getHierarchicalSubCluster(String clusterName) {
+
+        HierarchicalCluster foundCluster = null;
+
+        if (Strings.isNullOrEmpty(clusterName)) {
+            return this;
+        }
+
+        for (HierarchicalCluster cluster : this.getChildren()) {
+            if (cluster.getName().equals(clusterName)) {
+                foundCluster = cluster;
+                break;
+            }
+        }
+
+        if (foundCluster == null) {
+            for (HierarchicalCluster cluster : this.getChildren()) {
+                foundCluster = cluster.getHierarchicalSubCluster(clusterName);
+                if (foundCluster != null) {
+                    break;
+                }
+            }
+        }
+
+
+
+        return foundCluster;
     }
 }

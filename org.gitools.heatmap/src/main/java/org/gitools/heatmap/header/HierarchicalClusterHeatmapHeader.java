@@ -162,6 +162,10 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         return hierarchicalCluster;
     }
 
+    public HierarchicalCluster getHierarchicalCluster(String clusterName) {
+        return hierarchicalCluster.getHierarchicalSubCluster(clusterName);
+    }
+
     @Override
     public int getZoomStepSize() {
         return clusterLevels.size();
