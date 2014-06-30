@@ -22,8 +22,10 @@
 package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
 import org.gitools.ui.app.commands.AbstractCommand;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.app.heatmap.panel.settings.layer.ColorScaleSection;
@@ -33,16 +35,20 @@ import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;
+import org.gitools.utils.color.ColorGenerator;
+import org.gitools.utils.colorscale.ColorScalePoint;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by mschroeder on 5/28/14.
  */
 public class CommandEditAllColorScales extends AbstractCommand {
-    public CommandEditAllColorScales() {
+    private Map<IMatrixLayer, Map<String, Integer>> factorMap;
+
+    public CommandEditAllColorScales(Map<IMatrixLayer, Map<String, Integer>> factorMap) {
         super();
+        this.factorMap = factorMap;
     }
 
 
@@ -61,6 +67,9 @@ public class CommandEditAllColorScales extends AbstractCommand {
 
 
             for (HeatmapLayer layer : heatmap.getLayers()) {
+
+                setCategorical(layer);
+
                 ColorScaleSection colorSection = new ColorScaleSection(layer);
                 colorSection.setName(layer.getName());
                 sections.add(colorSection);
@@ -85,6 +94,28 @@ public class CommandEditAllColorScales extends AbstractCommand {
 
             dialog.setVisible(true);
 
+        }
+    }
+
+    private void setCategorical(HeatmapLayer layer) {
+        if (factorMap != null) {
+            Map<String, Integer> layerFactorMap = null;
+            for (IMatrixLayer factorLayer : factorMap.keySet()) {
+                if (factorLayer.getId().equals(layer.getId())) {
+                    layerFactorMap = factorMap.get(factorLayer);
+                }
+            }
+
+            if (layerFactorMap != null) {
+                CategoricalDecorator decorator = new CategoricalDecorator();
+                ColorGenerator cg = new ColorGenerator();
+                Set<ColorScalePoint> factorPoints = new HashSet<>();
+                for (String factor : layerFactorMap.keySet()) {
+                    factorPoints.add(new ColorScalePoint(layerFactorMap.get(factor), cg.next(factor), factor));
+                }
+                decorator.setCategories(factorPoints.toArray(new ColorScalePoint[factorPoints.size()]));
+                layer.setDecorator(decorator);
+            }
         }
     }
 }

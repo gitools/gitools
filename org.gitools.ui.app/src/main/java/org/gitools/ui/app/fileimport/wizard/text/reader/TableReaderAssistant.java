@@ -23,12 +23,15 @@ package org.gitools.ui.app.fileimport.wizard.text.reader;
 
 
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.utils.readers.FileHeader;
 import org.gitools.utils.readers.profile.TableReaderProfile;
 import org.gitools.utils.translators.DoubleTranslator;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TableReaderAssistant extends ReaderAssistant {
 
@@ -36,9 +39,11 @@ public class TableReaderAssistant extends ReaderAssistant {
     private TableReaderProfile profile;
     private String currentRowId;
     private String[] currentFields;
+    private Map<IMatrixLayer, Map<String,Integer>> factorMap;
 
     public TableReaderAssistant(FlatTextImporter reader) {
         super(reader);
+        factorMap = new HashMap<>();
     }
 
     @Override
@@ -46,7 +51,29 @@ public class TableReaderAssistant extends ReaderAssistant {
         processLine();
         for (int i = 0; i < heatmapLayers.length; i++) {
             Double value = DoubleTranslator.get().stringToValue(currentFields[i]);
+            if (value == null && !(currentFields[i].equals("") || currentFields[i].equals("-")) ) {
+                value = factorize(heatmapLayers[i],currentFields[i]);
+            }
             matrix.set(heatmapLayers[i], value, currentRowId, currentColId);
+        }
+    }
+
+    private Double factorize(MatrixLayer heatmapLayer, String value) {
+
+        Map<String, Integer> layerFactorMap;
+        if (!factorMap.containsKey(heatmapLayer)) {
+            layerFactorMap = new HashMap<>();
+            factorMap.put(heatmapLayer, layerFactorMap);
+        }
+
+        layerFactorMap = factorMap.get(heatmapLayer);
+
+        if (layerFactorMap.containsKey(value)) {
+            return (double) layerFactorMap.get(value);
+        } else {
+            int newFactor = layerFactorMap.values().size() + 1;
+            layerFactorMap.put(value, newFactor);
+            return (double) newFactor;
         }
     }
 
@@ -110,5 +137,9 @@ public class TableReaderAssistant extends ReaderAssistant {
             id.append(fields[indices[i]]);
         }
         return id.toString();
+    }
+
+    public Map<IMatrixLayer, Map<String, Integer>> getFactorMap() {
+        return factorMap;
     }
 }

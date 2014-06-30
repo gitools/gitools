@@ -109,7 +109,7 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
         return getScale().getPointObjects();
     }
 
-    public void setCategories(ColorScalePoint[] newScalePoints) {
+    public void setCategories(ColorScalePoint... newScalePoints) {
         ColorScalePoint[] old = getScale().getPointObjects();
         getScale().setPointObjects(newScalePoints);
         firePropertyChange(PROPERTY_CATEGORIES, old, newScalePoints);
