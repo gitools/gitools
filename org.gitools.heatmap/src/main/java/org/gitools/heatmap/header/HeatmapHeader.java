@@ -336,4 +336,8 @@ public abstract class HeatmapHeader extends Model {
 
         return title;
     }
+
+    public int getZoomStepSize() {
+        return 1;
+    }
 }

@@ -22,7 +22,6 @@
 package org.gitools.ui.app.heatmap.panel.settings.headers;
 
 import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
@@ -44,6 +43,8 @@ public class DetailsSection implements ISettingsSection {
     public DetailsSection(HeatmapHeader heatmapHeader) {
         PresentationModel<HeatmapHeader> header = new PresentationModel<>(heatmapHeader);
 
+        int step = heatmapHeader.getZoomStepSize();
+
         // Fix the TextArea border
         headerDescription.setBorder(BorderFactory.createEtchedBorder());
 
@@ -52,7 +53,7 @@ public class DetailsSection implements ISettingsSection {
         bind(headerDescription, header.getModel(HeatmapHeader.PROPERTY_DESCRIPTION));
         bind(headerDescriptionLink, header.getModel(HeatmapHeader.PROPERTY_DESCRIPTION_URL));
         bind(headerValueLink, header.getModel(HeatmapHeader.PROPERTY_VALUE_URL));
-        sizeSpinner.setModel(createNumberAdapter(header.getModel(HeatmapHeader.PROPERTY_SIZE), 10, 0, null, 1));
+        sizeSpinner.setModel(createNumberAdapter(header.getModel(HeatmapHeader.PROPERTY_SIZE), 10, 0, null, step));
         marginSpinner.setModel(createNumberAdapter(header.getModel(HeatmapHeader.PROPERTY_MARGIN), 1, 0, null, 1));
 
     }

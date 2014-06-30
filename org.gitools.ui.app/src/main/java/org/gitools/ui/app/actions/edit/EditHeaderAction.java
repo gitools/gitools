@@ -76,15 +76,17 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
         List<ISettingsSection> sections = new ArrayList<>();
 
         DetailsSection headerDetails = new DetailsSection(header);
-        sections.add(headerDetails);
 
         if (header instanceof HeatmapDecoratorHeader) {
+            sections.add(headerDetails);
             sections.add(new ColorScaleSection((HeatmapDecoratorHeader) header));
             sections.add(new FormatSection(false, false, header));
         } else if (header instanceof HeatmapColoredLabelsHeader) {
+            sections.add(headerDetails);
             sections.add(new ColoredLabelsGroupsPage(((HeatmapColoredLabelsHeader)header).getClusters()));
             sections.add(new FormatSection(false, true, header));
         } else if (header instanceof HierarchicalClusterHeatmapHeader) {
+            sections.add(headerDetails);
             for (HeatmapColoredLabelsHeader level : ((HierarchicalClusterHeatmapHeader) header).getClusterLevels()) {
                 sections.add(new ColoredLabelsGroupsPage(level.getClusters(), level.getTitle()));
             }

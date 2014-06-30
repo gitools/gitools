@@ -27,7 +27,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 
 import javax.xml.bind.annotation.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -162,6 +162,11 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         return hierarchicalCluster;
     }
 
+    @Override
+    public int getZoomStepSize() {
+        return clusterLevels.size();
+    }
+
     /**
      * The height/width
      */
@@ -176,14 +181,17 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
 
         if (change != 0) {
             for (HeatmapColoredLabelsHeader level: clusterLevels) {
-                if (level.getSize() < 3) {
+                if (level.getSize() + change < 3) {
                     continue;
                 }
                 level.setSize(level.getSize() + change);
             }
         }
 
+        int old = this.size;
         this.size = getSize();
+        firePropertyChange(PROPERTY_SIZE, old, this.size);
+
 
     }
 }
