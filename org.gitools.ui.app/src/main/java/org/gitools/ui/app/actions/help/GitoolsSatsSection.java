@@ -22,8 +22,8 @@
 package org.gitools.ui.app.actions.help;
 
 import com.jgoodies.binding.PresentationModel;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.settings.ISettingsSection;
+import org.gitools.ui.platform.settings.Settings;
 
 import javax.swing.*;
 import java.awt.*;

@@ -30,8 +30,8 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 
 import java.awt.event.ActionEvent;

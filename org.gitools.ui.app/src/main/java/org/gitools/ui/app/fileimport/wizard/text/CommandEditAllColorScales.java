@@ -22,18 +22,15 @@
 package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.resource.IResource;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.ui.app.commands.AbstractCommand;
-import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.app.heatmap.panel.settings.layer.ColorScaleSection;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.ISettingsSection;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;
 

@@ -21,7 +21,9 @@
  */
 package org.gitools.analysis.clustering.annotations;
 
-import org.gitools.analysis.clustering.*;
+import org.gitools.analysis.clustering.AbstractClusteringMethod;
+import org.gitools.analysis.clustering.ClusteringData;
+import org.gitools.analysis.clustering.GenericClusteringResults;
 import org.gitools.api.analysis.Clusters;
 import org.gitools.api.analysis.IProgressMonitor;
 

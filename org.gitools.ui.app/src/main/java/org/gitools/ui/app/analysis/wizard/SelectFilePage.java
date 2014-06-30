@@ -22,13 +22,13 @@
 package org.gitools.ui.app.analysis.wizard;
 
 import org.gitools.api.persistence.FileFormat;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.core.utils.FileFormatFilter;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;

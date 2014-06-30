@@ -22,12 +22,12 @@
 package org.gitools.ui.app.actions.file;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.editor.EditorsPanel;
 import org.gitools.ui.core.components.editor.IEditor;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 

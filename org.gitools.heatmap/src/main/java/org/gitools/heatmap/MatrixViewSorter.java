@@ -27,10 +27,8 @@ import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.matrix.filter.PatternFunction;
-import org.gitools.matrix.sort.AggregationFunction;
 import org.gitools.matrix.sort.AggregationSortByValueComparator;
 import org.gitools.matrix.sort.SortByLabelComparator;
-import org.gitools.utils.aggregation.MinAggregator;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
 import java.util.Set;

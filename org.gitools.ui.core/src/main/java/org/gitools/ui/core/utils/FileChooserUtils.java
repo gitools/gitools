@@ -23,10 +23,9 @@ package org.gitools.ui.core.utils;
 
 import com.alee.extended.filechooser.WebDirectoryChooser;
 import com.alee.utils.swing.DialogOptions;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.settings.Settings;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 

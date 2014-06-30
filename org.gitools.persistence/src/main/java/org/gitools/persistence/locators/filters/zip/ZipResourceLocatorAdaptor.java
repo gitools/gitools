@@ -30,12 +30,7 @@ import org.gitools.persistence.locators.filters.FilterResourceLocator;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.zeroturnaround.zip.ZipUtil;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.zip.Deflater;

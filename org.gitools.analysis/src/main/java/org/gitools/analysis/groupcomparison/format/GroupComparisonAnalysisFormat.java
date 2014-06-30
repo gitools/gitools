@@ -21,9 +21,7 @@
  */
 package org.gitools.analysis.groupcomparison.format;
 
-import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;

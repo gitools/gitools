@@ -21,7 +21,6 @@
  */
 package org.gitools.analysis.htest.oncodrive.format;
 
-import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;

@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.app.actions.help;
 
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.dialog.AboutDialog;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

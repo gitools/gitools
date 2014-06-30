@@ -23,8 +23,8 @@ package org.gitools.ui.app.decorators;
 
 import com.jgoodies.binding.value.ValueModel;
 import org.gitools.heatmap.decorator.Decorator;
-import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 

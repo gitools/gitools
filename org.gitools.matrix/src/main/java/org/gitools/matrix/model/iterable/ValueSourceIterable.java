@@ -24,10 +24,7 @@ package org.gitools.matrix.model.iterable;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.MatrixPosition;
-
-import java.util.Set;
 
 public class ValueSourceIterable<T> extends AbstractSourceIterable<T> {
 

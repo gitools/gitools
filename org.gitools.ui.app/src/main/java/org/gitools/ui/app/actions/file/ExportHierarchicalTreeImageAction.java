@@ -22,9 +22,9 @@
 package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.matrix.FileFormats;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramPanel;
 import org.gitools.ui.app.wizard.SaveFileWizard;

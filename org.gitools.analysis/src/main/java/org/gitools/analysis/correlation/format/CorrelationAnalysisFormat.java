@@ -24,7 +24,6 @@ package org.gitools.analysis.correlation.format;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.resource.AbstractXmlFormat;

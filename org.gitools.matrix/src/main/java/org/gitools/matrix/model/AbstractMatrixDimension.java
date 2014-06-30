@@ -25,8 +25,6 @@ import com.jgoodies.binding.beans.Model;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.Set;

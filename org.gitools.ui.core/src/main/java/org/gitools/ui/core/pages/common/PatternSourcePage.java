@@ -29,10 +29,10 @@ import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.matrix.format.AnnotationMatrixFormat;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.core.utils.LogUtils;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.slf4j.LoggerFactory;
 

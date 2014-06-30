@@ -23,9 +23,9 @@ package org.gitools.ui.app.actions.edit;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.HeatmapDynamicActionSet;
+import org.gitools.ui.platform.icons.IconNames;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

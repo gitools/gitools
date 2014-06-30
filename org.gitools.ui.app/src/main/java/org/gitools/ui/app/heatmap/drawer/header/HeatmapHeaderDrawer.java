@@ -22,7 +22,6 @@
 package org.gitools.ui.app.heatmap.drawer.header;
 
 import com.google.common.collect.Lists;
-import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.*;

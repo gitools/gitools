@@ -22,10 +22,10 @@
 package org.gitools.ui.app.heatmap.drawer.header;
 
 import com.google.common.collect.Lists;
-import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.*;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.ui.core.HeatmapPosition;

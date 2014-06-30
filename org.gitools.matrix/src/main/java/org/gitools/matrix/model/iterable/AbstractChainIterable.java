@@ -22,7 +22,6 @@
 package org.gitools.matrix.model.iterable;
 
 import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.IMatrixPosition;
 

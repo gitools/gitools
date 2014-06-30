@@ -23,10 +23,10 @@ package org.gitools.ui.app.analysis.correlation.wizard;
 
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.view.IMatrixViewLayers;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;

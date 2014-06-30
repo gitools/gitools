@@ -25,12 +25,12 @@ import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.matrix.FileFormats;
-import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;

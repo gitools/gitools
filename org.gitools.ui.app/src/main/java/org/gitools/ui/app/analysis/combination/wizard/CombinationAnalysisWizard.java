@@ -31,12 +31,12 @@ import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.matrix.FileFormats;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.app.analysis.wizard.SelectFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.io.File;
 

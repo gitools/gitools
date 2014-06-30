@@ -29,7 +29,6 @@ import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

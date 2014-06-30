@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.app.actions;
 
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.actions.edit.ColumnsActionSet;
 import org.gitools.ui.app.actions.edit.LayersActionSet;
 import org.gitools.ui.app.actions.edit.RowsActionSet;
@@ -29,6 +28,7 @@ import org.gitools.ui.app.actions.help.OpenURLAction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.ActionSetUtils;
 import org.gitools.ui.core.actions.BaseAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;

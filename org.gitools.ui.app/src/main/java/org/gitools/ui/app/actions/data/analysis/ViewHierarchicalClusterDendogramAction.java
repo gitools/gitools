@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.app.actions.data.analysis;
 
-import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;

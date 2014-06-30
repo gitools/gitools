@@ -21,7 +21,6 @@
  */
 package org.gitools.matrix.format;
 
-import static com.google.common.collect.Lists.newArrayList;
 import edu.upf.bg.mtabix.MTabixConfig;
 import edu.upf.bg.mtabix.MTabixIndex;
 import edu.upf.bg.mtabix.compress.BlockCompressedStreamConstants;
@@ -32,9 +31,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
-import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
-import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
-
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.matrix.model.MatrixLayer;
@@ -59,6 +55,10 @@ import java.util.concurrent.CancellationException;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
+
+import static com.google.common.collect.Lists.newArrayList;
+import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
+import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @ApplicationScoped
 public class TdmMatrixFormat extends AbstractMatrixFormat {

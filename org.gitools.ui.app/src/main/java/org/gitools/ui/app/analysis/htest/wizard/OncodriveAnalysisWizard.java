@@ -27,15 +27,14 @@ import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.matrix.geneset.GeneSet;
 import org.gitools.matrix.geneset.GeneSetFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.app.analysis.wizard.DataFilterPage;
 import org.gitools.ui.app.analysis.wizard.ModulesPage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.io.File;
 

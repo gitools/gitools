@@ -23,7 +23,6 @@ package org.gitools.matrix.sort;
 
 
 import com.google.common.base.Function;
-import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 

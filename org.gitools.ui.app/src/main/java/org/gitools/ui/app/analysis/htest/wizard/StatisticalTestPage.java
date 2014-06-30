@@ -25,8 +25,8 @@ import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.stats.test.factory.BinomialTestFactory;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.factory.ZscoreTestFactory;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;

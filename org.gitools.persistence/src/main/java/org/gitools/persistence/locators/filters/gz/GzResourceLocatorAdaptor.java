@@ -29,12 +29,10 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.locators.filters.FilterResourceLocator;
 
 import java.io.BufferedInputStream;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.GZIPOutputStream;
 
 public class GzResourceLocatorAdaptor extends FilterResourceLocator {
 

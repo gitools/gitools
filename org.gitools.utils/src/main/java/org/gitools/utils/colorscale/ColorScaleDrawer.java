@@ -24,7 +24,6 @@ package org.gitools.utils.colorscale;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;

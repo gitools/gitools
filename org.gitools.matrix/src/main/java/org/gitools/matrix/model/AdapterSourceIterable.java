@@ -24,10 +24,7 @@ package org.gitools.matrix.model;
 import org.gitools.api.matrix.ILayerAdapter;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.iterable.AbstractSourceIterable;
-
-import java.util.Set;
 
 
 public class AdapterSourceIterable<T> extends AbstractSourceIterable<T> {

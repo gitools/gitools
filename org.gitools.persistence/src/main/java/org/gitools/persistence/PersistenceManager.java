@@ -31,7 +31,6 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.persistence.locators.filters.cache.CacheResourceManager;
 import org.gitools.persistence.locators.filters.gz.GzResourceFilter;
-import org.gitools.persistence.locators.filters.zip.ZipResourceFilter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -39,7 +38,6 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import java.io.File;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;

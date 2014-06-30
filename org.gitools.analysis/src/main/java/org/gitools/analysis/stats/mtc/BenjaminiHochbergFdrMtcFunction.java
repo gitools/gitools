@@ -23,7 +23,6 @@ package org.gitools.analysis.stats.mtc;
 
 import org.apache.commons.math3.util.FastMath;
 import org.gitools.api.matrix.AbstractMatrixFunction;
-import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.matrix.filter.NotNullPredicate;

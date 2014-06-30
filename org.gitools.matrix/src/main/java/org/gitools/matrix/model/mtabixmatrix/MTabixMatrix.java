@@ -27,22 +27,20 @@ import com.google.common.cache.LoadingCache;
 import edu.upf.bg.mtabix.MTabixBlock;
 import edu.upf.bg.mtabix.MTabixConfig;
 import edu.upf.bg.mtabix.MTabixIndex;
-import static edu.upf.bg.mtabix.compress.BlockCompressedFilePointerUtil.getBlockAddress;
-import edu.upf.bg.mtabix.compress.BlockCompressedInputStream;
 import edu.upf.bg.mtabix.compress.BlockCompressedReader;
-import edu.upf.bg.mtabix.parse.IKeyParser;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.utils.translators.DoubleTranslator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.*;
+
+import static edu.upf.bg.mtabix.compress.BlockCompressedFilePointerUtil.getBlockAddress;
 
 public class MTabixMatrix extends HashMatrix {
     private static final Logger LOGGER = LoggerFactory.getLogger(MTabixMatrix.class);

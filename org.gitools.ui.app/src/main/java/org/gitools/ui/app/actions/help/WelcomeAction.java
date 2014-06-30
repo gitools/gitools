@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.actions.help;
 
-import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.app.welcome.WelcomeEditor;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 
 import java.awt.event.ActionEvent;

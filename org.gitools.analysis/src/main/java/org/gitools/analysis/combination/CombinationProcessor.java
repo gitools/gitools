@@ -22,7 +22,6 @@
 package org.gitools.analysis.combination;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
-import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
