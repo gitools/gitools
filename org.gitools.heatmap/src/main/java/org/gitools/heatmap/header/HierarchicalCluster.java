@@ -35,11 +35,11 @@
  * limitations under the License.
  ******************************************************************************/
 
-package org.gitools.analysis.clustering.hierarchical;
+package org.gitools.heatmap.header;
 
 import com.google.common.base.Joiner;
 import com.google.common.collect.Sets;
-import org.gitools.analysis.clustering.Clusters;
+import org.gitools.api.analysis.Clusters;
 
 import java.util.*;
 

@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.actions.data.analysis;
 
-import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.heatmap.Heatmap;

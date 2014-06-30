@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.clustering;
+package org.gitools.api.analysis;
 
 import java.util.Collection;
 import java.util.Map;

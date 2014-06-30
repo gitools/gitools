@@ -37,7 +37,7 @@
 
 package org.gitools.ui.app.analysis.clustering.visualization;
 
-import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
+import org.gitools.heatmap.header.HierarchicalCluster;
 
 import javax.swing.*;
 import java.awt.*;

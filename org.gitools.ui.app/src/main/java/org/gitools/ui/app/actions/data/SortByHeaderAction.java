@@ -27,7 +27,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.HeatmapAction;

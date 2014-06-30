@@ -22,7 +22,7 @@
 package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
+import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.matrix.FileFormats;

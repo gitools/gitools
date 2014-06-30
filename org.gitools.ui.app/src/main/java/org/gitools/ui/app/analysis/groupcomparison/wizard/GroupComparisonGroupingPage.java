@@ -23,7 +23,7 @@ package org.gitools.ui.app.analysis.groupcomparison.wizard;
 
 import org.apache.commons.lang.ArrayUtils;
 import org.gitools.analysis.clustering.ClusteringData;
-import org.gitools.analysis.clustering.Clusters;
+import org.gitools.api.analysis.Clusters;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.analysis.groupcomparison.dimensiongroups.*;

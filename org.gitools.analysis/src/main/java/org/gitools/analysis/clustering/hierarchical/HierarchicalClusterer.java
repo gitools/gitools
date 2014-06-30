@@ -31,6 +31,7 @@ import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.heatmap.header.HierarchicalCluster;
 
 import java.awt.*;
 import java.util.*;

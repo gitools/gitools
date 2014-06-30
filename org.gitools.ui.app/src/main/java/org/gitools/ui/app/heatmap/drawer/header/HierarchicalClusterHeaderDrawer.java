@@ -22,7 +22,7 @@
 package org.gitools.ui.app.heatmap.drawer.header;
 
 import com.google.common.collect.Lists;
-import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterHeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.*;
@@ -31,7 +31,6 @@ import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
 import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.*;
-import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +49,7 @@ public class HierarchicalClusterHeaderDrawer extends AbstractHeatmapHeaderDrawer
 
         HeatmapColoredLabelsDrawer drawer;
 
-        if (drawers.size() != getHeader().getLevels().size()) {
+        if (drawers.size() != getHeader().getClusterLevels().size()) {
             updateDrawers();
         }
 
@@ -59,9 +58,9 @@ public class HierarchicalClusterHeaderDrawer extends AbstractHeatmapHeaderDrawer
         //int width = getHeader().getSize() / drawers.size();
         //int width = box.width / drawers.size();
 
-        for (HeatmapColoredLabelsHeader level : Lists.reverse(getHeader().getLevels())) {
+        for (HeatmapColoredLabelsHeader level : Lists.reverse(getHeader().getClusterLevels())) {
             int width = level.getSize();
-            drawer = drawers.get(getHeader().getLevels().indexOf(level));
+            drawer = drawers.get(getHeader().getClusterLevels().indexOf(level));
             Rectangle subclip = new Rectangle(x, y, width, clip.height);
             Rectangle subbox = new Rectangle(x, y, width, box.height);
             drawer.draw(g, subbox, subclip);
@@ -72,7 +71,7 @@ public class HierarchicalClusterHeaderDrawer extends AbstractHeatmapHeaderDrawer
 
     private void updateDrawers() {
         drawers = new ArrayList<>();
-        for (HeatmapColoredLabelsHeader levelHeader : getHeader().getLevels()) {
+        for (HeatmapColoredLabelsHeader levelHeader : getHeader().getClusterLevels()) {
             drawers.add(new HeatmapColoredLabelsDrawer(heatmap, getHeatmapDimension(), levelHeader));
         }
     }
@@ -83,7 +82,7 @@ public class HierarchicalClusterHeaderDrawer extends AbstractHeatmapHeaderDrawer
         int drawerindex = getDrawerIndexFromPoint(p, 0, 0);
         int index = getHeaderPosition(point);
         String identifier = getHeatmapDimension().getLabel(index);
-        String label = getHeader().getLevels().get(drawerindex).getColoredLabel(identifier).getValue();
+        String label = getHeader().getClusterLevels().get(drawerindex).getColoredLabel(identifier).getValue();
 
         return (isHorizontal() ? new HeatmapPosition(getHeatmap(), -1, index, label) : new HeatmapPosition(getHeatmap(), index, -1, label));
     }

@@ -25,6 +25,7 @@ import org.gitools.analysis.clustering.*;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.distance.EuclideanDistance;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
+import org.gitools.api.analysis.Clusters;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 

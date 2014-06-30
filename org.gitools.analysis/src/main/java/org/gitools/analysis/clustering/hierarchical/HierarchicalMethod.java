@@ -24,7 +24,7 @@ package org.gitools.analysis.clustering.hierarchical;
 import org.gitools.analysis.clustering.AbstractClusteringMethod;
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
-import org.gitools.analysis.clustering.Clusters;
+import org.gitools.api.analysis.Clusters;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.analysis.clustering.MatrixClusteringData;

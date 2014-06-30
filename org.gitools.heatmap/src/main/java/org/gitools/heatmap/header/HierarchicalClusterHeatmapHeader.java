@@ -19,15 +19,12 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.analysis.clustering.hierarchical;
+package org.gitools.heatmap.header;
 
 import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.DetailsDecoration;
-import org.gitools.heatmap.header.ColoredLabel;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
 
 import javax.xml.bind.annotation.*;
 import java.util.*;
@@ -37,10 +34,14 @@ import java.util.List;
 @XmlRootElement
 public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
 
-    private List<HeatmapColoredLabelsHeader> levels;
+    @XmlElementWrapper(name="clusterLevels")
+    @XmlElement(name="levels")
+    private List<HeatmapColoredLabelsHeader> clusterLevels;
 
     @XmlTransient
     private int interactionLevel = -1;
+
+    @XmlTransient
     private boolean reportAllLevels;
 
     @XmlTransient
@@ -48,60 +49,69 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
 
     public HierarchicalClusterHeatmapHeader() {
         super();
+        reportAllLevels = false;
     }
 
     public HierarchicalClusterHeatmapHeader(HeatmapDimension hdim) {
         super(hdim);
-        levels = new ArrayList<>();
+        clusterLevels = new ArrayList<>();
         reportAllLevels = false;
     }
 
     public void addLevel(HeatmapColoredLabelsHeader level) {
-        levels.add(level);
+        clusterLevels.add(level);
     }
 
-    public List<HeatmapColoredLabelsHeader> getLevels() {
-        return levels;
+    @Override
+    public void init(HeatmapDimension heatmapDimension) {
+        super.init(heatmapDimension);
+        for (HeatmapColoredLabelsHeader levels : clusterLevels) {
+            levels.init(heatmapDimension);
+        }
+    }
+
+    public List<HeatmapColoredLabelsHeader> getClusterLevels() {
+        return clusterLevels;
     }
 
     /* The thickness of the color band */
     public int getThickness() {
-        return levels.size() > 0 ? levels.get(0).getThickness() : 1;
+        return clusterLevels.size() > 0 ? clusterLevels.get(0).getThickness() : 1;
     }
 
     /* The thickness of the color band */
     public void setThickness(int thickness) {
-        for (HeatmapColoredLabelsHeader level : levels) {
+        for (HeatmapColoredLabelsHeader level : clusterLevels) {
             level.setThickness(thickness);
         }
     }
 
     /* Separate different clusters with a grid */
     public boolean isSeparationGrid() {
-        return levels.size() > 0 ? levels.get(0).isSeparationGrid() : true;
+        return clusterLevels.size() > 0 ? clusterLevels.get(0).isSeparationGrid() : true;
     }
 
     /* Separate different clusters with a grid */
     public void setSeparationGrid(boolean separationGrid) {
-        for (HeatmapColoredLabelsHeader level : levels) {
+        for (HeatmapColoredLabelsHeader level : clusterLevels) {
             level.setSeparationGrid(separationGrid);
         }
     }
 
     public boolean isForceLabelColor() {
-        return levels.size() > 0 ? levels.get(0).isForceLabelColor() : true;
+        return clusterLevels.size() > 0 ? clusterLevels.get(0).isForceLabelColor() : true;
     }
 
     public void setForceLabelColor(boolean forceLabelColor) {
-        for (HeatmapColoredLabelsHeader level : levels) {
+        for (HeatmapColoredLabelsHeader level : clusterLevels) {
             level.setSeparationGrid(forceLabelColor);
         }
     }
 
     @Override
     public int getSize() {
-        int size = 0;
-        for (HeatmapColoredLabelsHeader level : levels) {
+        size = 0;
+        for (HeatmapColoredLabelsHeader level : clusterLevels) {
             size += level.getSize();
         }
         return size;
@@ -110,8 +120,8 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
     @Override
     public void populateDetails(List<DetailsDecoration> details, String identifier, boolean selected) {
 
-        for (HeatmapColoredLabelsHeader level : Lists.reverse(levels)) {
-            if (isReportAllLevels() || levels.indexOf(level) == interactionLevel) {
+        for (HeatmapColoredLabelsHeader level : Lists.reverse(clusterLevels)) {
+            if (isReportAllLevels() || clusterLevels.indexOf(level) == interactionLevel) {
                 level.populateDetails(details, identifier, selected);
             }
         }
@@ -130,8 +140,8 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         if (interactionLevel < 0) {
             return null;
         }
-        //Lists.reverse(levels).get(interactionLevel);
-        return levels.get(interactionLevel);
+        //Lists.reverse(clusterLevels).get(interactionLevel);
+        return clusterLevels.get(interactionLevel);
     }
 
     public boolean isReportAllLevels() {
@@ -165,7 +175,7 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         }
 
         if (change != 0) {
-            for (HeatmapColoredLabelsHeader level: levels) {
+            for (HeatmapColoredLabelsHeader level: clusterLevels) {
                 if (level.getSize() < 3) {
                     continue;
                 }
