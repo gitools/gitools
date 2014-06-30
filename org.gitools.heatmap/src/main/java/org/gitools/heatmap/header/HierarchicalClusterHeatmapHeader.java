@@ -35,6 +35,7 @@ import java.util.List;
 @XmlRootElement
 public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
 
+    public static final String PROPERTY_INTERACTION_LEVEL = "PROPERTY_INTERACTION_LEVEL";
     @XmlElementWrapper(name="clusterLevels")
     @XmlElement(name="levels")
     private List<HeatmapColoredLabelsHeader> clusterLevels;
@@ -43,20 +44,20 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
     private int interactionLevel = -1;
 
     @XmlTransient
-    private boolean reportAllLevels;
+    private boolean reportLastInteraction;
 
     @XmlElement
     private HierarchicalCluster hierarchicalCluster;
 
     public HierarchicalClusterHeatmapHeader() {
         super();
-        reportAllLevels = false;
+        reportLastInteraction = false;
     }
 
     public HierarchicalClusterHeatmapHeader(HeatmapDimension hdim) {
         super(hdim);
         clusterLevels = new ArrayList<>();
-        reportAllLevels = false;
+        reportLastInteraction = false;
     }
 
     public void addLevel(HeatmapColoredLabelsHeader level) {
@@ -135,10 +136,39 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
     @Override
     public void populateDetails(List<DetailsDecoration> details, String identifier, boolean selected) {
 
+        DetailsDecoration desiredDecoration = null;
+
+
+
         for (HeatmapColoredLabelsHeader level : Lists.reverse(clusterLevels)) {
-            if (isReportAllLevels() || clusterLevels.indexOf(level) == interactionLevel) {
-                level.populateDetails(details, identifier, selected);
+
+            DetailsDecoration decoration = new DetailsDecoration(this.getTitle(),
+                    "Right click on hierarchical cluster header to configure info displayed here.",
+                    null, null, null);
+            decoration.setReference(this);
+
+            if (identifier != null) {
+                level.reset();
+                ColoredLabel cluster = level.getColoredLabel(identifier);
+
+                Color clusterColor = cluster != null ? cluster.getColor() : getBackgroundColor();
+                decoration.setBgColor(clusterColor);
+                if (!cluster.getDisplayedLabel().equals("")) {
+                    int levelIndex = clusterLevels.size() - clusterLevels.indexOf(level);
+                    decoration.setValue("L" + levelIndex + ": " + cluster.getDisplayedLabel());
+                    desiredDecoration = decoration;
+                }
             }
+
+            if (isReportLastInteraction() && clusterLevels.indexOf(level) == interactionLevel) {
+                break;
+            }
+
+        }
+
+        if (desiredDecoration != null) {
+            desiredDecoration.setSelected(selected);
+            details.add(desiredDecoration);
         }
     }
 
@@ -148,7 +178,9 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
     }
 
     public void setInteractionLevel(int interactionLevel) {
+        int old = this.interactionLevel;
         this.interactionLevel = interactionLevel;
+        firePropertyChange(PROPERTY_INTERACTION_LEVEL, old, interactionLevel);
     }
 
     public HeatmapColoredLabelsHeader getInteractionLevelHeader() {
@@ -158,12 +190,12 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         return clusterLevels.get(interactionLevel);
     }
 
-    public boolean isReportAllLevels() {
-        return reportAllLevels;
+    public boolean isReportLastInteraction() {
+        return reportLastInteraction;
     }
 
-    public void setReportAllLevels(boolean reportAllLevels) {
-        this.reportAllLevels = reportAllLevels;
+    public void setReportLastInteraction(boolean reportLastInteraction) {
+        this.reportLastInteraction = reportLastInteraction;
         //firePropertyChange();
     }
 

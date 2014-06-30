@@ -25,6 +25,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.ActionSetUtils;
@@ -290,6 +291,21 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     public void mouseReleased(MouseEvent e) {
         if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0) {
             showPopup(e);
+        }
+    }
+
+    public void configureHeaders(MouseEvent e) {
+        if (e.getComponent() == this.rowVP) {
+            HeatmapHeader header = rowHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
+            if (header instanceof HierarchicalClusterHeatmapHeader){
+                e.consume();
+            }
+        }
+        if (e.getComponent() == this.colVP) {
+            HeatmapHeader header = columnHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
+            if (header instanceof HierarchicalClusterHeatmapHeader){
+                e.consume();
+            }
         }
     }
 

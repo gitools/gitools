@@ -36,7 +36,7 @@ public class DendrogramEditor extends AbstractEditor {
         super();
 
         this.model = model;
-        setName("Hierarchical clustering '" + model.getName() + "'");
+        setName("Hier. dendogram '" + model.getName() + "'");
         setIcon(IconNames.CREATE_IMAGE_SMALL_ICON);
         setLayout(new BorderLayout());
         setSaveAllowed(false);

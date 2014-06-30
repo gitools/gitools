@@ -26,6 +26,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.actions.edit.AddHeaderAction;
 import org.gitools.ui.app.actions.edit.EditHeaderAction;
 import org.gitools.ui.app.heatmap.panel.details.boxes.actions.DimensionHeaderHighlightAction;
@@ -42,6 +43,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.gitools.heatmap.HeatmapDimension.*;
+import static org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader.PROPERTY_INTERACTION_LEVEL;
 import static org.gitools.ui.core.interaction.Interaction.highlighting;
 import static org.gitools.ui.core.interaction.Interaction.movingSelected;
 import static org.gitools.ui.core.interaction.InteractionStatus.isInteracting;
@@ -70,7 +72,9 @@ public class DimensionBox extends DetailsBox {
                         PROPERTY_HEADERS,
                         PROPERTY_SELECTED,
                         PROPERTY_SELECTED_HEADER,
-                        PROPERTY_VISIBLE))) {
+                        PROPERTY_VISIBLE)) ||
+                     isAny(evt, HierarchicalClusterHeatmapHeader.class,
+                             PROPERTY_INTERACTION_LEVEL)) {
                     update();
                 }
             }

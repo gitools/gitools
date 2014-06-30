@@ -137,6 +137,8 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             return;
         }
 
+        panel.configureHeaders(e);
+
         // check if it's a already selected
         int index = convertToIndex(e);
 

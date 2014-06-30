@@ -23,19 +23,14 @@ package org.gitools.ui.app.actions.data.analysis;
 
 import com.google.common.base.Strings;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramEditor;
-import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.core.components.editor.AbstractEditor;
-import org.gitools.ui.core.components.editor.EditorsPanel;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
@@ -71,20 +66,6 @@ public class ViewDendogramAction extends HeatmapAction implements IHeatmapHeader
         });
 
     }
-
-    public HeatmapEditor getOpenInEditor(IMatrix data) {
-        EditorsPanel epanel = Application.get().getEditorsPanel();
-
-        for (AbstractEditor e : epanel.getEditors()) {
-            if (e instanceof HeatmapEditor) {
-                if (((Heatmap) e.getModel()).getContents() == data) {
-                    return (HeatmapEditor) e;
-                }
-            }
-        }
-        return null;
-    }
-
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
