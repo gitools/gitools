@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
@@ -394,12 +395,20 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
 
         /// DETAIL BOXES
+
         if (updateVisible) {
             BoxManager.focusBox(HeatmapInfoBox.ID);
-        } else if (updateSelection) {
-            BoxManager.focusBox(SelectionBox.ID);
-        }
 
+        } else if (updateSelection) {
+            if (evt.getSource() instanceof HeatmapDimension) {
+                if (((HeatmapDimension) evt.getSource()).getSelected().size() > 0) {
+                    MatrixDimensionKey key = ((HeatmapDimension) evt.getSource()).getId();
+                    BoxManager.focusBox(SelectionBox.ID, key.name());
+                } else {
+                    BoxManager.focusBox(SelectionBox.ID);
+                }
+            }
+    }
 
     }
 

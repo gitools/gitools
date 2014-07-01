@@ -33,18 +33,28 @@ import java.util.Set;
 
 public class BoxManager {
 
-    private static HashSet<String> protect = new HashSet<>();
+    private static HashSet<String> protectedIds = new HashSet<>();
+    private static Object boxesById;
 
-
+    /**
+     * Uncollapses all boxes whose ids match boxIds, collapses all others,
+     * except those that match the ids in protectedIds
+     *
+     * @param boxIds
+     */
     public static void focusBox(String... boxIds) {
         Collection<Box> boxes = getBoxes();
+        Collection<String> focusedIds = new HashSet<>();
+        for (String id : boxIds) {
+            focusedIds.add(id);
+        }
+
         for (Box b : boxes) {
-            for (String requiredId : boxIds) {
-                if (b.isVisible() && !protect.contains(b.getId()) && b.getId().equals(requiredId)) {
-                    uncollapse(b);
-                } else if (b.isVisible() && !protect.contains(b.getId()) && !b.getId().equals(requiredId)) {
-                    collapse(b);
-                }
+            boolean focused = focusedIds.contains(b.getId());
+            if (b.isVisible() && !protectedIds.contains(b.getId()) && focused) {
+                uncollapse(b);
+            } else if (b.isVisible() && !protectedIds.contains(b.getId()) && !focused) {
+                collapse(b);
             }
         }
     }
@@ -72,13 +82,22 @@ public class BoxManager {
     }
 
     public static void protect(String... ids) {
-        protect = new HashSet<>();
+        protectedIds = new HashSet<>();
         for (String id : ids) {
-            protect.add(id);
+            protectedIds.add(id);
         }
     }
 
     public static void reset() {
-        protect.clear();
+        protectedIds.clear();
+    }
+
+    public static Box getBoxById(String id) {
+        for (Box b : getBoxes()) {
+            if (b.getId().equals(id)) {
+                return b;
+            }
+        }
+        return null;
     }
 }
