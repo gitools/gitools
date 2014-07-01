@@ -36,7 +36,7 @@ public class DendrogramEditor extends AbstractEditor {
         super();
 
         this.model = model;
-        setName("Hier. dendogram '" + model.getName() + "'");
+        setName("Dendogram '" + model.getName() + "'");
         setIcon(IconNames.CREATE_IMAGE_SMALL_ICON);
         setLayout(new BorderLayout());
         setSaveAllowed(false);
