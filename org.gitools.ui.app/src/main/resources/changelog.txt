@@ -3,6 +3,7 @@ Gitools 2.2.0
 * .mtabix data file copression (new)
 * Mutual exclusion plugin (new)
 * New cancer genomics data .matibx compressed
+* SVG image export
 * Hierarchical cluster heatmap header with contextual menu (new)
 * View enrichment data via contextual menu in results (new)
 * View group comparison data via contextual menu in results (new)
@@ -40,4 +41,3 @@ before Gitools 2.0.0
 * Enrichment analysis (binomial, z-score, fisher)
 * Overlapping analysis
 * Oncodrive analysis
-*
