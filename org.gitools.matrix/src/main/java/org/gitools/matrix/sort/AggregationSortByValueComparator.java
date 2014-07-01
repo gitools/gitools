@@ -44,6 +44,16 @@ public class AggregationSortByValueComparator implements Comparator<String> {
     private Set sortIdentifiers;
     private final int firstPosition;
 
+    /**
+     * @param matrix                 data matrix
+     * @param sortDimension          Sorted dimension
+     * @param sortIdentifiers        Identifiers to be sorted  (all if empty)
+     * @param firstPosition          Indicate if only sorting selected items, otherwise -1
+     * @param aggregationDimension   Aggregated dimension
+     * @param aggregationIdentifiers Identifiers to get aggregation data from (all if empty)
+     * @param progressMonitor        monitor
+     * @param layers                 Data layers to aggregate and sort (order = relevance)
+     */
     public AggregationSortByValueComparator(IMatrix matrix, IMatrixDimension sortDimension, Set<String> sortIdentifiers, int firstPosition, IMatrixDimension aggregationDimension, Set<String> aggregationIdentifiers, IProgressMonitor progressMonitor, Iterable<IMatrixLayer<Double>> layers) {
         this.sortDimension = sortDimension;
 
@@ -83,24 +93,24 @@ public class AggregationSortByValueComparator implements Comparator<String> {
     @Override
     public int compare(String idx1, String idx2) {
 
-        // 1. If idx1 or idx2 is not in aggregationMatrix compare position
-        boolean before1 = sortDimension.indexOf(idx1) < firstPosition;
-        boolean before2 = sortDimension.indexOf(idx2) < firstPosition;
+        if (firstPosition > -1) {
+            // 1. If idx1 or idx2 is not in aggregationMatrix compare position
+            boolean before1 = sortDimension.indexOf(idx1) < firstPosition;
+            boolean before2 = sortDimension.indexOf(idx2) < firstPosition;
 
-        if (!sortIdentifiers.contains(idx1) && !sortIdentifiers.contains(idx2)) {
-            if (before1 != before2) {
+            if (!sortIdentifiers.contains(idx1) && !sortIdentifiers.contains(idx2)) {
+                if (before1 != before2) {
+                    return before1 ? -1 : 1;
+                } else {
+                    return 0;
+                }
+            } else if (!sortIdentifiers.contains(idx1)) {
                 return before1 ? -1 : 1;
-            } else {
-                return 0;
             }
-        } else if (!sortIdentifiers.contains(idx1)) {
-            return before1 ? -1 : 1;
+            else if (!sortIdentifiers.contains(idx2)) {
+                return before2 ? 1 : -1;
+            }
         }
-        else if (!sortIdentifiers.contains(idx2)) {
-            return before2 ? 1 : -1;
-        }
-
-
 
 
         // 2. Compare all layers of aggregated items

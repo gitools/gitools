@@ -62,8 +62,6 @@ public abstract class MatrixViewSorter {
                     firstPosition = pos;
                 }
             }
-        } else {
-            firstPosition = 0;
         }
         return firstPosition;
     }
@@ -109,7 +107,7 @@ public abstract class MatrixViewSorter {
     }
 
     public static void sortByLabel(HeatmapDimension sortDimension, SortDirection direction, String pattern, boolean asNumeric) {
-        int firstPosition = sortDimension.getSelected().size() > 0 ? firstSortedPosition(sortDimension) : -1;
+        int firstPosition = firstSortedPosition(sortDimension);
         sortDimension.sort(
                 new SortByLabelComparator(
                         sortDimension,
