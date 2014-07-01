@@ -109,7 +109,7 @@ public abstract class MatrixViewSorter {
     }
 
     public static void sortByLabel(HeatmapDimension sortDimension, SortDirection direction, String pattern, boolean asNumeric) {
-        int firstPosition = firstSortedPosition(sortDimension);
+        int firstPosition = sortDimension.getSelected().size() > 0 ? firstSortedPosition(sortDimension) : -1;
         sortDimension.sort(
                 new SortByLabelComparator(
                         sortDimension,

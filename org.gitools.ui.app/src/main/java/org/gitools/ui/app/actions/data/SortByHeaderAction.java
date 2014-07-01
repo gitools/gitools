@@ -92,7 +92,7 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
         String dimension = sortDimension.getId().getLabel();
         String which = sortDimension.getSelected().size() > 0 ?  sortDimension.getSelected().size() + "" : "all";
 
-        setName("<html><i>Sort</i> all " + dimension + "s " + (header.isSortAscending() ? "asc." : "des.") + " by <b>" + header.getTitle() + "</b></html>");
+        setName("<html><i>Sort</i> " + which + " " + dimension + "s " + (header.isSortAscending() ? "asc." : "des.") + " by <b>" + header.getTitle() + "</b></html>");
     }
 
     private class ToLowerCaseFunction implements Function<String, String> {
