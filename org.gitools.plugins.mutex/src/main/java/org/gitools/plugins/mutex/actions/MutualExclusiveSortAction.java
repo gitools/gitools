@@ -106,6 +106,9 @@ public class MutualExclusiveSortAction extends HeatmapAction {
 
                     MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
                     processor.run(monitor);
+                    if (monitor.isCancelled()) {
+                        return;
+                    }
                     IMatrix resultsMatrix = analysis.getResults().get();
 
 
@@ -136,11 +139,11 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                     }
                     plugin.add(bookmark);
 
+                    Application.get().showNotification("Mutual exclusive sorting applied.");
 
                 }
             }
         });
-        Application.get().showNotification("Mutual exclusive sorting applied.");
     }
 
     private void prepareAnalysis(MutualExclusiveAnalysis analysis, IMatrixDimension testDimension, ArrayList<String> selected, Heatmap hm) {
