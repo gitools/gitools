@@ -57,15 +57,16 @@ public abstract class DetailsBox extends Box {
 
 
     /**
+     * @param id
      * @param title Optional title of the details table
      */
-    public DetailsBox(String title, ActionSet actions, Heatmap heatmap) {
-        super(title, actions, heatmap);
+    public DetailsBox(String id, String title, ActionSet actions, Heatmap heatmap) {
+        super(id, title, actions, heatmap);
         actionsPanel = null;
     }
 
-    public DetailsBox(String title, ActionSet contextActionSet, ActionSet bottomActionSet, Heatmap heatmap) {
-        super(title, contextActionSet, heatmap);
+    public DetailsBox(String id, String title, ActionSet contextActionSet, ActionSet bottomActionSet, Heatmap heatmap) {
+        super(id, title, contextActionSet, heatmap);
         actionsPanel = new JPanel(new HorizontalLayout(2), true);
         actionsPanel.setBackground(Color.white);
         for (BaseAction action : bottomActionSet.getActions()) {

@@ -59,13 +59,14 @@ public class LayerValuesBox extends DetailsBox {
 
     private static final ScheduledExecutorService worker =
             Executors.newSingleThreadScheduledExecutor();
+    public static final String ID = "LAYER_VALUES";
 
     /**
      * @param title   Optional title of the details table
      * @param actions
      */
     public LayerValuesBox(String title, ActionSet actions, Heatmap heatmap) {
-        super(title, actions, new ActionSet(new AddNewLayersFromFileAction()), heatmap);
+        super(ID, title, actions, new ActionSet(new AddNewLayersFromFileAction()), heatmap);
     }
 
     @Override

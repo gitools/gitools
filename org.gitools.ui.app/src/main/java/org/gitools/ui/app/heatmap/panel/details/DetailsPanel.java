@@ -36,6 +36,7 @@ import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
     private DetailsBox columnsBox;
     private DetailsBox rowsBox;
     private DetailsBox layersBox;
+    private DetailsBox infoBox;
     private JLabel hintLabel;
     private JLabel titleLabel;
     private Map<String, Box> boxes;
@@ -68,15 +70,13 @@ public class DetailsPanel extends JXTaskPaneContainer {
 
         setBackground(Color.WHITE);
 
-        HeatmapInfoBox infoBox = new HeatmapInfoBox(heatmap);
-        infoBox.registerListeners();
-        infoBox.update();
-        add(infoBox);
-
-        add(new JSeparator());
-
-
         boxes = new ListOrderedMap();
+
+        infoBox = new HeatmapInfoBox(heatmap);
+        infoBox.update();
+        registerBox(infoBox);
+
+        //add(new JSeparator());
 
         layersBox = new LayerValuesBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap);
         registerBox(layersBox);
@@ -122,4 +122,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
         }
     }
 
+    public Collection<Box> getBoxes() {
+        return boxes.values();
+    }
 }

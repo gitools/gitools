@@ -26,12 +26,15 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
+import org.gitools.ui.app.heatmap.panel.details.boxes.BoxManager;
+import org.gitools.ui.app.heatmap.panel.details.boxes.HeatmapInfoBox;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.ActionSetUtils;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.core.components.boxes.SelectionBox;
 import org.gitools.ui.platform.component.scrollbar.ThinScrollBar;
 
 import javax.swing.*;
@@ -358,10 +361,14 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
-        boolean updateFocusAndSelection =
+
+        boolean updateSelection =
                 isAny(evt, HeatmapDimension.class,
-                        HeatmapDimension.PROPERTY_FOCUS,
                         HeatmapDimension.PROPERTY_SELECTED);
+
+        boolean updateVisible =
+                isAny(evt, HeatmapDimension.class,
+                        HeatmapDimension.PROPERTY_VISIBLE);
 
         boolean updateAll =
                 isAny(evt, HeatmapDimension.class,
@@ -383,6 +390,14 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             updateScrolls();
             revalidate();
             repaint();
+        }
+
+
+        /// DETAIL BOXES
+        if (updateVisible) {
+            BoxManager.focusBox(HeatmapInfoBox.ID);
+        } else if (updateSelection) {
+            BoxManager.focusBox(SelectionBox.ID);
         }
 
 

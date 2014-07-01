@@ -35,7 +35,10 @@ public abstract class Box extends JXTaskPane {
     protected JPopupMenu popupMenu;
     private Heatmap heatmap;
 
-    public Box(String title, ActionSet contextActionSet, Heatmap heatmap) {
+    private String id;
+
+    public Box(String id, String title, ActionSet contextActionSet, Heatmap heatmap) {
+        this.id = id;
         setTitle(title);
         setSpecial(true);
 
@@ -61,5 +64,9 @@ public abstract class Box extends JXTaskPane {
 
     public Heatmap getHeatmap() {
         return heatmap;
+    }
+
+    public String getId() {
+        return id;
     }
 }

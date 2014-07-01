@@ -51,6 +51,7 @@ import java.util.concurrent.TimeUnit;
 public class SelectionBox extends DetailsBox {
 
 
+    public static final String ID = "SELECTION";
     private static ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
     private ScheduledFuture<?> updating = null;
     private static JumpToNextEventAction nextRowEventAction = new JumpToNextEventAction(MatrixDimensionKey.ROWS);
@@ -62,7 +63,7 @@ public class SelectionBox extends DetailsBox {
      * @param actions
      */
     public SelectionBox(String title, ActionSet actions, Heatmap heatmap) {
-        super(title, actions, new ActionSet(nextRowEventAction, nextColumnsEventAction), heatmap);
+        super(ID, title, actions, new ActionSet(nextRowEventAction, nextColumnsEventAction), heatmap);
         nextRowEventAction.setHeatmap(heatmap);
         nextColumnsEventAction.setHeatmap(heatmap);
 

@@ -53,8 +53,10 @@ import static org.gitools.utils.events.EventUtils.isAny;
 
 public class HeatmapInfoBox extends DetailsBox {
 
+    public static final String ID = "HEATMAP_INFO";
+
     public HeatmapInfoBox(Heatmap heatmap) {
-        super(capitalize(heatmap.getTitle()), null, createBottomActions(), heatmap);
+        super(ID, capitalize(heatmap.getTitle()), null, createBottomActions(), heatmap);
     }
 
     private static ActionSet createBottomActions() {

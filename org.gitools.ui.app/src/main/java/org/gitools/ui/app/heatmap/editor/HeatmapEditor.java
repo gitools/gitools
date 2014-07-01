@@ -48,6 +48,7 @@ import org.gitools.ui.app.heatmap.panel.details.DetailsPanel;
 import org.gitools.ui.app.heatmap.panel.search.HeatmapSearchPanel;
 import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.editor.EditorsPanel;
 import org.gitools.ui.core.pages.common.SaveHeatmapFilePage;
@@ -70,6 +71,7 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -271,7 +273,7 @@ public class HeatmapEditor extends AbstractEditor {
         setFile(file);
 
         IResourceLocator toLocator;
-        if  (heatmap.getLocator() == null) {
+        if (heatmap.getLocator() == null) {
             toLocator = new UrlResourceLocator(file);
         } else {
             toLocator = new UrlResourceLocator(heatmap.getLocator().getReadFile(), file);
@@ -452,6 +454,10 @@ public class HeatmapEditor extends AbstractEditor {
     @Override
     public void detach() {
         this.heatmap.detach();
+    }
+
+    public Collection<Box> getBoxes() {
+        return detailsPanel.getBoxes();
     }
 
 

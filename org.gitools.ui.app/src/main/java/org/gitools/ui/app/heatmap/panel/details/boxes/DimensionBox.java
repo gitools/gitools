@@ -58,7 +58,7 @@ public class DimensionBox extends DetailsBox {
      * @param dimension
      */
     public DimensionBox(String title, ActionSet actions, Heatmap heatmap, HeatmapDimension dimension) {
-        super(title, actions, new ActionSet(new AddHeaderAction(dimension.getId())), heatmap);
+        super(dimension.getId().name(), title, actions, new ActionSet(new AddHeaderAction(dimension.getId())), heatmap);
         this.dimension = dimension;
     }
 
@@ -73,8 +73,8 @@ public class DimensionBox extends DetailsBox {
                         PROPERTY_SELECTED,
                         PROPERTY_SELECTED_HEADER,
                         PROPERTY_VISIBLE)) ||
-                     isAny(evt, HierarchicalClusterHeatmapHeader.class,
-                             PROPERTY_INTERACTION_LEVEL)) {
+                        isAny(evt, HierarchicalClusterHeatmapHeader.class,
+                                PROPERTY_INTERACTION_LEVEL)) {
                     update();
                 }
             }
