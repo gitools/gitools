@@ -108,6 +108,8 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         }
 
         visibleToIndex = null;
+        firePropertyChange(PROPERTY_VISIBLE, null, visible);
+
     }
 
     public List<String> toList() {
