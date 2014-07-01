@@ -150,11 +150,18 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         preview.setCaretPosition(0);
 
 
-        if (allHeaders.size() > 2) {
+        boolean matrix = matrixRadioButton.isSelected();
+        if (allHeaders.size() > 2 && !matrix || allHeaders.size() > 1 && matrix) {
             setComplete(true);
             setMessage(MessageStatus.INFO, "Select Data Layout.");
         } else {
-            setMessage(MessageStatus.ERROR, "Only " + allHeaders.size() + " columns detected.");
+            String message = "Only " + allHeaders.size() + " columns detected.";
+            if (matrix) {
+                message += " At least an  id and a data columns needed";
+            } else {
+                message += " At least a column id, row id and value column expected.";
+            }
+            setMessage(MessageStatus.ERROR, message);
             setComplete(false);
         }
         separatorsModel.setSelectedItem(reader.getReaderProfile().getSeparator());
