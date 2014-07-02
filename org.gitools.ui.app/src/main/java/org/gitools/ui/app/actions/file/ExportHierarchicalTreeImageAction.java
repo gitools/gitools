@@ -61,7 +61,7 @@ public class ExportHierarchicalTreeImageAction extends AbstractAction {
 
         SaveFileWizard saveWiz = SaveFileWizard.createSimple(
                 "Export hierarchical tree to image ...",
-                FilenameUtils.getName(getSelectedEditor().getName()),
+                FilenameUtils.getName("Dendrogram " + getSelectedEditor().getName()),
                 Settings.get().getLastExportPath(),
                 new FileFormat[]{FileFormats.PNG}
         );

@@ -39,20 +39,20 @@ package org.gitools.heatmap.header;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
-import com.google.common.collect.Sets;
 import org.gitools.api.analysis.Clusters;
 
+import javax.xml.bind.annotation.*;
 import java.util.*;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlType(propOrder = {"name", "parentName", "leaves", "distance", "weight", "color", "children"})
 public class HierarchicalCluster implements Clusters, Comparable<HierarchicalCluster> {
 
     private String name;
 
-    private Set<String> identifiers;
-
     private String parentName;
 
-    private List<HierarchicalCluster> children;
+    private int leaves;
 
     private Double distance;
 
@@ -60,18 +60,23 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
 
     private int color;
 
+    @XmlElementWrapper(name = "children")
+    @XmlElement(name = "child")
+    private List<HierarchicalCluster> children;
+
     public HierarchicalCluster() {
         //JAXB requirement
     }
 
     public HierarchicalCluster(String... identifiers) {
-        this.identifiers = Sets.newHashSet(identifiers);
+        leaves = identifiers.length;
+        if (identifiers.length == 1) {
+            name = identifiers[0];
+        }
     }
 
     public HierarchicalCluster(Set<String> leftIds, Set<String> rightIds) {
-        this.identifiers = new HashSet<>(leftIds.size() + rightIds.size());
-        this.identifiers.addAll(leftIds);
-        this.identifiers.addAll(rightIds);
+        leaves = leftIds.size() + rightIds.size();
     }
 
     public Double getDistance() {
@@ -98,12 +103,19 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
         this.parentName = parent.getName();
     }
 
-    public Set<String> getIdentifiers() {
-        return identifiers;
+    public Set<String> getIdentifiers(Set<String> idSet) {
+        if (isLeaf()) {
+            idSet.add(name);
+        } else {
+            for (HierarchicalCluster child : children) {
+                child.getIdentifiers(idSet);
+            }
+        }
+        return idSet;
     }
 
-    public void setIdentifiers(Set<String> identifiers) {
-        this.identifiers = identifiers;
+    public Set<String> getIdentifiers() {
+        return getIdentifiers(getIdentifiers(new HashSet<String>()));
     }
 
     public String getName() {
@@ -135,11 +147,11 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
 
     @Override
     public String toString() {
-        return Joiner.on('&').join(identifiers);
+        return name + "-" + leaves;
     }
 
     public boolean isLeaf() {
-        return getChildren().size() == 0;
+        return leaves == 1 || children == null || children.size() == 0;
     }
 
     public int countLeafs() {
@@ -175,6 +187,14 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
 
     }
 
+    public int getLeaves() {
+        return leaves;
+    }
+
+    public void setLeaves(int leaves) {
+        this.leaves = leaves;
+    }
+
     public int getColor() {
         return color;
     }
@@ -207,7 +227,7 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
         } else if (getWeight() == null) {
             result = 1;
         } else {
-            Double w1 = getWeight() / identifiers.size();
+            Double w1 = getWeight() / leaves;
             Double w2 = o.getWeight() / o.getIdentifiers().size();
             result = w1.compareTo(w2);
         }
