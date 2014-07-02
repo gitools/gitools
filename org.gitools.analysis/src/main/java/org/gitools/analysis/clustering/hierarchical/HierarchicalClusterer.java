@@ -27,10 +27,8 @@ import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.header.HierarchicalCluster;
 
 import java.awt.*;
@@ -60,10 +58,10 @@ public class HierarchicalClusterer {
         SortedSet<ClusterPair> linkages = new ConcurrentSkipListSet<>();
 
 
+        // Aggregate all the values to sort the clusters by weight
         monitor.begin("Aggregating values...", clusterDimension.size());
-        Map<String, Double> aggregation = new HashMap<>(clusterDimension.size());
+        final Map<String, Double> aggregation = new HashMap<>(clusterDimension.size());
         Set<String> allNullValues = new HashSet<>();
-
         IMatrixPosition position = matrix.newPosition();
         for (String id : position.iterate(clusterDimension)) {
 
@@ -77,6 +75,18 @@ public class HierarchicalClusterer {
 
         }
 
+        // First sort the clustering dimension to show the clusters ordered by weight at the end
+        if (clusterDimension instanceof IMatrixViewDimension) {
+            IMatrixViewDimension sortDimension = (IMatrixViewDimension) clusterDimension;
+            sortDimension.sort(new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    return SortDirection.ASCENDING.compare(aggregation.get(o1), aggregation.get(o2));
+                }
+            });
+        }
+
+        // Calculate all the distances
         IMatrixPosition position1 = matrix.newPosition();
         IMatrixPosition position2 = matrix.newPosition();
         monitor.begin("Calculating distances...", clusterDimension.size());
@@ -117,16 +127,15 @@ public class HierarchicalClusterer {
             }
         }
 
-        /* Process */
+        // Create the clusters agglomerating nodes by the nearest distances
         HierarchyBuilder builder = new HierarchyBuilder(newHashSet(clusters.values()), linkages);
         builder.agglomerate(linkageStrategy, monitor, clusterDimension.size());
 
-        /* Set cluster names */
+        // Set cluster names ordered by weight
         HierarchicalCluster root = builder.getRootCluster();
         root.setName("");
         Color color = nameClusters(root.getChildren(), 1);
         root.setColor(color.getRGB());
-
         root.setName("root");
 
         return root;
