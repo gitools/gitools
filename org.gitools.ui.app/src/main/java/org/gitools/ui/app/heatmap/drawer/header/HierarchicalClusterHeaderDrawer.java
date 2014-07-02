@@ -55,14 +55,12 @@ public class HierarchicalClusterHeaderDrawer extends AbstractHeatmapHeaderDrawer
 
         int x = clip.x;
         int y = clip.y;
-        //int width = getHeader().getSize() / drawers.size();
-        //int width = box.width / drawers.size();
 
         for (HeatmapColoredLabelsHeader level : Lists.reverse(getHeader().getClusterLevels())) {
             int width = level.getSize();
             drawer = drawers.get(getHeader().getClusterLevels().indexOf(level));
             Rectangle subclip = new Rectangle(x, y, width, clip.height);
-            Rectangle subbox = new Rectangle(x, y, width, box.height);
+            Rectangle subbox = new Rectangle(x, box.y, width, box.height);
             drawer.draw(g, subbox, subclip);
             x += width;
         }
