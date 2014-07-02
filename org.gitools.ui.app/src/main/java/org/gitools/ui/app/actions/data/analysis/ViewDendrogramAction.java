@@ -38,14 +38,14 @@ import org.gitools.ui.platform.progress.JobThread;
 import java.awt.event.ActionEvent;
 
 
-public class ViewDendogramAction extends HeatmapAction implements IHeatmapHeaderAction {
+public class ViewDendrogramAction extends HeatmapAction implements IHeatmapHeaderAction {
 
     private HierarchicalClusterHeatmapHeader header;
     private String clusterName = "";
 
 
-    public ViewDendogramAction() {
-        super("<html><i>ViewDendogramAction</i></html>");
+    public ViewDendrogramAction() {
+        super("<html><i>ViewDendrogramAction</i></html>");
         setSmallIconFromResource(IconNames.view16);
     }
 
@@ -80,12 +80,12 @@ public class ViewDendogramAction extends HeatmapAction implements IHeatmapHeader
             if (!Strings.isNullOrEmpty(position.getHeaderAnnotation())) {
 
                 this.clusterName = position.getHeaderAnnotation();
-                this.setName("<html><i>View</i> <b>" + clusterName + "</b> dendogram</html>");
+                this.setName("<html><i>View</i> <b>" + clusterName + "</b> dendrogram</html>");
 
             } else {
 
                 this.clusterName = "";
-                this.setName("<html><i>View</i> <b>entire</b> hierarchical dendogram</html>");
+                this.setName("<html><i>View</i> <b>entire</b> hierarchical dendrogram</html>");
             }
 
 

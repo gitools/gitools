@@ -28,7 +28,7 @@ import org.gitools.ui.app.actions.data.FastSortValueAction;
 import org.gitools.ui.app.actions.data.GroupSelectionAction;
 import org.gitools.ui.app.actions.data.HideSelectionAction;
 import org.gitools.ui.app.actions.data.ShowAllAction;
-import org.gitools.ui.app.actions.data.analysis.ViewDendogramAction;
+import org.gitools.ui.app.actions.data.analysis.ViewDendrogramAction;
 import org.gitools.ui.app.actions.data.analysis.ViewGroupComparisonResultDataAction;
 import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.core.actions.ActionSet;
@@ -47,7 +47,7 @@ public class PopupMenuActions {
                 // Analysis specific
                 Actions.viewEnrichmentModuleData,
                 new ViewGroupComparisonResultDataAction(),
-                new ViewDendogramAction(),
+                new ViewDendrogramAction(),
 
                 // Data selection
                 new PopupSectionTitleAction("Selection"),
