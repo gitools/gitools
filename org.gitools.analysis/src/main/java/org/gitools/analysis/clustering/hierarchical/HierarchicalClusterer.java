@@ -39,6 +39,7 @@ import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import static com.google.common.collect.Sets.complementOf;
 import static com.google.common.collect.Sets.newHashSet;
 
 public class HierarchicalClusterer {
@@ -58,9 +59,26 @@ public class HierarchicalClusterer {
         Map<String, HierarchicalCluster> clusters = new HashMap<>(clusterDimension.size());
         SortedSet<ClusterPair> linkages = new ConcurrentSkipListSet<>();
 
+
+        monitor.begin("Aggregating values...", clusterDimension.size());
+        Map<String, Double> aggregation = new HashMap<>(clusterDimension.size());
+        Set<String> allNullValues = new HashSet<>();
+
+        IMatrixPosition position = matrix.newPosition();
+        for (String id : position.iterate(clusterDimension)) {
+
+            Double value = aggregator.aggregate(position.iterate(layer, aggregationDimension));
+
+            if (value != null) {
+                aggregation.put(id, value);
+            } else {
+                allNullValues.add(id);
+            }
+
+        }
+
         IMatrixPosition position1 = matrix.newPosition();
         IMatrixPosition position2 = matrix.newPosition();
-
         monitor.begin("Calculating distances...", clusterDimension.size());
         for (String id1 : position1.iterate(clusterDimension)) {
 
@@ -70,13 +88,23 @@ public class HierarchicalClusterer {
                 throw new CancellationException();
             }
 
+            // Skip all null values
+            if (allNullValues.contains(id1)) {
+                continue;
+            }
+
             HierarchicalCluster cluster1 = newCluster(clusters, id1);
-            cluster1.setWeight( aggregator.aggregate(position1.iterate(layer, aggregationDimension)) );
+            cluster1.setWeight( aggregation.get(id1) );
 
             for (String id2 : position2.iterate(clusterDimension.from(id1))) {
 
                 // Skip equal ids
                 if (id1.equals(id2)) continue;
+
+                // Skip all null columns
+                if (allNullValues.contains(id2)) {
+                    continue;
+                }
 
                 Double distance = measure.compute(
                         position1.iterate(layer, aggregationDimension),
