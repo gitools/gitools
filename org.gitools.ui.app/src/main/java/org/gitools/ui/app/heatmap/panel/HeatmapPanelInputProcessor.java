@@ -26,10 +26,10 @@ import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.heatmap.panel.details.boxes.BoxManager;
 import org.gitools.ui.app.heatmap.panel.details.boxes.LayerValuesBox;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.components.boxes.BoxManager;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -205,7 +205,7 @@ public class HeatmapPanelInputProcessor {
             dim.setFocus(dim.getLabel(i));
         }
         BoxManager.protect(MatrixDimensionKey.COLUMNS.name(), MatrixDimensionKey.ROWS.name());
-        BoxManager.focusBox(LayerValuesBox.ID);
+        BoxManager.openOnly(LayerValuesBox.ID);
         BoxManager.reset();
     }
 

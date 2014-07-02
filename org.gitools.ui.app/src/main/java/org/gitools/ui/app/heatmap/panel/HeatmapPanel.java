@@ -27,7 +27,6 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
-import org.gitools.ui.app.heatmap.panel.details.boxes.BoxManager;
 import org.gitools.ui.app.heatmap.panel.details.boxes.HeatmapInfoBox;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
 import org.gitools.ui.core.HeatmapPosition;
@@ -35,6 +34,7 @@ import org.gitools.ui.core.actions.ActionSetUtils;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.core.components.boxes.BoxManager;
 import org.gitools.ui.core.components.boxes.SelectionBox;
 import org.gitools.ui.platform.component.scrollbar.ThinScrollBar;
 
@@ -301,13 +301,13 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
     public void configureHeaders(MouseEvent e) {
         if (e.getComponent() == this.rowVP) {
             HeatmapHeader header = rowHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
-            if (header instanceof HierarchicalClusterHeatmapHeader){
+            if (header instanceof HierarchicalClusterHeatmapHeader) {
                 e.consume();
             }
         }
         if (e.getComponent() == this.colVP) {
             HeatmapHeader header = columnHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
-            if (header instanceof HierarchicalClusterHeatmapHeader){
+            if (header instanceof HierarchicalClusterHeatmapHeader) {
                 e.consume();
             }
         }
@@ -397,18 +397,18 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         /// DETAIL BOXES
 
         if (updateVisible) {
-            BoxManager.focusBox(HeatmapInfoBox.ID);
+            BoxManager.openOnly(HeatmapInfoBox.ID);
 
         } else if (updateSelection) {
             if (evt.getSource() instanceof HeatmapDimension) {
                 if (((HeatmapDimension) evt.getSource()).getSelected().size() > 0) {
                     MatrixDimensionKey key = ((HeatmapDimension) evt.getSource()).getId();
-                    BoxManager.focusBox(SelectionBox.ID, key.name());
+                    BoxManager.openOnly(SelectionBox.ID, key.name());
                 } else {
-                    BoxManager.focusBox(SelectionBox.ID);
+                    BoxManager.openOnly(SelectionBox.ID);
                 }
             }
-    }
+        }
 
     }
 

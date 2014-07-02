@@ -47,7 +47,7 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     public static final String PROPERTY_NAME = "mutex";
 
     @XmlTransient
-    public static String NAME = "mutual-exclusive";
+    public static String ID = "mutual-exclusive";
 
     private List<MutualExclusiveBookmark> bookmarks;
 
@@ -55,7 +55,7 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     private Map<String, Integer> keysMap;
 
     public MutualExclusivePlugin() {
-        super(NAME);
+        super(ID);
         bookmarks = new ArrayList<>();
         keysMap = new HashMap<>();
         updateKeys();

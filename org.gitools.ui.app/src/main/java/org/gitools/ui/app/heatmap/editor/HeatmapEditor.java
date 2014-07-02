@@ -456,6 +456,7 @@ public class HeatmapEditor extends AbstractEditor {
         this.heatmap.detach();
     }
 
+    @Override
     public Collection<Box> getBoxes() {
         return detailsPanel.getBoxes();
     }

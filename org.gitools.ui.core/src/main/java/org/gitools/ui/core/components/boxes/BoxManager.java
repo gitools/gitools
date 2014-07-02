@@ -20,16 +20,13 @@
  * #L%
  */
 
-package org.gitools.ui.app.heatmap.panel.details.boxes;
+package org.gitools.ui.core.components.boxes;
 
-import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Set;
 
 public class BoxManager {
 
@@ -42,7 +39,7 @@ public class BoxManager {
      *
      * @param boxIds
      */
-    public static void focusBox(String... boxIds) {
+    public static void openOnly(String... boxIds) {
         Collection<Box> boxes = getBoxes();
         Collection<String> focusedIds = new HashSet<>();
         for (String id : boxIds) {
@@ -52,30 +49,29 @@ public class BoxManager {
         for (Box b : boxes) {
             boolean focused = focusedIds.contains(b.getId());
             if (b.isVisible() && !protectedIds.contains(b.getId()) && focused) {
-                uncollapse(b);
+                open(b);
             } else if (b.isVisible() && !protectedIds.contains(b.getId()) && !focused) {
-                collapse(b);
+                close(b);
             }
         }
     }
 
     public static Collection<Box> getBoxes() {
-        Set<Box> boxes = new HashSet();
         AbstractEditor editor = Application.get().getEditorsPanel().getSelectedEditor();
-        if (editor instanceof HeatmapEditor) {
-            return ((HeatmapEditor) editor).getBoxes();
+        if (editor.getBoxes() != null) {
+            return editor.getBoxes();
         }
-        return boxes;
+        return new HashSet<Box>();
     }
 
 
-    public static void collapse(Box... boxes) {
+    public static void close(Box... boxes) {
         for (Box b : boxes) {
             b.setCollapsed(true);
         }
     }
 
-    public static void uncollapse(Box... boxes) {
+    public static void open(Box... boxes) {
         for (Box b : boxes) {
             b.setCollapsed(false);
         }

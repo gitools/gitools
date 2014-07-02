@@ -23,10 +23,12 @@ package org.gitools.ui.core.components.editor;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.core.actions.ActionManager;
+import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.platform.view.AbstractView;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class AbstractEditor<M> extends AbstractView implements IEditor<M> {
@@ -122,6 +124,10 @@ public abstract class AbstractEditor<M> extends AbstractView implements IEditor<
 
     public void addEditorListener(EditorListener listener) {
         listeners.add(listener);
+    }
+
+    public Collection<Box> getBoxes() {
+        return null;
     }
 
     public static abstract class EditorListener {

@@ -54,7 +54,7 @@ public class MutualExclusiveBox extends DetailsBox {
 
 
     public MutualExclusiveBox(String title, Heatmap heatmap, MutualExclusivePlugin plugin) {
-        super(MutualExclusivePlugin.NAME, title, ACTIONS, heatmap);
+        super(MutualExclusivePlugin.ID, title, ACTIONS, heatmap);
         this.plugin = plugin;
     }
 

@@ -40,7 +40,7 @@ public class RemoveMutualExclusiveAction extends HeatmapAction implements IMutua
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        MutualExclusivePlugin p = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.NAME);
+        MutualExclusivePlugin p = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.ID);
         p.remove(bookmark.getName());
     }
 

@@ -39,6 +39,7 @@ import org.gitools.plugins.mutex.ui.MutualExclusionSortPage;
 import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.components.boxes.BoxManager;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.settings.Settings;
@@ -111,7 +112,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                     }
                     IMatrix resultsMatrix = analysis.getResults().get();
 
-                    MutualExclusivePlugin plugin = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.NAME);
+                    MutualExclusivePlugin plugin = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.ID);
                     if (plugin == null) {
                         return;
                     }
@@ -146,6 +147,8 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                     }
 
                     plugin.add(bookmark);
+
+                    BoxManager.openOnly(MutualExclusivePlugin.ID);
 
                     Application.get().showNotification("Mutual exclusive sorting applied.");
 
