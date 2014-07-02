@@ -26,7 +26,6 @@ import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
-import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
@@ -90,8 +89,9 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
         //BOOKMARK NAME
 
         forbiddenNames = new ArrayList<>();
-        forbiddenNames.add("Mutex result");
         forbiddenNames.add("");
+        forbiddenNames.add("-");
+        forbiddenNames.add(" ");
         nameField.setText(bookmark.getName());
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -156,7 +156,7 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
             setComplete(false);
             return;
         }
-        if (!uniqueName()) {
+        if (!uniqueMutexName()) {
             setMessage(MessageStatus.WARN, "Please choose a unique name for the result or click cancel to discard");
             setComplete(false);
             return;
@@ -200,12 +200,9 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
         varianceLabel.setText(fill(result.getExpectedVar()));
     }
 
-    private boolean uniqueName() {
-        MutualExclusivePlugin mutualExclusivePlugin = (MutualExclusivePlugin) heatmap.getPluggedBoxes().get(MutualExclusivePlugin.NAME);
-        for (String s : mutualExclusivePlugin.getKeys()) {
-            if (oldName != null && !oldName.toLowerCase().equals(bookmark.getName().toLowerCase()) && s.toLowerCase().equals(bookmark.getName().toLowerCase())) {
-                return false;
-            }
+    public boolean uniqueMutexName() {
+        if (oldName != null && !oldName.toLowerCase().equals(bookmark.getName().toLowerCase())) {
+            return false;
         }
         return (!forbiddenNames.contains(bookmark.getName()));
     }

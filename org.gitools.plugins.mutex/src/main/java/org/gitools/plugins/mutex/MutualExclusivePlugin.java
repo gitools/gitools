@@ -122,4 +122,13 @@ public class MutualExclusivePlugin extends AbstractPlugin implements IBoxPlugin,
     public void forceUpdate() {
         updateKeys();
     }
+
+    public boolean uniqueName(String name) {
+        for (String s : getKeys()) {
+            if (name.toLowerCase().equals(s.toLowerCase())) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

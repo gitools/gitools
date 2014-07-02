@@ -111,20 +111,33 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                     }
                     IMatrix resultsMatrix = analysis.getResults().get();
 
+                    MutualExclusivePlugin plugin = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.NAME);
+                    if (plugin == null) {
+                        return;
+                    }
 
                     //DIALOG
                     LayerAdapter<MutualExclusiveResult> adapter = new LayerAdapter<>(MutualExclusiveResult.class);
                     MutualExclusiveResult result = adapter.get(resultsMatrix, resultsMatrix.newPosition());
 
 
+                    String name = "Mutex result";
+                    String space = " ";
+
+                    while (!plugin.uniqueName(name)) {
+                        name = name + space + "I";
+                        space = "";
+                    }
+
                     MutualExclusiveBookmark bookmark = (dimensionKey == MatrixDimensionKey.ROWS) ?
-                            new MutualExclusiveBookmark("Mutex result", selected, hm.getColumns().toList(),
+                            new MutualExclusiveBookmark(name, selected, hm.getColumns().toList(),
                                     hm.getLayers().getTopLayer().getId(), testDimension.getId(), result) :
-                            new MutualExclusiveBookmark("Mutex result", hm.getRows().toList(), selected,
+                            new MutualExclusiveBookmark(name, hm.getRows().toList(), selected,
                                     hm.getLayers().getTopLayer().getId(), testDimension.getId(), result);
 
                     MutualExclusiveResultPage resultPage = new MutualExclusiveResultPage(hm, bookmark);
                     PageDialog dlg = new PageDialog(Application.get(), resultPage);
+
 
                     dlg.open();
 
@@ -132,11 +145,6 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                         return;
                     }
 
-                    //bookmark = resultPage.getBookmark();
-                    MutualExclusivePlugin plugin = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.NAME);
-                    if (plugin == null) {
-                        return;
-                    }
                     plugin.add(bookmark);
 
                     Application.get().showNotification("Mutual exclusive sorting applied.");
