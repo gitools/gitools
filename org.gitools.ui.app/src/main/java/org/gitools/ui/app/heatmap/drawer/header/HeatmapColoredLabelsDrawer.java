@@ -82,8 +82,8 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
             int fullSize = getHeatmapDimension().getFullSize();
             //gridSize = 0 (no grid) if same group
-            int gridSize = ((getHeatmapDimension().showGrid() && !highlighted && !isHighlightedIndex(endGroupIndex + 1)
-                    || getHeatmapDimension().showGrid() && !groupLabel.equals(header.getColoredLabel(endGroupIndex + 1)))
+            int gridSize = ((getHeatmapDimension().getCellSize() > 2 && !highlighted && !isHighlightedIndex(endGroupIndex + 1)
+                    || getHeatmapDimension().getCellSize() > 2 && !groupLabel.equals(header.getColoredLabel(endGroupIndex + 1)))
                     ? getHeatmapDimension().getGridSize() : 0);
 
             paintCell(
