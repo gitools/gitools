@@ -24,7 +24,6 @@ package org.gitools.analysis.htest;
 import org.gitools.analysis.Analysis;
 import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
@@ -40,7 +39,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlRootElement
-@XmlSeeAlso({EnrichmentAnalysis.class, OncodriveAnalysis.class})
+@XmlSeeAlso({EnrichmentAnalysis.class})
 @XmlAccessorType(XmlAccessType.FIELD)
 public class HtestAnalysis extends Analysis {
 

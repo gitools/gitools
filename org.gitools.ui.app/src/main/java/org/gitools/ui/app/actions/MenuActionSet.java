@@ -89,12 +89,12 @@ public class MenuActionSet extends ActionSet {
                 new ActionSet(ACTION_SCOPE_ANALYSIS, KeyEvent.VK_A,
                         new BaseAction[]{
                                 Actions.enrichment,
-                                Actions.oncodrive,
                                 Actions.correlations,
+                                Actions.groupComparison,
                                 Actions.combinations,
                                 Actions.overlapping,
-                                Actions.groupComparison,
                                 Actions.clusteringAction,
+
                         }
                 ),
                 new ActionSet(ACTION_SCOPE_DOWNLOAD, KeyEvent.VK_D,

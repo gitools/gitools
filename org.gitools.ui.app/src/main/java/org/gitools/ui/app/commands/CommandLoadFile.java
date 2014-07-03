@@ -27,7 +27,6 @@ import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
@@ -51,7 +50,6 @@ import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.app.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.app.analysis.htest.editor.EnrichmentAnalysisEditor;
-import org.gitools.ui.app.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.app.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.app.fileimport.ImportManager;
 import org.gitools.ui.app.fileimport.ImportWizard;
@@ -199,8 +197,8 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
     public ImportWizard getConfigWizard() {
 
         IResourceLocator locator = getResourceLocator();
-        locator = getPersistenceManager().applyCache( locator );
-        locator = getPersistenceManager().applyFilters( locator );
+        locator = getPersistenceManager().applyCache(locator);
+        locator = getPersistenceManager().applyFilters(locator);
 
         ImportWizard wizard = ImportManager.get().getWizard(locator);
         wizard.setCallback(this);
@@ -227,8 +225,6 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
 
         if (resource instanceof EnrichmentAnalysis) {
             return new EnrichmentAnalysisEditor((EnrichmentAnalysis) resource);
-        } else if (resource instanceof OncodriveAnalysis) {
-            return new OncodriveAnalysisEditor((OncodriveAnalysis) resource);
         } else if (resource instanceof CorrelationAnalysis) {
             return new CorrelationAnalysisEditor((CorrelationAnalysis) resource);
         } else if (resource instanceof CombinationAnalysis) {

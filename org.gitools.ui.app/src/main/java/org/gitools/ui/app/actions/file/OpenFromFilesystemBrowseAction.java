@@ -26,7 +26,6 @@ import org.gitools.analysis.combination.format.CombinationAnalysisFormat;
 import org.gitools.analysis.correlation.format.CorrelationAnalysisFormat;
 import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
 import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
-import org.gitools.analysis.htest.oncodrive.format.OncodriveAnalysisFormat;
 import org.gitools.analysis.overlapping.format.OverlappingAnalysisFormat;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.persistence.FileFormat;
@@ -59,7 +58,6 @@ public class OpenFromFilesystemBrowseAction extends AbstractAction {
 
     public static FileFormat[] FORMAT_ANALYSIS = new FileFormat[]{
             EnrichmentAnalysisFormat.FILE_FORMAT,
-            OncodriveAnalysisFormat.FILE_FORMAT,
             CorrelationAnalysisFormat.FILE_FORMAT,
             CombinationAnalysisFormat.FILE_FORMAT,
             OverlappingAnalysisFormat.FILE_FORMAT,
@@ -103,7 +101,6 @@ public class OpenFromFilesystemBrowseAction extends AbstractAction {
 
                 // Analysis
                 new FileFormatFilter(EnrichmentAnalysisFormat.FILE_FORMAT),
-                new FileFormatFilter(OncodriveAnalysisFormat.FILE_FORMAT),
                 new FileFormatFilter(CorrelationAnalysisFormat.FILE_FORMAT),
                 new FileFormatFilter(OverlappingAnalysisFormat.FILE_FORMAT),
                 new FileFormatFilter(GroupComparisonAnalysisFormat.FILE_FORMAT),

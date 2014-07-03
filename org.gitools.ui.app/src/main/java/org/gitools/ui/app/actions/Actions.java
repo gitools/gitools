@@ -128,8 +128,6 @@ public class Actions {
 
     public static final BaseAction clusteringAction = new ClusteringAction();
 
-    public static final BaseAction oncodrive = new OncodriveAnalysisAction();
-
     public static final BaseAction enrichment = new EnrichmentAnalysisAction();
 
     public static final BaseAction combinations = new CombinationsAction();
