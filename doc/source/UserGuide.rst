@@ -20,7 +20,6 @@ Gitools User Guide
     - :doc:`UserGuide_Overlaps`
     - :doc:`UserGuide_GroupComparison`
     - :doc:`UserGuide_Combinations`
-    - :doc:`UserGuide_Oncodrive`
 
 
 **The interface**
@@ -48,7 +47,6 @@ Gitools User Guide
     - :doc:`UserGuide_HowtoModuleFilesSpreadsheet`
     - :doc:`UserGuide_HowtoResultsFilesSpreadsheet`
     - :doc:`UserGuide_HowtoSLEA`
-    - :doc:`UserGuide_HowtoMultiDimensionalData`
 
 
 

@@ -8,4 +8,3 @@ In order to perform an analysis open a heatmap and select the menu :code:`Analys
 - :doc:`UserGuide_Overlaps`
 - :doc:`UserGuide_GroupComparison`
 - :doc:`UserGuide_Combinations`
-- :doc:`UserGuide_Oncodrive`
