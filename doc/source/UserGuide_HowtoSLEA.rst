@@ -17,7 +17,7 @@ Files needed
 
 **Clinical information of samples** if available. See for example  `”sample information for datasets used in Gundem and Lopez-Bigas 2012” <http://bg.upf.edu/slea/datasets/samples>`__
 
-**Gene modules**. See for example  `modules used in Gundem and Lopez-Bigas 2012 <UserGuide_ImportingData.rst>`__  of the user guide for further information on how to import gene modules with Gitools.
+**Gene modules**. See for example  `modules used in Gundem and Lopez-Bigas 2012 <UserGuide_SpecialFileExtensions.rst>`__  of the user guide for further information on how to import gene modules with Gitools.
 
 
 
@@ -45,5 +45,5 @@ Explore the results
 The results are presented in the form of interactive heatmaps. See `Gitools Help <http://help.gitools.org>` to learn how to explore the results
 
 .. image:: img/SLEAexample.png
-   :width: 75%
+:width: 75%
    :align: center

@@ -30,24 +30,23 @@ Correlation Analysis        ``.correlations, .correlations.zip``
 Combination Analysis        ``.combinations, .combinations.zip``
 ==========================  =======================================
 
-Import & Export
----------------
 
 When **Importing**, Gitools will ask for user input in order to know how to represent the data. **Exporting** refers to
 a data form which can either not be loaded again in Gitools (such as a figure/image) or to a rudimentary data form which
 needs to be imported again, such as flat text files.
 
 Import my own data into Gitools
-...............................
+-----------------------------------
 
-Read about :doc:`UserGuide_ImportingData` if you have **your own data** in a text file or Excel table and want to load it
+
+Import any data in form of a text file or excel sheet containing your data into Gitools. Read more at  :doc:`UserGuide_DataTypes`.
+
+If you want to know about specific data files used by Gitools internally, read more here: :doc:`UserGuide_SpecialFileExtensions`.
 in Gitools.
 
-There you can find :ref:`importformats`  and how you can load them as different :ref:`datatypes`, such as
-matrix, annotation and modules.
 
 Export data from Gitools
-........................
+-----------------------------------
 
 Find a list of possible ways to :doc:`UserGuide_Export`
 

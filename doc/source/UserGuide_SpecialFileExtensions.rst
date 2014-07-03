@@ -1,13 +1,13 @@
-=========================
-Importing data to Gitools
-=========================
+================================
+List of special file formats
+================================
 
 .. contents:: 
 
 .. _importformats:
 
-Data import: file formats
---------------------------------
+Gitools file formats
+------------------------
 
 Various formats are accepted in Gitools to represent each of these data types. The following table list the file formats accepted for each data type and in the following sections each file format is described.
 
@@ -34,43 +34,6 @@ Module (Gene Sets)              - ``.gmx, .gmz.gz``                             
 Any of the presented formats can be compressed using gzip and recognized if the suffix .gz is appended at the end of the file name, so for example the file matrix.cdm could be compressed using gzip and renamed to matrix.cdm.gz and Gitools would be able to read it without problems.
 
 
-.. _datatypes:
-
-Data types
-----------
-
-There are different kinds of data needed to import for different features in Gitools (Matrices, Modules and Annotations).
-
-Matrices
-........
-
-A matrix is a bidimensional structure in which for each row and column there is a value (one value-dimension) or multipe values (multiple value-dimensions). All the values are of one dimension are the same type (for example all are p-values or log ratios).
-
-Matrices provide values for a number of items (i.e. one gene for each row) in several conditions/samples (i.e. one sample for each column). There could be empty values too (usually represented as a hyphen ’-’ or an empty field in text file formats).
-
-Flat files that can be imported to Gitools can be distinguished into matrix-layout and table-layout
-
-
-Flat files: matrix layout
-,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Flat files containing data in  matrices can only contain data for a  single value dimension. Examples for files containing data in matrix form are ``.cdm`` and ``.tdm``. Here, **each line contains data for one heatmap row**
-
-Flat files: tables form
-,,,,,,,,,,,,,,,,,,,,,,,,
-A flat file containing multiple value dimensions (multiple values per cell) need to be in the column form where **each line in the file contains data for one cell in the heatmap**. See for exampe the ``.tdm`` format
-
-Modules
-.......
-
-Modules are lists of genes or other biological elements with a common biological property. They are also known as gene sets or concepts. For example, genes in the same pathway or genes regulated by the same transcription factor can form toghether one module. You can have many modules, i.e one for each known pathway or TF.
-
-Annotations
-...........
-A table represents a list of attributes, where each row is an element of the list and each column an attribute where the first column has to be the id of the heatmap column or row. Each attribute can be of different type (i.e. one column with the gene id and other with a log-ratio). For R users it is the equivalent to data.frame.
-
-In Gitools they are used for different things, for providing extra attributes to row and column labels in heatmaps and for representing results of some analysis.
-
-
 Import data from external sources
 ---------------------------------
 Gitools has built-in data importers from different external data sources like *Biomart*, *IntOGen*, *Ensembl* or *KEGG*. See the  :doc:`importing data section <UserGuide_ExternalDataSources>` for details.
@@ -94,9 +57,9 @@ It is useful for representing matrices (i.e. expression data for a microarray).
 
 
 .. image:: img/formatCDM.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: cdm file format
+       :alt: cdm file format
 
 
 Binary data matrix (BDM)
@@ -111,9 +74,9 @@ When representing matrices a 1 means that this item (row) presents a positive ev
 When representing modules, rows correspond to genes or biological elements and each column a different module, then a 1 is used to specify that a given gene or biological element is related to a given module and 0 otherwise.
 
 .. image:: img/formatBDM.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: bdm file format
+       :alt: bdm file format
 
 .. _tdm:
 
@@ -125,9 +88,9 @@ TDM file format is a tab delimited file that has contains multiple values per ro
 In this following example we see a .tdm-file that contains three columns and two rows.
 
 .. image:: img/formatTDM.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: tdm file format
+       :alt: tdm file format
 
 Gene matrix transposed (GMT)
 ............................
@@ -139,9 +102,9 @@ Usually this format is used for representing modules but can also be used to rep
 This format is the same used in  `GSEA tool <http://www.broadinstitute.org/gsea/>`__ .
 
 .. image:: img/formatGMT.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: GMT file format
+       :alt: GMT file format
 
 Gene matrix (GMX)
 .................
@@ -155,9 +118,9 @@ Usually this format is used for representing modules but can also be used to rep
 This format is the same used in  `GSEA tool <http://www.broadinstitute.org/gsea/>`__ .
 
 .. image:: img/formatGMX.png
-   :width: 700px
+:width: 700px
    :align: center
-   :alt: gmx file format
+       :alt: gmx file format
 
 
 Two columns mapping (TCM)

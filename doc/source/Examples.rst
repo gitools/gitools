@@ -1,6 +1,6 @@
-========
+=========
 Examples
-========
+=========
 
 Gitools includes examples for each type of analysis. To this purpose, ready annotated data matrices are provided with the download, and example analyses perform semi-automatically following the “example” link in the first page of the wizard of for each analysis type. Given below is a page by page description of the example analyses.
 

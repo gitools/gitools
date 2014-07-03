@@ -35,7 +35,7 @@ Selection of the data to analyze
    :width: 700px
    :align: center
 
-If you follow the conventions on file formats explained :doc:`here <UserGuide_ImportingData>` then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
+    If you follow the conventions on file formats explained :doc:`here <UserGuide_SpecialFileExtensions>` then simply click on the button [Browse] and select the file containing the data to analyze. The format selector will recognize the extension of the file. If your data file doesn’t have a known file extension then you should specify which is the format of the file.
 
 Configure combination options
 -------------------------------------------------

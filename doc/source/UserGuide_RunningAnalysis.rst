@@ -1,9 +1,7 @@
-Running analysis
-================
+Analyses
+=========
 
-
-There are several analysis implemented in Gitools:
-
+In order to perform an analysis open a heatmap and select the menu :code:`Analysis` and selecte one of:
 
 - :doc:`UserGuide_Enrichment`
 - :doc:`UserGuide_Correlations`
@@ -11,8 +9,3 @@ There are several analysis implemented in Gitools:
 - :doc:`UserGuide_GroupComparison`
 - :doc:`UserGuide_Combinations`
 - :doc:`UserGuide_Oncodrive`
-
-
-The analyses are available in two ways:
- - Selecting :code:`File -> New`. This way will always ask to locate the data on your computer.
- - When a heatmap already loaded, the analyses become available through the menu :code:`Analysis` and will take as input data the currently selected heatmap.
