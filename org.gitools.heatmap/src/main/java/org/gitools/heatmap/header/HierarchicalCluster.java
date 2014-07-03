@@ -114,6 +114,17 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
         return idSet;
     }
 
+    public Map<String, String> getMaxLevel(Map<String, String> idSet) {
+        if (isLeaf()) {
+            idSet.put(name, parentName);
+        } else {
+            for (HierarchicalCluster child : children) {
+                child.getMaxLevel(idSet);
+            }
+        }
+        return idSet;
+    }
+
     public Set<String> getIdentifiers() {
         return getIdentifiers(getIdentifiers(new HashSet<String>()));
     }
@@ -266,7 +277,6 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
                 }
             }
         }
-
 
 
         return foundCluster;

@@ -34,18 +34,17 @@ public class SortByLabelComparator implements Comparator<String> {
 
     private IMatrixViewDimension sortDimension;
     private SortDirection direction;
-    private Function<String, String> transformFunction;
+    protected Function<String, String> transformFunction;
     private int firstPosition;
     private boolean asNumeric;
     private Set<String> sortIdentifiers;
 
     /**
-     *
      * @param sortDimension
-     * @param direction             Sort direction
-     * @param transformFunction     Patterns transform function
-     * @param firstPosition         Indicate if only sorting selected items, otherwise -1
-     * @param asNumeric             If the annotation values are numeric
+     * @param direction         Sort direction
+     * @param transformFunction Patterns transform function
+     * @param firstPosition     Indicate if only sorting selected items, otherwise -1
+     * @param asNumeric         If the annotation values are numeric
      */
     public SortByLabelComparator(IMatrixViewDimension sortDimension, SortDirection direction, Function<String, String> transformFunction, int firstPosition, boolean asNumeric) {
         this.sortDimension = sortDimension;
@@ -80,8 +79,7 @@ public class SortByLabelComparator implements Comparator<String> {
                 }
             } else if (!sortIdentifiers.contains(idx1)) {
                 return before1 ? -1 : 1;
-            }
-            else if (!sortIdentifiers.contains(idx2)) {
+            } else if (!sortIdentifiers.contains(idx2)) {
                 return before2 ? 1 : -1;
             }
         }

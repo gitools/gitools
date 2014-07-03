@@ -25,6 +25,8 @@ import com.google.common.base.Function;
 import com.google.common.collect.Lists;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
+import org.gitools.utils.textpattern.TextPattern;
 
 import javax.xml.bind.annotation.*;
 import java.awt.*;
@@ -138,12 +140,10 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
 
         DetailsDecoration desiredDecoration = null;
 
-
-
         for (HeatmapColoredLabelsHeader level : Lists.reverse(clusterLevels)) {
 
             DetailsDecoration decoration = new DetailsDecoration(this.getTitle(),
-                    "Right click on hierarchical cluster header to configure info displayed here.",
+                    getDescription(),
                     null, null, null);
             decoration.setReference(this);
 
@@ -243,5 +243,20 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         firePropertyChange(PROPERTY_SIZE, old, this.size);
 
 
+    }
+
+    public void removeMetadata() {
+        AnnotationMatrix annotation = getHeatmapDimension().getAnnotations();
+        for (HeatmapColoredLabelsHeader level : getClusterLevels()) {
+            //annotation.removeAnnotations(level.getAnnotationPattern());
+
+            for (TextPattern.Token token : new TextPattern(level.getAnnotationPattern()).getTokens()) {
+                if (token instanceof TextPattern.VariableToken) {
+                    annotation.removeAnnotations(((TextPattern.VariableToken) token).getVariableName());
+                }
+            }
+        }
+        clusterLevels.clear();
+        annotation.getLabels();
     }
 }

@@ -24,6 +24,7 @@ package org.gitools.ui.app.actions.edit;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
@@ -59,6 +60,9 @@ public class RemoveHeaderAction extends HeatmapDimensionAction implements IHeatm
 
         HeatmapDimension heatmapDimension = getDimension();
         heatmapDimension.getHeaders().remove(header);
+        if (header instanceof HierarchicalClusterHeatmapHeader) {
+            ((HierarchicalClusterHeatmapHeader) header).removeMetadata();
+        }
         heatmapDimension.updateHeaders();
 
     }

@@ -28,6 +28,7 @@ import org.gitools.ui.app.actions.data.FastSortValueAction;
 import org.gitools.ui.app.actions.data.GroupSelectionAction;
 import org.gitools.ui.app.actions.data.HideSelectionAction;
 import org.gitools.ui.app.actions.data.ShowAllAction;
+import org.gitools.ui.app.actions.data.analysis.SortByHierarchicalClusteringAction;
 import org.gitools.ui.app.actions.data.analysis.ViewDendrogramAction;
 import org.gitools.ui.app.actions.data.analysis.ViewGroupComparisonResultDataAction;
 import org.gitools.ui.app.actions.edit.*;
@@ -69,8 +70,10 @@ public class PopupMenuActions {
                 Actions.hideGreaterThanHeaderAction,
                 Actions.hideSmallerThanHeaderAction,
 
+                //Sorting
                 new PopupSectionTitleAction("Sorting"),
                 BaseAction.separator,
+                new SortByHierarchicalClusteringAction(),
                 new FastSortValueAction(dimensionKey == MatrixDimensionKey.ROWS ? MatrixDimensionKey.ROWS : MatrixDimensionKey.COLUMNS),
                 Actions.sortByHeader,
                 Actions.invertOrder,
