@@ -25,7 +25,11 @@ import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.app.commands.CommandAddHeaderTextLabels;
 import org.kohsuke.args4j.Option;
 
-public class AddHeaderTextLabelsTool extends AddHeaderTool {
+public class AddHeaderTextLabelsTool extends HeaderTool {
+
+    @Option(name = "-s", aliases = "--sort", metaVar = "<sort>", required = false,
+            usage = "Sort according to header. Specify either asc[ending] or desc[ending].")
+    protected String sort;
 
     @Option(name = "-p", aliases = "--pattern", metaVar = "<pattern>", required = true,
             usage = "The pattern of annotations as e.g. ${annotation-id}")

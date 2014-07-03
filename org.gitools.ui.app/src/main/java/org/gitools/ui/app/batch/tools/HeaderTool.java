@@ -23,11 +23,7 @@ package org.gitools.ui.app.batch.tools;
 
 import org.kohsuke.args4j.Option;
 
-public abstract class AddHeaderTool extends HeatmapTool {
-
-    @Option(name = "-s", aliases = "--sort", metaVar = "<sort>", required = false,
-            usage = "Sort according to header. Specify either asc[ending] or desc[ending].")
-    protected String sort;
+public abstract class HeaderTool extends HeatmapTool {
 
     enum Side {ROWS, COLUMNS}
 
@@ -35,7 +31,7 @@ public abstract class AddHeaderTool extends HeatmapTool {
             usage = "Indicate where to add the header: 'rows' or 'columns'.")
     protected Side side;
 
-    public AddHeaderTool() {
+    public HeaderTool() {
         super();
     }
 

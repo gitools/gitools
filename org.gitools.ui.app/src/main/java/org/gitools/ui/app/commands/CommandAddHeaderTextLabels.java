@@ -25,7 +25,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.core.Application;
 
-public class CommandAddHeaderTextLabels extends CommandAddHeader {
+public class CommandAddHeaderTextLabels extends HeaderCommand {
 
     public CommandAddHeaderTextLabels(String heatmap, String side, String pattern, String sort) {
         super(heatmap, side, sort, pattern);

@@ -27,7 +27,7 @@ import org.kohsuke.args4j.Option;
 
 import java.util.List;
 
-public class AddHeaderColoredLabelsTool extends AddHeaderTool {
+public class AddHeaderColoredLabelsTool extends HeaderTool {
 
     @Option(name = "-p", aliases = "--pattern", metaVar = "<pattern>", required = true,
             usage = "The pattern of annotations as e.g. ${annotation-id}")
@@ -48,6 +48,10 @@ public class AddHeaderColoredLabelsTool extends AddHeaderTool {
     @Option(name = "-t", aliases = "--text-visible", required = false,
             usage = "Set for visible text labels")
     private boolean textVisible;
+
+    @Option(name = "-s", aliases = "--sort", metaVar = "<sort>", required = false,
+            usage = "Sort according to header. Specify either asc[ending] or desc[ending].")
+    protected String sort;
 
     public AddHeaderColoredLabelsTool() {
         super();

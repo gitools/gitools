@@ -29,7 +29,7 @@ import org.gitools.ui.core.components.editor.AbstractEditor;
 
 
 public abstract class CommandHeatmap extends AbstractCommand {
-    protected final String LAST = "last";
+    protected final String LAST = "LAST";
     protected String heatmapid;
     protected Heatmap heatmap;
 

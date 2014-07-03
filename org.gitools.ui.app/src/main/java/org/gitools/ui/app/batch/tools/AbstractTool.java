@@ -42,6 +42,7 @@ public abstract class AbstractTool implements ITool {
         try {
             parser.parseArgument(args);
         } catch (CmdLineException e) {
+            out.println(e.getMessage());
             out.print("USAGE | " + getName() + "\n");
             parser.printUsage(out, null);
             return false;

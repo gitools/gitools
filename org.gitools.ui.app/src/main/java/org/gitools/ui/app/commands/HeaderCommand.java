@@ -31,7 +31,7 @@ import org.gitools.ui.platform.dialog.MessageUtils;
 
 import java.util.concurrent.CancellationException;
 
-public abstract class CommandAddHeader extends CommandHeatmap {
+public abstract class HeaderCommand extends CommandHeatmap {
 
     protected final String side;
     protected final String COLUMNS = "COLUMNS";
@@ -42,7 +42,7 @@ public abstract class CommandAddHeader extends CommandHeatmap {
     protected String pattern;
 
 
-    public CommandAddHeader(String heatmap, String side, String sort, String pattern) {
+    public HeaderCommand(String heatmap, String side, String sort, String pattern) {
         super(heatmap);
         this.side = side;
         this.pattern = pattern;
@@ -82,7 +82,7 @@ public abstract class CommandAddHeader extends CommandHeatmap {
                         "www.gitools.org</a><br></html>";
                 MessageUtils.showErrorMessage(Application.get(), text, e);
             }
-            setExitStatus(1);//Error!
+            setExitStatus(1);
             return;
         }
 

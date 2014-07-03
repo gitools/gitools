@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class CommandAddHeaderColoredLabels extends CommandAddHeader {
+public class CommandAddHeaderColoredLabels extends HeaderCommand {
 
     private final boolean textVisible;
     private List<String> colors;

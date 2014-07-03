@@ -34,6 +34,7 @@ public class ToolFactory {
         addTool(new VersionTool());
         addTool(new AddHeaderTextLabelsTool());
         addTool(new AddHeaderColoredLabelsTool());
+        addTool(new SortByAnnotationTool());
         addTool(new HelpTool(TOOLS.keySet()));
     }
 
