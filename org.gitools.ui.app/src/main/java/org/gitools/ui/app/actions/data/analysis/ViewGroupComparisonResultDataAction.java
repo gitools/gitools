@@ -31,7 +31,7 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
-import org.gitools.ui.app.commands.CommandAddHeaderColoredLabels;
+import org.gitools.ui.app.commands.AddHeaderColoredLabelsCommand;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
@@ -126,7 +126,7 @@ public class ViewGroupComparisonResultDataAction extends HeatmapAction implement
                     }
                 }
                 if (!hasHeader) {
-                    new CommandAddHeaderColoredLabels(heatmapEditor.getName(), "COLUMNS", "${" + GROUP_GC_ANALYSIS_ANNOTATION + "}",
+                    new AddHeaderColoredLabelsCommand(heatmapEditor.getName(), "COLUMNS", "${" + GROUP_GC_ANALYSIS_ANNOTATION + "}",
                             null, null, true, true, "").execute(monitor);
                 }
 

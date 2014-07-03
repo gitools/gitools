@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.app.batch.tools;
 
+import org.gitools.ui.app.commands.AddHeaderColoredLabelsCommand;
 import org.gitools.ui.app.commands.Command;
-import org.gitools.ui.app.commands.CommandAddHeaderColoredLabels;
 import org.kohsuke.args4j.Option;
 
 import java.util.List;
@@ -66,7 +66,7 @@ public class AddHeaderColoredLabelsTool extends HeaderTool {
 
     @Override
     protected Command newJob() {
-        return new CommandAddHeaderColoredLabels(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible, sort);
+        return new AddHeaderColoredLabelsCommand(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible, sort);
     }
 
 }

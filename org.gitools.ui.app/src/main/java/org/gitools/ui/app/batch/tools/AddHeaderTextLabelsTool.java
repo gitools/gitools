@@ -21,8 +21,8 @@
  */
 package org.gitools.ui.app.batch.tools;
 
+import org.gitools.ui.app.commands.AddHeaderTextLabelsCommand;
 import org.gitools.ui.app.commands.Command;
-import org.gitools.ui.app.commands.CommandAddHeaderTextLabels;
 import org.kohsuke.args4j.Option;
 
 public class AddHeaderTextLabelsTool extends HeaderTool {
@@ -48,6 +48,6 @@ public class AddHeaderTextLabelsTool extends HeaderTool {
 
     @Override
     protected Command newJob() {
-        return new CommandAddHeaderTextLabels(heatmap, side.name(), pattern, sort);
+        return new AddHeaderTextLabelsCommand(heatmap, side.name(), pattern, sort);
     }
 }

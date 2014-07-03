@@ -43,7 +43,7 @@ import org.gitools.matrix.sort.SortByLabelComparator;
 import org.gitools.ui.app.actions.data.analysis.SortByHierarchicalClusteringCommand;
 import org.gitools.ui.app.analysis.clustering.ClusteringWizard;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramEditor;
-import org.gitools.ui.app.commands.CommandAddHeaderColoredLabels;
+import org.gitools.ui.app.commands.AddHeaderColoredLabelsCommand;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
@@ -120,7 +120,7 @@ public class ClusteringAction extends HeatmapAction {
 
         String sortLabel = "${" + annotationLabel + "}";
         HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(clusteringDimension);
-        CommandAddHeaderColoredLabels.updateFromClusterResults(header, results.getClusters());
+        AddHeaderColoredLabelsCommand.updateFromClusterResults(header, results.getClusters());
         header.setTitle(annotationLabel);
         header.setAnnotationPattern(sortLabel);
         clusteringDimension.addHeader(header);

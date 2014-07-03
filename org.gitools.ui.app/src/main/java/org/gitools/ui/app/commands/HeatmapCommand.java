@@ -28,12 +28,12 @@ import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 
 
-public abstract class CommandHeatmap extends AbstractCommand {
+public abstract class HeatmapCommand extends AbstractCommand {
     protected final String LAST = "LAST";
     protected String heatmapid;
     protected Heatmap heatmap;
 
-    public CommandHeatmap(String heatmap) {
+    public HeatmapCommand(String heatmap) {
         this.heatmapid = heatmap;
     }
 

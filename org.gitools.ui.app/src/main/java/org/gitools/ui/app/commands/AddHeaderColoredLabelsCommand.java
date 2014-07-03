@@ -39,14 +39,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class CommandAddHeaderColoredLabels extends HeaderCommand {
+public class AddHeaderColoredLabelsCommand extends HeaderCommand {
 
     private final boolean textVisible;
     private List<String> colors;
     private List<String> ids;
     private boolean autoGenerateColors;
 
-    public CommandAddHeaderColoredLabels(String heatmap, String side, String pattern, List<String> colors, List<String> ids,
+    public AddHeaderColoredLabelsCommand(String heatmap, String side, String pattern, List<String> colors, List<String> ids,
                                          boolean autoGenerateColors, boolean textVisible, String sort) {
         super(heatmap, side, sort, pattern);
         this.colors = colors;

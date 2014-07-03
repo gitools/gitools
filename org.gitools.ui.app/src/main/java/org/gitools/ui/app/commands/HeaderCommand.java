@@ -31,7 +31,7 @@ import org.gitools.ui.platform.dialog.MessageUtils;
 
 import java.util.concurrent.CancellationException;
 
-public abstract class HeaderCommand extends CommandHeatmap {
+public abstract class HeaderCommand extends HeatmapCommand {
 
     protected final String side;
     protected final String COLUMNS = "COLUMNS";
