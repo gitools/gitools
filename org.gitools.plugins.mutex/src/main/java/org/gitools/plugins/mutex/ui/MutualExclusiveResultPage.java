@@ -28,6 +28,7 @@ import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 
@@ -84,6 +85,9 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
         }
 
         setMessage(MessageStatus.INFO, "Choose a name for the Bookmark");
+
+
+        setHelpContext(new HelpContext("http://www.google.com/s?Gitools+mutual+exclusive"));
 
 
         //BOOKMARK NAME
