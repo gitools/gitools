@@ -30,6 +30,6 @@ Index of all documents
 
 .. toctree::
 :glob:
-       :titlesonly:
+        :titlesonly:
 
-       UserGuide*
+        UserGuide*
