@@ -29,7 +29,7 @@ Index of all documents
 ----------------------
 
 .. toctree::
-:glob:
-        :titlesonly:
+    :glob:
+    :titlesonly:
 
-        UserGuide*
+    UserGuide*
