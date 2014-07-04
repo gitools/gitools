@@ -10,7 +10,7 @@ Gitools User Guide
 
 *Details about Gitools analysis possibilites*
 
-- :doc:`UserGuide_RunningAnalysis`
+- :doc:`UserGuide_Analysis`
     - :doc:`UserGuide_Enrichment`
     - :doc:`UserGuide_Correlations`
     - :doc:`UserGuide_Overlaps`
@@ -29,8 +29,9 @@ Gitools User Guide
 - :doc:`UserGuide_LoadSaveImportExport`
     - :doc:`UserGuide_GitoolsHeatmapsFormat`
     - :doc:`UserGuide_DataTypes`
-    - :doc:`UserGuide_ExternalDataSources`
     - :doc:`UserGuide_Export`
+    - :doc:`UserGuide_ExternalDataSources`
+
 
 *External control*
 
