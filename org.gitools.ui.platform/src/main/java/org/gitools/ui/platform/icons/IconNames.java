@@ -120,6 +120,10 @@ public class IconNames {
     public static final String biomart16 = "/img/Biomart16.png";
     public static final String biomart24 = "/img/Biomart24.png";
 
+
+    public static final String annotation16 = "/img/annotationtag16.png";
+    public static final String annotation512 = "/img/annotationtag512.png";
+
     public static final String intogen16 = "/img/Intogen16.png";
     public static final String intogen24 = "/img/Intogen24.png";
 

@@ -28,6 +28,7 @@ import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.ui.app.actions.edit.AddHeaderAction;
+import org.gitools.ui.app.actions.edit.AnnotationAction;
 import org.gitools.ui.app.actions.edit.EditHeaderAction;
 import org.gitools.ui.app.heatmap.panel.details.boxes.actions.DimensionHeaderHighlightAction;
 import org.gitools.ui.app.heatmap.panel.details.boxes.actions.SelectHeaderAction;
@@ -58,7 +59,11 @@ public class DimensionBox extends DetailsBox {
      * @param dimension
      */
     public DimensionBox(String title, ActionSet actions, Heatmap heatmap, HeatmapDimension dimension) {
-        super(dimension.getId().name(), title, actions, new ActionSet(new AddHeaderAction(dimension.getId())), heatmap);
+        super(dimension.getId().name(),
+                title,
+                actions,
+                new ActionSet(new AnnotationAction(dimension.getId()), new AddHeaderAction(dimension.getId())),
+                heatmap);
         this.dimension = dimension;
     }
 

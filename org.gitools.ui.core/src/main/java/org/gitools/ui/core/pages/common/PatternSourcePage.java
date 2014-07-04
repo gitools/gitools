@@ -32,6 +32,8 @@ import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.core.utils.LogUtils;
+import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.slf4j.LoggerFactory;
@@ -51,16 +53,31 @@ public class PatternSourcePage extends AbstractWizardPage {
     private HeatmapDimension hdim;
 
     private boolean idOptVisible;
+    private boolean viewOnlyMode;
 
     private List<AnnotationOption> annotationOptions;
 
     public PatternSourcePage(boolean idOptVisible) {
-        this(null, idOptVisible);
+        this(null, idOptVisible, false);
     }
 
+
+    public PatternSourcePage(HeatmapDimension hdim) {
+        this(hdim, true, false);
+    }
+
+
     public PatternSourcePage(HeatmapDimension hdim, boolean idAsOption) {
+        this(null, idAsOption, false);
+    }
+
+
+    public PatternSourcePage(HeatmapDimension hdim, boolean idAsOption, boolean viewOnlyMode) {
         this.hdim = hdim;
         this.idOptVisible = idAsOption;
+        this.viewOnlyMode = viewOnlyMode;
+        setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.annotation512, 96));
+
 
         initComponents();
 
@@ -71,9 +88,19 @@ public class PatternSourcePage extends AbstractWizardPage {
             }
         };
 
-        idOpt.addChangeListener(optListener);
-        annOpt.addChangeListener(optListener);
-        patOpt.addChangeListener(optListener);
+        if (!viewOnlyMode) {
+            idOpt.addChangeListener(optListener);
+            annOpt.addChangeListener(optListener);
+            patOpt.addChangeListener(optListener);
+        } else {
+            idOpt.setVisible(false);
+            idOpt.setEnabled(false);
+            patOpt.setVisible(false);
+            patOpt.setEnabled(false);
+        }
+
+        annSepCb.setModel(new DefaultComboBoxModel(new String[]{",", "-", " | ", " / ", " > ", "::"}));
+        annSepCb.setSelectedIndex(0);
 
         annList.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -82,8 +109,6 @@ public class PatternSourcePage extends AbstractWizardPage {
             }
         });
 
-        annSepCb.setModel(new DefaultComboBoxModel(new String[]{",", "-", " | ", " / ", " > ", "::"}));
-        annSepCb.setSelectedIndex(0);
 
         patText.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override

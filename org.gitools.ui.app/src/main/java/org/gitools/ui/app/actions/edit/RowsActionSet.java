@@ -39,6 +39,8 @@ public class RowsActionSet extends HeatmapDynamicActionSet {
     protected void populateMenu(Heatmap heatmap, JMenu menu) {
         menu.removeAll();
 
+        menu.add(new AnnotationAction(heatmap.getRows().getId()));
+
         // Headers
         for (HeatmapHeader header : heatmap.getRows().getHeaders()) {
             menu.add(new EditHeaderAction(header));

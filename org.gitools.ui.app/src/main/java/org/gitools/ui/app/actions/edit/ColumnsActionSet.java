@@ -42,6 +42,8 @@ public class ColumnsActionSet extends HeatmapDynamicActionSet {
     protected void populateMenu(Heatmap heatmap, JMenu menu) {
         menu.removeAll();
 
+        menu.add(new AnnotationAction(heatmap.getRows().getId()));
+
         for (HeatmapHeader header : reverse(heatmap.getColumns().getHeaders())) {
             menu.add(new EditHeaderAction(header));
         }
