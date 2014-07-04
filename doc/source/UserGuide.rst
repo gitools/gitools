@@ -12,9 +12,10 @@ Gitools User Guide
 
 - :doc:`UserGuide_Analysis`
     - :doc:`UserGuide_Enrichment`
+    - :doc:`UserGuide_GroupComparison`
+    - :doc:`UserGuide_MutualExclusiveTest`
     - :doc:`UserGuide_Correlations`
     - :doc:`UserGuide_Overlaps`
-    - :doc:`UserGuide_GroupComparison`
     - :doc:`UserGuide_Combinations`
 
 

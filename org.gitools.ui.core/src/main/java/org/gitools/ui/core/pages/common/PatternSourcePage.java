@@ -68,7 +68,7 @@ public class PatternSourcePage extends AbstractWizardPage {
 
 
     public PatternSourcePage(HeatmapDimension hdim, boolean idAsOption) {
-        this(null, idAsOption, false);
+        this(hdim, idAsOption, false);
     }
 
 
