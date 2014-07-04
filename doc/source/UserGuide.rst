@@ -13,7 +13,7 @@ Gitools User Guide
 - :doc:`UserGuide_Analysis`
     - :doc:`UserGuide_Enrichment`
     - :doc:`UserGuide_GroupComparison`
-    - :doc:`UserGuide_MutualExclusiveTest`
+    - :doc:`UserGuide_MutualExclusivity`
     - :doc:`UserGuide_Correlations`
     - :doc:`UserGuide_Overlaps`
     - :doc:`UserGuide_Combinations`
@@ -32,6 +32,7 @@ Gitools User Guide
     - :doc:`UserGuide_DataTypes`
     - :doc:`UserGuide_Export`
     - :doc:`UserGuide_ExternalDataSources`
+- :doc:`UserGuide_DataEvents`
 
 
 *External control*
