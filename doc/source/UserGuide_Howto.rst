@@ -8,6 +8,4 @@ Here, you will find varied hints on common and less commonly used features of Gi
  - :doc:`UserGuide_HowtoMatrixFilesSpreadsheet`
  - :doc:`UserGuide_HowtoModuleFilesSpreadsheet`
  - :doc:`UserGuide_HowtoResultsFilesSpreadsheet`
- - :doc:`UserGuide_HowtoMultipleGeneAnnotations`
  - :doc:`UserGuide_HowtoSLEA`
- - :doc:`UserGuide_HowtoMultiDimensionalData`
