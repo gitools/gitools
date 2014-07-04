@@ -33,5 +33,5 @@ It is possible to import data from different sources. There are wizards that gui
         - UniProt
         - Reactome
         - COSMIC
-     - Modules, Tables
+     - Modules, Annotations
      - `http://www.biomart.org <http://www.biomart.org>`__

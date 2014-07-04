@@ -58,11 +58,6 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
     @Override
     public void addPages() {
 
-        // Data filtering
-        dataFilterPage = new DataFilterPage();
-        dataFilterPage.setDiscardNonMappedRowsVisible(true);
-        addPage(dataFilterPage);
-
         // Modules
         modulesPage = new ModulesPage();
         addPage(modulesPage);
@@ -70,6 +65,12 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
         // Statistical test
         statisticalTestPage = new StatisticalTestPage();
         addPage(statisticalTestPage);
+
+        // Data filtering
+        dataFilterPage = new DataFilterPage();
+        dataFilterPage.setDiscardNonMappedRowsVisible(true);
+        addPage(dataFilterPage);
+
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();

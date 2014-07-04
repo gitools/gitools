@@ -41,8 +41,7 @@ Import my own data into Gitools
 
 Import any data in form of a text file or excel sheet containing your data into Gitools. Read more at  :doc:`UserGuide_DataTypes`.
 
-If you want to know about specific data files used by Gitools internally, read more here: :doc:`UserGuide_SpecialFileExtensions`.
-in Gitools.
+If you want to know about specific data files used by Gitools internally, read more here: :doc:`UserGuide_SpecialFileExtensions` in Gitools.
 
 
 Export data from Gitools
