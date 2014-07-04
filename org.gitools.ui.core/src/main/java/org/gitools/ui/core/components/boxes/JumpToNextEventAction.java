@@ -47,9 +47,8 @@ public class JumpToNextEventAction extends BaseAction {
 
 
     public JumpToNextEventAction(MatrixDimensionKey dimensionKey) {
-        super("Jump to next event");
+        super("Jump to next event in " + dimensionKey.getLabel() + "s");
         this.dimensionKey = dimensionKey;
-        this.heatmap = heatmap;
         setSmallIconFromResource(
                 dimensionKey.equals(MatrixDimensionKey.ROWS) ?
                         IconNames.nextEventRight16 :

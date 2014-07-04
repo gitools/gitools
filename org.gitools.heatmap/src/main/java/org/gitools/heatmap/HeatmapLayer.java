@@ -28,6 +28,7 @@ import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.decorator.impl.*;
 import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.utils.aggregation.LogSumAggregator;
 import org.gitools.utils.aggregation.MeanAggregator;
 import org.gitools.utils.aggregation.NonZeroCountAggregator;
 import org.gitools.utils.aggregation.SumAggregator;
@@ -157,10 +158,11 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         if (decorator instanceof LinearDecorator ||
                 decorator instanceof ZScoreDecorator) {
             return MeanAggregator.INSTANCE;
-        } else if (decorator instanceof PValueDecorator ||
-                decorator instanceof CategoricalDecorator ||
+        } else if (decorator instanceof CategoricalDecorator ||
                 decorator instanceof BinaryDecorator) {
             return NonZeroCountAggregator.INSTANCE;
+        } else if (decorator instanceof PValueDecorator) {
+            return LogSumAggregator.INSTANCE;
         }
         return SumAggregator.INSTANCE;
     }

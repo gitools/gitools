@@ -29,9 +29,11 @@ import org.gitools.heatmap.AbstractMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.utils.aggregation.NonNullCountAggregator;
 import org.gitools.utils.aggregation.StdDevAggregator;
+import org.gitools.utils.colorscale.ColorScalePoint;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
@@ -40,9 +42,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -141,7 +141,7 @@ public class SelectionBox extends DetailsBox {
                 int selectedRows = rows.size();
                 int selectedColumns = columns.size();
                 if (selectedColumns > 0) {
-                    details.add(new DetailsDecoration("Column sel.",
+                    details.add(new DetailsDecoration("Columns sel.",
                             columns.size() + " columns"));
                 }
                 if (selectedRows > 0) {
@@ -153,29 +153,66 @@ public class SelectionBox extends DetailsBox {
                 HeatmapLayer layer = getHeatmap().getLayers().getTopLayer();
                 IMatrix data = getHeatmap().getContents();
 
-                //aggregator
-                IMatrixIterable<Double> cellValues = getHeatmap().newPosition()
+                IMatrixIterable<Double> cellValuesIterable = getHeatmap().newPosition()
                         .iterate(layer, data.getRows().subset(rows), data.getColumns().subset(columns))
                         .monitor(new NullProgressMonitor(), "Aggregating values of layer '" + layer.getId() + "'");
-                Double agg = layer.getAggregator().aggregate(cellValues);
-                details.add(new DetailsDecoration(layer.getAggregator().toString(), valueString(agg, layer.getLongFormatter())));
 
 
-                //Events
+                //Layer events
                 IMatrixIterable<Double> eventsIt = getHeatmap().newPosition()
                         .iterate(layer, data.getRows().subset(rows), data.getColumns().subset(columns))
                         .transform(layer.getDecorator().getEventFunction());
                 Double events = NonNullCountAggregator.INSTANCE.aggregate(eventsIt);
-                details.add(
-                        new DetailsDecoration("Events",
-                                layer.getDecorator().getEventFunction().toString(),
-                                valueString(events, layer.getLongFormatter())));
+                String eventsDetail = valueString(events, layer.getLongFormatter());
+
+
+                if (events != null) {
+                    Double freq = (double) events / ((double) selectedColumns * (double) selectedRows);
+                    eventsDetail += " (" + valueString(freq, layer.getShortFormatter()) + ")";
+                }
+
+
+                details.add(new DetailsDecoration("Events (freq.)",
+                        layer.getDecorator().getEventFunction().toString(),
+                        eventsDetail));
 
 
                 //Double var = VarianceAggregator.INSTANCE.aggregate(cellValues);
-                Double stDev = StdDevAggregator.INSTANCE.aggregate(cellValues);
-                //details.add(new DetailsDecoration("Variance", var.toString()));
-                details.add(new DetailsDecoration("St. Dev", valueString(stDev, layer.getLongFormatter())));
+                Double stDev = StdDevAggregator.INSTANCE.aggregate(cellValuesIterable);
+
+                if (layer.getDecorator() instanceof CategoricalDecorator) {
+
+                    CategoricalDecorator decorator = (CategoricalDecorator) layer.getDecorator();
+                    Map<Double, Integer> categoryCounts = new HashMap<>();
+                    for (ColorScalePoint p : decorator.getCategories()) {
+                        categoryCounts.put(p.getValue(), 0);
+                    }
+                    for (Double value : eventsIt) {
+                        if (value != null) {
+                            categoryCounts.put(value, categoryCounts.get(value) + 1);
+                        }
+                    }
+                    for (ColorScalePoint p : decorator.getCategories()) {
+                        double count = (double) categoryCounts.get(p.getValue());
+                        if (count > 0) {
+                            DetailsDecoration d = new DetailsDecoration(p.getName(), valueString(count, layer.getShortFormatter()));
+                            d.setBgColor(p.getColor());
+                            details.add(d);
+                        }
+                    }
+
+
+                } else {
+                    //default layer aggregator
+                    Double layerAggregation = layer.getAggregator().aggregate(cellValuesIterable);
+                    details.add(new DetailsDecoration(layer.getAggregator().toString(),
+                            "Default data layer aggregator. Edit data layer to chagne",
+                            valueString(layerAggregation, layer.getLongFormatter())));
+
+
+                    details.add(new DetailsDecoration("St. Dev", valueString(stDev, layer.getLongFormatter())));
+                    //details.add(new DetailsDecoration("Variance", var.toString()));
+                }
 
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
