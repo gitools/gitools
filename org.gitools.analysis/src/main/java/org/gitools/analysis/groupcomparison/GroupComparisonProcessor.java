@@ -33,7 +33,7 @@ import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
-import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
+import org.gitools.heatmap.decorator.impl.PValueLogSumDecorator;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -151,7 +151,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
                 resultLayer.setDecorator(new PValueDecorator());
             }
             resultHeatmap.getLayers().get("p-value-log-sum").setDecorator(
-                    new ZScoreDecorator(1.279, 10)
+                    new PValueLogSumDecorator()
             );
 
         }

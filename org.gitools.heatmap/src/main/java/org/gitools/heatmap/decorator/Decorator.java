@@ -34,7 +34,10 @@ import javax.xml.bind.annotation.*;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({BinaryDecorator.class, LinearDecorator.class, PValueDecorator.class, ZScoreDecorator.class, CorrelationDecorator.class, CategoricalDecorator.class})
+@XmlSeeAlso({BinaryDecorator.class, LinearDecorator.class,
+        PValueDecorator.class, ZScoreDecorator.class,
+        CorrelationDecorator.class, CategoricalDecorator.class,
+        PValueLogSumDecorator.class})
 public abstract class Decorator<C extends IColorScale> extends Model {
 
     public static final String PROPERTY_SHOW_VALUE = "showValue";

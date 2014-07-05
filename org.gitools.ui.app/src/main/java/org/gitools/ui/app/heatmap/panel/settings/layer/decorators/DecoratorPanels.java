@@ -35,6 +35,7 @@ public class DecoratorPanels extends ArrayList<DecoratorPanel> {
         add(new CategoricalDecoratorPanel());
         add(new LinearDecoratorPanel("Linear scale", new LinearDecorator()));
         add(new LinearDecoratorPanel("Correlation scale", new CorrelationDecorator()));
+        add(new PValueLogSumPanel());
     }
 
 }
