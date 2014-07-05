@@ -25,20 +25,34 @@ import com.alee.laf.scroll.WebScrollPane;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.ActionSetUtils;
+import org.gitools.ui.core.actions.BaseAction;
+import org.gitools.ui.core.actions.SeparatorAction;
+import org.jdesktop.swingx.HorizontalLayout;
 import org.jdesktop.swingx.JXTaskPane;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseListener;
 
 public abstract class Box extends JXTaskPane {
 
+    protected JPanel bottomActionsPanel;
     protected JPopupMenu popupMenu;
     private Heatmap heatmap;
 
     private String id;
+    protected final ActionSet contextActionSet;
+    protected final ActionSet bottomActionSet;
 
     public Box(String id, String title, ActionSet contextActionSet, Heatmap heatmap) {
+        this(id, title, contextActionSet, null, heatmap);
+    }
+
+    public Box(String id, String title, ActionSet contextActionSet, ActionSet bottomActionSet, Heatmap heatmap) {
+
         this.id = id;
+        this.contextActionSet = contextActionSet;
+        this.bottomActionSet = bottomActionSet;
         setTitle(title);
         setSpecial(true);
 
@@ -49,6 +63,29 @@ public abstract class Box extends JXTaskPane {
 
         if (contextActionSet != null) {
             popupMenu = ActionSetUtils.createPopupMenu(contextActionSet);
+        }
+
+        createBottomActionButtons(bottomActionSet);
+    }
+
+    private void createBottomActionButtons(ActionSet bottomActionSet) {
+        if (bottomActionSet != null) {
+            bottomActionsPanel = new JPanel(new HorizontalLayout(2), true);
+            bottomActionsPanel.setBackground(Color.white);
+            addBaseActions(bottomActionSet);
+        }
+    }
+
+    private void addBaseActions(ActionSet bottomActionSet) {
+        for (BaseAction action : bottomActionSet.getActions()) {
+            if (action instanceof SeparatorAction) {
+                continue;
+            } else if (action instanceof ActionSet) {
+                addBaseActions(((ActionSet) action));
+            }
+            JComponent btn = ActionSetUtils.createActionButton(action);
+            btn.addMouseListener(getBottomActionMouseAdapter());
+            bottomActionsPanel.add(btn);
         }
     }
 
@@ -69,4 +106,6 @@ public abstract class Box extends JXTaskPane {
     public String getId() {
         return id;
     }
+
+    public abstract MouseListener getBottomActionMouseAdapter();
 }

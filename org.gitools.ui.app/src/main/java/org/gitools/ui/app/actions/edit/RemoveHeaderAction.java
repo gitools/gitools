@@ -64,11 +64,15 @@ public class RemoveHeaderAction extends HeatmapDimensionAction implements IHeatm
             ((HierarchicalClusterHeatmapHeader) header).removeMetadata();
         }
         heatmapDimension.updateHeaders();
+        heatmapDimension.setSelectedHeader(heatmapDimension.getHeaders().get(0));
+        setEnabled(heatmapDimension.getHeaders().size() > 1);
 
     }
 
     @Override
     public void onConfigure(HeatmapHeader object, HeatmapPosition position) {
         setHeader(object);
+        setEnabled(object.getHeatmapDimension().getHeaders().size() > 1);
+
     }
 }

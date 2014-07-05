@@ -37,7 +37,9 @@ import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.core.components.boxes.DetailsBox;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -52,6 +54,7 @@ import static org.gitools.utils.events.EventUtils.isAny;
 
 public class DimensionBox extends DetailsBox {
     private final HeatmapDimension dimension;
+    private MouseAdapter bottomActionMouseAdapter;
 
     /**
      * @param title     Optional title of the details table
@@ -62,7 +65,7 @@ public class DimensionBox extends DetailsBox {
         super(dimension.getId().name(),
                 title,
                 actions,
-                new ActionSet(new AnnotationAction(dimension.getId()), new AddHeaderAction(dimension.getId())),
+                new ActionSet(new AnnotationAction(dimension.getId()), new AddHeaderAction(dimension.getId()), actions),
                 heatmap);
         this.dimension = dimension;
     }
@@ -142,5 +145,24 @@ public class DimensionBox extends DetailsBox {
             DynamicActionsManager.updatePopupMenu(popupMenu, IHeatmapHeaderAction.class, (HeatmapHeader) propertyItem.getReference(), null);
             popupMenu.show(e.getComponent(), e.getX(), e.getY());
         }
+    }
+
+    @Override
+    public MouseListener getBottomActionMouseAdapter() {
+        if (bottomActionMouseAdapter == null) {
+            bottomActionMouseAdapter = new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    DynamicActionsManager.updateDynamicActionSet(bottomActionSet, IHeatmapHeaderAction.class, dimension.getSelectedHeader(), null);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    DynamicActionsManager.updateDynamicActionSet(bottomActionSet, IHeatmapHeaderAction.class, dimension.getSelectedHeader(), null);
+                }
+
+            };
+        }
+        return bottomActionMouseAdapter;
     }
 }

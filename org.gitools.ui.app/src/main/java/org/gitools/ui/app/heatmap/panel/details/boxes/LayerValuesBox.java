@@ -37,7 +37,9 @@ import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.core.components.boxes.DetailsBox;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
@@ -60,13 +62,14 @@ public class LayerValuesBox extends DetailsBox {
     private static final ScheduledExecutorService worker =
             Executors.newSingleThreadScheduledExecutor();
     public static final String ID = "LAYER_VALUES";
+    private MouseListener bottomActionMouseAdapter;
 
     /**
      * @param title   Optional title of the details table
      * @param actions
      */
     public LayerValuesBox(String title, ActionSet actions, Heatmap heatmap) {
-        super(ID, title, actions, new ActionSet(new AddNewLayersFromFileAction()), heatmap);
+        super(ID, title, actions, new ActionSet(new AddNewLayersFromFileAction(), actions), heatmap);
     }
 
     @Override
@@ -140,6 +143,27 @@ public class LayerValuesBox extends DetailsBox {
     @Override
     public boolean isVisible() {
         return true;
+    }
+
+    @Override
+    public MouseListener getBottomActionMouseAdapter() {
+        if (bottomActionMouseAdapter == null) {
+            bottomActionMouseAdapter = new MouseAdapter() {
+                @Override
+                public void mousePressed(MouseEvent e) {
+                    HeatmapLayer topLayer = getHeatmap().getLayers().getTopLayer();
+                    DynamicActionsManager.updateDynamicActionSet(bottomActionSet, IHeatmapLayerAction.class, topLayer, null);
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+                    HeatmapLayer topLayer = getHeatmap().getLayers().getTopLayer();
+                    DynamicActionsManager.updateDynamicActionSet(bottomActionSet, IHeatmapLayerAction.class, topLayer, null);
+                }
+
+            };
+        }
+        return bottomActionMouseAdapter;
     }
 
     @Override

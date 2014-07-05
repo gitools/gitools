@@ -34,9 +34,6 @@ import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.core.actions.ActionSet;
-import org.gitools.ui.core.actions.ActionSetUtils;
-import org.gitools.ui.core.actions.BaseAction;
-import org.gitools.ui.core.actions.SeparatorAction;
 import org.gitools.ui.platform.icons.IconNames;
 import org.jdesktop.swingx.HorizontalLayout;
 
@@ -44,6 +41,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 /**
@@ -52,7 +50,6 @@ import java.util.List;
 public abstract class DetailsBox extends Box {
     private static final int DEFAULT_MARGIN = 20;
     private static final int MINIMUM_VALUE_LENGTH = 12;
-    private final JPanel actionsPanel;
     private WebPanel container;
     private JPanel updatingPanel = new JPanel();
 
@@ -63,21 +60,11 @@ public abstract class DetailsBox extends Box {
      */
     public DetailsBox(String id, String title, ActionSet actions, Heatmap heatmap) {
         super(id, title, actions, heatmap);
-        actionsPanel = null;
+        bottomActionsPanel = null;
     }
 
     public DetailsBox(String id, String title, ActionSet contextActionSet, ActionSet bottomActionSet, Heatmap heatmap) {
-        super(id, title, contextActionSet, heatmap);
-        actionsPanel = new JPanel(new HorizontalLayout(2), true);
-        actionsPanel.setBackground(Color.white);
-        for (BaseAction action : bottomActionSet.getActions()) {
-            if (action instanceof SeparatorAction) {
-                continue;
-            }
-            JComponent btn = ActionSetUtils.createActionButton(action);
-            actionsPanel.add(btn);
-        }
-
+        super(id, title, contextActionSet, bottomActionSet, heatmap);
         fillUpdatingPanel();
     }
 
@@ -142,10 +129,10 @@ public abstract class DetailsBox extends Box {
             }
         }
 
-        if (actionsPanel != null) {
+        if (bottomActionsPanel != null) {
 
             int nextRow = nextDetail * 2;
-            container.add(actionsPanel, "1, " + (nextRow) + ", 4, " + (nextRow));
+            container.add(bottomActionsPanel, "1, " + (nextRow) + ", 4, " + (nextRow));
 
         }
 
@@ -303,6 +290,11 @@ public abstract class DetailsBox extends Box {
             initContainer();
         }
         return container;
+    }
+
+    @Override
+    public MouseListener getBottomActionMouseAdapter() {
+        return null;
     }
 }
 

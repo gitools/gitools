@@ -75,7 +75,7 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
     private Set<String> highlightedHeaders;
 
     @XmlTransient
-    private String selectedHeader;
+    private HeatmapHeader selectedHeader;
 
     @XmlTransient
     private static Color highlightingColor;
@@ -93,7 +93,7 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
         this.cellSize = 14;
         this.highlightedLabels = new HashSet<>();
         this.highlightedHeaders = new HashSet<>();
-        this.selectedHeader = "";
+        this.selectedHeader = null;
 
         init(matrixDimension);
     }
@@ -237,7 +237,7 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
 
         for (HeatmapHeader header : itHeaders) {
             if (header.isVisible()) {
-                header.populateDetails(details, getFocus(), selectedHeader.contains(header.getTitle()));
+                header.populateDetails(details, getFocus(), getSelectedHeader() == header);
             }
         }
     }
@@ -259,18 +259,17 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
         return new Color(254, 254, 0, 127);
     }
 
-    public String getSelectedHeader() {
+    public HeatmapHeader getSelectedHeader() {
+        if (selectedHeader == null) {
+            selectedHeader = headers.getFirst();
+        }
         return selectedHeader;
     }
 
     public void setSelectedHeader(HeatmapHeader header) {
-        setSelectedHeader(header.getTitle());
-    }
-
-    public void setSelectedHeader(String title) {
-        String old = getSelectedHeader();
-        this.selectedHeader = title;
-        firePropertyChange(PROPERTY_SELECTED_HEADER, old, title);
+        HeatmapHeader old = getSelectedHeader();
+        this.selectedHeader = header;
+        firePropertyChange(PROPERTY_SELECTED_HEADER, old, header);
     }
 
     public void resetHighlightColor() {
