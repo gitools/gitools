@@ -174,7 +174,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
         analysis.setWeightGroupsModuleMap(weightMap);
         analysis.setData(hm);
         analysis.setLayer(hm.getLayers().getTopLayer().getId());
-        analysis.setEventFunction(hm.getLayers().get(analysis.getLayer()).getDecorator().getEventFunction());
+        analysis.setEventFunction(hm.getLayers().get(analysis.getLayer()).getEventFunction());
     }
 
 }

@@ -26,14 +26,22 @@ import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.utils.colorscale.IColorScale;
 
+import javax.xml.bind.annotation.XmlTransient;
+
 public abstract class NonEventToNullFunction<T extends IColorScale> extends AbstractMatrixFunction<Double, Double> {
 
+    private String name;
+
+    @XmlTransient
     private String description;
+
+    @XmlTransient
     private T colorScale;
 
     protected IMatrixPosition position;
 
-    protected NonEventToNullFunction(T colorScale, String description) {
+    protected NonEventToNullFunction(T colorScale, String name, String description) {
+        this.name = name;
         this.description = description;
         this.colorScale = colorScale;
     }
@@ -46,8 +54,24 @@ public abstract class NonEventToNullFunction<T extends IColorScale> extends Abst
         return position;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
-        return description;
+        return name;
     }
 }

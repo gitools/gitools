@@ -154,4 +154,9 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
             rangesList.add(range);
         }
     }
+
+    @Override
+    public boolean isOutsideRange(double value) {
+        return value < getMinValue() || value > getMaxValue();
+    }
 }

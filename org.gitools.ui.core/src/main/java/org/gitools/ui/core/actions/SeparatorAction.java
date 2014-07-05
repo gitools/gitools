@@ -26,7 +26,7 @@ import java.awt.event.ActionEvent;
 public final class SeparatorAction extends BaseAction {
 
     public SeparatorAction() {
-        super(null);
+        super("");
     }
 
     @Override

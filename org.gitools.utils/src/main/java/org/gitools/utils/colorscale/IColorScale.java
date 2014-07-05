@@ -27,4 +27,5 @@ public interface IColorScale {
 
     Color valueColor(double value);
 
+    boolean isOutsideRange(double value);
 }

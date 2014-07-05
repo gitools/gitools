@@ -36,8 +36,11 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
@@ -59,6 +62,9 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
 
 
     private ZScoreColorScale scale;
+
+    @XmlTransient
+    private NonEventToNullFunction<ZScoreColorScale> significantEvents;
 
     public ZScoreDecorator() {
         super();
@@ -252,8 +258,17 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     }
 
     @Override
-    public NonEventToNullFunction getEventFunction() {
-        return new NonEventToNullFunction<ZScoreColorScale>(scale, "All values below significance threshold are non-events.") {
+    public NonEventToNullFunction getDefaultEventFunction() {
+
+        if (significantEvents == null) {
+            initEvents();
+        }
+
+        return significantEvents;
+    }
+
+    private void initEvents() {
+        significantEvents = new NonEventToNullFunction<ZScoreColorScale>(scale, "Significant Events", "All values below significance threshold are non-events.") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -263,5 +278,15 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
             }
 
         };
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(significantEvents);
+        list.addAll(super.getEventFunctionAlternatives());
+
+        return list;
     }
 }

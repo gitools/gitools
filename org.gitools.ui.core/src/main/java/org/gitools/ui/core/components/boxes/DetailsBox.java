@@ -36,6 +36,7 @@ import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.ActionSetUtils;
 import org.gitools.ui.core.actions.BaseAction;
+import org.gitools.ui.core.actions.SeparatorAction;
 import org.gitools.ui.platform.icons.IconNames;
 import org.jdesktop.swingx.HorizontalLayout;
 
@@ -70,7 +71,11 @@ public abstract class DetailsBox extends Box {
         actionsPanel = new JPanel(new HorizontalLayout(2), true);
         actionsPanel.setBackground(Color.white);
         for (BaseAction action : bottomActionSet.getActions()) {
-            actionsPanel.add(ActionSetUtils.createActionButton(action));
+            if (action instanceof SeparatorAction) {
+                continue;
+            }
+            JComponent btn = ActionSetUtils.createActionButton(action);
+            actionsPanel.add(btn);
         }
 
         fillUpdatingPanel();

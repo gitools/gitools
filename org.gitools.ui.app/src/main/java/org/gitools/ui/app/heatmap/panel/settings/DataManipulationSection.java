@@ -26,23 +26,34 @@ import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.utils.aggregation.AggregatorFactory;
 
 import javax.swing.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 import java.util.List;
 
-public class SortSection implements ISettingsSection {
+public class DataManipulationSection implements ISettingsSection {
 
     public static List<SortDirection> DIRECTIONS = Arrays.asList(SortDirection.ASCENDING, SortDirection.DESCENDING);
 
     private JPanel mainPanel;
     private JComboBox defaultSortDirectionComboBox;
     private JComboBox defaultAggregatorComboBox;
+    private JComboBox eventsFunctionComboBox;
 
-    public SortSection(HeatmapLayer layer) {
+    public DataManipulationSection(final HeatmapLayer layer) {
         super();
+
+        layer.addPropertyChangeListener(HeatmapLayer.PROPERTY_DECORATOR, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                setEventFunctions(layer);
+            }
+        });
 
         defaultSortDirectionComboBox.setModel(
                 new ComboBoxAdapter<>(
@@ -61,11 +72,24 @@ public class SortSection implements ISettingsSection {
                 )
         );
 
+        setEventFunctions(layer);
+
+    }
+
+    private void setEventFunctions(HeatmapLayer layer) {
+        eventsFunctionComboBox.setModel(
+                new ComboBoxAdapter<>(
+                        new SelectionInList<NonEventToNullFunction>(
+                                layer.getDecorator().getEventFunctionAlternatives(),
+                                new PropertyAdapter<>(layer, "eventFunction")
+                        )
+                )
+        );
     }
 
     @Override
     public String getName() {
-        return "Sort";
+        return "Data sort & manipulation";
     }
 
     @Override

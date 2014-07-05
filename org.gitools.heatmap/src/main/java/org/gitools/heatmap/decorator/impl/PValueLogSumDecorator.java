@@ -35,8 +35,11 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class PValueLogSumDecorator extends Decorator<PValueLogSumScale> {
@@ -54,6 +57,9 @@ public class PValueLogSumDecorator extends Decorator<PValueLogSumScale> {
 
 
     private PValueLogSumScale scale;
+
+    @XmlTransient
+    NonEventToNullFunction<PValueLogSumScale> significantEvents;
 
     public PValueLogSumDecorator() {
         super();
@@ -212,17 +218,36 @@ public class PValueLogSumDecorator extends Decorator<PValueLogSumScale> {
         }
     }
 
+
     @Override
-    public NonEventToNullFunction getEventFunction() {
-        return new NonEventToNullFunction<PValueLogSumScale>(scale, "All values below significance threshold are non-events.") {
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
 
-            @Override
-            public Double apply(Double value, IMatrixPosition position) {
-                this.position = position;
-                return (value == null || Math.abs(value) <= getColorScale().getSignificanceLimit()) ?
-                        null : Math.abs(value);
-            }
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(getDefaultEventFunction());
+        list.addAll(super.getEventFunctionAlternatives());
 
-        };
+        return list;
+    }
+
+    @Override
+    public NonEventToNullFunction getDefaultEventFunction() {
+        if (significantEvents == null) {
+            initEvents();
+        }
+        return significantEvents;
+    }
+
+    private void initEvents() {
+        significantEvents =
+                new NonEventToNullFunction<PValueLogSumScale>(scale, "Significant Events", "All values below significance threshold are non-events.") {
+
+                    @Override
+                    public Double apply(Double value, IMatrixPosition position) {
+                        this.position = position;
+                        return (value == null || Math.abs(value) <= getColorScale().getSignificanceLimit()) ?
+                                null : Math.abs(value);
+                    }
+
+                };
     }
 }

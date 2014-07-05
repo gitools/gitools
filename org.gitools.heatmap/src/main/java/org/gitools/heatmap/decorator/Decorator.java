@@ -31,6 +31,8 @@ import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -48,22 +50,61 @@ public abstract class Decorator<C extends IColorScale> extends Model {
     @XmlElement(name = "show-value")
     private boolean showValue = false;
 
+    @XmlTransient
+    private List<NonEventToNullFunction> eventFunctions;
+
     public Decorator() {
         super();
     }
 
+
     public abstract void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, String... identifiers);
 
-    public NonEventToNullFunction getEventFunction() {
+    public abstract NonEventToNullFunction getDefaultEventFunction();
 
-        return new NonEventToNullFunction<IColorScale>(getScale(), "All values equal to 0 or 'empty' are non-events") {
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        if (eventFunctions == null) {
+            initEventFunctions();
+        }
+
+        return eventFunctions;
+
+    }
+
+    protected void initEventFunctions() {
+        eventFunctions = new ArrayList<>();
+
+        eventFunctions.add(new NonEventToNullFunction<IColorScale>(getScale(),
+                "Outside Scale Events", "All values below minimum or above maximum of the scale are events") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
+                if (value == null) {
+                    return null;
+                }
+
+                if (getColorScale().isOutsideRange(value)) {
+                    return value;
+                } else {
+                    return null;
+                }
+            }
+
+        });
+
+        eventFunctions.add(new NonEventToNullFunction<IColorScale>(getScale(), "Non-Zero Events", "All values equal to 0 or 'empty' are non-events") {
             @Override
             public Double apply(Double value, IMatrixPosition position) {
                 this.position = position;
                 return (value == null || value == 0) ? null : value;
             }
-        };
+        });
+
+
     }
+
 
     public void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, IMatrixPosition position) {
         decorate(decoration, textFormatter, matrix, layer, position.toVector());

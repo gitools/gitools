@@ -33,8 +33,11 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class PValueDecorator extends Decorator<PValueColorScale> {
@@ -43,6 +46,9 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     public static final String PROPERTY_MAX_COLOR = "maxColor";
     public static final String PROPERTY_NON_SIGNIFICANT_COLOR = "nonSignificantColor";
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
+
+    @XmlTransient
+    private NonEventToNullFunction<PValueColorScale> significantEvents;
 
     private double significanceLevel;
 
@@ -143,8 +149,16 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     }
 
     @Override
-    public NonEventToNullFunction getEventFunction() {
-        return new NonEventToNullFunction<PValueColorScale>(scale, "All significant values are events") {
+    public NonEventToNullFunction getDefaultEventFunction() {
+
+        if (significantEvents == null) {
+            initEventFunction();
+        }
+        return significantEvents;
+    }
+
+    private void initEventFunction() {
+        significantEvents = new NonEventToNullFunction<PValueColorScale>(scale, "Significant Events", "All significant values are events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -152,6 +166,16 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
                 return (value == null || value > getColorScale().getSignificanceLevel() ? null : 1 - value);
             }
         };
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(significantEvents);
+        list.addAll(super.getEventFunctionAlternatives());
+
+        return list;
     }
 
 

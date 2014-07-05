@@ -125,7 +125,7 @@ public class JumpToNextEventAction extends BaseAction {
             columns = Sets.newHashSet(heatmap.getColumns());
         }
 
-        eventFunction = layer.getDecorator().getEventFunction();
+        eventFunction = layer.getEventFunction();
 
         if (dimensionKey.equals(MatrixDimensionKey.ROWS)) {
             eventIterator =

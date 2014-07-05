@@ -35,6 +35,8 @@ import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "binary")
@@ -47,6 +49,9 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
 
     @XmlTransient
     private BinaryColorScale scale;
+
+    @XmlTransient
+    private NonEventToNullFunction<BinaryColorScale> binaryEvents;
 
     public BinaryDecorator() {
         super();
@@ -143,15 +148,28 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
     }
 
     @Override
-    public NonEventToNullFunction getEventFunction() {
-        return new NonEventToNullFunction<BinaryColorScale>(scale, "All 'true' values are events") {
-            @Override
-            public Double apply(Double value, IMatrixPosition position) {
-                this.position = position;
-                boolean satisfies = value != null && CutoffCmp.getFromName(getColorScale().getComparator()).compare(value, getColorScale().getCutoff());
-                return satisfies ? null : 1.0;
-            }
-        };
+    public NonEventToNullFunction getDefaultEventFunction() {
+        if (binaryEvents == null) {
+
+            binaryEvents = new NonEventToNullFunction<BinaryColorScale>(scale, "Binary events", "All 'true' values are events") {
+                @Override
+                public Double apply(Double value, IMatrixPosition position) {
+                    this.position = position;
+                    boolean satisfies = value != null && CutoffCmp.getFromName(getColorScale().getComparator()).compare(value, getColorScale().getCutoff());
+                    return satisfies ? null : 1.0;
+                }
+            };
+        }
+
+        return binaryEvents;
     }
 
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(binaryEvents);
+
+        return list;
+    }
 }

@@ -61,6 +61,10 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
 
     private Decorator decorator;
 
+    //TODO
+    @XmlTransient
+    protected NonEventToNullFunction eventFunction;
+
     public HeatmapLayer() {
         super();
 
@@ -95,6 +99,8 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public void setDecorator(Decorator decorator) {
         Decorator oldValue = this.decorator;
         this.decorator = decorator;
+
+        setEventFunction(decorator.getDefaultEventFunction());
 
         firePropertyChange(PROPERTY_DECORATOR, oldValue, decorator);
         EventUtils.moveListeners(oldValue, decorator);
@@ -165,6 +171,17 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
             return LogSumAggregator.INSTANCE;
         }
         return SumAggregator.INSTANCE;
+    }
+
+    public NonEventToNullFunction getEventFunction() {
+        if (eventFunction == null) {
+            return decorator.getDefaultEventFunction();
+        }
+        return eventFunction;
+    }
+
+    public void setEventFunction(NonEventToNullFunction eventFunction) {
+        this.eventFunction = eventFunction;
     }
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column, int layerIndex, boolean isSelected) {

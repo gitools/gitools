@@ -31,12 +31,11 @@ import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
@@ -45,6 +44,9 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
     public static final String PROPERTY_CATEGORIES = "categories";
 
     private CategoricalColorScale scale;
+
+    @XmlTransient
+    private NonEventToNullFunction<CategoricalColorScale> categoricalEvents;
 
     public CategoricalDecorator() {
         super();
@@ -116,24 +118,40 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
     }
 
     @Override
-    public NonEventToNullFunction getEventFunction() {
-        return new NonEventToNullFunction<CategoricalColorScale>(scale, "All values represented in the categorical scale are events ") {
+    public NonEventToNullFunction getDefaultEventFunction() {
 
-            @Override
-            public Double apply(Double value, IMatrixPosition position) {
-                this.position = position;
-                if (value == null) {
+        if (categoricalEvents == null) {
+            categoricalEvents = new NonEventToNullFunction<CategoricalColorScale>(scale, "Categorical Events", "All values represented in the categorical scale are events ") {
+
+                @Override
+                public Double apply(Double value, IMatrixPosition position) {
+                    this.position = position;
+                    if (value == null) {
+                        return null;
+                    }
+
+                    for (double pointValue : getColorScale().getPoints()) {
+                        if (pointValue == value) {
+                            return value;
+                        }
+                    }
                     return null;
                 }
+            };
+        }
 
-                for (double pointValue : getColorScale().getPoints()) {
-                    if (pointValue == value) {
-                        return value;
-                    }
-                }
-                return null;
-            }
-        };
+        return categoricalEvents;
+
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(getDefaultEventFunction());
+        list.addAll(super.getEventFunctionAlternatives());
+
+        return list;
     }
 
 }

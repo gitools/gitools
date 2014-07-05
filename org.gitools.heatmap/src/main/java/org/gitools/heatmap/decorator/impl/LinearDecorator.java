@@ -26,6 +26,7 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
+import org.gitools.utils.colorscale.IColorScale;
 import org.gitools.utils.colorscale.impl.LinearTwoSidedColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
@@ -33,8 +34,11 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
@@ -48,6 +52,9 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
 
     private LinearTwoSidedColorScale scale;
+
+    @XmlTransient
+    private NonEventToNullFunction<LinearTwoSidedColorScale> linearEvents;
 
     public LinearDecorator() {
         this(new LinearTwoSidedColorScale());
@@ -168,9 +175,20 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
     }
 
     @Override
-    public NonEventToNullFunction getEventFunction() {
-        return new NonEventToNullFunction<LinearTwoSidedColorScale>(scale,
-                "All values below min or above max of scale are events") {
+    public NonEventToNullFunction getDefaultEventFunction() {
+
+        return super.getEventFunctionAlternatives().get(0);
+
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(getDefaultEventFunction());
+
+        list.add(new NonEventToNullFunction<IColorScale>(getScale(),
+                "Above Scale Events", "All values above scale maximum are events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -179,12 +197,36 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
                     return null;
                 }
 
-                if (value < getColorScale().getMin().getValue() || value > getColorScale().getMax().getValue()) {
+                if (getMaxValue() < value) {
                     return value;
+                } else {
+                    return null;
                 }
-                return null;
             }
-        };
+
+        });
+
+        list.add(new NonEventToNullFunction<IColorScale>(getScale(),
+                "Below Scale Events", "All values below scale maximum are events") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
+                if (value == null) {
+                    return null;
+                }
+
+                if (getMinValue() > value) {
+                    return value;
+                } else {
+                    return null;
+                }
+            }
+
+        });
+
+
+        return list;
     }
 
 }

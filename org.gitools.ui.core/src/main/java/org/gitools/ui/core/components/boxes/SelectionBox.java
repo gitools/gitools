@@ -30,6 +30,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
+import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.utils.aggregation.NonNullCountAggregator;
 import org.gitools.utils.aggregation.StdDevAggregator;
@@ -159,25 +160,24 @@ public class SelectionBox extends DetailsBox {
 
 
                 //Layer events
+                NonEventToNullFunction eventsFunction = layer.getEventFunction();
                 IMatrixIterable<Double> eventsIt = getHeatmap().newPosition()
                         .iterate(layer, data.getRows().subset(rows), data.getColumns().subset(columns))
-                        .transform(layer.getDecorator().getEventFunction());
+                        .transform(eventsFunction);
                 Double events = NonNullCountAggregator.INSTANCE.aggregate(eventsIt);
                 String eventsDetail = valueString(events, layer.getLongFormatter());
 
 
                 if (events != null) {
-                    Double freq = (double) events / ((double) selectedColumns * (double) selectedRows);
-                    eventsDetail += " (" + valueString(freq, layer.getShortFormatter()) + ")";
+                    Double freq = 100 * (double) events / ((double) selectedColumns * (double) selectedRows);
+                    eventsDetail += " (" + valueString(freq, layer.getShortFormatter()) + "%)";
                 }
 
 
-                details.add(new DetailsDecoration("Events (freq.)",
-                        layer.getDecorator().getEventFunction().toString(),
+                details.add(new DetailsDecoration(eventsFunction.getName(),
+                        eventsFunction.getDescription(),
                         eventsDetail));
 
-
-                //Double var = VarianceAggregator.INSTANCE.aggregate(cellValues);
                 Double stDev = StdDevAggregator.INSTANCE.aggregate(cellValuesIterable);
 
                 if (layer.getDecorator() instanceof CategoricalDecorator) {

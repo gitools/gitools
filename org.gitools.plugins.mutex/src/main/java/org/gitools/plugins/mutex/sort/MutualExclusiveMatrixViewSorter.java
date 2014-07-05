@@ -50,7 +50,7 @@ public class MutualExclusiveMatrixViewSorter {
             columns = heatmap.getRows();
         }
 
-        AggregationFunction function = new AggregationFunction(layer, NonNullCountAggregator.INSTANCE, columns, layer.getDecorator().getEventFunction());
+        AggregationFunction function = new AggregationFunction(layer, NonNullCountAggregator.INSTANCE, columns, layer.getEventFunction());
 
         rows.sort(new MutualExclusionComparator(
                 heatmap,
@@ -84,7 +84,7 @@ public class MutualExclusiveMatrixViewSorter {
 
             position.set(rows, row);
             columns.sort(new MutualExclusiveSingleValueComparator(position, layer, columns, SortDirection.DESCENDING,
-                    layer.getDecorator().getEventFunction()));
+                    layer.getEventFunction()));
         }
 
         if (!showProgress) {
