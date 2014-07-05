@@ -44,7 +44,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     public static final String PROPERTY_SIGNIFICANCE = "significanceLevel";
     public static final String PROPERTY_CORRECTED_VALUE = "correctedValueIndex";
     public static final String PROPERTY_USE_CORRECTION = "useCorrection";
-    public static final String PROPERTY_SIG_HALF_AMPLITUD = "sigHalfAmplitud";
+    public static final String PROPERTY_SIG_HALF_AMPLITUD = "sigHalfAmplitude";
     public static final String PROPERTY_HALF_AMPLITUD = "halfAmplitude";
     public static final String PROPERTY_LEFT_MIN_COLOR = "leftMinColor";
     public static final String PROPERTY_LEFT_MAX_COLOR = "leftMaxColor";
@@ -133,7 +133,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         return getScale().getSigHalfAmplitude();
     }
 
-    final void setSigHalfAmplitude(double sigHalfAmplitude) {
+    public final void setSigHalfAmplitude(double sigHalfAmplitude) {
         double old = getScale().getSigHalfAmplitude();
         getScale().setSigHalfAmplitude(sigHalfAmplitude);
         firePropertyChange(PROPERTY_SIG_HALF_AMPLITUD, old, sigHalfAmplitude);

@@ -39,6 +39,7 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
     private JSpinner significance;
     private JCheckBox showValueCheckBox;
     private JFormattedTextField halfAmplitude;
+    private JFormattedTextField translatedSignificance;
 
     public ZScoreDecoratorPanel() {
         super("Z-Score scale", new ZScoreDecorator());
@@ -68,6 +69,8 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
                         Double.valueOf(0.01)
                 )
         );
+
+        Bindings.bind(translatedSignificance, model(ZScoreDecorator.PROPERTY_SIG_HALF_AMPLITUD));
 
         Bindings.bind(showValueCheckBox, model(ZScoreDecorator.PROPERTY_SHOW_VALUE));
     }
