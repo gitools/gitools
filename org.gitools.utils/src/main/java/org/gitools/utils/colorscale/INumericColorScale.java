@@ -23,9 +23,13 @@ package org.gitools.utils.colorscale;
 
 import java.awt.*;
 
-public interface IColorScale {
+public interface INumericColorScale {
 
     Color valueColor(double value);
 
     boolean isOutsideRange(double value);
+
+    double getMaxValue();
+
+    double getMinValue();
 }

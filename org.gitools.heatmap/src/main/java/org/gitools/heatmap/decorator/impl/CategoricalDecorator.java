@@ -121,7 +121,7 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
     public NonEventToNullFunction getDefaultEventFunction() {
 
         if (categoricalEvents == null) {
-            categoricalEvents = new NonEventToNullFunction<CategoricalColorScale>(scale, "Categorical Events", "All values represented in the categorical scale are events ") {
+            categoricalEvents = new NonEventToNullFunction<CategoricalColorScale>(scale, "Categorical Events") {
 
                 @Override
                 public Double apply(Double value, IMatrixPosition position) {
@@ -136,6 +136,22 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
                         }
                     }
                     return null;
+                }
+
+                @Override
+                public String getDescription() {
+                    StringBuilder sb = new StringBuilder("All values represented in the categorical scale are events: ");
+                    boolean first = true;
+
+                    for (ColorScalePoint p : getCategories()) {
+                        if (first) {
+                            first = false;
+                        } else {
+                            sb.append(", ");
+                        }
+                        sb.append(p.getName());
+                    }
+                    return sb.toString();
                 }
             };
         }

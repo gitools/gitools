@@ -48,7 +48,7 @@ public class ColorScaleDrawer {
     private ITextFormatter textFormatter;
 
 
-    public ColorScaleDrawer(IColorScale scale, ITextFormatter textFormatter) {
+    public ColorScaleDrawer(INumericColorScale scale, ITextFormatter textFormatter) {
         setScale(scale);
 
         this.bgColor = Color.WHITE;
@@ -67,11 +67,11 @@ public class ColorScaleDrawer {
         this.textFormatter = textFormatter;
     }
 
-    public IColorScale getScale() {
+    public INumericColorScale getScale() {
         return scale;
     }
 
-    void setScale(IColorScale scale) {
+    void setScale(INumericColorScale scale) {
         this.scale = (NumericColorScale) scale;
     }
 

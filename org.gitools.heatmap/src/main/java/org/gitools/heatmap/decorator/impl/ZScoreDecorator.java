@@ -268,7 +268,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     }
 
     private void initEvents() {
-        significantEvents = new NonEventToNullFunction<ZScoreColorScale>(scale, "Significant Events", "All values below significance threshold are non-events.") {
+        significantEvents = new NonEventToNullFunction<ZScoreColorScale>(scale, "Significant Events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -277,6 +277,12 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
                         null : Math.abs(value);
             }
 
+            @Override
+            public String getDescription() {
+                double limit = getColorScale().getSigHalfAmplitude();
+                return "All values above and below significance threshold (" +
+                        limit + ", " + -limit + ") are events";
+            }
         };
     }
 

@@ -26,7 +26,7 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
-import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.INumericColorScale;
 import org.gitools.utils.colorscale.impl.LinearTwoSidedColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
@@ -187,8 +187,7 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
         List<NonEventToNullFunction> list = new ArrayList<>();
         list.add(getDefaultEventFunction());
 
-        list.add(new NonEventToNullFunction<IColorScale>(getScale(),
-                "Above Scale Events", "All values above scale maximum are events") {
+        list.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Above Scale Events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -204,10 +203,13 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
                 }
             }
 
+            @Override
+            public String getDescription() {
+                return  "All values above " + getColorScale().getMaxValue() + " are events";
+            }
         });
 
-        list.add(new NonEventToNullFunction<IColorScale>(getScale(),
-                "Below Scale Events", "All values below scale maximum are events") {
+        list.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Below Scale Events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -223,6 +225,10 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
                 }
             }
 
+            @Override
+            public String getDescription() {
+                return " All values below " + getColorScale().getMinValue() + " are events";
+            }
         });
 
 

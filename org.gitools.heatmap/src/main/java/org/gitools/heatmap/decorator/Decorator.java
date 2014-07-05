@@ -27,7 +27,7 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.impl.*;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.INumericColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.xml.bind.annotation.*;
@@ -40,7 +40,7 @@ import java.util.List;
         PValueDecorator.class, ZScoreDecorator.class,
         CorrelationDecorator.class, CategoricalDecorator.class,
         PValueLogSumDecorator.class})
-public abstract class Decorator<C extends IColorScale> extends Model {
+public abstract class Decorator<C extends INumericColorScale> extends Model {
 
     public static final String PROPERTY_SHOW_VALUE = "showValue";
 
@@ -75,8 +75,7 @@ public abstract class Decorator<C extends IColorScale> extends Model {
     protected void initEventFunctions() {
         eventFunctions = new ArrayList<>();
 
-        eventFunctions.add(new NonEventToNullFunction<IColorScale>(getScale(),
-                "Outside Scale Events", "All values below minimum or above maximum of the scale are events") {
+        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Outside Scale Events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -90,15 +89,29 @@ public abstract class Decorator<C extends IColorScale> extends Model {
                 } else {
                     return null;
                 }
+
+
             }
 
+            @Override
+            public String getDescription() {
+                INumericColorScale scale = getColorScale();
+                return "All values below " + scale.getMinValue() + "  or above " +
+                        scale.getMaxValue() +
+                        " of the scale are events";
+            }
         });
 
-        eventFunctions.add(new NonEventToNullFunction<IColorScale>(getScale(), "Non-Zero Events", "All values equal to 0 or 'empty' are non-events") {
+        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Non-Zero Events") {
             @Override
             public Double apply(Double value, IMatrixPosition position) {
                 this.position = position;
                 return (value == null || value == 0) ? null : value;
+            }
+
+            @Override
+            public String getDescription() {
+                return "All values not equal to 0 or 'empty' are events";
             }
         });
 

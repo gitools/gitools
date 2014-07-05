@@ -24,25 +24,21 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.INumericColorScale;
 
 import javax.xml.bind.annotation.XmlTransient;
 
-public abstract class NonEventToNullFunction<T extends IColorScale> extends AbstractMatrixFunction<Double, Double> {
+public abstract class NonEventToNullFunction<T extends INumericColorScale> extends AbstractMatrixFunction<Double, Double> {
 
     private String name;
-
-    @XmlTransient
-    private String description;
 
     @XmlTransient
     private T colorScale;
 
     protected IMatrixPosition position;
 
-    protected NonEventToNullFunction(T colorScale, String name, String description) {
+    protected NonEventToNullFunction(T colorScale, String name) {
         this.name = name;
-        this.description = description;
         this.colorScale = colorScale;
     }
 
@@ -62,13 +58,7 @@ public abstract class NonEventToNullFunction<T extends IColorScale> extends Abst
         this.name = name;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public abstract String getDescription();
 
     @Override
     public String toString() {

@@ -239,7 +239,7 @@ public class PValueLogSumDecorator extends Decorator<PValueLogSumScale> {
 
     private void initEvents() {
         significantEvents =
-                new NonEventToNullFunction<PValueLogSumScale>(scale, "Significant Events", "All values below significance threshold are non-events.") {
+                new NonEventToNullFunction<PValueLogSumScale>(scale, "Significant Events") {
 
                     @Override
                     public Double apply(Double value, IMatrixPosition position) {
@@ -248,6 +248,12 @@ public class PValueLogSumDecorator extends Decorator<PValueLogSumScale> {
                                 null : Math.abs(value);
                     }
 
+                    @Override
+                    public String getDescription() {
+                        double limit = getColorScale().getSignificanceLimit();
+                        return "All values above and below significance threshold (" +
+                                limit + ", " + -limit + ") are events";
+                    }
                 };
     }
 }

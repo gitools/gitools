@@ -175,7 +175,7 @@ public class SelectionBox extends DetailsBox {
 
 
                 details.add(new DetailsDecoration(eventsFunction.getName(),
-                        eventsFunction.getDescription(),
+                        eventsFunction.getDescription() + ("\n(Edit data layer to change default event function)."),
                         eventsDetail));
 
                 Double stDev = StdDevAggregator.INSTANCE.aggregate(cellValuesIterable);
@@ -206,7 +206,7 @@ public class SelectionBox extends DetailsBox {
                     //default layer aggregator
                     Double layerAggregation = layer.getAggregator().aggregate(cellValuesIterable);
                     details.add(new DetailsDecoration(layer.getAggregator().toString(),
-                            "Default data layer aggregator. Edit data layer to chagne",
+                            "Default data layer aggregator. Edit data layer to change",
                             valueString(layerAggregation, layer.getLongFormatter())));
 
 

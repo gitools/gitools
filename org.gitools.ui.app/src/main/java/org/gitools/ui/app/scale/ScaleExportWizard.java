@@ -24,7 +24,7 @@ package org.gitools.ui.app.scale;
 import org.gitools.ui.core.pages.common.BasicSaveFilePage;
 import org.gitools.ui.core.pages.common.SaveFilePage;
 import org.gitools.ui.platform.wizard.AbstractWizard;
-import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.INumericColorScale;
 import org.gitools.utils.colorscale.NumericColorScale;
 
 public class ScaleExportWizard extends AbstractWizard {
@@ -41,7 +41,7 @@ public class ScaleExportWizard extends AbstractWizard {
         return savePage;
     }
 
-    public void setScale(IColorScale scale) {
+    public void setScale(INumericColorScale scale) {
 
         if (scale instanceof NumericColorScale) {
             NumericColorScale nScale = (NumericColorScale) scale;

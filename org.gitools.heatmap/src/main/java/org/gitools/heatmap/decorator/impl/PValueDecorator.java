@@ -158,12 +158,17 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     }
 
     private void initEventFunction() {
-        significantEvents = new NonEventToNullFunction<PValueColorScale>(scale, "Significant Events", "All significant values are events") {
+        significantEvents = new NonEventToNullFunction<PValueColorScale>(scale, "Significant Events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
                 this.position = position;
                 return (value == null || value > getColorScale().getSignificanceLevel() ? null : 1 - value);
+            }
+
+            @Override
+            public String getDescription() {
+                return "All significant values are events: p smaller than " + getColorScale().getSignificanceLevel();
             }
         };
     }

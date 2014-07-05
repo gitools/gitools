@@ -36,7 +36,7 @@ import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.colorscale.ColorScaleDrawer;
-import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.INumericColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.imageio.ImageIO;
@@ -65,7 +65,7 @@ public class ExportScaleImageAction extends HeatmapAction {
         Decorator cd = layer.getDecorator();
 
         final ITextFormatter textFormatter = layer.getShortFormatter();
-        final IColorScale scale = cd != null ? cd.getScale() : null;
+        final INumericColorScale scale = cd != null ? cd.getScale() : null;
 
         if (scale == null) {
             return;
