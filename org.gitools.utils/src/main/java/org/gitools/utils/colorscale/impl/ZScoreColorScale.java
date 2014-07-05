@@ -187,4 +187,7 @@ public class ZScoreColorScale extends NumericColorScale {
         this.nonSignificantColor = nonSignificantColor;
     }
 
+    public double getHalfAmplitude() {
+        return halfAmplitude;
+    }
 }

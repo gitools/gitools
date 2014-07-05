@@ -38,6 +38,7 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
     private JTextField emptyColor;
     private JSpinner significance;
     private JCheckBox showValueCheckBox;
+    private JFormattedTextField halfAmplitude;
 
     public ZScoreDecoratorPanel() {
         super("Z-Score scale", new ZScoreDecorator());
@@ -52,6 +53,11 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
         Bindings.bind(rightMaxColor, "color", model(ZScoreDecorator.PROPERTY_RIGHT_MAX_COLOR));
         Bindings.bind(nonSigColor, "color", model(ZScoreDecorator.PROPERTY_NON_SIGNIFICANT_COLOR));
         Bindings.bind(emptyColor, "color", model(ZScoreDecorator.PROPERTY_EMPTY_COLOR));
+
+        JFormattedTextField.AbstractFormatterFactory formatter = DecoratorPanelFormatters.getTenDecimalsFormatter();
+        Bindings.bind(halfAmplitude, model(ZScoreDecorator.PROPERTY_HALF_AMPLITUD));
+        halfAmplitude.setFormatterFactory(formatter);
+
 
         significance.setModel(
                 SpinnerAdapterFactory.createNumberAdapter(

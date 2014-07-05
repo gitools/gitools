@@ -45,6 +45,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     public static final String PROPERTY_CORRECTED_VALUE = "correctedValueIndex";
     public static final String PROPERTY_USE_CORRECTION = "useCorrection";
     public static final String PROPERTY_SIG_HALF_AMPLITUD = "sigHalfAmplitud";
+    public static final String PROPERTY_HALF_AMPLITUD = "halfAmplitude";
     public static final String PROPERTY_LEFT_MIN_COLOR = "leftMinColor";
     public static final String PROPERTY_LEFT_MAX_COLOR = "leftMaxColor";
     public static final String PROPERTY_RIGHT_MIN_COLOR = "rightMinColor";
@@ -55,6 +56,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     private int correctedValueIndex;
     private boolean useCorrection;
     private double significanceLevel;
+
 
     private ZScoreColorScale scale;
 
@@ -135,6 +137,16 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         double old = getScale().getSigHalfAmplitude();
         getScale().setSigHalfAmplitude(sigHalfAmplitude);
         firePropertyChange(PROPERTY_SIG_HALF_AMPLITUD, old, sigHalfAmplitude);
+    }
+
+    public final double getHalfAmplitude() {
+        return getScale().getHalfAmplitude();
+    }
+
+    public final void setHalfAmplitude(double halfAmplitude) {
+        double old = getScale().getHalfAmplitude();
+        getScale().setHalfAmplitude(halfAmplitude);
+        firePropertyChange(PROPERTY_HALF_AMPLITUD, old, halfAmplitude);
     }
 
     @XmlElement(name = "left-min-color")

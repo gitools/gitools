@@ -97,8 +97,7 @@ public class DetailsPanel extends JXTaskPaneContainer {
         }
 
         hintLabel = new JLabel();
-        hintLabel.setText("<html><body><p><i>Right click</i> on any layer or header id to<br>" +
-                "<b>adjust visualization and other settings</b>.</p></body></html>");
+        hintLabel.setText("<html><body><p><i>Hover</i> & <i>Right click</i> on any detail to reveal info & contextual menus.</p></body></html>");
         add(hintLabel);
 
     }

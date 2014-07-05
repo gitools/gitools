@@ -27,6 +27,8 @@
         <rowspec value="center:max(d;4px):noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
         <colspec value="fill:max(d;4px):noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:min(d;100px):grow"/>
@@ -147,6 +149,28 @@
               <font style="1"/>
               <text value="Right"/>
             </properties>
+          </component>
+          <component id="d99ad" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="14" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <font style="1"/>
+              <text value="Max"/>
+            </properties>
+          </component>
+          <component id="1f147" class="javax.swing.JFormattedTextField" binding="halfAmplitude">
+            <constraints>
+              <grid row="14" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties/>
+            <clientProperties>
+              <caretAspectRatio class="java.lang.Double" value="0.025"/>
+            </clientProperties>
           </component>
         </children>
       </grid>
