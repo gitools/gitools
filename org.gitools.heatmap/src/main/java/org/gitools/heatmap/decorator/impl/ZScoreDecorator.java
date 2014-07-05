@@ -139,6 +139,7 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         firePropertyChange(PROPERTY_SIG_HALF_AMPLITUD, old, sigHalfAmplitude);
     }
 
+    @XmlElement(name = "limit")
     public final double getHalfAmplitude() {
         return getScale().getHalfAmplitude();
     }
