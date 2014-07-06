@@ -22,9 +22,13 @@
 package org.gitools.plugins.mutex.ui;
 
 import com.google.common.base.Function;
+import com.jgoodies.binding.adapter.ComboBoxAdapter;
+import com.jgoodies.binding.beans.PropertyAdapter;
+import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.pages.common.PatternSourcePage;
@@ -64,6 +68,8 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private JButton pasteUnselectedButton;
     private JCheckBox useRegexCheck;
     private JCheckBox performTest;
+    private JComboBox eventsFunctionComboBox;
+    private JLabel eventsFunctionDescription;
 
 
     private final Heatmap hm;
@@ -121,6 +127,26 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         this.dimensionKey = dimensionKey;
 
 
+        eventsFunctionComboBox.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                updateEventDescription();
+            }
+        });
+        eventsFunctionComboBox.setModel(
+                new ComboBoxAdapter<>(
+                        new SelectionInList<NonEventToNullFunction>(
+                                hm.getLayers().getTopLayer().getDecorator().getEventFunctionAlternatives(),
+                                new PropertyAdapter<>(hm.getLayers().getTopLayer(), "eventFunction")
+                        )
+                )
+        );
+        updateEventDescription();
+
+
+    }
+
+    private void updateEventDescription() {
+        eventsFunctionDescription.setText(((NonEventToNullFunction) eventsFunctionComboBox.getSelectedItem()).getDescription());
     }
 
     private void saveBtnAction() {
