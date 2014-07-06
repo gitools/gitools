@@ -25,6 +25,7 @@ import com.google.common.base.Function;
 import com.jgoodies.binding.adapter.ComboBoxAdapter;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
@@ -70,13 +71,14 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private JCheckBox performTest;
     private JComboBox eventsFunctionComboBox;
     private JLabel eventsFunctionDescription;
+    private JLabel testDescription;
 
 
     private final Heatmap hm;
-    private final MatrixDimensionKey dimensionKey;
+    private final MatrixDimensionKey sortDimension;
     private String pattern;
 
-    public MutualExclusionSortPage(Heatmap hm, MatrixDimensionKey dimensionKey) {
+    public MutualExclusionSortPage(Heatmap hm, MatrixDimensionKey sortDimension) {
         super();
         patternsArea.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override
@@ -124,7 +126,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
         });
 
         this.hm = hm;
-        this.dimensionKey = dimensionKey;
+        this.sortDimension = sortDimension;
 
 
         eventsFunctionComboBox.addActionListener(new ActionListener() {
@@ -141,6 +143,10 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
                 )
         );
         updateEventDescription();
+
+        IMatrixDimension dimension = hm.getContents().getDimension(sortDimension);
+        testDescription.setText("All " + dimension.size() + " " + dimension.getId().getLabel() + "s will be taken into account " +
+                "for a weighted permutation test to assess probability of mutual exclusion and co-occurence");
 
 
     }
@@ -210,7 +216,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     }
 
     private void changePatternAction() {
-        PatternSourcePage page = new PatternSourcePage(hm.getDimension(dimensionKey), true);
+        PatternSourcePage page = new PatternSourcePage(hm.getDimension(sortDimension), true);
         PageDialog dlg = new PageDialog(Application.get(), page);
         dlg.setVisible(true);
         if (dlg.isCancelled()) {
@@ -223,7 +229,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
 
 
     public MatrixDimensionKey getDimension() {
-        return dimensionKey;
+        return sortDimension;
     }
 
     public String getPattern() {

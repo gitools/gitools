@@ -152,12 +152,23 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     public NonEventToNullFunction getDefaultEventFunction() {
 
         if (significantEvents == null) {
-            initEventFunction();
+            initEventFunctions();
         }
         return significantEvents;
     }
 
-    private void initEventFunction() {
+    @Override
+    protected void initEventFunctions() {
+
+        super.initEventFunctions();
+
+        List<NonEventToNullFunction> list = super.getEventFunctionAlternatives();
+        for (NonEventToNullFunction f : list) {
+            if (f.getName().equals(Decorator.OUTSIDE_EVENTS_FUNCTION)) {
+                list.remove(f);
+            }
+        }
+
         significantEvents = new NonEventToNullFunction<PValueColorScale>(scale, "Significant Events") {
 
             @Override

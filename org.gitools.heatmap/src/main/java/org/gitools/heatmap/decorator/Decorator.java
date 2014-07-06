@@ -43,6 +43,8 @@ import java.util.List;
 public abstract class Decorator<C extends INumericColorScale> extends Model {
 
     public static final String PROPERTY_SHOW_VALUE = "showValue";
+    public static final String OUTSIDE_EVENTS_FUNCTION = "Outside Events";
+    public static final String NON_0_EVENTS_FUNCTION = "Non-0 Events";
 
     @XmlAttribute
     private String name;
@@ -75,7 +77,7 @@ public abstract class Decorator<C extends INumericColorScale> extends Model {
     protected void initEventFunctions() {
         eventFunctions = new ArrayList<>();
 
-        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Outside Events") {
+        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), OUTSIDE_EVENTS_FUNCTION) {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -102,7 +104,7 @@ public abstract class Decorator<C extends INumericColorScale> extends Model {
             }
         });
 
-        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Non-0 Events") {
+        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), NON_0_EVENTS_FUNCTION) {
             @Override
             public Double apply(Double value, IMatrixPosition position) {
                 this.position = position;
