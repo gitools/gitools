@@ -45,7 +45,10 @@ public class FisherResult extends CommonResult {
         this.d = d;
     }
 
-    @LayerDef(id = "a", name = "a", description = "Number of positive events that belongs to the module")
+    @LayerDef(id = "a",
+            name = "a",
+            description = "Number of positive events that belongs to the module",
+            groups = {SimpleResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getA() {
         return a;
     }
@@ -54,7 +57,10 @@ public class FisherResult extends CommonResult {
         this.a = a;
     }
 
-    @LayerDef(id = "b", name = "b", description = "Number of no positive events that belongs to the module")
+    @LayerDef(id = "b",
+            name = "b",
+            description = "Number of no positive events that belongs to the module",
+            groups = {SimpleResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getB() {
         return b;
     }
@@ -63,7 +69,10 @@ public class FisherResult extends CommonResult {
         this.b = b;
     }
 
-    @LayerDef(id = "c", name = "c", description = "Number of positive events that don't belong to the module")
+    @LayerDef(id = "c",
+            name = "c",
+            description = "Number of positive events that don't belong to the module",
+            groups = {SimpleResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getC() {
         return c;
     }
@@ -72,7 +81,10 @@ public class FisherResult extends CommonResult {
         this.c = c;
     }
 
-    @LayerDef(id = "d", name = "d", description = "Number of no positive events that don't belong to the module")
+    @LayerDef(id = "d",
+            name = "d",
+            description = "Number of no positive events that don't belong to the module",
+            groups = {SimpleResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getD() {
         return d;
     }

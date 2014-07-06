@@ -22,6 +22,7 @@
 package org.gitools.heatmap;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
@@ -29,6 +30,7 @@ import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.view.IMatrixViewLayers;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.matrix.model.MatrixLayers;
+import org.gitools.matrix.model.matrix.element.LayerDef;
 import org.gitools.utils.events.EventUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -41,6 +43,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     public static final String PROPERTY_TOP_LAYER_INDEX = "topLayerIndex";
     public static final String PROPERTY_TOP_LAYER = "topLayer";
     public static final String PROPERTY_LAYERS = "layers";
+    public static final String PROPERTY_SELECTED_GROUP = "selectedGroup";
 
     @XmlElement(name = "top-layer")
     private int topLayer;
@@ -49,6 +52,10 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     private List<HeatmapLayer> layers;
     private transient Map<String, Integer> layersIdToIndex;
     private transient List<String> layerNames;
+
+    private String selectedGroup;
+
+    private transient HashSet<String> groups;
 
     public HeatmapLayers() {
         this.topLayer = 0;
@@ -185,6 +192,35 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layer;
     }
 
+    public void setSelectedGroup(String selectedGroup) {
+
+        String old = this.selectedGroup;
+        this.selectedGroup = selectedGroup;
+
+        firePropertyChange(PROPERTY_SELECTED_GROUP, old, selectedGroup);
+    }
+
+    @Override
+    public String getSelectedGroup() {
+        if (Strings.isNullOrEmpty(selectedGroup)) {
+            return LayerDef.ALL_DATA_GROUP;
+        }
+        return selectedGroup;
+    }
+
+    @Override
+    public Set<String> getGroups() {
+
+        if (this.groups == null) {
+            HashSet groups = new HashSet<>();
+            for (IMatrixLayer layer : layers) {
+                groups.addAll(layer.getLayerGroups());
+            }
+            this.groups = groups;
+        }
+        return groups;
+    }
+
     public String getId() {
         return MatrixLayers.LAYERS_ID;
     }
@@ -209,7 +245,13 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column) {
 
         int i = 0;
+        String displayedGroup = getSelectedGroup();
         for (HeatmapLayer layer : layers) {
+            if (displayedGroup != null &&
+                    !layer.getLayerGroups().contains(displayedGroup)) {
+                i++;
+                continue;
+            }
             layer.populateDetails(details, matrix, row, column, i, (i == topLayer));
             i++;
         }

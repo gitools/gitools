@@ -27,8 +27,10 @@ import java.io.Serializable;
 
 public abstract class SimpleResult implements Serializable {
 
-    public static final String CORRECTED_RESULTS_GROUP = "Corrected test results";
-    public static final String RESULTS_GROUP = "Test results";
+    public static final String CORRECTED_RESULTS_GROUP = "Results (corrected)";
+    public static final String RESULTS_GROUP = "Results";
+    public static final String TEST_DETAILS_GROUP = "Test details";
+
     private int N;
     private double twoTailPvalue;
     private double corrTwoTailPvalue;
@@ -42,7 +44,7 @@ public abstract class SimpleResult implements Serializable {
     @LayerDef(id = "N",
             name = "N",
             description = "Number of elements (sample size)",
-            groups = {SimpleResult.RESULTS_GROUP, SimpleResult.CORRECTED_RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getN() {
         return N;
     }
@@ -54,7 +56,7 @@ public abstract class SimpleResult implements Serializable {
     @LayerDef(id = "two-tail-p-value",
             name = "Two tail P-Value",
             description = "P-Value for alternative hipothesis different than",
-            groups = {RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getTwoTailPvalue() {
         return twoTailPvalue;
     }
@@ -66,7 +68,7 @@ public abstract class SimpleResult implements Serializable {
     @LayerDef(id = "corrected-two-tail-p-value",
             name = "Corrected two tail P-Value",
             description = "Corrected P-Value for alternative hipothesis different than",
-            groups = {CORRECTED_RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {CORRECTED_RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getCorrTwoTailPvalue() {
         return corrTwoTailPvalue;
     }

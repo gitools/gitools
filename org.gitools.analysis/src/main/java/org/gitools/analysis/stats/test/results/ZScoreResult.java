@@ -49,7 +49,7 @@ public class ZScoreResult extends CommonResult {
     @LayerDef(id = "observed",
             name = "Observed value",
             description = "Value observed",
-            groups = {SimpleResult.RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getObserved() {
         return observed;
     }
@@ -61,7 +61,7 @@ public class ZScoreResult extends CommonResult {
     @LayerDef(id = "expected-mean",
             name = "Expected mean",
             description = "Value mean expected by chance",
-            groups = {SimpleResult.RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getExpectedMean() {
         return expectedMean;
     }
@@ -73,7 +73,7 @@ public class ZScoreResult extends CommonResult {
     @LayerDef(id = "expected-stdev",
             name = "Expected stddev",
             description = "Value standard deviation expected by chance",
-            groups = {SimpleResult.RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getExpectedStdev() {
         return expectedStdev;
     }
@@ -85,7 +85,7 @@ public class ZScoreResult extends CommonResult {
     @LayerDef(id = "z-score",
             name = "Z Score",
             description = "Normal distribution Z Score",
-            groups = {LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.RESULTS_GROUP, SimpleResult.CORRECTED_RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getZscore() {
         return zscore;
     }

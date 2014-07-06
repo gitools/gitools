@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LayerDef {
 
-    String COMPLETE_GROUP = "Complete";
+    String ALL_DATA_GROUP = "All data";
 
     String id();
 
@@ -36,6 +36,6 @@ public @interface LayerDef {
 
     String description();
 
-    String[] groups() default {COMPLETE_GROUP};
+    String[] groups() default {ALL_DATA_GROUP};
 
 }

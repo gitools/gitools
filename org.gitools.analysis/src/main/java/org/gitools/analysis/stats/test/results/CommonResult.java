@@ -27,7 +27,6 @@ import java.io.Serializable;
 
 public abstract class CommonResult extends SimpleResult implements Serializable {
 
-    public static final String DETAILS_ONLY_GROUP = "Details only";
     private int N;
     private double leftPvalue;
     private double rightPvalue;
@@ -43,14 +42,10 @@ public abstract class CommonResult extends SimpleResult implements Serializable 
     }
 
 
-    public void setN(int n) {
-        N = n;
-    }
-
     @LayerDef(id = "left-p-value",
             name = "Left P-Value",
             description = "P-Value for alternative hipothesis 'lower than'",
-            groups = {SimpleResult.RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getLeftPvalue() {
         return leftPvalue;
     }
@@ -62,7 +57,7 @@ public abstract class CommonResult extends SimpleResult implements Serializable 
     @LayerDef(id = "right-p-value",
             name = "Right P-Value",
             description = "P-Value for alternative hipothesis 'greater than'",
-            groups = {SimpleResult.RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getRightPvalue() {
         return rightPvalue;
     }
@@ -74,7 +69,7 @@ public abstract class CommonResult extends SimpleResult implements Serializable 
     @LayerDef(id = "corrected-left-p-value",
             name = "Corrected left P-Value",
             description = "Corrected P-Value for alternative hipothesis 'lower than'",
-            groups = {SimpleResult.CORRECTED_RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.CORRECTED_RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getCorrLeftPvalue() {
         return corrLeftPvalue;
     }
@@ -86,7 +81,7 @@ public abstract class CommonResult extends SimpleResult implements Serializable 
     @LayerDef(id = "corrected-right-p-value",
             name = "Corrected right P-Value",
             description = "Corrected P-Value for alternative hipothesis 'greater than'",
-            groups = {SimpleResult.CORRECTED_RESULTS_GROUP, LayerDef.COMPLETE_GROUP})
+            groups = {SimpleResult.CORRECTED_RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getCorrRightPvalue() {
         return corrRightPvalue;
     }

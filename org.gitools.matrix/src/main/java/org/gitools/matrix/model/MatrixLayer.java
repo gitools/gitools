@@ -99,14 +99,14 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     }
 
     @Override
-    public Set<String> getGroups() {
+    public Set<String> getLayerGroups() {
 
         if (groups == null || groups.size() == 0) {
-           return groups;
-        } else {
             HashSet nullSet = new HashSet();
-            nullSet.add(LayerDef.COMPLETE_GROUP);
+            nullSet.add(LayerDef.ALL_DATA_GROUP);
             return nullSet;
+        } else {
+            return groups;
         }
 
     }

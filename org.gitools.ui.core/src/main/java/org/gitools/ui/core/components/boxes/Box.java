@@ -33,10 +33,11 @@ import org.jdesktop.swingx.JXTaskPane;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 
 public abstract class Box extends JXTaskPane {
 
-    protected JPanel bottomActionsPanel;
+    protected ArrayList<JPanel> bottomPanels;
     protected JPopupMenu popupMenu;
     private Heatmap heatmap;
 
@@ -69,23 +70,25 @@ public abstract class Box extends JXTaskPane {
     }
 
     private void createBottomActionButtons(ActionSet bottomActionSet) {
+        bottomPanels = new ArrayList<>();
         if (bottomActionSet != null) {
-            bottomActionsPanel = new JPanel(new HorizontalLayout(2), true);
-            bottomActionsPanel.setBackground(Color.white);
-            addBaseActions(bottomActionSet);
+            JPanel iconActionsPanel = new JPanel(new HorizontalLayout(2), true);
+            iconActionsPanel.setBackground(Color.white);
+            bottomPanels.add(iconActionsPanel);
+            addBaseActions(bottomActionSet, iconActionsPanel);
         }
     }
 
-    private void addBaseActions(ActionSet bottomActionSet) {
+    private void addBaseActions(ActionSet bottomActionSet, JPanel iconActionsPanel) {
         for (BaseAction action : bottomActionSet.getActions()) {
             if (action instanceof SeparatorAction) {
                 continue;
             } else if (action instanceof ActionSet) {
-                addBaseActions(((ActionSet) action));
+                addBaseActions(((ActionSet) action), iconActionsPanel);
             }
             JComponent btn = ActionSetUtils.createActionButton(action);
             btn.addMouseListener(getBottomActionMouseAdapter());
-            bottomActionsPanel.add(btn);
+            iconActionsPanel.add(btn);
         }
     }
 

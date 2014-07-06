@@ -21,6 +21,10 @@
  */
 package org.gitools.ui.app.heatmap.panel.details.boxes;
 
+import com.alee.laf.label.WebLabel;
+import com.jgoodies.binding.adapter.ComboBoxAdapter;
+import com.jgoodies.binding.beans.PropertyAdapter;
+import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
@@ -35,7 +39,10 @@ import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
 import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.jdesktop.swingx.HorizontalLayout;
 
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -70,6 +77,36 @@ public class LayerValuesBox extends DetailsBox {
      */
     public LayerValuesBox(String title, ActionSet actions, Heatmap heatmap) {
         super(ID, title, actions, new ActionSet(new AddNewLayersFromFileAction(), actions), heatmap);
+        addGroupSelector();
+    }
+
+    private void addGroupSelector() {
+
+        HeatmapLayers layers = getHeatmap().getLayers();
+        if (layers.getGroups().size() < 2) {
+            return;
+        }
+
+        JPanel groupsSelectorPanel = new JPanel(new HorizontalLayout(2), true);
+        groupsSelectorPanel.setBackground(Color.white);
+
+        JComboBox<Object> groupsSelector = new JComboBox<>();
+
+        groupsSelector.setModel(
+                new ComboBoxAdapter<>(
+                        new SelectionInList<>(
+                                layers.getGroups().toArray(),
+                                new PropertyAdapter<>(layers, "selectedGroup")
+                        )
+                )
+        );
+
+
+        groupsSelectorPanel.add(new WebLabel("View group: "));
+        groupsSelectorPanel.add(groupsSelector);
+
+        bottomPanels.add(groupsSelectorPanel);
+
     }
 
     @Override

@@ -61,7 +61,7 @@ public abstract class DetailsBox extends Box {
      */
     public DetailsBox(String id, String title, ActionSet actions, Heatmap heatmap) {
         super(id, title, actions, heatmap);
-        bottomActionsPanel = null;
+        bottomPanels = null;
     }
 
     public DetailsBox(String id, String title, ActionSet contextActionSet, ActionSet bottomActionSet, Heatmap heatmap) {
@@ -98,7 +98,7 @@ public abstract class DetailsBox extends Box {
         maxValueLength = (maxValueLength < 8 ? 8 : maxValueLength);
 
         double columns[] = {5, TableLayout.PREFERRED, 3, TableLayout.FILL, 5};
-        double rows[] = new double[3 + details.size() * 2];
+        double rows[] = new double[3 + (details.size() + bottomPanels.size()-1) * 2];
         rows[0] = 2;
         rows[1] = 2;
         for (int i = 2; i < rows.length - 1; i += 2) {
@@ -130,11 +130,13 @@ public abstract class DetailsBox extends Box {
             }
         }
 
-        if (bottomActionsPanel != null) {
+        if (bottomPanels != null) {
 
-            int nextRow = nextDetail * 2;
-            container.add(bottomActionsPanel, "1, " + (nextRow) + ", 4, " + (nextRow));
-
+            for (JPanel panel : bottomPanels) {
+                int nextRow = nextDetail * 2;
+                container.add(panel, "1, " + (nextRow) + ", 4, " + (nextRow));
+                nextDetail++;
+            }
         }
 
 

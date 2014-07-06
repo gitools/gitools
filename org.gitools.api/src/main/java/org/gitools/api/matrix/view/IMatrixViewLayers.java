@@ -25,10 +25,16 @@ package org.gitools.api.matrix.view;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 
+import java.util.Set;
+
 public interface IMatrixViewLayers<L extends IMatrixLayer> extends IMatrixLayers<L> {
 
     L getTopLayer();
 
     void setTopLayer(L topLayer);
+
+    public String getSelectedGroup();
+
+    public Set<String> getGroups();
 
 }
