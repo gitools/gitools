@@ -107,6 +107,14 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
             }
         }
 
+        if (analysis.getStartTime() != null) {
+            context.put("startTime", analysis.getStartTime());
+        }
+
+        if (analysis.getElapsedTime() > 0) {
+            context.put("elapsedTime", analysis.getElapsedTime());
+        }
+
         super.prepareContext(context);
     }
 

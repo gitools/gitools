@@ -45,6 +45,14 @@ public class Analysis extends Resource {
     protected Analysis() {
     }
 
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public long getElapsedTime() {
+        return elapsedTime;
+    }
+
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
