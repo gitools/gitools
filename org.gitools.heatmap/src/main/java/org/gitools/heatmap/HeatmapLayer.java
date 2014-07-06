@@ -52,6 +52,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public static final String PROPERTY_SHORT_FORMATTER = "shortFormatter";
     public static final String PROPERTY_LONG_FORMATTER = "longFormatter";
     public static final String PROPERTY_FONT = "cellFont";
+    public static final String PROPERTY_EVENT_FUNCTION = "eventFunction";
 
     private transient ITextFormatter shortFormatter;
     private transient ITextFormatter longFormatter;
@@ -181,7 +182,12 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     }
 
     public void setEventFunction(NonEventToNullFunction eventFunction) {
+
+        NonEventToNullFunction old = this.eventFunction;
+
         this.eventFunction = eventFunction;
+
+        firePropertyChange(PROPERTY_EVENT_FUNCTION, old, eventFunction);
     }
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column, int layerIndex, boolean isSelected) {

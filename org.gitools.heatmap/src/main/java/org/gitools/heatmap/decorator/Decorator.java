@@ -75,7 +75,7 @@ public abstract class Decorator<C extends INumericColorScale> extends Model {
     protected void initEventFunctions() {
         eventFunctions = new ArrayList<>();
 
-        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Outside Scale Events") {
+        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Outside Events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -102,7 +102,7 @@ public abstract class Decorator<C extends INumericColorScale> extends Model {
             }
         });
 
-        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Non-Zero Events") {
+        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Non-0 Events") {
             @Override
             public Double apply(Double value, IMatrixPosition position) {
                 this.position = position;

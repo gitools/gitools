@@ -33,6 +33,7 @@ import com.alee.utils.SwingUtils;
 import org.apache.commons.lang.StringUtils;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.heatmap.decorator.JComponentDetailsDecoration;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.platform.icons.IconNames;
 import org.jdesktop.swingx.HorizontalLayout;
@@ -155,8 +156,24 @@ public abstract class DetailsBox extends Box {
         return separator;
     }
 
+    private Component createComponentNameLabel(JComponentDetailsDecoration detail) {
+        if (detail.getDetailsComponent() != null) {
+            JComponent c = detail.getDetailsComponent();
+            TooltipManager.setTooltip(c, detail.getDescription(), TooltipWay.down, 0);
+            return c;
+        }
+        return  null;
+    }
 
     private Component createNameLabel(DetailsDecoration detail) {
+
+
+        if (detail instanceof JComponentDetailsDecoration) {
+            Component c = createComponentNameLabel((JComponentDetailsDecoration) detail);
+            if (c != null) {
+                return c;
+            }
+        }
 
         WebLabel label = new WebLabel(StringUtils.capitalize(detail.getName()), JLabel.TRAILING);
 

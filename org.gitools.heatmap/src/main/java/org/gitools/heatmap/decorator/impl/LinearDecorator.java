@@ -54,7 +54,8 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
     private LinearTwoSidedColorScale scale;
 
     @XmlTransient
-    private NonEventToNullFunction<LinearTwoSidedColorScale> linearEvents;
+    private NonEventToNullFunction<INumericColorScale> aboveScaleFunction;
+    private NonEventToNullFunction<INumericColorScale> belowScaleFunction;
 
     public LinearDecorator() {
         this(new LinearTwoSidedColorScale());
@@ -187,7 +188,25 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
         List<NonEventToNullFunction> list = new ArrayList<>();
         list.add(getDefaultEventFunction());
 
-        list.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Above Scale Events") {
+        if (aboveScaleFunction == null) {
+            initEventFunctions();
+        }
+
+        list.add(aboveScaleFunction);
+        list.add(belowScaleFunction);
+
+
+
+
+        return list;
+    }
+
+    @Override
+    protected void initEventFunctions() {
+
+        super.initEventFunctions();
+
+        aboveScaleFunction = new NonEventToNullFunction<INumericColorScale>(getScale(), "Above Events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -205,11 +224,11 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
 
             @Override
             public String getDescription() {
-                return  "All values above " + getColorScale().getMaxValue() + " are events";
+                return "All values above " + getColorScale().getMaxValue() + " are events";
             }
-        });
+        };
 
-        list.add(new NonEventToNullFunction<INumericColorScale>(getScale(), "Below Scale Events") {
+        belowScaleFunction = new NonEventToNullFunction<INumericColorScale>(getScale(), "Below Events") {
 
             @Override
             public Double apply(Double value, IMatrixPosition position) {
@@ -229,10 +248,7 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
             public String getDescription() {
                 return " All values below " + getColorScale().getMinValue() + " are events";
             }
-        });
-
-
-        return list;
+        };
     }
 
 }

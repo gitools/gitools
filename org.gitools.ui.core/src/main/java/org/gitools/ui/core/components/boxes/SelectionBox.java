@@ -22,6 +22,9 @@
 package org.gitools.ui.core.components.boxes;
 
 import com.google.common.collect.Sets;
+import com.jgoodies.binding.adapter.ComboBoxAdapter;
+import com.jgoodies.binding.beans.PropertyAdapter;
+import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -29,6 +32,7 @@ import org.gitools.heatmap.AbstractMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.heatmap.decorator.JComponentDetailsDecoration;
 import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
 import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 import org.gitools.ui.core.actions.ActionSet;
@@ -79,24 +83,18 @@ public class SelectionBox extends DetailsBox {
 
     @Override
     public void registerListeners() {
-        getHeatmap().getRows().addPropertyChangeListener(AbstractMatrixViewDimension.PROPERTY_SELECTED, new PropertyChangeListener() {
+
+        PropertyChangeListener listener = new PropertyChangeListener() {
             @Override
             public void propertyChange(PropertyChangeEvent evt) {
                 update();
             }
-        });
-        getHeatmap().getColumns().addPropertyChangeListener(AbstractMatrixViewDimension.PROPERTY_SELECTED, new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                update();
-            }
-        });
-        getHeatmap().getLayers().addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                update();
-            }
-        });
+        };
+
+        getHeatmap().getRows().addPropertyChangeListener(AbstractMatrixViewDimension.PROPERTY_SELECTED, listener);
+        getHeatmap().getColumns().addPropertyChangeListener(AbstractMatrixViewDimension.PROPERTY_SELECTED, listener);
+        getHeatmap().getLayers().addPropertyChangeListener(listener);
+        getHeatmap().getLayers().getTopLayer().addPropertyChangeListener(HeatmapLayer.PROPERTY_EVENT_FUNCTION,listener);
     }
 
     @Override
@@ -160,6 +158,16 @@ public class SelectionBox extends DetailsBox {
 
 
                 //Layer events
+                JComboBox eventsFunctionComboBox = new JComboBox();
+                eventsFunctionComboBox.setModel(
+                        new ComboBoxAdapter<>(
+                                new SelectionInList<NonEventToNullFunction>(
+                                        layer.getDecorator().getEventFunctionAlternatives(),
+                                        new PropertyAdapter<>(layer, "eventFunction")
+                                )
+                        )
+                );
+
                 NonEventToNullFunction eventsFunction = layer.getEventFunction();
                 IMatrixIterable<Double> eventsIt = getHeatmap().newPosition()
                         .iterate(layer, data.getRows().subset(rows), data.getColumns().subset(columns))
@@ -174,9 +182,8 @@ public class SelectionBox extends DetailsBox {
                 }
 
 
-                details.add(new DetailsDecoration(eventsFunction.getName(),
-                        eventsFunction.getDescription() + ("\n(Edit data layer to change default event function)."),
-                        eventsDetail));
+                details.add(new JComponentDetailsDecoration(eventsFunctionComboBox, eventsFunction.getName(),
+                                            eventsFunction.getDescription(), eventsDetail));
 
                 Double stDev = StdDevAggregator.INSTANCE.aggregate(cellValuesIterable);
 
