@@ -50,6 +50,7 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -57,8 +58,7 @@ import java.util.concurrent.TimeUnit;
 
 import static org.gitools.heatmap.AbstractMatrixViewDimension.*;
 import static org.gitools.heatmap.HeatmapLayer.*;
-import static org.gitools.heatmap.HeatmapLayers.PROPERTY_LAYERS;
-import static org.gitools.heatmap.HeatmapLayers.PROPERTY_TOP_LAYER;
+import static org.gitools.heatmap.HeatmapLayers.*;
 import static org.gitools.ui.core.interaction.Interaction.movingSelected;
 import static org.gitools.ui.core.interaction.InteractionStatus.getInteractionStatus;
 import static org.gitools.utils.events.EventUtils.isAny;
@@ -92,17 +92,20 @@ public class LayerValuesBox extends DetailsBox {
 
         JComboBox<Object> groupsSelector = new JComboBox<>();
 
+        List<String> groups = new ArrayList<>(layers.getGroups());
+        Collections.sort(groups);
+
         groupsSelector.setModel(
                 new ComboBoxAdapter<>(
                         new SelectionInList<>(
-                                layers.getGroups().toArray(),
-                                new PropertyAdapter<>(layers, "selectedGroup")
+                                groups,
+                                new PropertyAdapter<>(layers, PROPERTY_SELECTED_GROUP)
                         )
                 )
         );
 
 
-        groupsSelectorPanel.add(new WebLabel("View group: "));
+        groupsSelectorPanel.add(new WebLabel("Data listed: "));
         groupsSelectorPanel.add(groupsSelector);
 
         bottomPanels.add(groupsSelectorPanel);
@@ -129,11 +132,12 @@ public class LayerValuesBox extends DetailsBox {
                                         PROPERTY_NAME,
                                         PROPERTY_DESCRIPTION,
                                         PROPERTY_DESCRIPTION_URL,
-                                        PROPERTY_VALUE_URL)
+                                        PROPERTY_VALUE_URL                                        )
                                 ||
                                 isAny(evt, HeatmapLayers.class,
                                         PROPERTY_TOP_LAYER,
-                                        PROPERTY_LAYERS))
+                                        PROPERTY_LAYERS,
+                                        PROPERTY_SELECTED_GROUP))
                         ) {
                     update();
                 }

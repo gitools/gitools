@@ -114,6 +114,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
     private void createLayers() {
 
         List<BeanMatrixLayer> layers = new ArrayList<>();
+        final HashMap<String, Integer> groupCount = new HashMap<>();
         for (Method m : getElementClass().getMethods()) {
             boolean isGet = m.getName().startsWith("get");
             if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || m.getName().startsWith("is"))) {
@@ -140,6 +141,8 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                     }
                     if (a.groups() != null) {
                         for (String group : a.groups()) {
+                            groupCount.put(group,
+                                    groupCount.get(group) == null ? 1 : groupCount.get(group)+1);
                             groups.add(group);
                         }
                     }
@@ -159,7 +162,39 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
         Collections.sort(layers, new Comparator<MatrixLayer>() {
             @Override
             public int compare(MatrixLayer o1, MatrixLayer o2) {
-                return o1.getId().compareTo(o2.getId());
+                String g1 = smallestGroup(o1, groupCount);
+                String g2 = smallestGroup(o2, groupCount);
+
+                // order by smallest group Size;
+                if (groupCount.get(g1) < groupCount.get(g2)) {
+                    return -1;
+                } else if (groupCount.get(g1) > groupCount.get(g2)) {
+                    return 1;
+                }
+
+                // if equal, order by group Name
+                int comp = g1.compareTo(g2);
+                if (comp != 0) {
+                    return comp;
+                } else {
+                    // if equal compare by layer name;
+                    return o1.getId().compareTo(o2.getId());
+                }
+            }
+
+            private String smallestGroup(MatrixLayer layer, HashMap<String, Integer> groupCount) {
+                int min = -1;
+                String name = "";
+                Iterator iterator = layer.getLayerGroups().iterator();
+                while (iterator.hasNext()) {
+                    String group = (String) iterator.next();
+                    int size = groupCount.get(group);
+                    if (size < min || min < 0) {
+                        min = size;
+                        name = group;
+                    }
+                }
+                return name;
             }
         });
 

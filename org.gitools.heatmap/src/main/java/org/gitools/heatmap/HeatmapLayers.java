@@ -244,16 +244,16 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column) {
 
-        int i = 0;
+        int i = -1;
         String displayedGroup = getSelectedGroup();
         for (HeatmapLayer layer : layers) {
-            if (displayedGroup != null &&
+            i++;
+            boolean isSelected = (i == topLayer);
+            if (!isSelected && displayedGroup != null &&
                     !layer.getLayerGroups().contains(displayedGroup)) {
-                i++;
                 continue;
             }
-            layer.populateDetails(details, matrix, row, column, i, (i == topLayer));
-            i++;
+            layer.populateDetails(details, matrix, row, column, i, isSelected);
         }
 
     }
