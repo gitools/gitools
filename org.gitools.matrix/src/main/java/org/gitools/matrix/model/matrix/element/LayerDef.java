@@ -28,10 +28,14 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface LayerDef {
 
+    String COMPLETE_GROUP = "Complete";
+
     String id();
 
     String name();
 
     String description();
+
+    String[] groups() default {COMPLETE_GROUP};
 
 }

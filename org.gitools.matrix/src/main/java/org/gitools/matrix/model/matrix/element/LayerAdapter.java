@@ -128,6 +128,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                 String id = getterName;
                 String name = id;
                 String description = "";
+                String[] groups;
 
                 LayerDef a = m.getAnnotation(LayerDef.class);
                 if (a != null) {
@@ -139,6 +140,9 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                     }
                     if (a.description() != null) {
                         description = a.description();
+                    }
+                    if (a.groups() != null) {
+                        groups = a.groups();
                     }
                 }
 
