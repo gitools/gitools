@@ -27,16 +27,16 @@ import org.gitools.api.matrix.IKey;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.ValueTranslator;
+import org.gitools.matrix.model.matrix.element.LayerDef;
 import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.translators.ValueTranslatorFactory;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
@@ -66,6 +66,10 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     @XmlTransient
     protected IAggregator aggregator;
 
+    @XmlElementWrapper(name = "groups")
+    @XmlElement(name = "group")
+    private Set groups;
+
     private SortDirection sortDirection;
 
     public SortDirection getSortDirection() {
@@ -94,19 +98,36 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
         this.aggregator = aggregator;
     }
 
+    @Override
+    public Set<String> getGroups() {
+
+        if (groups == null || groups.size() == 0) {
+           return groups;
+        } else {
+            HashSet nullSet = new HashSet();
+            nullSet.add(LayerDef.COMPLETE_GROUP);
+            return nullSet;
+        }
+
+    }
+
     public MatrixLayer() {
         // JAXB requirement
     }
 
     public MatrixLayer(String id, Class<T> valueClass) {
-        this(id, valueClass, null, null);
+        this(id, valueClass, null, null, new HashSet<String>());
     }
 
-    public MatrixLayer(String id, Class<T> valueClass, String name, String description) {
+    public MatrixLayer(String id, Class<T> valueClass, String name, String description, Set<String> groups) {
         this.id = id;
         this.valueClass = valueClass;
         this.name = name;
         this.description = description;
+        this.groups = groups;
+    }
+    public MatrixLayer(String id, Class<T> valueClass, String name, String description) {
+        this(id, valueClass, name, description, new HashSet<String>());
     }
 
     @Override

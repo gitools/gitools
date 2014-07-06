@@ -29,10 +29,7 @@ import org.gitools.matrix.model.MatrixLayers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class LayerAdapter<T> implements ILayerAdapter<T> {
 
@@ -128,7 +125,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                 String id = getterName;
                 String name = id;
                 String description = "";
-                String[] groups;
+                HashSet<String> groups = new HashSet();
 
                 LayerDef a = m.getAnnotation(LayerDef.class);
                 if (a != null) {
@@ -142,7 +139,9 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                         description = a.description();
                     }
                     if (a.groups() != null) {
-                        groups = a.groups();
+                        for (String group : a.groups()) {
+                            groups.add(group);
+                        }
                     }
                 }
 
@@ -152,7 +151,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                 } catch (Exception e) {
                 }
 
-                BeanMatrixLayer prop = new BeanMatrixLayer(id, name, description, propertyClass, m, setterMethod);
+                BeanMatrixLayer prop = new BeanMatrixLayer(id, name, description, propertyClass, groups, m, setterMethod);
                 layers.add(prop);
             }
         }
