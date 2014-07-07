@@ -185,7 +185,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
             private String smallestGroup(MatrixLayer layer, HashMap<String, Integer> groupCount) {
                 int min = -1;
                 String name = "";
-                Iterator iterator = layer.getLayerGroups().iterator();
+                Iterator iterator = layer.getGroups().iterator();
                 while (iterator.hasNext()) {
                     String group = (String) iterator.next();
                     int size = groupCount.get(group);

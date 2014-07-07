@@ -45,7 +45,7 @@ public interface IMatrixLayer<T> {
 
     void setAggregator(IAggregator aggregator);
 
-    Set<String> getLayerGroups();
+    Set<String> getGroups();
 
     /**
      * This method is called when the layer is not in use.

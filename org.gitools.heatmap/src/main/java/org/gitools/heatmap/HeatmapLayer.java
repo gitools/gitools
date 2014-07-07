@@ -82,7 +82,7 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     }
 
     public HeatmapLayer(IMatrixLayer layer) {
-        super(layer.getId(), layer.getValueClass(), layer.getName(), layer.getDescription(), layer.getLayerGroups());
+        super(layer.getId(), layer.getValueClass(), layer.getName(), layer.getDescription(), layer.getGroups());
         this.setAggregator(layer.getAggregator());
         this.setSortDirection(layer.getSortDirection());
 

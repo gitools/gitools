@@ -214,7 +214,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         if (this.groups == null) {
             HashSet groups = new HashSet<>();
             for (IMatrixLayer layer : layers) {
-                groups.addAll(layer.getLayerGroups());
+                groups.addAll(layer.getGroups());
             }
             this.groups = groups;
         }
@@ -250,7 +250,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
             i++;
             boolean isSelected = (i == topLayer);
             if (!isSelected && displayedGroup != null &&
-                    !layer.getLayerGroups().contains(displayedGroup)) {
+                    !layer.getGroups().contains(displayedGroup)) {
                 continue;
             }
             layer.populateDetails(details, matrix, row, column, i, isSelected);

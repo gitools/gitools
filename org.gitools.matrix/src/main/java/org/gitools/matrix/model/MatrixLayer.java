@@ -66,9 +66,9 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     @XmlTransient
     protected IAggregator aggregator;
 
-    @XmlElementWrapper(name = "groups")
+    @XmlElementWrapper(name = "data-groups")
     @XmlElement(name = "group")
-    private Set groups;
+    private Set<String> groups;
 
     private SortDirection sortDirection;
 
@@ -99,7 +99,7 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
     }
 
     @Override
-    public Set<String> getLayerGroups() {
+    public Set<String> getGroups() {
 
         if (groups == null || groups.size() == 0) {
             HashSet nullSet = new HashSet();
