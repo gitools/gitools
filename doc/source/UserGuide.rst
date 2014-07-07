@@ -18,13 +18,6 @@ Gitools User Guide
     - :doc:`UserGuide_Overlaps`
     - :doc:`UserGuide_Combinations`
 
-
-*The interface*
-
-- :doc:`UserGuide_Visualization`
-
-- :doc:`UserGuide_Interaction`
-
 *Data*
 
 - :doc:`UserGuide_LoadSaveImportExport`
