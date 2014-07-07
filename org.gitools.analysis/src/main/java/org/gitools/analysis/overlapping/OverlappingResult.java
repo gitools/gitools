@@ -25,6 +25,7 @@ import org.gitools.matrix.model.matrix.element.LayerDef;
 
 public class OverlappingResult {
 
+    public static final String RESULTS_GROUP = "Main Results";
     private int columnCount;
 
     private int rowCount;
@@ -51,7 +52,10 @@ public class OverlappingResult {
         calculateProportions();
     }
 
-    @LayerDef(id = "column-count", name = "Column count", description = "Number of positive events in column condintion")
+    @LayerDef(id = "column-count",
+            name = "Count in columns",
+            description = "Number of positive events in column condintion",
+            groups = {RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getColumnCount() {
         return columnCount;
     }
@@ -60,7 +64,10 @@ public class OverlappingResult {
         this.columnCount = columnPositiveCount;
     }
 
-    @LayerDef(id = "row-count", name = "Row count", description = "Number of positive events in row condintion")
+    @LayerDef(id = "row-count",
+            name = "Count in rows",
+            description = "Number of positive events in row condintion",
+            groups = {RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getRowCount() {
         return rowCount;
     }
@@ -69,7 +76,10 @@ public class OverlappingResult {
         this.rowCount = rowPositiveCount;
     }
 
-    @LayerDef(id = "both-count", name = "Both count", description = "Number of positive events in both condintions")
+    @LayerDef(id = "both-count",
+            name = "Count in both",
+            description = "Number of positive events in both condintions",
+            groups = {RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getBothCount() {
         return bothCount;
     }
@@ -78,7 +88,10 @@ public class OverlappingResult {
         this.bothCount = bothPositiveCount;
     }
 
-    @LayerDef(id = "column-only-prop", name = "Column only proportion", description = "Proportion of events only in column condition out of the union")
+    @LayerDef(id = "column-only-prop",
+            name = "Column only proportion",
+            description = "Proportion of events only in column condition out of the union",
+            groups = {LayerDef.ALL_DATA_GROUP})
     public double getColumnOnlyProp() {
         return columnOnlyProp;
     }
@@ -87,7 +100,10 @@ public class OverlappingResult {
         this.columnOnlyProp = columnOnlyProp;
     }
 
-    @LayerDef(id = "row-only-prop", name = "Row only proportion", description = "Proportion of events only in row condition out of the union")
+    @LayerDef(id = "row-only-prop",
+            name = "Row only proportion",
+            description = "Proportion of events only in row condition out of the union",
+            groups = {LayerDef.ALL_DATA_GROUP})
     public double getRowOnlyProp() {
         return rowOnlyProp;
     }
@@ -96,7 +112,9 @@ public class OverlappingResult {
         this.rowOnlyProp = rowOnlyProp;
     }
 
-    @LayerDef(id = "column-intersection-prop", name = "Column intersection proportion", description = "Proportion of shared events in column condition")
+    @LayerDef(id = "column-intersection-prop", name = "Column intersection proportion",
+            description = "Proportion of shared events in column condition",
+            groups = {LayerDef.ALL_DATA_GROUP})
     public double getColumnIntersectionProp() {
         return columnIntersectionProp;
     }
@@ -105,7 +123,9 @@ public class OverlappingResult {
         this.columnIntersectionProp = columnIntersectionProp;
     }
 
-    @LayerDef(id = "row-intersection-prop", name = "Row intersection proportion", description = "Proportion of shared events in row condition")
+    @LayerDef(id = "row-intersection-prop", name = "Row intersection proportion",
+            description = "Proportion of shared events in row condition",
+            groups = {LayerDef.ALL_DATA_GROUP})
     public double getRowIntersectionProp() {
         return rowIntersectionProp;
     }
@@ -114,7 +134,9 @@ public class OverlappingResult {
         this.rowIntersectionProp = rowIntersectionProp;
     }
 
-    @LayerDef(id = "max-intersection-prop", name = "Maximum intersection proportion", description = "Maximum proportion of shared events")
+    @LayerDef(id = "max-intersection-prop", name = "Maximum intersection proportion",
+            description = "Maximum proportion of shared events",
+            groups = {RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getMaxIntersectionProp() {
         return maxIntersectionProp;
     }
@@ -123,7 +145,9 @@ public class OverlappingResult {
         this.maxIntersectionProp = maxIntersectionProp;
     }
 
-    @LayerDef(id = "jaccard-index", name = "Jaccard index", description = "Proportion of shared events in both conditions")
+    @LayerDef(id = "jaccard-index", name = "Jaccard index",
+            description = "Proportion of shared events in both conditions",
+            groups = {RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getJaccardIndex() {
         return jaccardIndex;
     }

@@ -178,7 +178,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                     return comp;
                 } else {
                     // if equal compare by layer name;
-                    return o1.getId().compareTo(o2.getId());
+                    return o1.getName().compareTo(o2.getName());
                 }
             }
 
