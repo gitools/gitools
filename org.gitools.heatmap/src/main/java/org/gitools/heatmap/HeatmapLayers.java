@@ -148,15 +148,21 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     @Deprecated
     public void setTopLayerIndex(int layerIndex) {
-        int old = this.topLayer;
-        this.topLayer = layerIndex;
 
-        firePropertyChange(PROPERTY_TOP_LAYER_INDEX, old, layerIndex);
-        firePropertyChange(PROPERTY_TOP_LAYER, layers.get(old), layers.get(layerIndex));
+        int old = this.topLayer;
 
         // Move listeners
         HeatmapLayer oldLayer = layers.get(old);
         HeatmapLayer newLayer = layers.get(layerIndex);
+        if (oldLayer == newLayer) {
+            return;
+        }
+
+
+        this.topLayer = layerIndex;
+
+        firePropertyChange(PROPERTY_TOP_LAYER_INDEX, old, layerIndex);
+        firePropertyChange(PROPERTY_TOP_LAYER, layers.get(old), layers.get(layerIndex));
 
         EventUtils.moveListeners(oldLayer.getDecorator(), newLayer.getDecorator());
         EventUtils.moveListeners(oldLayer, newLayer);
