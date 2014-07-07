@@ -21,6 +21,11 @@
  */
 package org.gitools.ui.app.heatmap.drawer;
 
+import org.gitools.heatmap.Heatmap;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Holds the information about which rows and coluns fit on
  * screen and are thus visible
@@ -33,18 +38,27 @@ public class OnScreenRect {
     public final int colEnd;
     public final int width;
     public final int height;
+    public final List<String> rows;
+    public final List<String> cols;
 
-    public OnScreenRect(int rowStart, int rowEnd, int colStart, int colEnd, int width, int height) {
+    public OnScreenRect() {
+        this(0, 0, 0, 0, 0, 0, null);
+    }
+
+    public OnScreenRect(int rowStart, int rowEnd, int colStart, int colEnd, int width, int height, Heatmap heatmap) {
         this.rowStart = rowStart;
         this.rowEnd = rowEnd;
         this.colStart = colStart;
         this.colEnd = colEnd;
         this.width = width;
         this.height = height;
-    }
 
-    public OnScreenRect() {
-        this(0, 0, 0, 0, 0, 0);
+        if (heatmap != null) {
+            rows = new ArrayList<>(heatmap.getRows().toList().subList(rowStart, rowEnd));
+            cols = new ArrayList<>(heatmap.getColumns().toList().subList(colStart, colEnd));
+        } else {
+            rows = cols = new ArrayList();
+        }
     }
 
     @Override
@@ -58,10 +72,20 @@ public class OnScreenRect {
                     this.colStart == rect.colStart &&
                     this.colEnd == rect.colEnd &&
                     this.width == rect.width &&
-                    this.height == rect.height);
+                    this.height == rect.height &&
+                    this.rows.equals(rect.rows) &&
+                    this.cols.equals(rect.cols)
+            );
 
         }
 
         return false;
+    }
+
+    public boolean within(OnScreenRect rect) {
+        return (this.rowStart >= rect.rowStart &&
+                this.rowEnd < rect.rowEnd &&
+                this.colStart >= rect.colStart &&
+                this.colEnd < rect.colEnd);
     }
 }

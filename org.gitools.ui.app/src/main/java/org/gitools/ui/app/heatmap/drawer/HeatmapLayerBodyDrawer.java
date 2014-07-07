@@ -93,7 +93,11 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
             return;
         }
 
-        OnScreenRect newRect = new OnScreenRect(rowStart, rowEnd, colStart, colEnd, box.width, box.height);
+        OnScreenRect newRect = new OnScreenRect(rowStart, rowEnd, colStart, colEnd, box.width, box.height, heatmap);
+
+        //clip is sometimes corrupted : too small (when going through the menus)
+        boolean corruptedClip = newRect.within(getOnScreenRect());
+
         redrawBufferedImage = !JobThread.isRunning() && (redrawBufferedImage || !newRect.equals(getOnScreenRect()));
 
         if (redrawBufferedImage || isPictureMode()) {
