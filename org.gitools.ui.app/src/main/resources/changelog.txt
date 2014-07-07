@@ -1,6 +1,5 @@
 Gitools 2.2.0
 -------------------------------------------------------------
-* .mtabix data file copression (new)
 * Mutual exclusion plugin (new)
 * New cancer genomics data .matibx compressed (new)
 * SVG image export (new)
@@ -11,6 +10,8 @@ Gitools 2.2.0
 * Data events (new)
 * Import string values: importing strings to categorical values (new)
 * Layer groups (new)
+* Recent files (new)
+* .mtabix data file compression (new)
 * Many performance improvements
 * UI improvements
 

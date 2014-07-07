@@ -97,8 +97,10 @@ public abstract class DetailsBox extends Box {
         int maxValueLength = convertToCharacters(getWidth() - 15) - maxValueLength(details) - 5;
         maxValueLength = (maxValueLength < 8 ? 8 : maxValueLength);
 
+        int bottomPanelsAmount = (bottomPanels != null) ? bottomPanels.size() : 0;
+
         double columns[] = {5, TableLayout.PREFERRED, 3, TableLayout.FILL, 5};
-        double rows[] = new double[3 + (details.size() + bottomPanels.size()-1) * 2];
+        double rows[] = new double[3 + (details.size() + bottomPanelsAmount - 1) * 2];
         rows[0] = 2;
         rows[1] = 2;
         for (int i = 2; i < rows.length - 1; i += 2) {
