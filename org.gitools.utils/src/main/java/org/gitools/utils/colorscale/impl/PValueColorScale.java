@@ -83,7 +83,7 @@ public class PValueColorScale extends NumericColorScale {
         return new double[]{0, significanceLevel, 1};
     }
 
-    double getSignificanceLevel() {
+    public double getSignificanceLevel() {
         return significanceLevel;
     }
 

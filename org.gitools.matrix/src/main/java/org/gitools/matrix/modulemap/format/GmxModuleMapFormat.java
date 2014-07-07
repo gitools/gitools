@@ -91,7 +91,7 @@ public class GmxModuleMapFormat extends AbstractModuleMapFormat {
         progressMonitor.begin("Saving module map...", moduleMap.getModules().size());
 
         try {
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(progressMonitor);
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             List<String> modules = newArrayList(moduleMap.getModules());
@@ -135,7 +135,7 @@ public class GmxModuleMapFormat extends AbstractModuleMapFormat {
                 line.clear();
             }
 
-            out.close();
+            pw.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
         }

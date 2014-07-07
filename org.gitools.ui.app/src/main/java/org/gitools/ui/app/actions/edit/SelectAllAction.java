@@ -22,16 +22,21 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.api.matrix.view.IMatrixView;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.platform.Application;
+import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 
-public class SelectAllAction extends HeatmapAction {
+public class SelectAllAction extends HeatmapAction implements IHeatmapHeaderAction {
 
-    private static final long serialVersionUID = 3088237733885396229L;
+    private HeatmapHeader header;
 
     public SelectAllAction() {
         super("<html><i>Select</i> all</html>");
@@ -45,12 +50,25 @@ public class SelectAllAction extends HeatmapAction {
     public void actionPerformed(ActionEvent e) {
         IMatrixView matrixView = getHeatmap();
 
-        if (matrixView != null) {
-            matrixView.getRows().selectAll();
-            matrixView.getColumns().selectAll();
+        if (header != null) {
+            HeatmapDimension dimension = header.getHeatmapDimension();
+            dimension.selectAll();
+            Application.get().showNotification("Selected all " + dimension.getId().getLabel() + "s");
+
         }
 
-        Application.get().setStatusText("Selected all.");
     }
 
+    @Override
+    public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
+        this.header = header;
+
+        if (header instanceof HeatmapDecoratorHeader) {
+            ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderAnnotation());
+        }
+
+        String dimension = header.getHeatmapDimension().getId().getLabel();
+        setName("<html><i>Select</i> all " + dimension + "s </html>");
+
+    }
 }

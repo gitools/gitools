@@ -25,15 +25,16 @@ import org.gitools.analysis.Analysis;
 import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroupEnum;
-import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
+import org.gitools.api.matrix.IKey;
 import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.Key;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +42,11 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
 public class GroupComparisonAnalysis extends Analysis implements Serializable {
+
+    @XmlTransient
+    public static IKey<GroupComparisonAnalysis> CACHE_KEY_GC_ANALYSIS = new Key<>();
+
+
     private String sizeAttrName;
 
     private String pvalueAttrName;
@@ -59,15 +65,20 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
     @XmlTransient
     private boolean copyAnnotation = false;
 
+    @XmlElementWrapper()
+    @XmlElement(name = "group")
     private List<DimensionGroup> groups;
 
     private ToolConfig testConfig;
 
     private String mtc;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<? extends IMatrix> data;
 
+    @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<? extends IMatrix> results;
+
     private Double nullConversion;
 
 
@@ -83,7 +94,7 @@ public class GroupComparisonAnalysis extends Analysis implements Serializable {
         this.testConfig = testConfig;
     }
 
-    public Test getTest() {
+    public EnrichmentTest getTest() {
         TestFactory tf = TestFactory.createFactory(testConfig);
         return tf.create();
     }

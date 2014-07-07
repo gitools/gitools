@@ -21,10 +21,14 @@
  */
 package org.gitools.analysis.clustering.kmeans;
 
-import org.gitools.analysis.clustering.*;
+import org.gitools.analysis.clustering.AbstractClusteringMethod;
+import org.gitools.analysis.clustering.ClusteringData;
+import org.gitools.analysis.clustering.ClusteringException;
+import org.gitools.analysis.clustering.MatrixClusteringData;
 import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.distance.EuclideanDistance;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
+import org.gitools.api.analysis.Clusters;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 

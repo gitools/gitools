@@ -22,6 +22,7 @@
 package org.gitools.analysis.clustering;
 
 import com.jgoodies.binding.beans.Model;
+import org.gitools.api.analysis.Clusters;
 import org.gitools.api.analysis.IProgressMonitor;
 
 public abstract class AbstractClusteringMethod extends Model implements ClusteringMethod {

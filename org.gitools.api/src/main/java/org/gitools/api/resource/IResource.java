@@ -23,6 +23,8 @@ package org.gitools.api.resource;
 
 public interface IResource {
 
+    boolean isChanged();
+
     IResourceLocator getLocator();
 
     void setLocator(IResourceLocator locator);

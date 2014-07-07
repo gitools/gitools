@@ -22,11 +22,55 @@
 package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.heatmap.drawer.HeatmapBodyDrawer;
+import org.gitools.ui.app.heatmap.drawer.HeatmapLayerBodyDrawer;
+import org.gitools.ui.app.heatmap.drawer.SelectionLayerBodyDrawer;
 
-public class HeatmapBodyPanel extends AbstractHeatmapPanel {
+import javax.swing.*;
+import java.awt.*;
+
+public class HeatmapBodyPanel extends JLayeredPane {
+
+    private HeatmapLayerBodyDrawer drawer;
+    private AbstractHeatmapPanel heatmapLayerPanel;
+    private SelectionLayerBodyDrawer selectionDrawer;
+    private AbstractHeatmapPanel selectionLayerPanel;
+
 
     public HeatmapBodyPanel(Heatmap heatmap) {
-        super(heatmap, new HeatmapBodyDrawer(heatmap));
+        super();
+
+        drawer = new HeatmapLayerBodyDrawer(heatmap);
+        heatmapLayerPanel = new AbstractHeatmapPanel(heatmap, drawer);
+
+        selectionDrawer = new SelectionLayerBodyDrawer(heatmap);
+        selectionLayerPanel = new AbstractHeatmapPanel(heatmap, selectionDrawer);
+        selectionLayerPanel.setOpaque(false);
+
+        setOpaque(false);
+
+        setBorder(null);
+        setBackground(Color.WHITE);
+
+        Dimension size = drawer.getSize();
+        setPreferredSize(size);
+
+        heatmapLayerPanel.setBounds(0, 0, size.width, size.height);
+        add(heatmapLayerPanel, new Integer(10));
+        selectionLayerPanel.setBounds(0, 0, size.width, size.height);
+        add(selectionLayerPanel, new Integer(20));
+
+    }
+
+    public HeatmapLayerBodyDrawer getDrawer() {
+        return drawer;
+    }
+
+
+    public void updateSize() {
+        heatmapLayerPanel.setSize(drawer.getSize());
+        selectionLayerPanel.setSize(selectionDrawer.getSize());
+        heatmapLayerPanel.updateSize();
+        selectionLayerPanel.updateSize();
+        this.setPreferredSize(drawer.getSize());
     }
 }

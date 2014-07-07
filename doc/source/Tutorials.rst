@@ -4,44 +4,15 @@ Tutorials
 
 .. contents::
 
-CASE STUDY 1: Finding the Biological Processes enriched among genes significantly up-regulated in different types of cancer
----------------------------------------------------------------------------------------------------------------------------
+ 1. Tutorial: Gitools from A to Z
+---------------------------------
 
-.. list-table::
-    :widths: 30 70
+:doc:`Tutorials_Tutorial21`
 
-    * - .. image:: img/tutorial-icon1-1.png
-      - Tutorial 1.1: Import Data Matrix From IntOGen :download:`download pdf<files/tutorial11importintogentumortypes.pdf>`
 
-        Import a data matrix from IntOGen that contains p-values for significantly up-regulated genes in each tumor morphology type
 
-    * - .. image:: img/tutorial-icon1-2.png
-      - Tutorial 1.2: Import pathways From KEGG :download:`download pdf<files/tutorial12importensemblKEGG.pdf>`
-
-        Import a module file that maps all human genes to KEGG Pathways and the annotations of these terms
-
-    * - .. image:: img/tutorial-icon1-3.png
-      - Tutorial 1.3: Run Enrichment Analysis :download:`download pdf<files/tutorial13runenrichmentIntOGenKEGG.pdf>`
-
-        Run an enrichment analysis to test which pathways are enriched among genes significantly up-regulated in different types of cancer
-
-    * - .. image:: img/tutorial-icon1-4.png
-      - Tutorial 1.4: Explore results in a heatmap :download:`download pdf<files/tutorial14exploreresultsIntOGenKEGG.pdf>`
-
-        Explore the heatmap with the enrichment analysis results by sorting, filtering, hiding and moving rows and columns
-
-    * - .. image:: img/tutorial-icon1-5.png
-      - Tutorial 1.5: Edit heatmaps :download:`download pdf<files/tutorial15editheatmaps.pdf>`
-
-        Edit properties of the heatmaps: change color scale, add annotations, change font size and edit grid
-
-    * - .. image:: img/tutorial-icon1-6.png
-      - Tutorial 1.6: Export heatmap image and table results :download:`download pdf<files/tutorial16exportheatmaps.pdf>`
-
-        Export the results of the enrichment analysis as an image and as a table containing the details of the statistic results
-
-CASE STUDY 2: Studying the expression profile of 156 lung tumors and adjacent normal lung tissue samples
---------------------------------------------------------------------------------------------------------
+ 2. CASE STUDY: Studying the expression profile of 156 lung tumors and adjacent normal lung tissue samples
+-------------------------------------------------------------------------------------------------------------
 
 .. list-table::
     :widths: 30 70
@@ -72,8 +43,8 @@ CASE STUDY 2: Studying the expression profile of 156 lung tumors and adjacent no
         Compare the overlap of significantly up-regulated genes in our experiment and in other lung experiments imported from IntOGen
 
 
-CASE STUDY 3: Functional protein divergence in the evolution of Homo sapiens
-----------------------------------------------------------------------------
+3. CASE STUDY : Functional protein divergence in the evolution of Homo sapiens
+------------------------------------------------------------------------------------
 
 .. list-table:: 
     :widths: 30 70
@@ -83,8 +54,8 @@ CASE STUDY 3: Functional protein divergence in the evolution of Homo sapiens
 
         Analyse the conservation patterns of genes involved in different biological processes
 
-CASE STUDY 4: Studying the regulatory programs governing the expression in different tissues
---------------------------------------------------------------------------------------------
+4. CASE STUDY 4: Studying the regulatory programs governing the expression in different tissues
+--------------------------------------------------------------------------------------------------
 
 .. list-table::
     :widths: 30 70
@@ -99,19 +70,8 @@ CASE STUDY 4: Studying the regulatory programs governing the expression in diffe
 
         Compare the expression pattern of genes expressed in different tissues
 
-CASE STUDY 5: Experimental regulatory modules in cancer
--------------------------------------------------------
-
-.. list-table::
-    :widths: 30 70
-
-    * - .. image:: img/tutorial-icon3.png
-      - :doc:`Tutorials_Tutorial51`
-
-        Study the misregulation in different cancer types of modules derived from binding experiments such as ChIP-sequencing
-
-CASE STUDY 6: Studying multi-dimensional cancer data with Gitools
------------------------------------------------------------------
+6. CASE STUDY: Studying multi-dimensional cancer data with Gitools
+-------------------------------------------------------------------
 
 The videos we have put online for this case study we are accessible on Youtube.
 

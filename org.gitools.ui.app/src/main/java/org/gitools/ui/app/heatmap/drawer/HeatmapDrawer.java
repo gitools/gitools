@@ -24,13 +24,14 @@ package org.gitools.ui.app.heatmap.drawer;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.drawer.header.HeatmapHeaderDrawer;
 import org.gitools.ui.app.heatmap.drawer.header.HeatmapHeaderIntersectionDrawer;
+import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 
 public class HeatmapDrawer extends AbstractHeatmapDrawer {
 
-    private final HeatmapBodyDrawer body;
+    private final HeatmapLayerBodyDrawer body;
 
     private final HeatmapHeaderDrawer rowsHeader;
 
@@ -41,7 +42,7 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
     public HeatmapDrawer(Heatmap heatmap) {
         super(heatmap);
 
-        body = new HeatmapBodyDrawer(heatmap);
+        body = new HeatmapLayerBodyDrawer(heatmap);
         rowsHeader = new HeatmapHeaderDrawer(heatmap, heatmap.getRows());
         colsHeader = new HeatmapHeaderDrawer(heatmap, heatmap.getColumns());
         headerIntersection = new HeatmapHeaderIntersectionDrawer(heatmap, colsHeader, rowsHeader);
@@ -54,20 +55,22 @@ public class HeatmapDrawer extends AbstractHeatmapDrawer {
         Dimension columnsSize = colsHeader.getSize();
 
         Rectangle columnsBounds = new Rectangle(0, 0, columnsSize.width, columnsSize.height);
-        Rectangle bodyBounds = new Rectangle(0, columnsSize.height, bodySize.width, bodySize.height);
+        Rectangle bodyBounds = new Rectangle(0, columnsSize.height, bodySize.width, bodySize.height + columnsSize.height);
         Rectangle rowsBounds = new Rectangle(bodySize.width, columnsSize.height, rowsSize.width, rowsSize.height);
         Rectangle headerIntersectionBounds = new Rectangle(bodySize.width, 0, rowsSize.width, columnsSize.height);
 
         AffineTransform at = new AffineTransform();
 
         // Clear background
-        g.setColor(Color.WHITE);
-        g.fillRect(clip.x, clip.y, clip.width, clip.height);
+        if (!isPictureMode()) {
+            g.setColor(Color.WHITE);
+            g.fillRect(clip.x, clip.y, clip.width, clip.height);
+        }
 
-        colsHeader.draw(g, columnsBounds, columnsBounds);
+        body.draw(g, bodyBounds, bodyBounds);
         at.setToIdentity();
         g.setTransform(at);
-        body.draw(g, bodyBounds, bodyBounds);
+        colsHeader.draw(g, columnsBounds, columnsBounds);
         at.setToIdentity();
         g.setTransform(at);
         rowsHeader.draw(g, rowsBounds, rowsBounds);

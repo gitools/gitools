@@ -22,13 +22,16 @@
 package org.gitools.ui.app.fileimport.wizard.text;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
-import org.gitools.ui.app.utils.FileFormatFilter;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.app.fileimport.wizard.text.reader.TableReaderAssistant;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.utils.FileFormatFilter;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -40,6 +43,7 @@ import org.gitools.utils.readers.profile.ReaderProfileValidationException;
 import javax.swing.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Map;
 
 public class FlatTextImportWizard extends AbstractWizard implements ImportWizard {
 
@@ -77,6 +81,8 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
     public void addPages() {
 
         selectDataLayoutPage = new SelectDataLayoutPage(new FlatTextImporter(locator, monitor, true));
+        selectDataLayoutPage.setTitle("Select data Layout");
+        selectDataLayoutPage.setMessage(MessageStatus.INFO, "");
         addPage(selectDataLayoutPage);
 
         selectTableColumnsPage = new SelectTableColumnsPage();
@@ -128,15 +134,23 @@ public class FlatTextImportWizard extends AbstractWizard implements ImportWizard
             // validation succeded, close dialog and read file
 
             wizDlg.setVisible(false);
-            FlatTextImporter reader = page.getReader();
+            final FlatTextImporter reader = page.getReader();
             JobRunnable loadFile = new CommandConvertAndLoadCsvFile(reader) {
                 @Override
                 public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
+                    // Configure categorical color scales
+                    Map<IMatrixLayer, Map<String, Integer>> factorMap = null;
+                    if(reader.getReaderAssistant() instanceof TableReaderAssistant) {
+                         factorMap = ((TableReaderAssistant) reader.getReaderAssistant()).getFactorMap();
+                    }
+
+                    addAfterLoadCommand(new CommandEditAllColorScales(factorMap));
+
                     callback.afterLoad(resource, monitor);
                 }
             };
             JobThread.execute(Application.get(), loadFile);
-            Application.get().setStatusText("Done.");
+            Application.get().showNotification("Data imported.");
         } else {
             throw new RuntimeException("Premature finish");
         }

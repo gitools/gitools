@@ -23,6 +23,7 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.PValueColorScale;
@@ -32,8 +33,11 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class PValueDecorator extends Decorator<PValueColorScale> {
@@ -42,6 +46,9 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
     public static final String PROPERTY_MAX_COLOR = "maxColor";
     public static final String PROPERTY_NON_SIGNIFICANT_COLOR = "nonSignificantColor";
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
+
+    @XmlTransient
+    private NonEventToNullFunction<PValueColorScale> significantEvents;
 
     private double significanceLevel;
 
@@ -139,6 +146,52 @@ public class PValueDecorator extends Decorator<PValueColorScale> {
         if (isShowValue()) {
             decoration.setValue(textFormatter.format(value));
         }
+    }
+
+    @Override
+    public NonEventToNullFunction getDefaultEventFunction() {
+
+        if (significantEvents == null) {
+            initEventFunctions();
+        }
+        return significantEvents;
+    }
+
+    @Override
+    protected void initEventFunctions() {
+
+        super.initEventFunctions();
+
+        List<NonEventToNullFunction> list = super.getEventFunctionAlternatives();
+        for (NonEventToNullFunction f : list) {
+            if (f.getName().equals(Decorator.OUTSIDE_EVENTS_FUNCTION)) {
+                list.remove(f);
+            }
+        }
+
+        significantEvents = new NonEventToNullFunction<PValueColorScale>(scale, "Significant Events") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
+                return (value == null || value > getColorScale().getSignificanceLevel() ? null : 1 - value);
+            }
+
+            @Override
+            public String getDescription() {
+                return "All significant values are events: p smaller than " + getColorScale().getSignificanceLevel();
+            }
+        };
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(significantEvents);
+        list.addAll(super.getEventFunctionAlternatives());
+
+        return list;
     }
 
 

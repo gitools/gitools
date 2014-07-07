@@ -24,13 +24,14 @@ package org.gitools.ui.app.actions.data;
 import com.google.common.base.Function;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.HeatmapDimension;
+import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.matrix.sort.SortByLabelComparator;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.Application;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -55,25 +56,25 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
             return;
         }
 
+        String sortedBy = header.isSortAscending() ? ASCENDING.toString() : DESCENDING.toString();
+
+
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Sorting ...", 1);
 
                 HeatmapDimension dimension = header.getHeatmapDimension();
-
-                dimension.sort(new SortByLabelComparator(
+                MatrixViewSorter.sortByLabel(dimension,
                         header.isSortAscending() ? ASCENDING : DESCENDING,
-                        new ToLowerCaseFunction(header.getIdentifierTransform()),
-                        header.isNumeric()
-                ));
-
+                        header.getAnnotationPattern(),
+                        false);
                 header.setSortAscending(!header.isSortAscending());
 
             }
         });
 
-        Application.get().setStatusText("Sort done.");
+        Application.get().showNotification("Annotation sorting applied (" + sortedBy + ")");
     }
 
     @Override
@@ -81,13 +82,17 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
 
         this.header = header;
 
+        setEnabled(!(header instanceof HierarchicalClusterHeatmapHeader));
+
         if (header instanceof HeatmapDecoratorHeader) {
             ((HeatmapDecoratorHeader) header).setSortLabel(position.getHeaderAnnotation());
         }
 
-        String dimension = header.getHeatmapDimension().getId().getLabel();
+        HeatmapDimension sortDimension = header.getHeatmapDimension();
+        String dimension = sortDimension.getId().getLabel();
+        String which = sortDimension.getSelected().size() > 0 ?  sortDimension.getSelected().size() + "" : "all";
 
-        setName("<html><i>Sort</i> all " + dimension + "s " + (header.isSortAscending() ? "asc." : "des.") + " by <b>" + header.getTitle() + "</b></html>");
+        setName("<html><i>Sort</i> " + which + " " + dimension + "s " + (header.isSortAscending() ? "asc." : "des.") + " by <b>" + header.getTitle() + "</b></html>");
     }
 
     private class ToLowerCaseFunction implements Function<String, String> {

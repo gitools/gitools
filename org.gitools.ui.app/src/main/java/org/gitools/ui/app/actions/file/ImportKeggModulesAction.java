@@ -22,9 +22,9 @@
 package org.gitools.ui.app.actions.file;
 
 import org.gitools.datasources.kegg.modules.EnsemblKeggModulesImporter;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.datasources.kegg.wizard.KeggModulesImportWizard;
 import org.gitools.ui.app.wizard.ModulesImportWizard;
+import org.gitools.ui.platform.icons.IconNames;
 
 public class ImportKeggModulesAction extends AbstractImportModulesAction {
 

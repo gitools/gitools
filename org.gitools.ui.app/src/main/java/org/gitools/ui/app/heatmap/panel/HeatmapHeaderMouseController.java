@@ -23,9 +23,10 @@ package org.gitools.ui.app.heatmap.panel;
 
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
+import org.gitools.heatmap.AbstractMatrixViewDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.app.heatmap.panel.HeatmapPanelInputProcessor.Mode;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.interaction.InteractionStatus;
 import org.gitools.ui.platform.os.OSProperties;
 
 import javax.swing.*;
@@ -34,6 +35,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.gitools.ui.core.interaction.Interaction.*;
+import static org.gitools.ui.core.interaction.InteractionStatus.getInteractionStatus;
+
 public class HeatmapHeaderMouseController implements MouseListener, MouseMotionListener, MouseWheelListener {
 
     private final JViewport viewPort;
@@ -41,7 +45,6 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     private final HeatmapPanel panel;
     private final boolean horizontal;
-    private Mode mode;
     private Point point;
     private HeatmapPosition position;
     private int selLast;
@@ -57,8 +60,10 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     private int shiftMask = OSProperties.get().getShiftMask();
     private int altMask = OSProperties.get().getAltMask();
     private int metaMask = OSProperties.get().getMetaMask();
+    private Timer timer;
 
-    private HeatmapPanelInputProcessor ip;
+    private HeatmapPanelInputProcessor inputProcessor;
+    private MouseEvent lastMovingEvent;
 
     public HeatmapHeaderMouseController(HeatmapPanel panel,
                                         HeatmapPanelInputProcessor inputProcessor,
@@ -73,8 +78,22 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         viewPort.addMouseMotionListener(this);
         viewPort.addMouseWheelListener(this);
 
-        this.mode = Mode.none;
-        this.ip = inputProcessor;
+        this.inputProcessor = inputProcessor;
+        InteractionStatus.setInteractionStatus(none);
+        this.timer = new Timer(50, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                timer.stop();
+                processStoredEvents();
+            }
+        });
+    }
+
+    private void processStoredEvents() {
+        if (lastMovingEvent != null) {
+            updateSelectionMove(lastMovingEvent, true);
+            lastMovingEvent = null;
+        }
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
@@ -118,17 +137,19 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             return;
         }
 
+        panel.configureHeaders(e);
+
         // check if it's a already selected
         int index = convertToIndex(e);
 
         if (isSelectedIndex(index)) {
-            mode = Mode.movingSelected;
+            InteractionStatus.setInteractionStatus(movingSelected);
         } else {
-            mode = Mode.selectingRowsAndCols;
+            InteractionStatus.setInteractionStatus(selectingRowsAndCols);
         }
 
 
-        switch (mode) {
+        switch (getInteractionStatus()) {
             case selectingRowsAndCols:
                 updateSelection(e, false);
                 break;
@@ -152,17 +173,19 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         boolean altDown = ((modifiers & altMask) != 0);
 
         int index = convertToIndex(e);
-        if (mode == Mode.movingSelected) {
+        if (getInteractionStatus() == movingSelected) {
             if (!selectionHasMoved) {
                 //There was no dragging, user wanted to unselect the selection
-                ip.switchSelection(dimension, index, altDown);
+                inputProcessor.switchSelection(dimension, index, altDown);
+                setLeading(e);
+                InteractionStatus.setInteractionStatus(none);
             } else {
+                InteractionStatus.setInteractionStatus(none);
+                dimension.forceUpdate(AbstractMatrixViewDimension.PROPERTY_VISIBLE);
+                //updateSelectionMove(e, true);
                 selectionHasMoved = false;
             }
         }
-
-        setLeading(e);
-        mode = Mode.none;
     }
 
     private void setLeading(MouseEvent e) {
@@ -182,7 +205,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        switch (mode) {
+        switch (getInteractionStatus()) {
             case selectingRowsAndCols:
                 updateSelection(e, true);
                 break;
@@ -216,9 +239,9 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         int modifiers = e.getModifiers();
         boolean ctrlDown = ((modifiers & ctrlMask) != 0);
 
-        mode = (ctrlDown) ? Mode.zooming : Mode.scrolling;
+        InteractionStatus.setInteractionStatus((ctrlDown) ? zooming : scrolling);
 
-        if (mode == Mode.scrolling) {
+        if (getInteractionStatus() == scrolling) {
             HeatmapPosition pos = panel.getScrollPosition();
 
             if (horizontal) {
@@ -228,9 +251,9 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
             }
         } else {
 
-            if (ip.isKeyPressed(KeyEvent.VK_C) ||
-                    ip.isKeyPressed(KeyEvent.VK_R)) {
-                ip.zoomHeatmap(unitsToScroll);
+            if (inputProcessor.isKeyPressed(KeyEvent.VK_C) ||
+                    inputProcessor.isKeyPressed(KeyEvent.VK_R)) {
+                inputProcessor.zoomHeatmap(unitsToScroll > 0 ? 1 : -1);
             } else {
 
                 point = e.getPoint();
@@ -239,7 +262,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
 
                 HeatmapHeader header = headerPanel.getHeaderDrawer().getHeader(point);
 
-                if (ip.isKeyPressed(KeyEvent.VK_M)) {
+                if (inputProcessor.isKeyPressed(KeyEvent.VK_M)) {
                     int margin = header.getMargin() + unitsToScroll * -2;
 
                     if (margin < 1) {
@@ -268,6 +291,13 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
     }
 
     private void updateSelectionMove(MouseEvent e, boolean dragging) {
+
+        if (!timer.isRunning()) {
+            timer.start();
+        } else {
+            lastMovingEvent = e;
+            return;
+        }
 
         // Scroll heatmap if needed
         Point point = e.getPoint();
@@ -308,7 +338,7 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 selectionHasMoved = true;
                 for (int i = 0; i < indexDiff; i++) {
                     dimension.move(Direction.LEFT, dimension.getSelected());
-                    ip.shiftSelStart(dimension, -1);
+                    inputProcessor.shiftSelStart(dimension, -1);
                 }
             }
 
@@ -316,12 +346,10 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
                 selectionHasMoved = true;
                 for (int i = 0; i > indexDiff; i--) {
                     dimension.move(Direction.RIGHT, dimension.getSelected());
-                    ip.shiftSelStart(dimension, 1);
+                    inputProcessor.shiftSelStart(dimension, 1);
                 }
             }
         }
-
-        setLeading(e);
     }
 
     private void updateSelection(MouseEvent e, boolean dragging) {
@@ -341,12 +369,12 @@ public class HeatmapHeaderMouseController implements MouseListener, MouseMotionL
         boolean shiftDown = ((modifiers & shiftMask) != 0);
 
         if (!dragging && !shiftDown) {
-            ip.switchSelection(dimension, index, false);
+            inputProcessor.switchSelection(dimension, index, false);
         } else if (shiftDown) {
 
-            int lastSelected = horizontal ? ip.getLastSelectedCol() : ip.getLastSelectedRow();
-            ip.addToSelected(lastSelected, index, dimension);
-            ip.setLastSelected(index, horizontal);
+            int lastSelected = horizontal ? inputProcessor.getLastSelectedCol() : inputProcessor.getLastSelectedRow();
+            inputProcessor.addToSelected(lastSelected, index, dimension);
+            inputProcessor.setLastSelected(index, horizontal);
 
         }
     }

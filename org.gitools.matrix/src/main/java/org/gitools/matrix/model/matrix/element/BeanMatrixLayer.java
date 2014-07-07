@@ -24,6 +24,7 @@ package org.gitools.matrix.model.matrix.element;
 import org.gitools.matrix.model.MatrixLayer;
 
 import java.lang.reflect.Method;
+import java.util.Set;
 
 public class BeanMatrixLayer<T> extends MatrixLayer<T> {
 
@@ -32,8 +33,8 @@ public class BeanMatrixLayer<T> extends MatrixLayer<T> {
     private Method getterMethod;
     private Method setterMethod;
 
-    public BeanMatrixLayer(String id, String name, String description, Class<T> valueClass, Method getterMethod, Method setterMethod) {
-        super(id, valueClass, name, description);
+    public BeanMatrixLayer(String id, String name, String description, Class<T> valueClass, Set<String> groups, Method getterMethod, Method setterMethod) {
+        super(id, valueClass, name, description, groups);
 
         this.getterMethod = getterMethod;
         this.setterMethod = setterMethod;

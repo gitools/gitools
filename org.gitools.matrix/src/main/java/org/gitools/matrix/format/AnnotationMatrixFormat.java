@@ -111,6 +111,8 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
             throw new PersistenceException(e);
         }
 
+        matrix.init();
+
         return matrix;
     }
 
@@ -118,7 +120,7 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
     @Override
     protected void writeResource(IResourceLocator resourceLocator, AnnotationMatrix resource, IProgressMonitor progressMonitor) throws PersistenceException {
         try {
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(progressMonitor);
             RawFlatTextWriter writer = new RawFlatTextWriter(new OutputStreamWriter(out), '\t', '"');
 
             // Header
@@ -146,7 +148,7 @@ public class AnnotationMatrixFormat extends AbstractResourceFormat<AnnotationMat
             }
 
             writer.close();
-            out.close();
+
         } catch (Exception e) {
             throw new PersistenceException(e);
         }

@@ -1,6 +1,6 @@
-=====================
-External data sources
-=====================
+========================
+Download external data
+========================
 
 It is possible to import data from different sources. There are wizards that guides the retrieval of data step by step.
 
@@ -12,16 +12,11 @@ It is possible to import data from different sources. There are wizards that gui
      - Data
      - Data types
      - Web
-   
-   * - :doc:`UserGuide_IntOGen_Arrays`
-     - - Experiment transcriptomic alterations
-       - Experiment copy number alterations
-       - Combination transcriptomic alterations
-       - Combination copy number alterations
-       - Oncomodules for experiments
-       - Oncomodules for combinations
-     - Matrix, Modules, Annotations
-     - `http://www.intogen.org <http://www.intogen.org>`__
+
+   * - **Gitools Datasets**
+     - Cancer genomics data from TCGA, CCLE and other sources
+     - Complete Heatamps (Data matrices, modules & annotations)
+     - `http://www.gitools.org/datasets <http://www.gitools.org/datasets>`__
    * - :doc:`UserGuide_KEGG`
      - Pathways
      - Modules, Annotations
@@ -34,9 +29,9 @@ It is possible to import data from different sources. There are wizards that gui
      - `http://www.geneontology.org/ <http://www.geneontology.org/>`__
    * - :doc:`UserGuide_Biomart`
      - There are many databases available, some examples are:
-       - Ensembl
-       - UniProt
-       - Reactome
-       - COSMIC
-     - Modules, Tables
+        - Ensembl
+        - UniProt
+        - Reactome
+        - COSMIC
+     - Modules, Annotations
      - `http://www.biomart.org <http://www.biomart.org>`__

@@ -3,7 +3,7 @@ How to prepare module files for Gitools using a spreadsheet editor (f.ex. Excel)
 ================================================================================
 
 Gitools accepts several easy to prepare formats to represent modules or gene sets.
-See :doc:`this section <UserGuide_ImportingData>` of the userguide for more details
+See :doc:`this section <UserGuide_SpecialFileExtensions>` of the userguide for more details
 on the different formats. All of them could be easily prepared using spreadsheet editors.
 Just save the file as “Tab separated file” and it will be ready to be used in Gitools.
 
@@ -14,8 +14,8 @@ related to this gene set. You can prepare a file in this GMX format using any sp
 
 
 .. image:: img/formatGMX.png
-   :width: 80%
+:width: 80%
    :align: center
 
-Once the file is ready, save it in a txt format with columns separated by tabs and change the extension to
+    Once the file is ready, save it in a txt format with columns separated by tabs and change the extension to
 :file:`.gmx`. If you leave the extension :file:`.txt` it will also work in Gitools, but you will have to specify that it is a GMX file.

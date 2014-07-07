@@ -22,15 +22,15 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.app.heatmap.panel.settings.DataManipulationSection;
 import org.gitools.ui.app.heatmap.panel.settings.FormatSection;
-import org.gitools.ui.app.heatmap.panel.settings.SortSection;
 import org.gitools.ui.app.heatmap.panel.settings.layer.ColorScaleSection;
 import org.gitools.ui.app.heatmap.panel.settings.layer.DetailsSection;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapLayerAction;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;
@@ -43,11 +43,13 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
 
     public EditLayerAction(String name) {
         super(name);
+        setSmallIconFromResource(IconNames.edit16);
+
     }
 
     public EditLayerAction(HeatmapLayer layer) {
         super(layer.getName());
-
+        setSmallIconFromResource(IconNames.edit16);
         this.layer = layer;
     }
 
@@ -61,12 +63,12 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        getHeatmap().getLayers().setTopLayer(layer);
+        new SetLayerAction(layer).actionPerformed(e);
 
         ISettingsSection colorScaleSection = new ColorScaleSection(layer);
         ISettingsSection detailsSection = new DetailsSection(layer);
         ISettingsSection formatSection = new FormatSection(layer);
-        ISettingsSection sortSection = new SortSection(layer);
+        ISettingsSection dataManipulationSection = new DataManipulationSection(layer);
 
         SettingsPanel settingsPanel = new SettingsPanel(
                 "Layer '" + layer.getName() + "' settings",
@@ -75,7 +77,7 @@ public class EditLayerAction extends HeatmapAction implements IHeatmapLayerActio
                 detailsSection,
                 colorScaleSection,
                 formatSection,
-                sortSection
+                dataManipulationSection
         );
 
         SettingsDialog dialog = new SettingsDialog(Application.get(), settingsPanel, detailsSection.getName()) {

@@ -22,15 +22,15 @@
 package org.gitools.heatmap;
 
 import com.google.common.base.Objects;
+import com.google.common.base.Strings;
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.view.IMatrixViewLayers;
-import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
-import org.gitools.heatmap.decorator.impl.LinearDecorator;
 import org.gitools.matrix.model.MatrixLayers;
+import org.gitools.matrix.model.matrix.element.LayerDef;
 import org.gitools.utils.events.EventUtils;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -43,6 +43,7 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     public static final String PROPERTY_TOP_LAYER_INDEX = "topLayerIndex";
     public static final String PROPERTY_TOP_LAYER = "topLayer";
     public static final String PROPERTY_LAYERS = "layers";
+    public static final String PROPERTY_SELECTED_GROUP = "selectedGroup";
 
     @XmlElement(name = "top-layer")
     private int topLayer;
@@ -51,6 +52,10 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     private List<HeatmapLayer> layers;
     private transient Map<String, Integer> layersIdToIndex;
     private transient List<String> layerNames;
+
+    private String selectedGroup;
+
+    private transient HashSet<String> groups;
 
     public HeatmapLayers() {
         this.topLayer = 0;
@@ -74,33 +79,29 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
     }
 
     public void initLayer(IMatrixLayer layer) {
-        Decorator defaultDecorator = new LinearDecorator();
-        this.layers.add(new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator));
+        this.layers.add(new HeatmapLayer(layer));
     }
 
     public void init(IMatrix matrix) {
         IMatrixLayers<?> matrixLayers = matrix.getLayers();
 
-        // Reorder layers
-        List<HeatmapLayer> orderedLayers = new ArrayList<>(this.layers.size());
-        for (IMatrixLayer layer : matrixLayers) {
-            HeatmapLayer orderedLayer = null;
+        // Check if there is a new data layer
+        for (IMatrixLayer dataLayer : matrixLayers) {
+
+            HeatmapLayer newLayer = null;
             for (HeatmapLayer heatmapLayer : this.layers) {
-                if (heatmapLayer.getId().equals(layer.getId())) {
-                    orderedLayer = heatmapLayer;
+                if (heatmapLayer.getId().equals(dataLayer.getId())) {
+                    newLayer = heatmapLayer;
                     break;
                 }
             }
 
             // This is a new layer
-            if (orderedLayer == null) {
-                Decorator defaultDecorator = new LinearDecorator();
-                orderedLayer = new HeatmapLayer(layer.getId(), layer.getValueClass(), defaultDecorator);
+            if (newLayer == null) {
+                this.layers.add(new HeatmapLayer(dataLayer));
             }
 
-            orderedLayers.add(orderedLayer);
         }
-        this.layers = orderedLayers;
 
         initTransient();
 
@@ -147,15 +148,21 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     @Deprecated
     public void setTopLayerIndex(int layerIndex) {
-        int old = this.topLayer;
-        this.topLayer = layerIndex;
 
-        firePropertyChange(PROPERTY_TOP_LAYER_INDEX, old, layerIndex);
-        firePropertyChange(PROPERTY_TOP_LAYER, layers.get(old), layers.get(layerIndex));
+        int old = this.topLayer;
 
         // Move listeners
         HeatmapLayer oldLayer = layers.get(old);
         HeatmapLayer newLayer = layers.get(layerIndex);
+        if (oldLayer == newLayer) {
+            return;
+        }
+
+
+        this.topLayer = layerIndex;
+
+        firePropertyChange(PROPERTY_TOP_LAYER_INDEX, old, layerIndex);
+        firePropertyChange(PROPERTY_TOP_LAYER, layers.get(old), layers.get(layerIndex));
 
         EventUtils.moveListeners(oldLayer.getDecorator(), newLayer.getDecorator());
         EventUtils.moveListeners(oldLayer, newLayer);
@@ -191,6 +198,35 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         return layer;
     }
 
+    public void setSelectedGroup(String selectedGroup) {
+
+        String old = this.selectedGroup;
+        this.selectedGroup = selectedGroup;
+
+        firePropertyChange(PROPERTY_SELECTED_GROUP, old, selectedGroup);
+    }
+
+    @Override
+    public String getSelectedGroup() {
+        if (Strings.isNullOrEmpty(selectedGroup)) {
+            return LayerDef.ALL_DATA_GROUP;
+        }
+        return selectedGroup;
+    }
+
+    @Override
+    public Set<String> getGroups() {
+
+        if (this.groups == null) {
+            HashSet groups = new HashSet<>();
+            for (IMatrixLayer layer : layers) {
+                groups.addAll(layer.getGroups());
+            }
+            this.groups = groups;
+        }
+        return groups;
+    }
+
     public String getId() {
         return MatrixLayers.LAYERS_ID;
     }
@@ -214,10 +250,16 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
 
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column) {
 
-        int i = 0;
+        int i = -1;
+        String displayedGroup = getSelectedGroup();
         for (HeatmapLayer layer : layers) {
-            layer.populateDetails(details, matrix, row, column, i, (i == topLayer));
             i++;
+            boolean isSelected = (i == topLayer);
+            if (!isSelected && displayedGroup != null &&
+                    !layer.getGroups().contains(displayedGroup)) {
+                continue;
+            }
+            layer.populateDetails(details, matrix, row, column, i, isSelected);
         }
 
     }

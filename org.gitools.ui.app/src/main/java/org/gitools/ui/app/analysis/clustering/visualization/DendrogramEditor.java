@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.app.analysis.clustering.visualization;
 
-import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.heatmap.header.HierarchicalCluster;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.platform.icons.IconNames;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,8 +37,8 @@ public class DendrogramEditor extends AbstractEditor {
         super();
 
         this.model = model;
-        setName("Hierarchical clustering '" + model.getName() + "'");
-        setIcon(IconNames.CREATE_IMAGE_SMALL_ICON);
+        setName(model.toString());
+        setIcon(IconNames.DENDROGRAM_ICON);
         setLayout(new BorderLayout());
         setSaveAllowed(false);
         setSaveAsAllowed(false);
@@ -50,6 +50,9 @@ public class DendrogramEditor extends AbstractEditor {
 
         panel.setPreferredSize(new Dimension(getWidth(), model.getIdentifiers().size()*12));
         add(new JScrollPane(panel));
+
+        Application.get().showNotification("Dendrogram " + model.getName()
+                + " with " + model.getLeaves() + " leaves opened");
     }
 
     @Override

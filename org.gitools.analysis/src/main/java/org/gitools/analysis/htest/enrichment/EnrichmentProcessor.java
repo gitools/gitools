@@ -22,13 +22,12 @@
 package org.gitools.analysis.htest.enrichment;
 
 import com.google.common.base.Function;
-import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.stats.mtc.MTCFactory;
-import org.gitools.analysis.stats.test.Test;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.ZscoreTest;
 import org.gitools.analysis.stats.test.factory.TestFactory;
-import org.gitools.analysis.stats.test.results.CommonResult;
+import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
@@ -63,8 +62,16 @@ public class EnrichmentProcessor implements AnalysisProcessor {
 
         IMatrix data = analysis.getData().get();
         final IMatrixLayer<Double> layer = data.getLayers().get(analysis.getLayer());
-        final Test test = TestFactory.createFactory(analysis.getTestConfig()).create();
-        final LayerAdapter<CommonResult> adapter = new LayerAdapter<>(test.getResultClass());
+
+        final TestFactory testFactory = TestFactory.createFactory(analysis.getTestConfig());
+        final ThreadLocal<EnrichmentTest> test = new ThreadLocal<EnrichmentTest>() {
+            @Override
+            protected EnrichmentTest initialValue() {
+                return testFactory.create();
+            }
+        };
+
+        final LayerAdapter<SimpleResult> adapter = new LayerAdapter<>(test.get().getResultClass());
         final IModuleMap moduleMap = analysis.getModuleMap().get();
         final IMatrixDimension conditions = data.getColumns();
         final IMatrixDimension items = data.getRows();
@@ -97,7 +104,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                 background = intersection(background, moduleMap.getItems());
             }
 
-            missingBackgroundItems.addAll( background );
+            missingBackgroundItems.addAll(background);
 
             for (String item : items) {
                 missingBackgroundItems.remove(item);
@@ -107,16 +114,16 @@ public class EnrichmentProcessor implements AnalysisProcessor {
         // Run enrichment
         data.newPosition().iterate(layer, conditions)
                 .monitor(monitor, "Running enrichment analysis")
-                .transform(new AbstractMatrixFunction<Map<String, CommonResult>, Double>() {
+                .transform(new AbstractMatrixFunction<Map<String, SimpleResult>, Double>() {
 
                     @Override
-                    public Map<String, CommonResult> apply(Double value, IMatrixPosition position) {
+                    public Map<String, SimpleResult> apply(Double value, IMatrixPosition position) {
 
                         IMatrixIterable<Double> population;
 
                         // Discard not mapped items
                         if (analysis.isDiscardNonMappedRows()) {
-                            population = position.iterate(layer, items, moduleMap.getItems());
+                            population = position.iterate(layer, items.subset(moduleMap.getItems()));
                         } else {
                             population = position.iterate(layer, items);
                         }
@@ -124,14 +131,14 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                         // Apply cutoff
                         population = population.transform(cutoffFunction);
 
-                        test.processPopulation(
+                        test.get().processPopulation(
                                 concat(
                                         population,
                                         transform(missingBackgroundItems, backgroundValue)
                                 )
                         );
 
-                        Map<String, CommonResult> results = new HashMap<>();
+                        Map<String, SimpleResult> results = new HashMap<>();
                         for (String module : moduleMap.getModules()) {
 
                             if (monitor.isCancelled()) {
@@ -141,7 +148,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
                             Set<String> moduleItems = moduleMap.getMappingItems(module);
 
                             Iterable<Double> moduleValues = position
-                                    .iterate(layer, items, moduleItems)
+                                    .iterate(layer, items.subset(moduleItems))
                                     .transform(cutoffFunction);
 
                             if (!missingBackgroundItems.isEmpty()) {
@@ -156,7 +163,7 @@ public class EnrichmentProcessor implements AnalysisProcessor {
 
                             }
 
-                            CommonResult result = test.processTest(moduleValues);
+                            SimpleResult result = test.get().processTest(moduleValues);
                             if (result != null && result.getN() >= analysis.getMinModuleSize() && result.getN() <= analysis.getMaxModuleSize()) {
                                 results.put(module, result);
                             }

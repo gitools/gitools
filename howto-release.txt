@@ -6,17 +6,17 @@ git pull
 git push
 
 # Start a new release or hotfix
-git-flow release start gitools-2.1.1
-git-flow hotfix start gitools-2.1.1
+git-flow release start gitools-2.2.0
+git-flow hotfix start gitools-2.2.0
 
 # Update pom.xml version
 # The following command only prints to display
 # Check that you are going to update only the correct versions:
-find . -name pom.xml | awk '{ system("sed 0,/2.1.0/s//2.1.1/ "$0)}' | grep -A2 -B3 2.1.1
+find . -name pom.xml | awk '{ system("sed 0,/2.1.0/s//2.2.0/ "$0)}' | grep -A2 -B3 2.2.0
 
 # The following command will apply the changes
 # Update all like this:
-find . -name pom.xml | awk '{ system("sed -i 0,/2.1.0/s//2.1.1/ "$0)}'
+find . -name pom.xml | awk '{ system("sed -i 0,/2.1.0/s//2.2.0/ "$0)}'
 
 # Go to Documentation folder.
 # Check in src/conf.py if the version numbers are up to date
@@ -35,16 +35,16 @@ mvn -P test-analysis clean install assembly:assembly
 
 # Test new release
 cd target
-unzip gitools-2.1.1-bin.zip
-gitools-2.1.1/bin/gitools
+unzip gitools-2.2.0-bin.zip
+gitools-2.2.0/bin/gitools
 cd ..
 
 # Deploy ZIP file
-scp target/gitools-2.1.1-bin.zip bgadmin@ankara:/usr/local/gitools/www/downloads/
+scp target/gitools-2.2.0-bin.zip bgadmin@ankara:/usr/local/gitools/www/downloads/
 
 # Deploy Webstart
 # change back to the gitools root folder
-./webstart-deploy.sh 2.1.1
+./webstart-deploy.sh 2.2.0
 
 # Update this file on the server:
 /usr/local/gitools/www/downloads/latest.txt
@@ -56,11 +56,11 @@ make clean
 cd ..
 
 # Commit the changes
-git commit -a -m "Release version 2.1.1"
+git commit -a -m "Release version 2.2.0"
 
 # Finish the release or hotfix
-git flow release finish gitools-2.1.1
-git flow hotfix finish gitools-2.1.1
+git flow release finish gitools-2.2.0
+git flow hotfix finish gitools-2.2.0
 
 # Check that you are on develop branch
 git checkout develop 
@@ -68,10 +68,10 @@ git checkout develop
 # Update pom.xml versions to new SNAPSHOT version
 
 # Check that you are going to update only the correct versions:
-find . -name pom.xml | awk '{ system("sed 0,/2.1.0/s//2.2.0-SNAPSHOT/ "$0)}' | grep -A2 -B3 2.2.0-SNAPSHOT
+find . -name pom.xml | awk '{ system("sed 0,/2.2.0/s//2.2.0-SNAPSHOT/ "$0)}' | grep -A2 -B3 2.2.0-SNAPSHOT
 
 # Update all like this:
-find . -name pom.xml | awk '{ system("sed -i 0,/2.1.0/s//2.2.0-SNAPSHOT/ "$0)}'
+find . -name pom.xml | awk '{ system("sed -i 0,/2.2.0/s//2.2.0-SNAPSHOT/ "$0)}'
 
 # Commit
 git commit -a -m "Next iteration version 2.2.0-SNAPSHOT"

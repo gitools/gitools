@@ -1,4 +1,4 @@
--Xmx5200m
+-Xmx1200m
 -Xms256m
 -XX:MaxPermSize=350m
 -XX:+UseSerialGC

@@ -21,7 +21,6 @@
  */
 package org.gitools.analysis.groupcomparison;
 
-import org.gitools.analysis.AnalysisException;
 import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
@@ -34,7 +33,7 @@ import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
-import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
+import org.gitools.heatmap.decorator.impl.PValueLogSumDecorator;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -152,7 +151,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
                 resultLayer.setDecorator(new PValueDecorator());
             }
             resultHeatmap.getLayers().get("p-value-log-sum").setDecorator(
-                    new ZScoreDecorator(1.279, 10)
+                    new PValueLogSumDecorator()
             );
 
         }
@@ -183,12 +182,13 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
 
 
         // generate colors for annation
-        ColorGenerator cg = new ColorGenerator();
+        ColorGenerator cg1 = new ColorGenerator();
+        ColorGenerator cg2 = new ColorGenerator();
         ArrayList<ColoredLabel> group1List = new ArrayList<ColoredLabel>();
         ArrayList<ColoredLabel> group2List = new ArrayList<ColoredLabel>();
         for (DimensionGroup g : analysis.getGroups()) {
-            group1List.add(new ColoredLabel(g.getName(), cg.next(g.getName())));
-            group2List.add(new ColoredLabel(g.getName(), cg.next(g.getName())));
+            group1List.add(new ColoredLabel(g.getName(), cg1.next(g.getName())));
+            group2List.add(new ColoredLabel(g.getName(), cg2.next(g.getName())));
         }
 
         resultHeatmap.getColumns().setCellSize(40);

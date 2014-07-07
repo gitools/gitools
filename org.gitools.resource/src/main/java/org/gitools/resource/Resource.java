@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"title", "description", "properties"})
+@XmlType(propOrder = {"title", "description", "properties", "gitoolsVersion"})
 public class Resource extends Model implements IResource {
     public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_DESCRIPTION = "description";
@@ -40,6 +40,9 @@ public class Resource extends Model implements IResource {
      * short description *
      */
     protected String title;
+
+    @XmlTransient
+    protected boolean hasChanged = true;
 
     /**
      * long description *
@@ -52,6 +55,12 @@ public class Resource extends Model implements IResource {
     @XmlElementWrapper(name = "properties")
     @XmlElement(name = "property")
     private List<Property> properties = new ArrayList<>(0);
+
+    /**
+     * Version of Gitools that saved resource
+     * Field is set upon saving
+     */
+    private SemanticVersion gitoolsVersion;
 
 	/* constructors */
 
@@ -66,6 +75,7 @@ public class Resource extends Model implements IResource {
         this.title = artifact.getTitle();
         this.description = artifact.getDescription();
         this.properties = (List<Property>) ((ArrayList<Property>) artifact.getProperties()).clone();
+
     }
 
 	/* getters and setters */
@@ -100,11 +110,47 @@ public class Resource extends Model implements IResource {
         firePropertyChange(PROPERTY_PROPERTIES, oldValue, properties);
     }
 
+    /**
+     * Adds a property and overwrites if already exists
+     *
+     * @param property
+     */
+    public void addProperty(Property property) {
+        if (property == null) {
+            return;
+        }
+
+        for (Property p : properties) {
+            if (property.getName().equals(p.getName())) {
+                properties.remove(p);
+            }
+        }
+
+        properties.add(property);
+
+    }
+
+    @Override
+    public boolean isChanged() {
+        return hasChanged;
+    }
+
     public IResourceLocator getLocator() {
         return locator;
     }
 
     public void setLocator(IResourceLocator locator) {
         this.locator = locator;
+    }
+
+    public SemanticVersion getGitoolsVersion() {
+        if (gitoolsVersion == null) {
+            return new SemanticVersion(SemanticVersion.OLD_VERSION);
+        }
+        return gitoolsVersion;
+    }
+
+    public void setGitoolsVersion(SemanticVersion gitoolsVersion) {
+        this.gitoolsVersion = gitoolsVersion;
     }
 }

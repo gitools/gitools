@@ -41,6 +41,7 @@ import com.google.common.collect.LinkedListMultimap;
 import com.google.common.collect.Multimap;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.heatmap.header.HierarchicalCluster;
 
 import java.util.*;
 import java.util.concurrent.CancellationException;

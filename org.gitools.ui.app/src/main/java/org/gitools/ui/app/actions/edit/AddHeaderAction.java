@@ -27,14 +27,14 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.header.AddHeaderPage;
 import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsHeaderWizard;
 import org.gitools.ui.app.heatmap.header.wizard.heatmapheader.AggregationDecoratorHeaderWizard;
 import org.gitools.ui.app.heatmap.header.wizard.heatmapheader.AnnotationDecoratorHeaderWizard;
 import org.gitools.ui.app.heatmap.header.wizard.textlabels.TextLabelsHeaderWizard;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.IWizard;
 import org.gitools.ui.platform.wizard.PageDialog;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -97,7 +97,7 @@ public class AddHeaderAction extends HeatmapDimensionAction {
 
         heatmapDimension.addHeader(header);
 
-        Application.get().setStatusText("Header added");
+        Application.get().showNotificationPermanent("Header '" + header.getTitle() + "' added");
     }
 
 }

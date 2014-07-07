@@ -21,16 +21,21 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
+import org.gitools.ui.app.heatmap.panel.details.boxes.HeatmapInfoBox;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.DynamicActionsManager;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.actions.ActionSetUtils;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.ActionSetUtils;
+import org.gitools.ui.core.actions.dynamicactions.DynamicActionsManager;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.ui.core.components.boxes.BoxManager;
+import org.gitools.ui.core.components.boxes.SelectionBox;
 import org.gitools.ui.platform.component.scrollbar.ThinScrollBar;
 
 import javax.swing.*;
@@ -193,8 +198,8 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         if (
                 (focusPoint < scrollBar.getValue()) ||
-                (scrollBar.getValue() + visibleLength < focusPoint)
-           ) {
+                        (scrollBar.getValue() + visibleLength < focusPoint)
+                ) {
             scrollBar.setValue(focusPoint);
         }
     }
@@ -293,6 +298,21 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         }
     }
 
+    public void configureHeaders(MouseEvent e) {
+        if (e.getComponent() == this.rowVP) {
+            HeatmapHeader header = rowHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
+            if (header instanceof HierarchicalClusterHeatmapHeader) {
+                e.consume();
+            }
+        }
+        if (e.getComponent() == this.colVP) {
+            HeatmapHeader header = columnHeaderPanel.getHeaderDrawer().getHeader(e.getPoint());
+            if (header instanceof HierarchicalClusterHeatmapHeader) {
+                e.consume();
+            }
+        }
+    }
+
     private void showPopup(MouseEvent e) {
 
         if (e.getComponent() == this.rowVP) {
@@ -326,16 +346,37 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
 
     @Override
+    public void update(Graphics g) {
+        super.update(g);
+    }
+
+    @Override
+    public void updateUI() {
+        super.updateUI();
+    }
+
+    public HeatmapPanel(LayoutManager layout, boolean isDoubleBuffered) {
+        super(layout, isDoubleBuffered);
+    }
+
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
+
+
+        boolean updateSelection =
+                isAny(evt, HeatmapDimension.class,
+                        HeatmapDimension.PROPERTY_SELECTED);
+
+        boolean updateVisible =
+                isAny(evt, HeatmapDimension.class,
+                        HeatmapDimension.PROPERTY_VISIBLE);
 
         boolean updateAll =
                 isAny(evt, HeatmapDimension.class,
                         HeatmapDimension.PROPERTY_CELL_SIZE,
                         HeatmapDimension.PROPERTY_VISIBLE,
-                        HeatmapDimension.PROPERTY_FOCUS,
                         HeatmapDimension.PROPERTY_GRID_SIZE,
-                        HeatmapDimension.PROPERTY_GRID_COLOR,
-                        HeatmapDimension.PROPERTY_SELECTED
+                        HeatmapDimension.PROPERTY_GRID_COLOR
                 ) ||
                         isAny(evt, HeatmapLayer.class,
                                 HeatmapLayer.PROPERTY_DECORATOR,
@@ -352,6 +393,22 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
             repaint();
         }
 
+
+        /// DETAIL BOXES
+
+        if (updateVisible) {
+            BoxManager.openOnly(HeatmapInfoBox.ID);
+
+        } else if (updateSelection) {
+            if (evt.getSource() instanceof HeatmapDimension) {
+                if (((HeatmapDimension) evt.getSource()).getSelected().size() > 0) {
+                    MatrixDimensionKey key = ((HeatmapDimension) evt.getSource()).getId();
+                    BoxManager.openOnly(SelectionBox.ID, key.name());
+                } else {
+                    BoxManager.openOnly(SelectionBox.ID);
+                }
+            }
+        }
 
     }
 

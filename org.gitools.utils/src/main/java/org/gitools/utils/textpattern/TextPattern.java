@@ -26,6 +26,10 @@ import java.util.List;
 
 public class TextPattern {
 
+    public List<Token> getTokens() {
+        return tokens;
+    }
+
     private final List<Token> tokens;
 
     public TextPattern(String pattern) {
@@ -118,11 +122,11 @@ public class TextPattern {
         String resolveValue(String variableName);
     }
 
-    private static interface Token {
+    public static interface Token {
         void generate(VariableValueResolver resolver, StringBuilder sb);
     }
 
-    private static class TextToken implements Token {
+    public static class TextToken implements Token {
         private final String text;
 
         public TextToken(String text) {
@@ -135,11 +139,15 @@ public class TextPattern {
         }
     }
 
-    private static class VariableToken implements Token {
+    public static class VariableToken implements Token {
         private final String variableName;
 
         public VariableToken(String variableName) {
             this.variableName = variableName;
+        }
+
+        public String getVariableName() {
+            return variableName;
         }
 
         @Override

@@ -21,13 +21,13 @@
  */
 package org.gitools.ui.app.batch.tools;
 
+import org.gitools.ui.app.commands.AddHeaderColoredLabelsCommand;
 import org.gitools.ui.app.commands.Command;
-import org.gitools.ui.app.commands.CommandAddHeaderColoredLabels;
 import org.kohsuke.args4j.Option;
 
 import java.util.List;
 
-public class AddHeaderColoredLabelsTool extends AddHeaderTool {
+public class AddHeaderColoredLabelsTool extends HeaderTool {
 
     @Option(name = "-p", aliases = "--pattern", metaVar = "<pattern>", required = true,
             usage = "The pattern of annotations as e.g. ${annotation-id}")
@@ -49,6 +49,10 @@ public class AddHeaderColoredLabelsTool extends AddHeaderTool {
             usage = "Set for visible text labels")
     private boolean textVisible;
 
+    @Option(name = "-s", aliases = "--sort", metaVar = "<sort>", required = false,
+            usage = "Sort according to header. Specify either asc[ending] or desc[ending].")
+    protected String sort;
+
     public AddHeaderColoredLabelsTool() {
         super();
     }
@@ -62,7 +66,7 @@ public class AddHeaderColoredLabelsTool extends AddHeaderTool {
 
     @Override
     protected Command newJob() {
-        return new CommandAddHeaderColoredLabels(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible);
+        return new AddHeaderColoredLabelsCommand(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible, sort);
     }
 
 }

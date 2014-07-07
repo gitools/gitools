@@ -24,6 +24,7 @@ package org.gitools.heatmap.decorator.impl;
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.matrix.MatrixUtils;
@@ -35,15 +36,19 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     public static final String PROPERTY_SIGNIFICANCE = "significanceLevel";
     public static final String PROPERTY_CORRECTED_VALUE = "correctedValueIndex";
     public static final String PROPERTY_USE_CORRECTION = "useCorrection";
-    public static final String PROPERTY_SIG_HALF_AMPLITUD = "sigHalfAmplitud";
+    public static final String PROPERTY_SIG_HALF_AMPLITUD = "sigHalfAmplitude";
+    public static final String PROPERTY_HALF_AMPLITUD = "halfAmplitude";
     public static final String PROPERTY_LEFT_MIN_COLOR = "leftMinColor";
     public static final String PROPERTY_LEFT_MAX_COLOR = "leftMaxColor";
     public static final String PROPERTY_RIGHT_MIN_COLOR = "rightMinColor";
@@ -55,7 +60,11 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
     private boolean useCorrection;
     private double significanceLevel;
 
+
     private ZScoreColorScale scale;
+
+    @XmlTransient
+    private NonEventToNullFunction<ZScoreColorScale> significantEvents;
 
     public ZScoreDecorator() {
         super();
@@ -130,10 +139,21 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         return getScale().getSigHalfAmplitude();
     }
 
-    final void setSigHalfAmplitude(double sigHalfAmplitude) {
+    public final void setSigHalfAmplitude(double sigHalfAmplitude) {
         double old = getScale().getSigHalfAmplitude();
         getScale().setSigHalfAmplitude(sigHalfAmplitude);
         firePropertyChange(PROPERTY_SIG_HALF_AMPLITUD, old, sigHalfAmplitude);
+    }
+
+    @XmlElement(name = "limit")
+    public final double getHalfAmplitude() {
+        return getScale().getHalfAmplitude();
+    }
+
+    public final void setHalfAmplitude(double halfAmplitude) {
+        double old = getScale().getHalfAmplitude();
+        getScale().setHalfAmplitude(halfAmplitude);
+        firePropertyChange(PROPERTY_HALF_AMPLITUD, old, halfAmplitude);
     }
 
     @XmlElement(name = "left-min-color")
@@ -235,5 +255,44 @@ public class ZScoreDecorator extends Decorator<ZScoreColorScale> {
         if (isShowValue()) {
             decoration.setValue(textFormatter.format(value));
         }
+    }
+
+    @Override
+    public NonEventToNullFunction getDefaultEventFunction() {
+
+        if (significantEvents == null) {
+            initEvents();
+        }
+
+        return significantEvents;
+    }
+
+    private void initEvents() {
+        significantEvents = new NonEventToNullFunction<ZScoreColorScale>(scale, "Significant Events") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
+                return (value == null || Math.abs(value) <= getColorScale().getSigHalfAmplitude()) ?
+                        null : Math.abs(value);
+            }
+
+            @Override
+            public String getDescription() {
+                double limit = getColorScale().getSigHalfAmplitude();
+                return "All values above and below significance threshold (" +
+                        limit + ", " + -limit + ") are events";
+            }
+        };
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(significantEvents);
+        list.addAll(super.getEventFunctionAlternatives());
+
+        return list;
     }
 }

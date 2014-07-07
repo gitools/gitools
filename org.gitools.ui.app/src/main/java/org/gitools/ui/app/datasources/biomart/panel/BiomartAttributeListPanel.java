@@ -26,7 +26,7 @@ import org.gitools.datasources.biomart.restful.model.AttributeDescription;
 import org.gitools.datasources.biomart.restful.model.AttributeGroup;
 import org.gitools.datasources.biomart.restful.model.AttributePage;
 import org.gitools.ui.app.datasources.biomart.dialog.BiomartAttributeDialog;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;

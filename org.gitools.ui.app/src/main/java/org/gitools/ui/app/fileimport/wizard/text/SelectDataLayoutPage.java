@@ -22,9 +22,9 @@ package org.gitools.ui.app.fileimport.wizard.text;
  * #L%
  */
 
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 import org.gitools.utils.readers.FileField;
@@ -66,7 +66,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
             @Override
             public void actionPerformed(ActionEvent e) {
                 reader.getReaderProfile().setSeparator((Separator) separatorsModel.getSelectedItem());
-                updateParsing();
+                updateParsing(true);
             }
         });
 
@@ -80,7 +80,7 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
                 } else if (matrixRadioButton.isSelected()) {
                     reader.setReaderProfile(MatrixReaderProfile.fromProfile(reader.getReaderProfile()));
                 }
-                updateControls();
+                updateControls(false);
             }
         };
         tableRadioButton.addActionListener(layoutListener);
@@ -98,21 +98,35 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
 
     @Override
     public void updateControls() {
+        updateControls(true);
+    }
+
+
+    public void updateControls(boolean reloadPreview) {
 
         try {
-            updateParsing();
+            updateParsing(reloadPreview);
 
             if (tableRadioButton.isSelected()) {
                 dataFormatTextPane.setText("<html><body>" +
-                        "Each line is a heatmap cell: Two fields describing Column and Row id.<br>" +
-                        "The other fields are data points, therefore <b>multiple per cell</b>.<br>" +
-                        "<img max-width=\"300px\" src=\"" + IconNames.DATA_FORMAT_TABLE.toString() + "\">" +
+                        "<table><tr>" +
+                        "<td>" +
+                        "<img max-width=\"320px\" src=\"" + IconNames.DATA_FORMAT_TABLE.toString() + "\">" +
+                        "</td><td>" +
+                        "<b>Table layout:</b>Each line is a heatmap cell: Two fields describing Column and Row id." +
+                        "The other fields are data points</b>." +
+                        "</td>" +
+                        "</tr></table>" +
                         "</body></html>");
             } else if (matrixRadioButton.isSelected()) {
                 dataFormatTextPane.setText("<html><body>" +
-                        "The first row and column of the file are the Column and Row ids <br>" +
-                        "<b>Only one data point per cell is possible</b>.<br>" +
+                        "<table><tr>" +
+                        "<td>" +
                         "<img max-width=\"300px\" src=\"" + IconNames.DATA_FORMAT_MATRIX.toString() + "\">" +
+                        "</td><td>" +
+                        "<b>Matrix layout</b>:The first row and column of the file are the Column and Row ids" +
+                        "</td>" +
+                        "</tr></table>" +
                         "</body></html>");
             }
 
@@ -122,9 +136,12 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
 
     }
 
-    private void updateParsing() {
 
-        reader.loadHead(NullProgressMonitor.get());
+    private void updateParsing(boolean reloadPreview) {
+
+        if (!reloadPreview) {
+            reader.loadHead(NullProgressMonitor.get());
+        }
         List<FileHeader> allHeaders = reader.getFileHeaders();
 
         StringBuilder htmlTable = getHTMLTable();
@@ -133,11 +150,18 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         preview.setCaretPosition(0);
 
 
-        if (allHeaders.size() > 2) {
+        boolean matrix = matrixRadioButton.isSelected();
+        if (allHeaders.size() > 2 && !matrix || allHeaders.size() > 1 && matrix) {
             setComplete(true);
             setMessage(MessageStatus.INFO, "Select Data Layout.");
         } else {
-            setMessage(MessageStatus.ERROR, "Only " + allHeaders.size() + " columns detected.");
+            String message = "Only " + allHeaders.size() + " columns detected.";
+            if (matrix) {
+                message += " At least an  id and a data columns needed";
+            } else {
+                message += " At least a column id, row id and value column expected.";
+            }
+            setMessage(MessageStatus.ERROR, message);
             setComplete(false);
         }
         separatorsModel.setSelectedItem(reader.getReaderProfile().getSeparator());
@@ -150,7 +174,11 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         htmlTable.append("<html><head>");
         htmlTable.append(PreviewHTMLs.CSS);
         htmlTable.append("</head><body><table><tr>");
+        int limit = 20;
         for (FileHeader header : reader.getFileHeaders()) {
+            if (header.getPos() > limit) {
+                break;
+            }
             htmlTable.append("<th>" + header.getLabel() + "</th>");
         }
         htmlTable.append("</tr>");
@@ -162,6 +190,9 @@ public class SelectDataLayoutPage extends AbstractWizardPage {
         for (List<FileField> line : reader.getPreview()) {
             htmlTable.append("<tr>");
             for (FileField field : line) {
+                if (field.getPos() > limit) {
+                    break;
+                }
                 String celltype = (matrix && field.getPos() == 0) ? "th" : "td";
                 htmlTable.append("<" + celltype + ">");
                 htmlTable.append(field.getLabel());

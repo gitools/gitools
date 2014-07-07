@@ -82,7 +82,7 @@ public class GmtModuleMapFormat extends AbstractModuleMapFormat {
 
         try {
 
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(progressMonitor);
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             for (String module : moduleMap.getModules()) {
@@ -95,7 +95,7 @@ public class GmtModuleMapFormat extends AbstractModuleMapFormat {
                 progressMonitor.worked(1);
             }
 
-            out.close();
+            pw.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
         }

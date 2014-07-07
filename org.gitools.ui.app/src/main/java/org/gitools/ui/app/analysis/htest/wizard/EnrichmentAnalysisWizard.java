@@ -27,13 +27,13 @@ import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.IResourceFormat;
 import org.gitools.api.resource.ResourceReference;
-import org.gitools.matrix.geneset.GeneSet;
+import org.gitools.matrix.geneset.GeneSetFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.wizard.AnalysisDetailsPage;
 import org.gitools.ui.app.analysis.wizard.DataFilterPage;
 import org.gitools.ui.app.analysis.wizard.ModulesPage;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.io.File;
 
@@ -58,11 +58,6 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
     @Override
     public void addPages() {
 
-        // Data filtering
-        dataFilterPage = new DataFilterPage();
-        dataFilterPage.setDiscardNonMappedRowsVisible(true);
-        addPage(dataFilterPage);
-
         // Modules
         modulesPage = new ModulesPage();
         addPage(modulesPage);
@@ -70,6 +65,12 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
         // Statistical test
         statisticalTestPage = new StatisticalTestPage();
         addPage(statisticalTestPage);
+
+        // Data filtering
+        dataFilterPage = new DataFilterPage();
+        dataFilterPage.setDiscardNonMappedRowsVisible(true);
+        addPage(dataFilterPage);
+
 
         // Analysis details
         analysisDetailsPage = new AnalysisDetailsPage();
@@ -112,7 +113,7 @@ public class EnrichmentAnalysisWizard extends AnalysisWizard<EnrichmentAnalysis>
         // Population
         File populationFile = dataFilterPage.getPopulationFile();
         if (populationFile != null) {
-            analysis.setPopulation(new ResourceReference<>(new UrlResourceLocator(populationFile), GeneSet.class));
+            analysis.setPopulation(new ResourceReference<>(new UrlResourceLocator(populationFile), new GeneSetFormat()));
             analysis.setPopulationDefaultValue(dataFilterPage.getPopulationDefaultValue());
         }
 

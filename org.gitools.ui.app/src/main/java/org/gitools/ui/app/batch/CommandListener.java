@@ -23,7 +23,7 @@ package org.gitools.ui.app.batch;
 
 import org.apache.log4j.Logger;
 import org.gitools.ui.app.batch.tools.VersionTool;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 
 import java.awt.*;
 import java.io.*;

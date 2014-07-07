@@ -24,7 +24,6 @@ package org.gitools.utils.colorscale;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -49,7 +48,7 @@ public class ColorScaleDrawer {
     private ITextFormatter textFormatter;
 
 
-    public ColorScaleDrawer(IColorScale scale, ITextFormatter textFormatter) {
+    public ColorScaleDrawer(INumericColorScale scale, ITextFormatter textFormatter) {
         setScale(scale);
 
         this.bgColor = Color.WHITE;
@@ -68,11 +67,11 @@ public class ColorScaleDrawer {
         this.textFormatter = textFormatter;
     }
 
-    public IColorScale getScale() {
+    public INumericColorScale getScale() {
         return scale;
     }
 
-    void setScale(IColorScale scale) {
+    void setScale(INumericColorScale scale) {
         this.scale = (NumericColorScale) scale;
     }
 

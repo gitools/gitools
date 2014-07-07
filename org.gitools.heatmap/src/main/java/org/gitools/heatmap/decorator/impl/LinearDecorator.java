@@ -23,8 +23,10 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
+import org.gitools.utils.colorscale.INumericColorScale;
 import org.gitools.utils.colorscale.impl.LinearTwoSidedColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
@@ -32,8 +34,11 @@ import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
@@ -47,6 +52,10 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
     public static final String PROPERTY_EMPTY_COLOR = "emptyColor";
 
     private LinearTwoSidedColorScale scale;
+
+    @XmlTransient
+    private NonEventToNullFunction<INumericColorScale> aboveScaleFunction;
+    private NonEventToNullFunction<INumericColorScale> belowScaleFunction;
 
     public LinearDecorator() {
         this(new LinearTwoSidedColorScale());
@@ -164,6 +173,82 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
             decoration.setValue(textFormatter.format(value));
         }
 
+    }
+
+    @Override
+    public NonEventToNullFunction getDefaultEventFunction() {
+
+        return super.getEventFunctionAlternatives().get(0);
+
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(getDefaultEventFunction());
+
+        if (aboveScaleFunction == null) {
+            initEventFunctions();
+        }
+
+        list.add(aboveScaleFunction);
+        list.add(belowScaleFunction);
+
+
+
+
+        return list;
+    }
+
+    @Override
+    protected void initEventFunctions() {
+
+        super.initEventFunctions();
+
+        aboveScaleFunction = new NonEventToNullFunction<INumericColorScale>(getScale(), "Above Events") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
+                if (value == null) {
+                    return null;
+                }
+
+                if (getMaxValue() < value) {
+                    return value;
+                } else {
+                    return null;
+                }
+            }
+
+            @Override
+            public String getDescription() {
+                return "All values above " + getColorScale().getMaxValue() + " are events";
+            }
+        };
+
+        belowScaleFunction = new NonEventToNullFunction<INumericColorScale>(getScale(), "Below Events") {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
+                if (value == null) {
+                    return null;
+                }
+
+                if (getMinValue() > value) {
+                    return value;
+                } else {
+                    return null;
+                }
+            }
+
+            @Override
+            public String getDescription() {
+                return " All values below " + getColorScale().getMinValue() + " are events";
+            }
+        };
     }
 
 }

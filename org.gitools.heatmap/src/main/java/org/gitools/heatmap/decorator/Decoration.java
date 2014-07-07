@@ -70,4 +70,5 @@ public class Decoration implements Serializable {
     public void setBgColor(Color bgColor) {
         this.bgColor = bgColor;
     }
+
 }

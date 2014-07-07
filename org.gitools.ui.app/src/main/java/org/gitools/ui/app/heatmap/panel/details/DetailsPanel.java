@@ -21,31 +21,24 @@
  */
 package org.gitools.ui.app.heatmap.panel.details;
 
-import com.jgoodies.binding.PresentationModel;
-import com.jgoodies.binding.adapter.Bindings;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.collections.map.ListOrderedMap;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.heatmap.decorator.Decoration;
-import org.gitools.heatmap.decorator.Decorator;
-import org.gitools.heatmap.decorator.DetailsDecoration;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.resource.Resource;
-import org.gitools.ui.app.actions.edit.EditHeaderAction;
-import org.gitools.ui.app.actions.edit.EditLayerAction;
-import org.gitools.ui.app.heatmap.panel.details.boxes.DetailsBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.DimensionBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.HeatmapInfoBox;
+import org.gitools.ui.app.heatmap.panel.details.boxes.LayerValuesBox;
 import org.gitools.ui.app.heatmap.popupmenus.PopupMenuActions;
+import org.gitools.ui.core.components.boxes.Box;
+import org.gitools.ui.core.components.boxes.DetailsBox;
+import org.gitools.ui.core.plugins.IBoxPlugin;
 import org.jdesktop.swingx.JXTaskPaneContainer;
 import org.jdesktop.swingx.plaf.LookAndFeelAddons;
 import org.jdesktop.swingx.plaf.metal.MetalLookAndFeelAddons;
 
 import javax.swing.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * A details panel with three collapsible panels
@@ -55,8 +48,10 @@ public class DetailsPanel extends JXTaskPaneContainer {
     private DetailsBox columnsBox;
     private DetailsBox rowsBox;
     private DetailsBox layersBox;
+    private DetailsBox infoBox;
     private JLabel hintLabel;
     private JLabel titleLabel;
+    private Map<String, Box> boxes;
 
 
     /**
@@ -75,131 +70,58 @@ public class DetailsPanel extends JXTaskPaneContainer {
 
         setBackground(Color.WHITE);
 
-        // Changes to track
-        heatmap.getRows().addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                update(heatmap.getRows(), rowsBox);
-                updateLayers(heatmap, layersBox);
-            }
-        });
+        boxes = new ListOrderedMap();
 
-        heatmap.getColumns().addPropertyChangeListener(new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                update(heatmap.getColumns(), columnsBox);
-                updateLayers(heatmap, layersBox);
-            }
-        });
+        infoBox = new HeatmapInfoBox(heatmap);
+        infoBox.update();
+        registerBox(infoBox);
 
-        PropertyChangeListener updateLayers = new PropertyChangeListener() {
-            @Override
-            public void propertyChange(PropertyChangeEvent evt) {
-                updateLayers(heatmap, layersBox);
-            }
-        };
-        heatmap.getLayers().addPropertyChangeListener(updateLayers);
-        heatmap.getLayers().getTopLayer().addPropertyChangeListener(updateLayers);
+        //add(new JSeparator());
 
+        layersBox = new LayerValuesBox("Values", PopupMenuActions.DETAILS_LAYERS, heatmap);
+        registerBox(layersBox);
 
-        titleLabel = new JLabel();
-        PresentationModel<Heatmap> model = new PresentationModel<>(heatmap);
-        Bindings.bind(titleLabel, model.getModel(Resource.PROPERTY_TITLE));
-        Font f = titleLabel.getFont();
-        titleLabel.setFont(f.deriveFont(f.getStyle() | Font.BOLD));
-        add(titleLabel);
-        add(new JSeparator());
-
-
-        add(columnsBox = new DetailsBox("Column", PopupMenuActions.DETAILS_COLUMNS) {
-            @Override
-            protected void onMouseDblClick(DetailsDecoration detail) {
-                Object reference = detail.getReference();
-
-                if (reference instanceof HeatmapHeader) {
-                    new EditHeaderAction((HeatmapHeader) reference).actionPerformed(null);
-                }
-            }
-        });
+        columnsBox = new DimensionBox("Column", PopupMenuActions.DETAILS_COLUMNS, heatmap, heatmap.getColumns());
         columnsBox.setCollapsed(true);
+        registerBox(columnsBox);
 
-        add(rowsBox = new DetailsBox("Row", PopupMenuActions.DETAILS_ROWS) {
-            @Override
-            protected void onMouseDblClick(DetailsDecoration detail) {
-                Object reference = detail.getReference();
-
-                if (reference instanceof HeatmapHeader) {
-                    new EditHeaderAction((HeatmapHeader) reference).actionPerformed(null);
-                }
-            }
-        });
+        rowsBox = new DimensionBox("Row", PopupMenuActions.DETAILS_ROWS, heatmap, heatmap.getRows());
         rowsBox.setCollapsed(true);
+        registerBox(rowsBox);
 
-        add(layersBox = new DetailsBox("Values", PopupMenuActions.DETAILS_LAYERS) {
-            @Override
-            protected void onMouseClick(DetailsDecoration detail) {
-                heatmap.getLayers().setTopLayerIndex(detail.getIndex());
-            }
+        initPluginBoxes(heatmap);
 
-            @Override
-            protected void onMouseDblClick(DetailsDecoration detail) {
-                Object reference = detail.getReference();
-
-                if (reference instanceof HeatmapLayer) {
-                    new EditLayerAction((HeatmapLayer) reference).actionPerformed(null);
-                }
-            }
-        });
+        for (Box b : boxes.values()) {
+            add(b);
+            b.update();
+        }
 
         hintLabel = new JLabel();
-        hintLabel.setText("<html><body><p><i>Right click</i> on any layer or header id to<br>" +
-                "<b>adjust visualization and other settings</b>.</p></body></html>");
+        hintLabel.setText("<html><body><p><i>Hover</i> & <i>Right click</i> on any detail to reveal info & contextual menus.</p></body></html>");
         add(hintLabel);
 
-        update(heatmap.getRows(), rowsBox);
-        update(heatmap.getColumns(), columnsBox);
-        updateLayers(heatmap, layersBox);
     }
 
-    private static void update(HeatmapDimension rows, DetailsBox rowsBox) {
+    private void initPluginBoxes(Heatmap heatmap) {
 
-        String lead = rows.getFocus();
-        String label = StringUtils.capitalize(rows.getId().getLabel());
-
-        if (lead != null) {
-            rowsBox.setTitle(label + ": " + lead + " [" + (rows.indexOf(lead) + 1) + "]");
-        } else {
-            rowsBox.setTitle(label);
+        List<IBoxPlugin> boxPlugins = heatmap.getPluggedBoxes().filter(IBoxPlugin.class);
+        for (IBoxPlugin p : boxPlugins) {
+            if (p.isEnabled()) {
+                for (Box b : p.getBoxes(heatmap)) {
+                    registerBox(b);
+                }
+            }
         }
-        List<DetailsDecoration> details = new ArrayList<>();
-        rows.populateDetails(details);
-        rowsBox.draw(details);
     }
 
-    private static void updateLayers(Heatmap heatmap, DetailsBox layersBox) {
-        String col = heatmap.getColumns().getFocus();
-        String row = heatmap.getRows().getFocus();
-
-        if (col != null && row != null) {
-
-            Decorator decorator = heatmap.getLayers().getTopLayer().getDecorator();
-            Decoration decoration = new Decoration();
-            boolean showValue = decorator.isShowValue();
-            decorator.setShowValue(true);
-            decoration.reset();
-            HeatmapLayer layer = heatmap.getLayers().getTopLayer();
-            decorator.decorate(decoration, layer.getLongFormatter(), heatmap, layer, row, col);
-            decorator.setShowValue(showValue);
-
-            layersBox.setTitle("Values: " + decoration.getFormatedValue());
-        } else {
-            layersBox.setTitle("Values");
+    public void registerBox(Box... newBoxes) {
+        for (Box box : newBoxes) {
+            box.registerListeners();
+            boxes.put(box.getTitle(), box);
         }
-
-        List<DetailsDecoration> layersDetails = new ArrayList<>();
-        heatmap.getLayers().populateDetails(layersDetails, heatmap, heatmap.getRows().getFocus(), heatmap.getColumns().getFocus());
-        layersBox.draw(layersDetails);
     }
 
-
+    public Collection<Box> getBoxes() {
+        return boxes.values();
+    }
 }

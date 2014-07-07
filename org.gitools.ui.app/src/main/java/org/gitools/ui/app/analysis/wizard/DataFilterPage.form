@@ -1,4 +1,4 @@
-<?xml version="1.1" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.6" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <NonVisualComponents>
@@ -22,34 +22,46 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="populationCheck" alignment="0" min="-2" max="-2" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="12" pref="12" max="12" attributes="0"/>
+                  <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="populationNote" alignment="0" min="-2" max="-2" attributes="0"/>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="populationFilePath" pref="540" max="32767" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="populationFileBrowserBtn" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="0" attributes="0">
-                              <Component id="populationDefaultValueLabel" min="-2" max="-2" attributes="0"/>
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="populationDefaultValueCb" min="-2" max="-2" attributes="0"/>
-                          </Group>
+                          <Component id="populationCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="discardNonMappedRowsCheck" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="0" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="cutoffEnabledCheck" min="-2" max="-2" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Component id="cutoffCmpCb" pref="224" max="32767" attributes="0"/>
+                      <Component id="cutoffCmpCb" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                       <Component id="cutoffValue" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <Component id="discardNonMappedRowsCheck" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="12" pref="12" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="populationFilePath" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="populationFileBrowserBtn" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <Group type="102" attributes="0">
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="populationNote3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="populationNote" alignment="0" min="-2" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="populationDefaultValueLabel" min="-2" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="populationDefaultValueCb" min="-2" max="-2" attributes="0"/>
+                                  </Group>
+                              </Group>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="populationNote1" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -72,15 +84,19 @@
                   <Component id="populationDefaultValueLabel" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="populationDefaultValueCb" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="46" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="populationNote3" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="cutoffEnabledCheck" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cutoffCmpCb" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="cutoffValue" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="populationNote1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
               <Component id="discardNonMappedRowsCheck" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="141" max="32767" attributes="0"/>
+              <EmptySpace pref="99" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -130,7 +146,7 @@
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
           <FontInfo relative="true">
-            <Font component="populationNote" property="font" relativeSize="true" size="-2"/>
+            <Font component="populationNote" italic="true" property="font" relativeSize="true" size="-3"/>
           </FontInfo>
         </Property>
         <Property name="text" type="java.lang.String" value="This should be a file containing one row id per line."/>
@@ -150,6 +166,26 @@
             <StringItem index="1" value="Empty"/>
           </StringArray>
         </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="populationNote1">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
+          <FontInfo relative="true">
+            <Font component="populationNote1" italic="true" property="font" relativeSize="true" size="-3"/>
+          </FontInfo>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Binarize continuous data if you have selected Binomial or Fisher test"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="populationNote3">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.modules.form.editors2.FontEditor">
+          <FontInfo relative="true">
+            <Font component="populationNote3" italic="true" property="font" relativeSize="true" size="-3"/>
+          </FontInfo>
+        </Property>
+        <Property name="text" type="java.lang.String" value="Either a value or Null"/>
       </Properties>
     </Component>
   </SubComponents>

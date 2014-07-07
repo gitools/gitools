@@ -22,7 +22,10 @@
 package org.gitools.analysis.groupcomparison.format;
 
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.resource.AbstractXmlFormat;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -36,5 +39,17 @@ public class GroupComparisonAnalysisFormat extends AbstractXmlFormat<GroupCompar
     public GroupComparisonAnalysisFormat() {
         super(EXTENSION, GroupComparisonAnalysis.class);
     }
+
+    @Override
+    protected void writeResource(IResourceLocator resourceLocator, GroupComparisonAnalysis resource, IProgressMonitor monitor) throws PersistenceException {
+
+        //TODO Find a better solution for this error
+        resource.getData().get();
+        resource.getResults().get();
+
+        super.writeResource(resourceLocator, resource, monitor);
+    }
+
+
 
 }

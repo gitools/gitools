@@ -63,7 +63,13 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
         Dimension size = drawer.getSize();
         Rectangle box = new Rectangle(0, 0, size.width, size.height);
         Rectangle clip = g.getClipBounds();
-        drawer.draw((Graphics2D) g, box, clip);
+
+        Graphics2D gb = (Graphics2D) g;
+        gb.setRenderingHint(
+                RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+
+        drawer.draw(gb, box, clip);
     }
 
     public void updateSize() {
@@ -73,7 +79,7 @@ class AbstractHeatmapPanel extends JPanel implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS)) {
+        if (isAny(evt, HeatmapDimension.class, HeatmapDimension.PROPERTY_HEADERS, HeatmapDimension.PROPERTY_HIGHLIGHTED)) {
             if (getDrawer() instanceof HeatmapHeaderDrawer) {
                 ((HeatmapHeaderDrawer) getDrawer()).update();
             }

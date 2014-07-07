@@ -23,9 +23,9 @@ package org.gitools.ui.app.actions.edit;
 
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.Actions;
 import org.gitools.ui.app.actions.HeatmapDynamicActionSet;
+import org.gitools.ui.platform.icons.IconNames;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
@@ -34,13 +34,15 @@ import static com.google.common.collect.Lists.reverse;
 
 public class ColumnsActionSet extends HeatmapDynamicActionSet {
 
-    public ColumnsActionSet() {
-        super("Columns", KeyEvent.VK_C, IconNames.empty16);
+    public ColumnsActionSet(String name) {
+        super(name, KeyEvent.VK_C, IconNames.empty16);
     }
 
     @Override
     protected void populateMenu(Heatmap heatmap, JMenu menu) {
         menu.removeAll();
+
+        menu.add(new AnnotationAction(heatmap.getRows().getId()));
 
         for (HeatmapHeader header : reverse(heatmap.getColumns().getHeaders())) {
             menu.add(new EditHeaderAction(header));
@@ -56,6 +58,7 @@ public class ColumnsActionSet extends HeatmapDynamicActionSet {
         menu.add(Actions.sortByColumnsAnnotation);
         menu.add(Actions.sortColumnsByValue);
         menu.add(Actions.sortColumnsByMutualExclusion);
+        menu.add(Actions.sortByPredefinedListColumnsAction);
 
         // Visibility
         menu.addSeparator();

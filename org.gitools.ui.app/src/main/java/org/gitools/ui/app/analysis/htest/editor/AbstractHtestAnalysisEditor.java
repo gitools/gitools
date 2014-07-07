@@ -35,8 +35,8 @@ import org.gitools.heatmap.decorator.impl.BinaryDecorator;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.editor.EditorsPanel;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
@@ -107,6 +107,14 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
             }
         }
 
+        if (analysis.getStartTime() != null) {
+            context.put("startTime", analysis.getStartTime());
+        }
+
+        if (analysis.getElapsedTime() > 0) {
+            context.put("elapsedTime", analysis.getElapsedTime());
+        }
+
         super.prepareContext(context);
     }
 
@@ -126,17 +134,18 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
         final T analysis = getModel();
 
         if (analysis.getModuleMap() == null) {
-            Application.get().setStatusText("Analysis doesn't contain a groups file.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain a groups (modules) file.");
             return;
         }
 
         JobThread.execute(Application.get(), new CommandLoadFile(analysis.getModuleMap()));
+        Application.get().showNotificationPermanent("Heatmap from module files created");
     }
 
     protected void newDataHeatmap() {
         final T analysis = getModel();
         if (analysis.getData() == null) {
-            Application.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain data.");
             return;
         }
 
@@ -153,7 +162,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
                     public void run() {
                         editorPanel.addEditor(editor);
                         editor.setName(analysis.getTitle() + "-data");
-                        Application.get().setStatusText("New heatmap created.");
+                        Application.get().showNotification("Heatmap from data created.");
                     }
                 });
             }
@@ -163,7 +172,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
     protected void newResultsHeatmap() {
         final T analysis = getModel();
         if (analysis.getResults() == null) {
-            Application.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain results.");
             return;
         }
 
@@ -178,7 +187,7 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("Heatmap results created.");
+                        Application.get().showNotification("Heatmap results created.");
                     }
                 });
             }
@@ -190,7 +199,10 @@ public abstract class AbstractHtestAnalysisEditor<T extends HtestAnalysis> exten
 
     @Deprecated
     protected Heatmap createDataHeatmap(T analysis) {
+        return newDataHeatmap(analysis);
+    }
 
+    public static Heatmap newDataHeatmap(HtestAnalysis analysis) {
         IMatrix data = analysis.getData().get();
 
         if (data instanceof Heatmap) {

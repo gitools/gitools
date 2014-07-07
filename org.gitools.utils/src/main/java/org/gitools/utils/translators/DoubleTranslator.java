@@ -57,7 +57,7 @@ public class DoubleTranslator implements ValueTranslator<Double> {
         try {
             value = Double.parseDouble(str);
         } catch (NumberFormatException e) {
-            log.error("Malformed number will be set to null: '" + str + "'");
+            //log.error("Malformed number will be set to null: '" + str + "'");
             return null;
         }
         return value;

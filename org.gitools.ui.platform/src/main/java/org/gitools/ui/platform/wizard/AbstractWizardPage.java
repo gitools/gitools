@@ -141,7 +141,8 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage, 
         return message;
     }
 
-    protected void setMessage(String message) {
+    @Override
+    public void setMessage(String message) {
         this.message = message;
         fireUpdated();
     }

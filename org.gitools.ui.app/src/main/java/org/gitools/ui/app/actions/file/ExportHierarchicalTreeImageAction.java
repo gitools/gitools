@@ -22,21 +22,20 @@
 package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.analysis.clustering.hierarchical.HierarchicalCluster;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.matrix.FileFormats;
-import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.analysis.clustering.visualization.DendrogramPanel;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFileWizard;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.actions.BaseAction;
-import org.gitools.ui.platform.editor.AbstractEditor;
-import org.gitools.ui.platform.editor.EditorsPanel;
-import org.gitools.ui.platform.editor.IEditor;
+import org.gitools.ui.app.wizard.SaveFileWizard;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
+import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.EditorsPanel;
+import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
 import javax.imageio.ImageIO;
@@ -62,7 +61,7 @@ public class ExportHierarchicalTreeImageAction extends AbstractAction {
 
         SaveFileWizard saveWiz = SaveFileWizard.createSimple(
                 "Export hierarchical tree to image ...",
-                FilenameUtils.getName(getSelectedEditor().getName()),
+                FilenameUtils.getName("Dendrogram " + getSelectedEditor().getName()),
                 Settings.get().getLastExportPath(),
                 new FileFormat[]{FileFormats.PNG}
         );
@@ -88,7 +87,7 @@ public class ExportHierarchicalTreeImageAction extends AbstractAction {
 
                     HierarchicalCluster model = getHierarchicalCluster();
                     final int width = getSelectedEditor().getWidth();
-                    final int height = model.getIdentifiers().size()*12;
+                    final int height = model.getIdentifiers().size() * 12;
 
                     DendrogramPanel panel = new DendrogramPanel() {
                         @Override
@@ -118,7 +117,7 @@ public class ExportHierarchicalTreeImageAction extends AbstractAction {
             }
         });
 
-        Application.get().setStatusText("Image created.");
+        Application.get().showNotification("Image created.", 2000);
     }
 
     @Override

@@ -18,13 +18,17 @@ Overview of commands
                                                                                                  - -h (--heatmap) <heatmap> : Heatmap name or ``last`` for the last added 
                                                                                                  - -n (--no-auto-generate)  : Specify if auto color generation is not desired.
                                                                                                  - -p (--pattern) <pattern> : The pattern of annotations as e.g. ${annotation-id}
-                                                                                                 - -s (--side) <side>       : Indicate where to add the header: 'rows' or 'columns'.
+                                                                                                 - -d (--dimension) <dim>   : Indicate where to add the header: 'rows' or 'columns'.
                                                                                                  - -t (--text-visible)      : Set for visible text labels
                                                                                                  - -v (--value) <value>     : A value corresponding to a color
 **add-header-text-labels**                         Adds a new text header to the heatmap
                                                                                                  -  -h (--heatmap) <heatmap> : Heatmap 
                                                                                                  -  -p (--pattern) <pattern> : The pattern of annotations as e.g. ${annotation-id}     2.0.0
-                                                                                                 -  -s (--side) <side>       : Indicate where to add the header: 'rows' or 'columns'.
+                                                                                                 -  -d (--dimension) <dim>   : Indicate where to add the header: 'rows' or 'columns'.
+**sort-by-annotation**                             Sorts the heatmap by col or row annotation
+                                                                                                 -  -h (--heatmap) <heatmap> : Heatmap
+                                                                                                 -  -p (--pattern) <pattern> : The pattern of annotations as e.g. ${annotation-id}     2.2.0
+                                                                                                 -  -d (--dimension) <dim>   : Indicate where to add the header: 'rows' or 'columns'.
 **load **\ matrix-file                             Tells Gitools to load a file.                 - **--rows** ( **-r**)     : File rows annotations                                    1.7.0
                                                                                                  - **--cols** ( **-c**)     : File cols annotations
 **version**                                        Prints Gitools version.                                                                                                             1.7.1

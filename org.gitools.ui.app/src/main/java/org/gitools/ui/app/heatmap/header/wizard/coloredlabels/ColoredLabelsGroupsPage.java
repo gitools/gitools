@@ -183,6 +183,10 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     private java.util.List<ColoredLabel> coloredLabels;
 
     public ColoredLabelsGroupsPage(java.util.List<ColoredLabel> coloredLabels) {
+        this(coloredLabels, "");
+    }
+
+        public ColoredLabelsGroupsPage(java.util.List<ColoredLabel> coloredLabels, String title) {
 
         this.coloredLabels = coloredLabels;
 
@@ -204,7 +208,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
         columnModel.getColumn(2).setCellEditor(new ColorChooserEditor());
         columnModel.getColumn(2).setCellRenderer(new ColorCellRenderer());
 
-        setTitle("Colors");
+        setTitle(title.equals("") ? "Colors" : title);
         updateButtons();
     }
 

@@ -23,6 +23,8 @@ package org.gitools.api.matrix;
 
 import org.gitools.api.analysis.IAggregator;
 
+import java.util.Set;
+
 public interface IMatrixLayer<T> {
 
     String getId();
@@ -42,5 +44,18 @@ public interface IMatrixLayer<T> {
     IAggregator getAggregator();
 
     void setAggregator(IAggregator aggregator);
+
+    Set<String> getGroups();
+
+    /**
+     * This method is called when the layer is not in use.
+     * <p/>
+     * It's a good practice to free all the caching memory usage.
+     */
+    void detach();
+
+    <T> void setCache(IKey<T> key, T value);
+
+    <T> T getCache(IKey<T> key);
 
 }

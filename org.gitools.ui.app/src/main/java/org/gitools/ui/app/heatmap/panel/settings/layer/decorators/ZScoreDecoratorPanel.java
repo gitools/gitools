@@ -24,7 +24,7 @@ package org.gitools.ui.app.heatmap.panel.settings.layer.decorators;
 import com.jgoodies.binding.adapter.Bindings;
 import com.jgoodies.binding.adapter.SpinnerAdapterFactory;
 import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
-import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
+import org.gitools.ui.core.utils.landf.MyWebColorChooserField;
 
 import javax.swing.*;
 
@@ -38,6 +38,8 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
     private JTextField emptyColor;
     private JSpinner significance;
     private JCheckBox showValueCheckBox;
+    private JFormattedTextField halfAmplitude;
+    private JFormattedTextField translatedSignificance;
 
     public ZScoreDecoratorPanel() {
         super("Z-Score scale", new ZScoreDecorator());
@@ -53,6 +55,11 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
         Bindings.bind(nonSigColor, "color", model(ZScoreDecorator.PROPERTY_NON_SIGNIFICANT_COLOR));
         Bindings.bind(emptyColor, "color", model(ZScoreDecorator.PROPERTY_EMPTY_COLOR));
 
+        JFormattedTextField.AbstractFormatterFactory formatter = DecoratorPanelFormatters.getTenDecimalsFormatter();
+        Bindings.bind(halfAmplitude, model(ZScoreDecorator.PROPERTY_HALF_AMPLITUD));
+        halfAmplitude.setFormatterFactory(formatter);
+
+
         significance.setModel(
                 SpinnerAdapterFactory.createNumberAdapter(
                         model(ZScoreDecorator.PROPERTY_SIGNIFICANCE),
@@ -62,6 +69,8 @@ public class ZScoreDecoratorPanel extends DecoratorPanel {
                         Double.valueOf(0.01)
                 )
         );
+
+        Bindings.bind(translatedSignificance, model(ZScoreDecorator.PROPERTY_SIG_HALF_AMPLITUD));
 
         Bindings.bind(showValueCheckBox, model(ZScoreDecorator.PROPERTY_SHOW_VALUE));
     }

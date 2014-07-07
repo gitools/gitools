@@ -30,12 +30,12 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.analysis.editor.AnalysisEditor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.editor.EditorsPanel;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.editor.EditorsPanel;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -95,7 +95,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
         final GroupComparisonAnalysis analysis = getModel();
 
         if (analysis.getData() == null) {
-            Application.get().setStatusText("Analysis doesn't contain data.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain data.");
             return;
         }
 
@@ -113,7 +113,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("New heatmap created.");
+                        Application.get().showNotification("Data heatmap created.");
                     }
                 });
             }
@@ -125,7 +125,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
         final GroupComparisonAnalysis analysis = getModel();
 
         if (analysis.getResults() == null) {
-            Application.get().setStatusText("Analysis doesn't contain results.");
+            Application.get().showNotificationPermanent("Analysis doesn't contain results.");
             return;
         }
 
@@ -139,13 +139,15 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
                 final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
                 editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
 
+                editor.getModel().setMetadata(GroupComparisonAnalysis.CACHE_KEY_GC_ANALYSIS, analysis);
+
                 editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-results", ""));
 
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
                         editorPanel.addEditor(editor);
-                        Application.get().setStatusText("Heatmap for group comparison results created.");
+                        Application.get().showNotification("Heatmap for group comparison results created.");
                     }
                 });
             }
@@ -153,7 +155,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
     }
 
     @Deprecated
-    private Heatmap createDataHeatmap(GroupComparisonAnalysis analysis) {
+    public static Heatmap createDataHeatmap(GroupComparisonAnalysis analysis) {
 
         IMatrix data = analysis.getData().get();
         if (Heatmap.class.isAssignableFrom(data.getClass())) {
@@ -161,20 +163,7 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
         }
 
         Heatmap heatmap = new Heatmap(data);
-        /*
-        heatmap.setTitle(analysis.getTitle() + " (data)");
 
-        if (analysis.getRowAnnotations() != null) {
-            heatmap.getRows().addAnnotations(analysis.getRowAnnotations());
-        }
-        if (analysis.getRowHeaders() != null)
-            copyHeaders(heatmap.getRows(), analysis.getRowHeaders());
-
-        if (analysis.getColumnAnnotations() != null) {
-            heatmap.getColumns().addAnnotations(analysis.getColumnAnnotations());
-        }
-        if (analysis.getColumnHeaders() != null)
-            copyHeaders(heatmap.getColumns(), analysis.getColumnHeaders());*/
 
         return heatmap;
     }

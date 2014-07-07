@@ -34,7 +34,7 @@ package org.gitools.ui.app.genomespace.dm;
 
 import org.apache.log4j.Logger;
 import org.gitools.ui.app.genomespace.GSUtils;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;

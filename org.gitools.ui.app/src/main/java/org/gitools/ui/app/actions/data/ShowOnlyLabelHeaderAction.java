@@ -27,9 +27,10 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 
 import java.awt.event.ActionEvent;
 
@@ -63,6 +64,10 @@ public class ShowOnlyLabelHeaderAction extends HeatmapAction implements IHeatmap
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
+
+        if(header instanceof HierarchicalClusterHeatmapHeader) {
+            header = ((HierarchicalClusterHeatmapHeader) header).getInteractionLevelHeader();
+        }
         setEnabled(header instanceof HeatmapColoredLabelsHeader);
 
         if (header instanceof HeatmapColoredLabelsHeader) {

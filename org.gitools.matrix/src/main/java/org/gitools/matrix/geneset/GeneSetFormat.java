@@ -86,7 +86,7 @@ public class GeneSetFormat extends AbstractResourceFormat<GeneSet> {
 
         try {
 
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(progressMonitor);
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             for (String label : resource)

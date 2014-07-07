@@ -25,16 +25,15 @@ import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
-import org.gitools.ui.app.utils.DocumentChangeListener;
+import org.gitools.ui.core.utils.DocumentChangeListener;
+import org.gitools.ui.platform.icons.IconNames;
 
+import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Highlighter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+import java.awt.event.*;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -57,6 +56,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
     public HeatmapSearchPanel(Heatmap hm, HeatmapPanel heatmapPanel) {
         this.hm = hm;
         this.heatmapPanel = heatmapPanel;
+        this.setBackground(new Color(255, 253, 247));
 
         initComponents();
 
@@ -86,6 +86,24 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             @Override
             protected void update(DocumentEvent e) {
                 updateSearch();
+            }
+        });
+        searchText.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
+                    close();
+                }
             }
         });
         searchText.addActionListener(new ActionListener() {
@@ -447,7 +465,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
         rowsOrColumns = new javax.swing.ButtonGroup();
         closeBtn = new javax.swing.JButton();
-        searchText = new javax.swing.JTextField();
+        searchText = new javax.swing.JTextField(20);
         prevBtn = new javax.swing.JButton();
         nextBtn = new javax.swing.JButton();
         highlightAllChk = new javax.swing.JCheckBox();
@@ -460,7 +478,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         setFocusable(false);
         setRequestFocusEnabled(false);
 
-        closeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SearchClose.png"))); // NOI18N
+        closeBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.close16))); // NOI18N
         closeBtn.setFocusable(false);
         closeBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -468,11 +486,11 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             }
         });
 
-        prevBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SearchPrev.png"))); // NOI18N
+        prevBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.nextEventLeft16))); // NOI18N
         prevBtn.setText("Previous");
         prevBtn.setFocusable(false);
 
-        nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/SearchNext.png"))); // NOI18N
+        nextBtn.setIcon(new javax.swing.ImageIcon(getClass().getResource(IconNames.nextEventRight16))); // NOI18N
         nextBtn.setText("Next");
         nextBtn.setFocusable(false);
         nextBtn.setRequestFocusEnabled(false);
@@ -505,10 +523,30 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         rowsOrColumns.add(columnsButton);
         columnsButton.setText("Columns");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        FlowLayout layout = new FlowLayout(FlowLayout.RIGHT, 10, 10);
+        this.setLayout(layout);
+
+        this.add(anyWordChk);
+        this.add(highlightAllChk);
+        this.add(matchCaseChk);
+
+        this.add(new JSeparator(JSeparator.VERTICAL));
+
+        this.add(rowsButton);
+        this.add(columnsButton);
+
+        this.add(prevBtn);
+        this.add(nextBtn);
+
+        this.add(searchText);
+
+        this.add(closeBtn);
+
+
+        /*javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addComponent(closeBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(prevBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(nextBtn).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(textNotFoundLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(rowsButton).addGap(8, 8, 8).addComponent(columnsButton).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(highlightAllChk).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(matchCaseChk).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(anyWordChk).addContainerGap(16, Short.MAX_VALUE)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(closeBtn).addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(prevBtn).addComponent(nextBtn).addComponent(highlightAllChk).addComponent(textNotFoundLabel).addComponent(matchCaseChk).addComponent(anyWordChk).addComponent(rowsButton).addComponent(columnsButton)));
+        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(closeBtn).addComponent(searchText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(prevBtn).addComponent(nextBtn).addComponent(highlightAllChk).addComponent(textNotFoundLabel).addComponent(matchCaseChk).addComponent(anyWordChk).addComponent(rowsButton).addComponent(columnsButton)));*/
     }// </editor-fold>//GEN-END:initComponents
 
     private void closeBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeBtnActionPerformed

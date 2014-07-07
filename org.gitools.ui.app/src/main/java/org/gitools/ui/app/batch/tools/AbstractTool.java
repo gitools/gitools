@@ -22,7 +22,7 @@
 package org.gitools.ui.app.batch.tools;
 
 import org.gitools.ui.app.commands.Command;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.kohsuke.args4j.CmdLineException;
@@ -42,6 +42,7 @@ public abstract class AbstractTool implements ITool {
         try {
             parser.parseArgument(args);
         } catch (CmdLineException e) {
+            out.println(e.getMessage());
             out.print("USAGE | " + getName() + "\n");
             parser.printUsage(out, null);
             return false;

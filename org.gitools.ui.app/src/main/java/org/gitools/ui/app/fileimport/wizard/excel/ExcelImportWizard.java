@@ -25,11 +25,11 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.fileimport.ImportWizard;
-import org.gitools.ui.app.utils.FileFormatFilter;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.utils.FileFormatFilter;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.AbstractWizard;
@@ -89,8 +89,8 @@ public class ExcelImportWizard extends AbstractWizard implements ImportWizard {
                 callback.afterLoad(resource, monitor);
             }
         };
+        Application.get().showNotification("Data imported.");
         JobThread.execute(Application.get(), loadFile);
-        Application.get().setStatusText("Done.");
     }
 
 

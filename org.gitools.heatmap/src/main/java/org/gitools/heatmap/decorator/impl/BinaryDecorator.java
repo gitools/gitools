@@ -23,6 +23,7 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.utils.colorscale.impl.BinaryColorScale;
@@ -34,6 +35,8 @@ import org.gitools.utils.xml.adapter.CutoffCmpXmlAdapter;
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement(name = "binary")
@@ -46,6 +49,9 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
 
     @XmlTransient
     private BinaryColorScale scale;
+
+    @XmlTransient
+    private NonEventToNullFunction<BinaryColorScale> binaryEvents;
 
     public BinaryDecorator() {
         super();
@@ -141,4 +147,35 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
 
     }
 
+    @Override
+    public NonEventToNullFunction getDefaultEventFunction() {
+        if (binaryEvents == null) {
+
+            binaryEvents = new NonEventToNullFunction<BinaryColorScale>(scale, "Binary events") {
+                @Override
+                public Double apply(Double value, IMatrixPosition position) {
+                    this.position = position;
+                    boolean satisfies = value != null && CutoffCmp.getFromName(getColorScale().getComparator()).compare(value, getColorScale().getCutoff());
+                    return satisfies ? null : 1.0;
+                }
+
+                @Override
+                public String getDescription() {
+                    return ("All 'true' values are events: " + getColorScale().getComparator() +
+                            " " + getColorScale().getCutoff());
+                }
+            };
+        }
+
+        return binaryEvents;
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(binaryEvents);
+
+        return list;
+    }
 }

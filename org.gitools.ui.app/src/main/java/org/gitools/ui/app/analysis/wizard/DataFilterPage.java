@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.app.analysis.wizard;
 
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.DocumentChangeListener;
-import org.gitools.ui.app.utils.FileChooserUtils;
+import org.gitools.ui.core.utils.DocumentChangeListener;
+import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
@@ -153,6 +153,8 @@ public class DataFilterPage extends AbstractWizardPage {
         populationNote = new javax.swing.JLabel();
         populationDefaultValueLabel = new javax.swing.JLabel();
         populationDefaultValueCb = new javax.swing.JComboBox();
+        populationNote1 = new javax.swing.JLabel();
+        populationNote3 = new javax.swing.JLabel();
 
         cutoffEnabledCheck.setText("Transform to 1 (0 otherwise) cells with value");
         cutoffEnabledCheck.setEnabled(false);
@@ -173,18 +175,85 @@ public class DataFilterPage extends AbstractWizardPage {
 
         populationCheck.setText("Population / Background elements:");
 
-        populationNote.setFont(populationNote.getFont().deriveFont(populationNote.getFont().getSize() - 2f));
+        populationNote.setFont(populationNote.getFont().deriveFont((populationNote.getFont().getStyle() | java.awt.Font.ITALIC), populationNote.getFont().getSize()-3));
         populationNote.setText("This should be a file containing one row id per line.");
 
         populationDefaultValueLabel.setText("Default value to use when a row doesn't exist in the data");
 
         populationDefaultValueCb.setEditable(true);
-        populationDefaultValueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"0", "Empty"}));
+        populationDefaultValueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "Empty" }));
+
+        populationNote1.setFont(populationNote1.getFont().deriveFont((populationNote1.getFont().getStyle() | java.awt.Font.ITALIC), populationNote1.getFont().getSize()-3));
+        populationNote1.setText("Binarize continuous data (f.ex. if you have selected Binomial or Fisher test)");
+
+        populationNote3.setFont(populationNote3.getFont().deriveFont((populationNote3.getFont().getStyle() | java.awt.Font.ITALIC), populationNote3.getFont().getSize()-3));
+        populationNote3.setText("Either a value or Null");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(populationCheck).addGroup(layout.createSequentialGroup().addGap(12, 12, 12).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(populationNote).addGroup(layout.createSequentialGroup().addComponent(populationFilePath, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(populationFileBrowserBtn)).addGroup(layout.createSequentialGroup().addComponent(populationDefaultValueLabel).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(populationDefaultValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))).addGroup(layout.createSequentialGroup().addComponent(cutoffEnabledCheck).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cutoffCmpCb, 0, 224, Short.MAX_VALUE).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addComponent(discardNonMappedRowsCheck)).addContainerGap()));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(populationCheck).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(populationFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(populationFileBrowserBtn)).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(populationNote).addGap(18, 18, 18).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(populationDefaultValueLabel).addComponent(populationDefaultValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(46, 46, 46).addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE).addComponent(cutoffEnabledCheck).addComponent(cutoffCmpCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)).addGap(18, 18, 18).addComponent(discardNonMappedRowsCheck).addContainerGap(141, Short.MAX_VALUE)));
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(populationCheck)
+                            .addComponent(discardNonMappedRowsCheck))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(cutoffEnabledCheck)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cutoffCmpCb, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(12, 12, 12)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(populationFilePath)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(populationFileBrowserBtn))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(populationNote3)
+                                    .addComponent(populationNote)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(populationDefaultValueLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(populationDefaultValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(populationNote1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(populationCheck)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(populationFilePath, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(populationFileBrowserBtn))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(populationNote)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(populationDefaultValueLabel)
+                    .addComponent(populationDefaultValueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(populationNote3)
+                .addGap(26, 26, 26)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cutoffEnabledCheck)
+                    .addComponent(cutoffCmpCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cutoffValue, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(populationNote1)
+                .addGap(41, 41, 41)
+                .addComponent(discardNonMappedRowsCheck)
+                .addContainerGap(99, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
     private void populationFileBrowserBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_populationFileBrowserBtnActionPerformed
@@ -210,6 +279,8 @@ public class DataFilterPage extends AbstractWizardPage {
     private javax.swing.JButton populationFileBrowserBtn;
     private javax.swing.JTextField populationFilePath;
     private javax.swing.JLabel populationNote;
+    private javax.swing.JLabel populationNote1;
+    private javax.swing.JLabel populationNote3;
     // End of variables declaration//GEN-END:variables
 
     public void setRowsFilterFileVisible(boolean visible) {

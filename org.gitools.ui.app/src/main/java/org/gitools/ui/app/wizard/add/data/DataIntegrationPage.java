@@ -24,7 +24,7 @@ package org.gitools.ui.app.wizard.add.data;
 import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.filter.DataIntegrationCriteria;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
@@ -63,7 +63,7 @@ public class DataIntegrationPage extends AbstractWizardPage {
                     rendering = rendering + intend + op.getLongName().toUpperCase() + "\n";
                 }
 
-                rendering = rendering + "    " + c.getLayer().getId() + " " + c.getComparator().getLongName() + " " + Double.toString(c.getValue()) + "\n";
+                rendering = rendering + "    " + c.getLayerId() + " " + c.getComparator().getLongName() + " " + Double.toString(c.getCutoffValue()) + "\n";
 
 
             }

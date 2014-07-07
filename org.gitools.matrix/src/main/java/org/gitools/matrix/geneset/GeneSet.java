@@ -35,6 +35,11 @@ public class GeneSet extends LinkedHashSet<String> implements IResource {
         super();
     }
 
+    @Override
+    public boolean isChanged() {
+        return true;
+    }
+
     public IResourceLocator getLocator() {
         return locator;
     }

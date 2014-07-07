@@ -82,7 +82,7 @@ public class BdmModuleMapFormat extends AbstractModuleMapFormat {
         monitor.begin("Saving module map...", moduleMap.getModules().size());
 
         try {
-            OutputStream out = resourceLocator.openOutputStream();
+            OutputStream out = resourceLocator.openOutputStream(monitor);
             PrintWriter pw = new PrintWriter(new OutputStreamWriter(out));
 
             Set<String> modules = moduleMap.getModules();
@@ -106,7 +106,6 @@ public class BdmModuleMapFormat extends AbstractModuleMapFormat {
                 monitor.worked(1);
             }
             pw.close();
-            out.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
         }

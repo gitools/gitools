@@ -30,7 +30,7 @@ import org.gitools.datasources.biomart.restful.model.MartLocation;
 import org.gitools.datasources.biomart.settings.BiomartSource;
 import org.gitools.datasources.biomart.settings.BiomartSourceManager;
 import org.gitools.ui.app.datasources.biomart.panel.AttributesTreeModel.AttributeWrapper;
-import org.gitools.ui.app.wizard.common.FilteredTreePanel;
+import org.gitools.ui.core.pages.common.FilteredTreePanel;
 
 import javax.swing.*;
 import javax.swing.event.TreeSelectionEvent;

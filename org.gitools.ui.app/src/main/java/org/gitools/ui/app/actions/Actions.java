@@ -21,14 +21,17 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.gitools.plugins.mutex.actions.MutualExclusiveSortAction;
 import org.gitools.ui.app.actions.analysis.*;
 import org.gitools.ui.app.actions.data.*;
+import org.gitools.ui.app.actions.data.analysis.ViewEnrichmentModuleDataAction;
 import org.gitools.ui.app.actions.edit.*;
 import org.gitools.ui.app.actions.file.*;
-import org.gitools.ui.app.heatmap.editor.HeatmapSearchAction;
-import org.gitools.ui.app.imageviewer.HeatmapCreateImageAction;
-import org.gitools.ui.platform.actions.ActionManager;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.app.actions.toolbar.HeatmapCreateImageAction;
+import org.gitools.ui.app.actions.toolbar.HeatmapSearchAction;
+import org.gitools.ui.app.svg.ExportHeatmapSVGAction;
+import org.gitools.ui.core.actions.ActionManager;
+import org.gitools.ui.core.actions.BaseAction;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
@@ -36,7 +39,8 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 public class Actions {
 
     // Open
-    public static final BaseAction open = new OpenFromFilesystemAction();
+    public static final BaseAction open = new OpenFromFileSystemActionSet();
+    public static final BaseAction openBrowse = new OpenFromFilesystemBrowseAction();
     public static final BaseAction openGenomeSpace = new OpenFromGenomeSpaceAction();
     public static final BaseAction openURL = new OpenFromURLAction();
 
@@ -62,6 +66,7 @@ public class Actions {
     public static final BaseAction exportMatrixAction = new ExportMatrixAction();
     public static final BaseAction exportTableAction = new ExportTableAction();
     public static final BaseAction exportHeatmapImageAction = new ExportHeatmapImageAction();
+    public static final BaseAction exportHeatmapSVGAction = new ExportHeatmapSVGAction();
     public static final BaseAction exportHierarchicalTreeImageAction = new ExportHierarchicalTreeImageAction();
     public static final BaseAction exportScaleImageAction = new ExportScaleImageAction();
 
@@ -69,6 +74,8 @@ public class Actions {
     public static final BaseAction openIntegrativeGenomicViewerAction = new OpenIntegrativeGenomicViewerAction();
     public static final BaseAction selectAllAction = new SelectAllAction();
     public static final BaseAction selectLabelHeaderAction = new SelectLabelHeaderAction();
+    public static final BaseAction unselectLabelHeaderAction = new UnselectLabelHeaderAction();
+
     public static final BaseAction unselectAllAction = new UnselectAllAction();
     public static final BaseAction addRowHeader = new AddHeaderAction(ROWS);
     public static final BaseAction addColumnHeader = new AddHeaderAction(COLUMNS);
@@ -99,25 +106,27 @@ public class Actions {
 
     public static final BaseAction sortByColumnsAnnotation = new SortByAnnotationAction(COLUMNS);
 
+    public static final BaseAction sortByPredefinedListRowsAction = new SortByPredefinedListAction(ROWS);
+
+    public static final BaseAction sortByPredefinedListColumnsAction = new SortByPredefinedListAction(COLUMNS);
+
     public static final BaseAction sortByHeader = new SortByHeaderAction();
+
+    public static final BaseAction invertOrder = new InvertOrderAction();
 
     public static final BaseAction sortColumnsByValue = new SortByValueAction(COLUMNS);
 
     public static final BaseAction sortRowsByValue = new SortByValueAction(ROWS);
 
-    public static final BaseAction sortColumnsByMutualExclusion = new SortByMutualExclusionAction(COLUMNS);
+    public static final BaseAction sortColumnsByMutualExclusion = new MutualExclusiveSortAction(COLUMNS);
 
-    public static final BaseAction sortRowsByMutualExclusion = new SortByMutualExclusionAction(ROWS);
+    public static final BaseAction sortRowsByMutualExclusion = new MutualExclusiveSortAction(ROWS);
 
     public static final BaseAction hideSelectedRowsAction = new HideSelectionAction(ROWS);
-
-    public static final BaseAction hideEmptyLabelHeaderAction = new HideEmptyLabelHeaderAction();
 
     public static final BaseAction showOnlyHeaderAction = new ShowOnlyLabelHeaderAction();
 
     public static final BaseAction clusteringAction = new ClusteringAction();
-
-    public static final BaseAction oncodrive = new OncodriveAnalysisAction();
 
     public static final BaseAction enrichment = new EnrichmentAnalysisAction();
 
@@ -136,6 +145,8 @@ public class Actions {
     public static final BaseAction addNewLayers = new AddNewLayersFromFileAction();
 
     public static final BaseAction heatmapSettings = new HeatmapSettingsAction();
+
+    public static final BaseAction viewEnrichmentModuleData = new ViewEnrichmentModuleDataAction();
 
 
     private Actions() {

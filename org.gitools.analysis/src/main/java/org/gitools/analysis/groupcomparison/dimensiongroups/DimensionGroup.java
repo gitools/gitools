@@ -21,20 +21,23 @@
  */
 package org.gitools.analysis.groupcomparison.dimensiongroups;
 
+import org.gitools.analysis.groupcomparison.filters.GroupByLabelPredicate;
+import org.gitools.analysis.groupcomparison.filters.GroupByValuePredicate;
 import org.gitools.api.matrix.IMatrixPredicate;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAnyElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({GroupByLabelPredicate.class, GroupByValuePredicate.class})
 public class DimensionGroup {
 
     protected String name = "";
     protected DimensionGroupEnum groupType;
 
-    //TODO
-    @XmlTransient
+    @XmlAnyElement(lax = true)
     protected IMatrixPredicate predicate;
 
     protected String property = "";

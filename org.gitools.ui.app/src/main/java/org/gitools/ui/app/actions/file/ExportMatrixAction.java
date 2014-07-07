@@ -25,13 +25,13 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewLayers;
-import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.export.TextMatrixViewExporter;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.FileChooserUtils;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -92,6 +92,6 @@ public class ExportMatrixAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText(selected + " exported.");
+        Application.get().showNotification(selected + " exported.");
     }
 }

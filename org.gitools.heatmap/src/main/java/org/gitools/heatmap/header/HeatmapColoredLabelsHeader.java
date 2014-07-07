@@ -26,7 +26,9 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.matrix.filter.PatternFunction;
+import org.gitools.utils.color.ColorRegistry;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -157,7 +159,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     }
 
     @Override
-    public void populateDetails(List<DetailsDecoration> details, String identifier) {
+    public void populateDetails(List<DetailsDecoration> details, String identifier, boolean selected) {
 
         DetailsDecoration decoration = new DetailsDecoration(getTitle(), getDescription(), getDescriptionUrl(), null, getValueUrl());
         decoration.setReference(this);
@@ -166,6 +168,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
             reset();
             decorate(decoration, getColoredLabel(identifier), true);
         }
+        decoration.setSelected(selected);
 
         details.add(decoration);
     }
@@ -185,6 +188,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     }
 
     public void decorate(Decoration decoration, ColoredLabel cluster, boolean forceShowLabel) {
+
 
         Color clusterColor = cluster != null ? cluster.getColor() : getBackgroundColor();
         decoration.setBgColor(clusterColor);
@@ -214,4 +218,11 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
     public String getAnnotationMetadata(String metadataKey, String annotationKey) {
         return getHeatmapDimension().getAnnotations().getAnnotationMetadata(metadataKey, annotationKey);
     }
+
+    void afterUnmarshal(Unmarshaller u, Object parent) {
+        for (ColoredLabel cl : coloredLabels) {
+            ColorRegistry.get().registerId(cl.getValue(), cl.getColor());
+        }
+    }
+
 }

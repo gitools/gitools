@@ -112,7 +112,7 @@ public class FlatTextImporter implements Closeable {
 
 
     public void loadHead(IProgressMonitor monitor) {
-        monitor.begin("Opening [" + locator.getName() + "]", 0);
+        monitor.begin("Loading preview: " + locator.getName(), 0);
         reader = null;
         try {
             reader = newCSVReader(monitor);
@@ -132,7 +132,8 @@ public class FlatTextImporter implements Closeable {
                     line = reader.readNext();
                     if (line != null) {
                         ArrayList<FileField> fields = new ArrayList<FileField>(line.length);
-                        for (int j = 0; j < line.length; j++) {
+                        int previewFields = line.length;
+                        for (int j = 0; j < previewFields; j++) {
                             fields.add(new FileField(line[j], j, i));
                         }
                         preview.add(fields);

@@ -33,10 +33,11 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.List;
 
 public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXmlElement, ResourceReference> {
-    private final IResourceLocator resourceLocator;
-    private final List<ResourceReference> dependencies;
 
-    public ResourceReferenceXmlAdapter(List<ResourceReference> dependencies, IResourceLocator resourceLocator) {
+    private final IResourceLocator resourceLocator;
+    private final List<ResourceReference<? extends IResource>> dependencies;
+
+    public ResourceReferenceXmlAdapter(List<ResourceReference<? extends IResource>> dependencies, IResourceLocator resourceLocator) {
         super();
         this.resourceLocator = resourceLocator;
         this.dependencies = dependencies;
@@ -71,7 +72,7 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
 
         // First force all the dependencies to load data into memory
         // this is important when we are overwriting a ZIP file
-        resourceReference.get();
+        IResource resource = resourceReference.get();
 
         IPersistenceManager pm = ApplicationContext.getPersistenceManager();
 
@@ -87,12 +88,10 @@ public class ResourceReferenceXmlAdapter extends XmlAdapter<ResourceReferenceXml
             // It's a ZIP container. Set the resource locator.
             String extension = pm.getDefaultExtension(resourceReference.getResourceClass());
             resourceReference.setLocator(resourceLocator.getReferenceLocator(resourceReference.getBaseName() + "." + extension));
-            resourceReference.setChanged(true);
+            resourceReference.setChanged(resource.isChanged());
         }
 
-        if (resourceReference.isChanged()) {
-            dependencies.add(resourceReference);
-        }
+        dependencies.add(resourceReference);
 
         IResourceLocator referenceLocator = resourceReference.getLocator();
         return new ResourceReferenceXmlElement(null, referenceLocator.getName());

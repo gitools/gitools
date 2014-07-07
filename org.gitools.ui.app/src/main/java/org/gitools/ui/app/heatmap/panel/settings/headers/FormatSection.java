@@ -23,13 +23,12 @@ package org.gitools.ui.app.heatmap.panel.settings.headers;
 
 import com.jgoodies.binding.PresentationModel;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.utils.FontUtils;
-import org.gitools.ui.app.utils.landf.MyWebColorChooserField;
+import org.gitools.ui.core.utils.FontUtils;
+import org.gitools.ui.core.utils.landf.MyWebColorChooserField;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 

@@ -22,10 +22,13 @@
 package org.gitools.analysis.htest.enrichment;
 
 import org.gitools.analysis.htest.HtestAnalysis;
+import org.gitools.api.matrix.IKey;
+import org.gitools.api.matrix.Key;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.io.Serializable;
 
 @XmlRootElement
@@ -33,6 +36,9 @@ import java.io.Serializable;
 public class EnrichmentAnalysis extends HtestAnalysis implements Serializable {
 
     private boolean discardNonMappedRows;
+
+    @XmlTransient
+    public static IKey<EnrichmentAnalysis> CACHE_KEY_ENHRICHMENT = new Key<>();
 
     public EnrichmentAnalysis() {
     }

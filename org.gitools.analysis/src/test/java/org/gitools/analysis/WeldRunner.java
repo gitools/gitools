@@ -23,6 +23,7 @@ package org.gitools.analysis;
 
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.persistence.IPersistenceManager;
+import org.gitools.heatmap.plugins.PluginManager;
 import org.gitools.utils.progressmonitor.StreamProgressMonitor;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
@@ -38,6 +39,7 @@ public class WeldRunner extends BlockJUnit4ClassRunner {
         WeldContainer container = weld.initialize();
 
         ApplicationContext.setPersistenceManager(container.instance().select(IPersistenceManager.class).get());
+        ApplicationContext.setPluginManger(container.instance().select(PluginManager.class).get());
         ApplicationContext.setProgressMonitor(new StreamProgressMonitor(System.out, false, false));
     }
 }

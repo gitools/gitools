@@ -50,6 +50,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     private JButton previewRowIdsButton;
     private JButton previewColumnIdsButton;
     private JFormattedTextField valueNameBox;
+    private JLabel previewLabel;
     private List<FileHeader> allheaders;
     private List<List<FileField>> preview;
     private FileHeader lastSelected;
@@ -129,10 +130,13 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     }
 
     private boolean correctValueName() {
-        return !valueNameBox.getText().equals("");
+        return !valueNameBox.getText().equals("") && !valueNameBox.getText().toLowerCase().equals("value")
+                && !valueNameBox.getText().toLowerCase().equals("values");
     }
 
     private void updateRowIdHeader() {
+        previewLabel.setText("Row ids preview");
+
         FileHeader newHeader = allheaders.get((int) rowIdsSpinner.getValue() - 1);
         FileHeader oldHeader = rowIdsHeader;
 
@@ -229,6 +233,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
 
     private void updateColumnIdPreview() {
 
+        previewLabel.setText("Column ids preview");
 
         int rowPos = (int) rowIdsSpinner.getModel().getValue() - 1;
         StringBuilder html = new StringBuilder("");
@@ -251,6 +256,8 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     }
 
     private void updateColumnPreview(FileHeader selectedValue) {
+
+        previewLabel.setText("Data column preview");
 
 
         if (selectedValue == null)
@@ -300,7 +307,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
         }
 
         if (!correctValueName()) {
-            setMessage(MessageStatus.ERROR, "Please specify a name for the value (e.g. expression value)");
+            setMessage(MessageStatus.ERROR, "Please specify a name describing the data values (e.g. expression)");
             setComplete(false);
             return;
         }

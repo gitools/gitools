@@ -31,7 +31,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class NumericColorScale implements IColorScale, IColorScaleHtml {
+public abstract class NumericColorScale implements INumericColorScale, IColorScaleHtml {
 
     @XmlJavaTypeAdapter(ColorXmlAdapter.class)
     private Color notANumberColor;
@@ -153,5 +153,10 @@ public abstract class NumericColorScale implements IColorScale, IColorScaleHtml 
 
             rangesList.add(range);
         }
+    }
+
+    @Override
+    public boolean isOutsideRange(double value) {
+        return value < getMinValue() || value > getMaxValue();
     }
 }

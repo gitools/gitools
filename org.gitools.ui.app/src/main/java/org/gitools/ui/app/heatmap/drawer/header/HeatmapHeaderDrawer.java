@@ -24,13 +24,10 @@ package org.gitools.ui.app.heatmap.drawer.header;
 import com.google.common.collect.Lists;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.heatmap.header.*;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapDrawer;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -66,6 +63,8 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 d = new HeatmapColoredLabelsDrawer(getHeatmap(), heatmapDimension, (HeatmapColoredLabelsHeader) h);
             } else if (h instanceof HeatmapDecoratorHeader) {
                 d = new HeatmapDecoratorHeaderDrawer(getHeatmap(), heatmapDimension, (HeatmapDecoratorHeader) h);
+            } else if (h instanceof HierarchicalClusterHeatmapHeader) {
+                d = new HierarchicalClusterHeaderDrawer(getHeatmap(), heatmapDimension, (HierarchicalClusterHeatmapHeader) h);
             }
 
             if (d != null) {
@@ -112,11 +111,13 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
     public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
 
         // Clear background
-        g.setColor(Color.WHITE);
-        g.fillRect(clip.x, clip.y, clip.width, clip.height);
+        if (!isPictureMode()) {
+            g.setColor(Color.WHITE);
+            g.fillRect(clip.x, clip.y, clip.width, clip.height);
+        }
 
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_GASP);
 
         if (isHorizontal()) {
             int x = box.y;
@@ -126,10 +127,15 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
             g.rotate(radianAngle90);
             g.translate(-totalSize, 0);
             g.fillRect(box.x, box.y, box.width, box.height);
-            for (AbstractHeatmapDrawer d : drawers) {
+            for (AbstractHeatmapHeaderDrawer d : drawers) {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.height, sz.width);
                 d.draw(g, box2, clip2.intersection(box2));
+                if (!isPictureMode()) {
+                    int mode = heatmapDimension.getHighlightedHeaders().contains(d.getHeader().getTitle()) ?
+                            HIGHLIGHT_POLICY_FORCE : HIGHLIGHT_POLICY_NORMAL;
+                    drawSelectedHighlightedAndFocus(g, box2, heatmapDimension, true, mode);
+                }
                 x += box2.width;
             }
         } else {
@@ -137,16 +143,17 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
             int y = box.y;
 
             Dimension sz;
-            for (AbstractHeatmapDrawer d : drawers) {
+            for (AbstractHeatmapHeaderDrawer d : drawers) {
                 sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, clip.width - x, sz.height);
                 d.draw(g, box2, clip.intersection(box2));
+                if (!isPictureMode()) {
+                    int mode = heatmapDimension.getHighlightedHeaders().contains(d.getHeader().getTitle()) ?
+                            HIGHLIGHT_POLICY_FORCE : HIGHLIGHT_POLICY_NORMAL;
+                    drawSelectedHighlightedAndFocus(g, box2, heatmapDimension, true, mode);
+                }
                 x += sz.width;
             }
-        }
-
-        if (!isPictureMode()) {
-            drawSelectedAndFocus(g, box, heatmapDimension, true);
         }
     }
 
@@ -187,6 +194,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
+                    d.configure(p, x, y);
                     return d.getHeader();
                 }
                 y += sz.height;
@@ -196,6 +204,7 @@ public class HeatmapHeaderDrawer extends AbstractHeatmapDrawer {
                 Dimension sz = d.getSize();
                 Rectangle box2 = new Rectangle(x, y, sz.width, sz.height);
                 if (box2.contains(p)) {
+                    d.configure(p, x, y);
                     return d.getHeader();
                 }
                 x += sz.width;

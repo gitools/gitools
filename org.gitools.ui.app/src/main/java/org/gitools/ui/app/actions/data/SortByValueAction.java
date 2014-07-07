@@ -29,9 +29,9 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.MatrixViewSorter;
-import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.sort.ValueSortDialog;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.aggregation.AggregatorFactory;
@@ -85,7 +85,7 @@ public class SortByValueAction extends HeatmapAction {
 
         final List<IMatrixLayer> criteriaList = dlg.getCriteriaList();
         if (criteriaList.size() == 0) {
-            Application.get().setStatusText("No criteria specified.");
+            Application.get().showNotification("No sort criteria specified.");
             return;
         }
 
@@ -97,6 +97,6 @@ public class SortByValueAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText("Sorted.");
+        Application.get().showNotification("Value sorting applied.");
     }
 }

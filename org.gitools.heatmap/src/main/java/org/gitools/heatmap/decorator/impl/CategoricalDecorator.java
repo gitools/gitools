@@ -23,6 +23,7 @@ package org.gitools.heatmap.decorator.impl;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.utils.colorscale.ColorScalePoint;
@@ -30,12 +31,11 @@ import org.gitools.utils.colorscale.impl.CategoricalColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.xml.adapter.ColorXmlAdapter;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
 public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
@@ -44,6 +44,9 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
     public static final String PROPERTY_CATEGORIES = "categories";
 
     private CategoricalColorScale scale;
+
+    @XmlTransient
+    private NonEventToNullFunction<CategoricalColorScale> categoricalEvents;
 
     public CategoricalDecorator() {
         super();
@@ -108,10 +111,63 @@ public class CategoricalDecorator extends Decorator<CategoricalColorScale> {
         return getScale().getPointObjects();
     }
 
-    public void setCategories(ColorScalePoint[] newScalePoints) {
+    public void setCategories(ColorScalePoint... newScalePoints) {
         ColorScalePoint[] old = getScale().getPointObjects();
         getScale().setPointObjects(newScalePoints);
         firePropertyChange(PROPERTY_CATEGORIES, old, newScalePoints);
+    }
+
+    @Override
+    public NonEventToNullFunction getDefaultEventFunction() {
+
+        if (categoricalEvents == null) {
+            categoricalEvents = new NonEventToNullFunction<CategoricalColorScale>(scale, "Categorical Events") {
+
+                @Override
+                public Double apply(Double value, IMatrixPosition position) {
+                    this.position = position;
+                    if (value == null) {
+                        return null;
+                    }
+
+                    for (double pointValue : getColorScale().getPoints()) {
+                        if (pointValue == value) {
+                            return value;
+                        }
+                    }
+                    return null;
+                }
+
+                @Override
+                public String getDescription() {
+                    StringBuilder sb = new StringBuilder("All values represented in the categorical scale are events: ");
+                    boolean first = true;
+
+                    for (ColorScalePoint p : getCategories()) {
+                        if (first) {
+                            first = false;
+                        } else {
+                            sb.append(", ");
+                        }
+                        sb.append(p.getName());
+                    }
+                    return sb.toString();
+                }
+            };
+        }
+
+        return categoricalEvents;
+
+    }
+
+    @Override
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        List<NonEventToNullFunction> list = new ArrayList<>();
+        list.add(getDefaultEventFunction());
+        list.addAll(super.getEventFunctionAlternatives());
+
+        return list;
     }
 
 }

@@ -53,6 +53,8 @@ public class FileFormats {
     // Image
     public static final FileFormat PNG = new FileFormat("PNG", "png", true, false);
 
+    public static final FileFormat SVG = new FileFormat("SVG", "svg", true, false);
+
     public static final FileFormat JPG = new FileFormat("JPEG", "jpg", true, false);
 
     // Html

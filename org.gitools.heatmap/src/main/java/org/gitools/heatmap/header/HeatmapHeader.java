@@ -34,7 +34,8 @@ import java.awt.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
-@XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDecoratorHeader.class, HeatmapTextLabelsHeader.class})
+@XmlSeeAlso({HeatmapColoredLabelsHeader.class, HeatmapDecoratorHeader.class, HeatmapTextLabelsHeader.class,
+HierarchicalClusterHeatmapHeader.class})
 public abstract class HeatmapHeader extends Model {
     public static final String PROPERTY_TITLE = "title";
     public static final String PROPERTY_SIZE = "size";
@@ -98,7 +99,7 @@ public abstract class HeatmapHeader extends Model {
 
     }
 
-    HeatmapHeader(HeatmapDimension heatmapDimension) {
+    public HeatmapHeader(HeatmapDimension heatmapDimension) {
         this.heatmapDimension = heatmapDimension;
         this.title = "";
         this.size = 100;
@@ -305,7 +306,7 @@ public abstract class HeatmapHeader extends Model {
 
     }
 
-    public void populateDetails(List<DetailsDecoration> details, String identifier) {
+    public void populateDetails(List<DetailsDecoration> details, String identifier, boolean selected) {
     }
 
     public abstract Function<String, String> getIdentifierTransform();
@@ -334,5 +335,9 @@ public abstract class HeatmapHeader extends Model {
         title = annotationPattern.replaceAll("[{}$]", "");
 
         return title;
+    }
+
+    public int getZoomStepSize() {
+        return 1;
     }
 }

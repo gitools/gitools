@@ -24,7 +24,7 @@ package org.gitools.ui.platform.wizard;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.DialogButtonsPanel;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 import org.gitools.ui.platform.help.Help;
 import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.help.HelpException;
@@ -56,13 +56,13 @@ public class WizardDialog extends AbstractDialog {
 
     private boolean cancelled;
 
-    public WizardDialog(Window owner, IWizard wizard) {
-        super(owner, wizard.getTitle(), wizard.getLogo(), new Dimension(800, 600), new Dimension(800, 600));
+    public WizardDialog(Window owner, IWizard wizardModel) {
+        super(owner, wizardModel.getTitle(), wizardModel.getLogo(), new Dimension(800, 600), new Dimension(800, 600));
 
         pageControlsMap = new HashMap<>();
         pageHistory = new Stack<>();
 
-        wizard.addWizardUpdateListener(new IWizardUpdateListener() {
+        wizardModel.addWizardUpdateListener(new IWizardUpdateListener() {
             @Override
             public void pageUpdated(IWizardPage page) {
                 updateState();
@@ -70,13 +70,22 @@ public class WizardDialog extends AbstractDialog {
 
             @Override
             public void wizardUpdated(IWizard wizard) {
-                updateState();
+
+                IWizardPage lastPage = pageHistory.peek();
+                IWizardPage currentPage = getWizard().getCurrentPage();
+
+                if (lastPage == null || !lastPage.equals(currentPage)) {
+                    setCurrentPage(currentPage);
+                } else {
+                    updateState();
+                }
+
             }
         });
 
-        wizard.addPages();
+        wizardModel.addPages();
 
-        setCurrentPage(wizard.getStartingPage());
+        setCurrentPage(wizardModel.getStartingPage());
 
         cancelled = true;
     }
@@ -107,6 +116,19 @@ public class WizardDialog extends AbstractDialog {
 
         getWizard().setCurrentPage(page);
 
+        updateCurrentPage();
+
+        updateState();
+
+        page.updateControls();
+
+        getWizard().pageEntered(page);
+    }
+
+    private void updateCurrentPage() {
+
+        IWizardPage page = getWizard().getCurrentPage();
+
         JComponent contents = getPageContents(page.getId());
         if (contents == null) {
             contents = new JPanel();
@@ -115,12 +137,6 @@ public class WizardDialog extends AbstractDialog {
         pagePanel.removeAll();
         pagePanel.add(contents, BorderLayout.CENTER);
         contents.repaint();
-
-        updateState();
-
-        page.updateControls();
-
-        getWizard().pageEntered(page);
     }
 
     private void updateButtons() {
@@ -222,7 +238,7 @@ public class WizardDialog extends AbstractDialog {
             try {
                 Help.get().showHelp(context);
             } catch (HelpException ex) {
-                ExceptionDialog dlg = new ExceptionDialog(this, ex);
+                ExceptionGlassPane dlg = new ExceptionGlassPane(this, ex);
                 dlg.setVisible(true);
             }
         }

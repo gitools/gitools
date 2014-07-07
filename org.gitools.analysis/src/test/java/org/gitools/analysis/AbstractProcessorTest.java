@@ -66,11 +66,14 @@ public abstract class AbstractProcessorTest<A extends Analysis> {
     protected IMatrix storeAndLoadMatrix(IMatrix matrixToStore) throws IOException {
 
         // Write the results to a temporal file
-        File tmpFile = File.createTempFile(getClass().getSimpleName(), ".tdm");
+        File tmpFile = File.createTempFile(getClass().getSimpleName(), ".tdm.gz");
         tmpFile.deleteOnExit();
-        IResourceLocator tmpLocator = new UrlResourceLocator(tmpFile);
+        IResourceLocator tmpLocator = getPersistenceManager().applyFilters(new UrlResourceLocator(tmpFile));
         IResourceFormat<IMatrix> format = getPersistenceManager().getFormat("tdm", IMatrix.class);
         getPersistenceManager().store(tmpLocator, matrixToStore, format, getProgressMonitor());
+
+        File indexFile = new File(tmpFile.getAbsolutePath() + ".mtabix");
+        indexFile.deleteOnExit();
 
         // Load the results from the temporal file
         return new ResourceReference<>(tmpLocator, format).get();

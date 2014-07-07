@@ -26,11 +26,15 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.resource.AbstractXmlFormat;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 @ApplicationScoped
 public class HeatmapFormat extends AbstractXmlFormat<Heatmap> {
@@ -40,6 +44,21 @@ public class HeatmapFormat extends AbstractXmlFormat<Heatmap> {
 
     public HeatmapFormat() {
         super(EXTENSION, Heatmap.class);
+    }
+
+    @Override
+    public void beforeWrite(OutputStream out, IResourceLocator resourceLocator, Heatmap resource, Marshaller marshaller, IProgressMonitor progressMonitor) throws PersistenceException {
+
+        if (resource.getContents() instanceof HashMatrix) {
+
+            HashMatrixDimension rows = (HashMatrixDimension) resource.getContents().getRows();
+            HashMatrixDimension columns = (HashMatrixDimension) resource.getContents().getColumns();
+
+            rows.optimize(resource.getRows());
+            columns.optimize(resource.getColumns());
+        }
+
+        super.beforeWrite(out, resourceLocator, resource, marshaller, progressMonitor);
     }
 
     @Override

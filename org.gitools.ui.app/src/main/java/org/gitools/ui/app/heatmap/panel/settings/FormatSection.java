@@ -25,12 +25,16 @@ import com.jgoodies.binding.adapter.ComboBoxAdapter;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.ui.core.utils.FontUtils;
+import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +51,8 @@ public class FormatSection implements ISettingsSection {
     private JPanel mainPanel;
     private JComboBox cellFormatComboBox;
     private JComboBox detailsFormatComboBox;
+    private JTextField fontTextField;
+    private JButton changeButton;
 
     public FormatSection(final HeatmapLayer layer) {
         super();
@@ -68,6 +74,26 @@ public class FormatSection implements ISettingsSection {
                         )
                 ));
 
+
+        changeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                FontChooserDialog dlg = new FontChooserDialog(null, layer.getFont(), false);
+                dlg.setVisible(true);
+
+                if (dlg.isCancelled()) {
+                    return;
+                }
+
+                layer.setFont(dlg.getFont());
+
+                fontTextField.setFont(layer.getFont());
+                fontTextField.setText(FontUtils.fontText(layer.getFont()));
+            }
+        });
+
+        fontTextField.setFont(layer.getFont());
+        fontTextField.setText(FontUtils.fontText(layer.getFont()));
     }
 
 

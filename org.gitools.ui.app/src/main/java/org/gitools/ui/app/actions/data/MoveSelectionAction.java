@@ -24,9 +24,9 @@ package org.gitools.ui.app.actions.data;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.ui.app.DimensionIcons;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
+import org.gitools.ui.platform.icons.DimensionIcons;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;

@@ -21,22 +21,16 @@
  */
 package org.gitools.ui.app.actions.data;
 
-import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.progress.JobRunnable;
+import org.gitools.ui.app.commands.DetectCategoriesCommand;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobThread;
 
 import java.awt.event.ActionEvent;
-import java.util.ArrayList;
-import java.util.concurrent.CancellationException;
 
 
 public class DetectCategoriesAction extends HeatmapAction {
 
-    private ArrayList<Double> categories;
 
     public DetectCategoriesAction() {
         super("<html><i>Detect</i> layer categories</html>");
@@ -49,40 +43,10 @@ public class DetectCategoriesAction extends HeatmapAction {
 
     public void run() {
         final Heatmap heatmap = getHeatmap();
-        final ArrayList<Double> categories = new ArrayList<>();
 
-        JobThread.execute(Application.get(), new JobRunnable() {
+        JobThread.execute(getParentWindow(), new DetectCategoriesCommand(heatmap));
 
-            @Override
-            public void run(IProgressMonitor monitor) {
-
-                try {
-                    monitor.begin("Detecting categories ...", heatmap.getRows().size());
-
-                    IMatrixPosition position = heatmap.newPosition();
-                    for (String row : position.iterate(heatmap.getRows()).monitor(monitor)) {
-                        for (Object v : position.iterate(heatmap.getLayers().getTopLayer(), heatmap.getColumns())) {
-
-                            if (v != null && !categories.contains(v)) {
-                                categories.add((Double) v);
-                            }
-                        }
-                        if (categories.size() > 30) {
-                            break;
-                        }
-                    }
-
-                } catch (CancellationException e) {
-                    categories.clear();
-                }
-            }
-        });
-
-        this.categories = categories;
-        Application.get().setStatusText("Sort done.");
     }
 
-    public ArrayList<Double> getCategories() {
-        return categories;
-    }
+
 }

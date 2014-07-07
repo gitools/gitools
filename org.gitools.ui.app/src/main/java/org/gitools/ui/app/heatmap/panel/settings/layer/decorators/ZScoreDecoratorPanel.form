@@ -24,12 +24,12 @@
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:max(d;4px):noGrow"/>
-        <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:max(d;4px):noGrow"/>
+        <rowspec value="center:28px:noGrow"/>
         <colspec value="fill:max(d;4px):noGrow"/>
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:min(d;100px):grow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:d:grow"/>
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
           <forms/>
@@ -56,7 +56,7 @@
               <text value="Left"/>
             </properties>
           </component>
-          <component id="d7169" class="javax.swing.JTextField" binding="leftMaxColor" custom-create="true">
+          <component id="42088" class="javax.swing.JTextField" binding="rightMaxColor" custom-create="true">
             <constraints>
               <grid row="2" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -65,35 +65,7 @@
             </constraints>
             <properties/>
           </component>
-          <component id="42088" class="javax.swing.JTextField" binding="rightMaxColor" custom-create="true">
-            <constraints>
-              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-              <forms defaultalign-horz="false"/>
-            </constraints>
-            <properties/>
-          </component>
           <component id="98c8d" class="javax.swing.JTextField" binding="nonSigColor" custom-create="true">
-            <constraints>
-              <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="-1"/>
-              </grid>
-              <forms defaultalign-horz="false"/>
-            </constraints>
-            <properties/>
-          </component>
-          <component id="44c7d" class="javax.swing.JLabel">
-            <constraints>
-              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
-              <forms defaultalign-horz="false"/>
-            </constraints>
-            <properties>
-              <font style="1"/>
-              <text value="Non-sig"/>
-            </properties>
-          </component>
-          <component id="b5de" class="javax.swing.JTextField" binding="rightMinColor" custom-create="true">
             <constraints>
               <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
@@ -102,9 +74,19 @@
             </constraints>
             <properties/>
           </component>
+          <component id="44c7d" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <font style="1"/>
+              <text value="Non-sig"/>
+            </properties>
+          </component>
           <component id="5de0a" class="javax.swing.JTextField" binding="emptyColor" custom-create="true">
             <constraints>
-              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
               <forms defaultalign-horz="false"/>
@@ -113,7 +95,7 @@
           </component>
           <component id="43bd2" class="javax.swing.JLabel">
             <constraints>
-              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties>
@@ -123,14 +105,14 @@
           </component>
           <component id="faba1" class="javax.swing.JSpinner" binding="significance">
             <constraints>
-              <grid row="12" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <grid row="8" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties/>
           </component>
           <component id="8ceef" class="javax.swing.JLabel">
             <constraints>
-              <grid row="12" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="8" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties>
@@ -140,13 +122,68 @@
           </component>
           <component id="a0182" class="javax.swing.JLabel">
             <constraints>
-              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
               <forms defaultalign-horz="false"/>
             </constraints>
             <properties>
               <font style="1"/>
               <text value="Right"/>
             </properties>
+          </component>
+          <component id="d99ad" class="javax.swing.JLabel">
+            <constraints>
+              <grid row="10" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <font style="1"/>
+              <text value="Max"/>
+            </properties>
+          </component>
+          <component id="1f147" class="javax.swing.JFormattedTextField" binding="halfAmplitude">
+            <constraints>
+              <grid row="10" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties/>
+            <clientProperties>
+              <caretAspectRatio class="java.lang.Double" value="0.025"/>
+            </clientProperties>
+          </component>
+          <component id="d7169" class="javax.swing.JTextField" binding="leftMaxColor" custom-create="true">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="b5de" class="javax.swing.JTextField" binding="rightMinColor" custom-create="true">
+            <constraints>
+              <grid row="2" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties/>
+          </component>
+          <component id="2553a" class="javax.swing.JFormattedTextField" binding="translatedSignificance">
+            <constraints>
+              <grid row="8" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                <preferred-size width="150" height="-1"/>
+              </grid>
+              <forms defaultalign-horz="false"/>
+            </constraints>
+            <properties>
+              <editable value="false"/>
+              <enabled value="false"/>
+            </properties>
+            <clientProperties>
+              <caretAspectRatio class="java.lang.Double" value="0.025"/>
+            </clientProperties>
           </component>
         </children>
       </grid>

@@ -25,34 +25,27 @@ import org.gitools.matrix.model.matrix.element.LayerDef;
 
 import java.io.Serializable;
 
-public abstract class CommonResult implements Serializable {
+public abstract class CommonResult extends SimpleResult implements Serializable {
 
     private int N;
     private double leftPvalue;
     private double rightPvalue;
-    private double twoTailPvalue;
     private double corrLeftPvalue;
     private double corrRightPvalue;
-    private double corrTwoTailPvalue;
 
     public CommonResult(int N, double leftPvalue, double rightPvalue, double twoTailPvalue) {
+        super(N, twoTailPvalue);
 
         this.leftPvalue = leftPvalue;
         this.N = N;
         this.rightPvalue = rightPvalue;
-        this.twoTailPvalue = twoTailPvalue;
     }
 
-    @LayerDef(id = "N", name = "N", description = "Number of elements")
-    public int getN() {
-        return N;
-    }
 
-    public void setN(int n) {
-        N = n;
-    }
-
-    @LayerDef(id = "left-p-value", name = "Left P-Value", description = "P-Value for alternative hipothesis lower than")
+    @LayerDef(id = "left-p-value",
+            name = "Left P-Value",
+            description = "P-Value for alternative hipothesis 'lower than'",
+            groups = {SimpleResult.RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getLeftPvalue() {
         return leftPvalue;
     }
@@ -61,7 +54,10 @@ public abstract class CommonResult implements Serializable {
         this.leftPvalue = leftPvalue;
     }
 
-    @LayerDef(id = "right-p-value", name = "Right P-Value", description = "P-Value for alternative hipothesis greater than")
+    @LayerDef(id = "right-p-value",
+            name = "Right P-Value",
+            description = "P-Value for alternative hipothesis 'greater than'",
+            groups = {SimpleResult.RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getRightPvalue() {
         return rightPvalue;
     }
@@ -70,16 +66,10 @@ public abstract class CommonResult implements Serializable {
         this.rightPvalue = rightPvalue;
     }
 
-    @LayerDef(id = "two-tail-p-value", name = "Two tail P-Value", description = "P-Value for alternative hipothesis different than")
-    public double getTwoTailPvalue() {
-        return twoTailPvalue;
-    }
-
-    public void setTwoTailPvalue(double twoTailPvalue) {
-        this.twoTailPvalue = twoTailPvalue;
-    }
-
-    @LayerDef(id = "corrected-left-p-value", name = "Corrected left P-Value", description = "Corrected P-Value for alternative hipothesis lower than")
+    @LayerDef(id = "corrected-left-p-value",
+            name = "Corrected left P-Value",
+            description = "Corrected P-Value for alternative hipothesis 'lower than'",
+            groups = {SimpleResult.CORRECTED_RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getCorrLeftPvalue() {
         return corrLeftPvalue;
     }
@@ -88,7 +78,10 @@ public abstract class CommonResult implements Serializable {
         this.corrLeftPvalue = corrLeftPvalue;
     }
 
-    @LayerDef(id = "corrected-right-p-value", name = "Corrected right P-Value", description = "Corrected P-Value for alternative hipothesis greater than")
+    @LayerDef(id = "corrected-right-p-value",
+            name = "Corrected right P-Value",
+            description = "Corrected P-Value for alternative hipothesis 'greater than'",
+            groups = {SimpleResult.CORRECTED_RESULTS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getCorrRightPvalue() {
         return corrRightPvalue;
     }
@@ -97,25 +90,16 @@ public abstract class CommonResult implements Serializable {
         this.corrRightPvalue = corrRightPvalue;
     }
 
-    @LayerDef(id = "corrected-two-tail-p-value", name = "Corrected two tail P-Value", description = "Corrected P-Value for alternative hipothesis different than")
-    public double getCorrTwoTailPvalue() {
-        return corrTwoTailPvalue;
-    }
-
-    public void setCorrTwoTailPvalue(double corrTwoTailPvalue) {
-        this.corrTwoTailPvalue = corrTwoTailPvalue;
-    }
-
     @Override
     public String toString() {
         return "CommonResult{" +
                 "N=" + N +
                 ", leftPvalue=" + leftPvalue +
                 ", rightPvalue=" + rightPvalue +
-                ", twoTailPvalue=" + twoTailPvalue +
+                ", twoTailPvalue=" + getTwoTailPvalue() +
                 ", corrLeftPvalue=" + corrLeftPvalue +
                 ", corrRightPvalue=" + corrRightPvalue +
-                ", corrTwoTailPvalue=" + corrTwoTailPvalue +
+                ", corrTwoTailPvalue=" + getCorrTwoTailPvalue() +
                 '}';
     }
 }

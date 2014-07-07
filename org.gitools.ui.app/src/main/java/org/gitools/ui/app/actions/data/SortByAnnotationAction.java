@@ -27,7 +27,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.MatrixViewSorter;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.sort.AnnotationSortPage;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -66,7 +66,7 @@ public class SortByAnnotationAction extends HeatmapDimensionAction {
             }
         });
 
-        Application.get().setStatusText("Sort done.");
+        Application.get().showNotification("Annotation sorting applied");
     }
 
 }

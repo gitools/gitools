@@ -21,14 +21,12 @@
  */
 package org.gitools.heatmap;
 
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.api.matrix.*;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
+import org.gitools.heatmap.plugins.Plugins;
 import org.gitools.matrix.model.MatrixPosition;
 import org.gitools.resource.Resource;
 
@@ -36,21 +34,32 @@ import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement
-@XmlType(propOrder = {"diagonal", "rows", "columns", "data", "layers", "bookmarks"})
+@XmlType(propOrder = {"diagonal", "lastSaved", "authorName", "authorEmail", "rows", "columns", "data", "layers", "bookmarks", "pluggedBoxes"})
 public class Heatmap extends Resource implements IMatrixView {
 
     public static final String PROPERTY_ROWS = "rows";
     public static final String PROPERTY_COLUMNS = "columns";
     public static final String PROPERTY_LAYERS = "layers";
+    public static final String PROPERTY_AUTHOR_NAME = "authorName";
+    public static final String PROPERTY_AUTHOR_EMAIL = "authorEmail";
+
 
     @XmlTransient
     private PropertyChangeListener propertyListener;
+
+    private Date lastSaved;
+
+    private String authorName;
+    private String authorEmail;
 
     private HeatmapDimension rows;
     private HeatmapDimension columns;
@@ -60,6 +69,9 @@ public class Heatmap extends Resource implements IMatrixView {
     private transient HeatmapDimension diagonalRows;
 
     private Bookmarks bookmarks;
+
+    @XmlElement(name = "plugged-boxes")
+    private Plugins pluggedBoxes;
 
     private boolean diagonal;
 
@@ -73,6 +85,7 @@ public class Heatmap extends Resource implements IMatrixView {
         this.layers = new HeatmapLayers();
         this.diagonal = false;
         this.bookmarks = new Bookmarks();
+        this.pluggedBoxes = new Plugins();
     }
 
     public Heatmap(IMatrix data) {
@@ -87,6 +100,7 @@ public class Heatmap extends Resource implements IMatrixView {
         this.layers = new HeatmapLayers(data);
         this.diagonal = diagonal;
         this.bookmarks = new Bookmarks();
+        this.pluggedBoxes = new Plugins();
     }
 
     public HeatmapDimension getRows() {
@@ -122,6 +136,17 @@ public class Heatmap extends Resource implements IMatrixView {
         if (data != null && data.isLoaded()) {
             data.get().detach();
         }
+
+        // Detach heatmap cache
+        //this.cache = null;
+
+        // Detach layers cache
+        for (HeatmapLayer layer : layers) {
+            layer.detach();
+        }
+
+        // Force garbage collection
+        System.gc();
     }
 
     public void init() {
@@ -234,6 +259,11 @@ public class Heatmap extends Resource implements IMatrixView {
         return new MatrixPosition(this);
     }
 
+    @Override
+    public IMatrix subset(IMatrixDimension... dimensionSubsets) {
+        return getContents().subset(dimensionSubsets);
+    }
+
     private static MatrixDimensionKey[] dimensions = new MatrixDimensionKey[]{ROWS, COLUMNS};
 
     @Override
@@ -244,5 +274,52 @@ public class Heatmap extends Resource implements IMatrixView {
     public Bookmarks getBookmarks() {
         return bookmarks;
     }
+
+    public Plugins getPluggedBoxes() {
+        return pluggedBoxes;
+    }
+
+
+    transient Map<IKey, Object> metadata;
+
+    public <T> void setMetadata(IKey<T> key, T value) {
+        this.getCacheMap().put(key, value);
+    }
+
+    public <T> T getMetadata(IKey<T> key) {
+        return (T) this.getCacheMap().get(key);
+    }
+
+    private Map<IKey, Object> getCacheMap() {
+        if (metadata == null) {
+            metadata = new HashMap<>();
+        }
+        return metadata;
+    }
+
+    public Date getLastSaved() {
+        return lastSaved;
+    }
+
+    public void setLastSaved(Date lastSaved) {
+        this.lastSaved = lastSaved;
+    }
+
+    public String getAuthorEmail() {
+        return authorEmail;
+    }
+
+    public void setAuthorEmail(String authorEmail) {
+        this.authorEmail = authorEmail;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
+    }
+
 
 }

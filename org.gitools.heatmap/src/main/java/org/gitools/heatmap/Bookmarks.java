@@ -117,11 +117,11 @@ public class Bookmarks extends Model {
     }
 
 
-    public void createNew(Heatmap heatmap, String bookmarkName) {
-        createNew(heatmap, bookmarkName, "", null);
+    public Bookmark createNew(Heatmap heatmap, String bookmarkName) {
+        return createNew(heatmap, bookmarkName, "", null);
     }
 
-    public void createNew(Heatmap heatmap, String bookmarkName, String description, int[] include) {
+    public Bookmark createNew(Heatmap heatmap, String bookmarkName, String description, int[] include) {
         String name = bookmarkName;
         int counter = 1;
         while (nameOccupied(name)) {
@@ -150,6 +150,7 @@ public class Bookmarks extends Model {
         Bookmark b = new Bookmark(name, rows, cols, layerId);
         b.setDescription(description);
         add(b);
+        return b;
     }
 
     private boolean nameOccupied(String name) {

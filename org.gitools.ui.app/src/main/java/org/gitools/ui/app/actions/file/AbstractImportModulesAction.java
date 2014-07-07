@@ -33,9 +33,9 @@ import org.gitools.matrix.MatrixUtils;
 import org.gitools.matrix.modulemap.format.GmtModuleMapFormat;
 import org.gitools.matrix.modulemap.format.GmxModuleMapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.app.actions.AbstractAction;
 import org.gitools.ui.app.wizard.ModulesImportWizard;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -104,8 +104,6 @@ public abstract class AbstractImportModulesAction extends AbstractAction {
                             monitor.worked(1);
                         }
                         pw.close();
-
-                        setStatus("Ok");
                     } else {
                         setStatus("Operation cancelled");
                     }
@@ -120,7 +118,7 @@ public abstract class AbstractImportModulesAction extends AbstractAction {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                Application.get().setStatusText(msg);
+                Application.get().showNotification(msg);
             }
         });
     }

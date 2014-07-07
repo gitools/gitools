@@ -21,11 +21,15 @@
  */
 package org.gitools.ui.app.heatmap.panel;
 
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.app.heatmap.panel.details.boxes.LayerValuesBox;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.components.boxes.BoxManager;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -111,7 +115,7 @@ public class HeatmapPanelInputProcessor {
     }
 
     public void setLastSelectedRow(int lastSelectedRow) {
-        if (lastSelectedRow > -1 && lastSelectedRow < mv.getColumns().size()) {
+        if (lastSelectedRow > -1 && lastSelectedRow < mv.getRows().size()) {
             this.lastSelectedRow = lastSelectedRow;
         } else if (lastSelectedRow >= mv.getRows().size()) {
             this.lastSelectedRow = mv.getRows().size() - 1;
@@ -200,6 +204,9 @@ public class HeatmapPanelInputProcessor {
         } else {
             dim.setFocus(dim.getLabel(i));
         }
+        BoxManager.protect(MatrixDimensionKey.COLUMNS.name(), MatrixDimensionKey.ROWS.name());
+        BoxManager.openOnly(LayerValuesBox.ID);
+        BoxManager.reset();
     }
 
     public void setLead(int row, int col) {
@@ -228,6 +235,8 @@ public class HeatmapPanelInputProcessor {
         Set<String> cols = mv.getColumns().getSelected();
 
         hideSelected(rows, cols);
+
+        Application.get().showNotification("Selected items hidden");
 
     }
 
@@ -334,7 +343,4 @@ public class HeatmapPanelInputProcessor {
     }
 
 
-    enum Mode {
-        none, selectingLead, selectingRowsAndCols, dragging, moving, zooming, scrolling, movingSelected
-    }
 }

@@ -47,9 +47,9 @@ import org.apache.log4j.Logger;
 import org.gitools.ui.app.genomespace.dm.DMUtils;
 import org.gitools.ui.app.genomespace.dm.GSDirectoryListing;
 import org.gitools.ui.app.genomespace.dm.GSFileMetadata;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.dialog.MessageUtils;
+import org.gitools.ui.platform.settings.Settings;
 import org.json.JSONException;
 
 import javax.swing.*;

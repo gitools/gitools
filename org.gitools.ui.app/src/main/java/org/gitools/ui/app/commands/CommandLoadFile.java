@@ -27,7 +27,6 @@ import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
-import org.gitools.analysis.htest.oncodrive.OncodriveAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IAnnotations;
@@ -51,16 +50,14 @@ import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.app.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.app.analysis.htest.editor.EnrichmentAnalysisEditor;
-import org.gitools.ui.app.analysis.htest.editor.OncodriveAnalysisEditor;
 import org.gitools.ui.app.analysis.overlapping.OverlappingAnalysisEditor;
 import org.gitools.ui.app.fileimport.ImportManager;
 import org.gitools.ui.app.fileimport.ImportWizard;
 import org.gitools.ui.app.genomespace.GsResourceLocator;
 import org.gitools.ui.app.genomespace.dm.HttpUtils;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.dialog.MessageUtils;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.utils.color.ColorRegistry;
 
 import javax.swing.*;
@@ -69,6 +66,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.CancellationException;
 
 import static org.gitools.api.ApplicationContext.getPersistenceManager;
@@ -80,6 +79,7 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
     private IResourceFormat format = null;
     private final String rowsAnnotations;
     private final String columnsAnnotations;
+    private static List<AbstractCommand> afterLoadCommands;
 
     public CommandLoadFile(ResourceReference reference) {
         this(reference.getLocator(), reference.getResourceFormat());
@@ -92,6 +92,10 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
 
     public CommandLoadFile(String file) {
         this(file, null, null);
+    }
+
+    public CommandLoadFile(URL url) {
+        this(new GsResourceLocator(new UrlResourceLocator(url)), null, null);
     }
 
     public CommandLoadFile(String file, IResourceFormat resourceFormat) {
@@ -107,6 +111,7 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
         this.locator = locator;
         this.rowsAnnotations = rowsAnnotations;
         this.columnsAnnotations = columnsAnnotations;
+        this.afterLoadCommands = new ArrayList<>();
     }
 
     @Override
@@ -116,7 +121,8 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
             try {
                 getConfigWizard().run(monitor);
             } catch (Exception e) {
-                new CommandException(e);
+                handleException(e);
+                return;
             }
             return;
         }
@@ -127,22 +133,31 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
             monitor.begin("Loading ...", 1);
             resource = loadResource(monitor);
         } catch (Exception e) {
-
-            if (!(e.getCause() instanceof CancellationException)) {
-                MessageUtils.showErrorMessage(Application.get(), "<html>This file format either not supported or is malformed.<br>" +
-                        (!StringUtils.isEmpty(e.getCause().getMessage()) ? "<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" + e.getCause().getMessage() + "</strong></div>" : "") +
-                        "Check the supported file formats at the <strong>'User guide'</strong> on <a href='http://www.gitools.org'>www.gitools.org</a><br></html>", e);
-
-                Application.get().trackException("Bad file format: " + e.getCause().getMessage());
-            }
-            setExitStatus(1);
+            handleException(e);
             return;
         }
 
         afterLoad(resource, monitor);
     }
 
-    public void afterLoad(IResource resource, IProgressMonitor monitor) throws CommandException {
+    private void handleException(Exception e) {
+        if (!(e.getCause() instanceof CancellationException)) {
+            String error = "";
+            if (e.getCause() != null) {
+                error = StringUtils.isBlank(e.getCause().getMessage()) ? "" : e.getCause().getMessage();
+            }
+
+            if ("".equals(error) && StringUtils.isNotBlank(e.getMessage())) {
+                error = e.getMessage();
+            }
+
+            throw new RuntimeException(error);
+        }
+        setExitStatus(1);
+        return;
+    }
+
+    public void afterLoad(IResource resource, final IProgressMonitor monitor) throws CommandException {
 
         monitor.begin("Initializing editor ...", 1);
         final AbstractEditor editor = createEditor(resource, monitor);
@@ -153,6 +168,14 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
             public void run() {
                 Application.get().getEditorsPanel().addEditor(editor);
                 Application.get().refresh();
+
+                for (AbstractCommand command : afterLoadCommands) {
+                    try {
+                        command.execute(monitor);
+                    } catch (CommandException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         });
 
@@ -174,8 +197,8 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
     public ImportWizard getConfigWizard() {
 
         IResourceLocator locator = getResourceLocator();
-        locator = getPersistenceManager().applyCache( locator );
-        locator = getPersistenceManager().applyFilters( locator );
+        locator = getPersistenceManager().applyCache(locator);
+        locator = getPersistenceManager().applyFilters(locator);
 
         ImportWizard wizard = ImportManager.get().getWizard(locator);
         wizard.setCallback(this);
@@ -202,8 +225,6 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
 
         if (resource instanceof EnrichmentAnalysis) {
             return new EnrichmentAnalysisEditor((EnrichmentAnalysis) resource);
-        } else if (resource instanceof OncodriveAnalysis) {
-            return new OncodriveAnalysisEditor((OncodriveAnalysis) resource);
         } else if (resource instanceof CorrelationAnalysis) {
             return new CorrelationAnalysisEditor((CorrelationAnalysis) resource);
         } else if (resource instanceof CombinationAnalysis) {
@@ -315,6 +336,10 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
 
     private static void loadAnnotations(File file, HeatmapDimension hdim) {
         hdim.addAnnotations(new ResourceReference<>(new UrlResourceLocator(file), getPersistenceManager().getFormat(AnnotationMatrixFormat.EXTENSION, AnnotationMatrix.class)).get());
+    }
+
+    public void addAfterLoadCommand(AbstractCommand command) {
+        afterLoadCommands.add(command);
     }
 
 }

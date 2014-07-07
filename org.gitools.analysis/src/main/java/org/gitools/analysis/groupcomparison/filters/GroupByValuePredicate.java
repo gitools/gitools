@@ -21,17 +21,27 @@
  */
 package org.gitools.analysis.groupcomparison.filters;
 
+import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.IMatrixPredicate;
 import org.gitools.matrix.filter.DataIntegrationCriteria;
 import org.gitools.utils.operators.Operator;
 
+import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class GroupByValuePredicate implements IMatrixPredicate<Double> {
 
+    @XmlElementWrapper
+    @XmlElement(name = "criteria")
     private List<DataIntegrationCriteria> criteriaList;
+
+    public GroupByValuePredicate() {
+        //jaxb requirement
+    }
 
     public GroupByValuePredicate(List<DataIntegrationCriteria> criteriaList) {
         this.criteriaList = criteriaList;
@@ -58,13 +68,14 @@ public class GroupByValuePredicate implements IMatrixPredicate<Double> {
 
         for (DataIntegrationCriteria dic : criteriaList) {
 
-            Object v = position.getMatrix().get(dic.getLayer(), position);
+            IMatrixLayer layer = position.getMatrix().getLayers().get(dic.getLayerId());
+            Object v = position.getMatrix().get(layer, position);
             if (v == null && dic.getNullConversion() == null) {
                 return false;
             }
 
             double matrixValue = (v == null) ? dic.getNullConversion() : (double) v;
-            boolean evaluatedCondition = dic.getComparator().compare(matrixValue, dic.getValue());
+            boolean evaluatedCondition = dic.getComparator().compare(matrixValue, dic.getCutoffValue());
 
             if (dic.getOperator().equals(Operator.EMPTY)) {
                 ORs.add(evaluatedCondition);

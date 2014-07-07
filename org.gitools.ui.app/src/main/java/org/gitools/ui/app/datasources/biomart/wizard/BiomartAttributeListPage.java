@@ -24,8 +24,8 @@ package org.gitools.ui.app.datasources.biomart.wizard;
 import org.gitools.datasources.biomart.BiomartService;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.ui.app.datasources.biomart.panel.BiomartAttributeListPanel;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
@@ -117,7 +117,7 @@ public class BiomartAttributeListPage extends AbstractWizardPage {
                 public void run() {
                     setStatus(MessageStatus.ERROR);
                     setMessage(cause.getClass().getSimpleName() + ": " + cause.getMessage());
-                    ExceptionDialog dlg = new ExceptionDialog(Application.get(), cause);
+                    ExceptionGlassPane dlg = new ExceptionGlassPane(Application.get(), cause);
                     dlg.setVisible(true);
                 }
             });

@@ -35,6 +35,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class SelectTableColumnsPage extends AbstractWizardPage implements IFileImportStep {
@@ -47,8 +48,26 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
     private JList<FileHeader> columnsHeaderLists;
     private JList<FileHeader> ignoredHeaderList;
     private JTextPane previewPane;
+    private JButton previewRowIdsButton;
+    private JButton previewColumnIdsButton;
+    private JLabel previewLabel;
     private List<FileHeader> allheaders;
     private List<List<FileField>> preview;
+
+    public SelectTableColumnsPage() {
+        previewRowIdsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateIdPreview(rowsHeaderList);
+            }
+        });
+        previewColumnIdsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateIdPreview(columnsHeaderLists);
+            }
+        });
+    }
 
     private void initJList(JList<FileHeader> list, ListItemTransferHandler transferHandler, DefaultListModel<FileHeader> dataModel, boolean bold, boolean smallText) {
 
@@ -97,6 +116,13 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
 
     private void updateIdPreview(JList<FileHeader> headerList) {
 
+
+        if (headerList.equals(rowsHeaderList)) {
+            previewLabel.setText("Row ids preview");
+        } else {
+            previewLabel.setText("Column ids preview");
+        }
+
         String fieldGlue = ((TableReaderProfile) reader.getReaderProfile()).getFieldGlue();
 
         Integer[] pos = new Integer[headerList.getModel().getSize()];
@@ -135,6 +161,9 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
     }
 
     private void updateColumnPreview(FileHeader selectedValue) {
+
+        previewLabel.setText("Data column preview");
+
 
         StringBuilder html = new StringBuilder("");
 
@@ -193,11 +222,11 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
                 } else if (rows.getSize() == 0) {
                     rows.addElement(header);
                 } else {
-                    try {
-                        Double v = Double.valueOf(preview.get(0).get(header.getPos()).getLabel());
-                        values.addElement(header);
-                    } catch (NumberFormatException e) {
+                    int colIndex = header.getPos();
+                    if (isUntranslatable(preview, colIndex)) {
                         ignored.addElement(header);
+                    } else {
+                        values.addElement(header);
                     }
                 }
             }
@@ -209,6 +238,23 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
             initJList(valuesHeaderList, transferHandler, values, false, false);
             initJList(ignoredHeaderList, transferHandler, ignored, false, true);
         }
+    }
+
+    private boolean isUntranslatable(List<List<FileField>> preview, int colIndex) {
+        boolean untranslatable = true;
+        for (List<FileField> line : preview) {
+            if (!untranslatable) {
+                break;
+            }
+            try {
+                String value = line.get(colIndex).getLabel();
+                Double v = Double.valueOf(value);
+                untranslatable = false;
+            } catch (NumberFormatException e) {
+                // do nothing
+            }
+        }
+        return untranslatable;
     }
 
     @Override

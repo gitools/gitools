@@ -31,7 +31,6 @@ import org.gitools.api.resource.IResourceLocator;
 import org.gitools.persistence.locators.UrlResourceLocator;
 import org.gitools.persistence.locators.filters.cache.CacheResourceManager;
 import org.gitools.persistence.locators.filters.gz.GzResourceFilter;
-import org.gitools.persistence.locators.filters.zip.ZipResourceFilter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -179,7 +178,7 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
         subTask.end();
 
         // Set the original locator without the filters.
-        resource.setLocator(resourceLocator);
+        resource.setLocator(filteredResourceLocator);
 
         return resource;
     }
@@ -205,6 +204,11 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
         // Write the resource
         resourceFormat.write(resourceLocator, resource, progressMonitor);
 
+        // Close resourceLocator
+        if (!progressMonitor.isCancelled()) {
+            resourceLocator.close(progressMonitor);
+        }
+
     }
 
     private void registerFormat(IResourceFormat resourceFormat) {
@@ -219,7 +223,8 @@ public class PersistenceManager implements Serializable, IPersistenceManager {
         //TODO use filters interface or register at PersistenceInitialization
         if (resourceFormat.isDefaultExtension()) {
             if (resourceFormat.isContainer()) {
-                registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + ZipResourceFilter.SUFFIX);
+                //registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + ZipResourceFilter.SUFFIX);
+                registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension());
             } else {
                 registerDefaultExtension(resourceFormat.getResourceClass(), resourceFormat.getExtension() + "." + GzResourceFilter.SUFFIX);
             }

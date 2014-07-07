@@ -25,31 +25,42 @@ import com.alee.extended.panel.GroupPanel;
 import com.alee.extended.panel.GroupingType;
 import com.alee.laf.panel.WebPanel;
 import com.alee.laf.splitpane.WebSplitPane;
+import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.format.HeatmapFormat;
+import org.gitools.matrix.model.MatrixWrapper;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.ui.app.IconNames;
+import org.gitools.ui.app.commands.Command;
+import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.heatmap.panel.ColorScalePanel;
 import org.gitools.ui.app.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.app.heatmap.panel.details.DetailsPanel;
 import org.gitools.ui.app.heatmap.panel.search.HeatmapSearchPanel;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFileWizard;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.app.wizard.SaveFileWizard;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.boxes.Box;
+import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.EditorsPanel;
+import org.gitools.ui.core.pages.common.SaveHeatmapFilePage;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.MemoryUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -60,12 +71,15 @@ import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
+import java.util.Collection;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
 
 public class HeatmapEditor extends AbstractEditor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HeatmapEditor.class);
     private static final int DEFAULT_ACCORDION_WIDTH = 320;
     private static final int MINIMUM_AVAILABLE_MEMORY_THRESHOLD = (int) (3 * Runtime.getRuntime().maxMemory() / 10);
 
@@ -123,15 +137,7 @@ public class HeatmapEditor extends AbstractEditor {
         // Create a timer that watches every 5 seconds the available memory
         // and detach the heatmap if it is below a minimum threshold.
         timer = new java.util.Timer();
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD) {
-                    System.out.println("WARNING: Memory too low, cleaning cache.");
-                    detach();
-                }
-            }
-        }, 5000, 5000);
+        timer.scheduleAtFixedRate(new CleanCacheTimer(), 5000, 5000);
 
     }
 
@@ -145,8 +151,13 @@ public class HeatmapEditor extends AbstractEditor {
 
     private void createComponents(JComponent container) {
 
+        Dimension minimumSize = new Dimension(DEFAULT_ACCORDION_WIDTH, 100);
+
         detailsPanel = new DetailsPanel(heatmap);
+        detailsPanel.setMinimumSize(minimumSize);
+
         colorScalePanel = new ColorScalePanel(heatmap);
+        colorScalePanel.setMinimumSize(minimumSize);
 
         WebPanel emptyPanel = new WebPanel();
         emptyPanel.setBackground(Color.WHITE);
@@ -154,6 +165,7 @@ public class HeatmapEditor extends AbstractEditor {
         leftPanel.setUndecorated(true);
         leftPanel.setBackground(Color.WHITE);
         leftPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 0));
+        leftPanel.setMinimumSize(minimumSize);
 
         heatmapPanel = new HeatmapPanel(heatmap);
         heatmapPanel.requestFocusInWindow();
@@ -177,6 +189,7 @@ public class HeatmapEditor extends AbstractEditor {
         heatmapPanel.setBorder(new CompoundBorder(BorderFactory.createEmptyBorder(20, 10, 20, 20), BorderFactory.createMatteBorder(0, 1, 1, 0, Color.GRAY)));
         splitPane.setOneTouchExpandable(true);
         splitPane.setDividerLocation(DEFAULT_ACCORDION_WIDTH);
+        splitPane.setLastDividerLocation(DEFAULT_ACCORDION_WIDTH);
         splitPane.setContinuousLayout(false);
         splitPane.setDividerSize(4);
         splitPane.setBackground(Color.WHITE);
@@ -210,6 +223,8 @@ public class HeatmapEditor extends AbstractEditor {
             Settings.get().setLastPath(file.getParent());
         }
 
+        heatmap.setGitoolsVersion(Application.getGitoolsVersion());
+
         String name = getName();
         int heatmapExt = name.indexOf(".heatmap");
         if (heatmapExt != -1) {
@@ -217,16 +232,22 @@ public class HeatmapEditor extends AbstractEditor {
         }
         name = name.replaceAll("\\.", "_");
 
-        SaveFileWizard wiz = SaveFileWizard.createSimple(
-                "Save heatmap",
-                name,
-                Settings.get().getLastPath(),
-                new FileFormat[]{
-                        new FileFormat("Heatmap, single file (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false),
-                        new FileFormat("Heatmap, multiple files (*.heatmap)", HeatmapFormat.EXTENSION, false, false)
-                }
-        );
+        SaveHeatmapFilePage page = new SaveHeatmapFilePage();
+        page.setTitle("Save heatmap as");
+        page.setFileNameWithoutExtension(name);
+        page.setFolder(Settings.get().getLastPath());
+        page.setFormats(new FileFormat[]{
+                new FileFormat("Heatmap, single file (*.heatmap.zip)", HeatmapFormat.EXTENSION + ".zip", false, false),
+                new FileFormat("Heatmap, multiple files (*.heatmap)", HeatmapFormat.EXTENSION, false, false)
+        });
+        if (heatmap.getRows().size() == heatmap.getContents().getRows().size() &&
+                heatmap.getColumns().size() == heatmap.getContents().getColumns().size()) {
+            page.enableDiscardHidden(false);
+        } else {
+            page.suggestDiscardHidden();
+        }
 
+        SaveFileWizard wiz = SaveFileWizard.createCustom(page);
 
         final WizardDialog dlg = new WizardDialog(Application.get(), wiz);
 
@@ -251,19 +272,75 @@ public class HeatmapEditor extends AbstractEditor {
         file = wiz.getPathAsFile();
         setFile(file);
 
-        heatmap.setLocator(new UrlResourceLocator(file));
-        heatmap.setData(new ResourceReference<>("data", heatmap.getData().get()));
+        IResourceLocator toLocator;
+        if (heatmap.getLocator() == null) {
+            toLocator = new UrlResourceLocator(file);
+        } else {
+            toLocator = new UrlResourceLocator(heatmap.getLocator().getReadFile(), file);
+        }
+
+        // Data matrix
+        IMatrix data = heatmap.getData().get();
+
+        if (page.isDiscardHidden()) {
+
+            // Discard hidden data
+            data = new MatrixWrapper(data) {
+                @Override
+                public IMatrixDimension getColumns() {
+                    return heatmap.getColumns();
+                }
+
+                @Override
+                public IMatrixDimension getRows() {
+                    return heatmap.getRows();
+                }
+
+                @Override
+                public boolean isChanged() {
+                    return true;
+                }
+            };
+
+            heatmap.setData(new ResourceReference<>("data", data));
+
+        } else if (page.isOptimizeData()) {
+
+            // Optimize mtabix index
+            data = new MatrixWrapper(data) {
+                @Override
+                public boolean isChanged() {
+                    return true;
+                }
+            };
+
+            heatmap.setData(new ResourceReference<>("data", data));
+
+        } else {
+
+            IResourceLocator locator = heatmap.getData().getLocator();
+            heatmap.setData(new ResourceReference<>("data", data));
+            heatmap.getData().setLocator(locator);
+            heatmap.getData().setChanged(data.isChanged());
+            heatmap.getData().setBaseName(toLocator.getBaseName() + "-data");
+
+        }
+
         HeatmapDimension rows = heatmap.getRows();
         HeatmapDimension columns = heatmap.getColumns();
-        rows.setAnnotationsReference(new ResourceReference<>(rows.getId() + "-annotations", rows.getAnnotations()));
-        columns.setAnnotationsReference(new ResourceReference<>(columns.getId() + "-annotations", columns.getAnnotations()));
+        rows.setAnnotationsReference(new ResourceReference<>(rows.getId().toString().toLowerCase() + "-annotations", rows.getAnnotations()));
+        columns.setAnnotationsReference(new ResourceReference<>(columns.getId().toString().toLowerCase() + "-annotations", columns.getAnnotations()));
 
-        doSave(monitor);
+        doSave(toLocator, monitor);
 
     }
 
     @Override
     public void doSave(IProgressMonitor monitor) {
+        doSave(heatmap.getLocator(), monitor);
+    }
+
+    private void doSave(IResourceLocator toLocator, IProgressMonitor monitor) {
 
         File file = getFile();
         if (file == null) {
@@ -271,13 +348,46 @@ public class HeatmapEditor extends AbstractEditor {
             return;
         }
 
+
+        heatmap.setGitoolsVersion(Application.getGitoolsVersion());
+
+        // Last saved and author info.
+        heatmap.setLastSaved(new Date());
+        Settings settings = Settings.get();
+        if (Strings.isNullOrEmpty(heatmap.getAuthorName())) {
+            heatmap.setAuthorName(settings.getAuthorName());
+            if (!Strings.isNullOrEmpty(settings.getAuthorEmail())) {
+                heatmap.setAuthorEmail(settings.getAuthorEmail());
+            }
+        }
+
+
         try {
-            ApplicationContext.getPersistenceManager().store(heatmap.getLocator(), heatmap, monitor);
+            ApplicationContext.getPersistenceManager().store(toLocator, heatmap, monitor);
         } catch (PersistenceException ex) {
             monitor.exception(ex);
         }
 
         setDirty(false);
+        Settings.get().addRecentFile(file.getAbsolutePath());
+        Settings.get().save();
+
+        // Force to reload the data after save
+        if (!toLocator.equals(heatmap.getLocator()) || heatmap.getData().get().isChanged()) {
+
+            monitor.title("Reloading the heatmap...");
+
+            EditorsPanel editorPanel = Application.get().getEditorsPanel();
+            editorPanel.removeEditor(this);
+
+            CommandLoadFile loadFile = new CommandLoadFile(toLocator.getURL());
+            try {
+                loadFile.execute(monitor);
+            } catch (Command.CommandException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
     @Override
@@ -322,8 +432,6 @@ public class HeatmapEditor extends AbstractEditor {
 
         heatmap = null;
 
-        System.gc();
-
         return true;
     }
 
@@ -346,5 +454,31 @@ public class HeatmapEditor extends AbstractEditor {
     @Override
     public void detach() {
         this.heatmap.detach();
+    }
+
+    @Override
+    public Collection<Box> getBoxes() {
+        return detailsPanel.getBoxes();
+    }
+
+
+    private class CleanCacheTimer extends TimerTask {
+
+        private long lastDetach;
+
+        private CleanCacheTimer() {
+            this.lastDetach = System.currentTimeMillis();
+        }
+
+        @Override
+        public void run() {
+            if (MemoryUtils.getAvailableMemory() < MINIMUM_AVAILABLE_MEMORY_THRESHOLD && ((System.currentTimeMillis() - lastDetach)) > 2000) {
+
+                LOGGER.warn("Memory too low, cleaning cache.");
+                this.lastDetach = System.currentTimeMillis();
+
+                detach();
+            }
+        }
     }
 }

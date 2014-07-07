@@ -23,17 +23,20 @@ package org.gitools.matrix.model;
 
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IKey;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.ValueTranslator;
+import org.gitools.matrix.model.matrix.element.LayerDef;
 import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.translators.ValueTranslatorFactory;
 
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
@@ -61,7 +64,11 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
 
     //TODO
     @XmlTransient
-    private IAggregator aggregator;
+    protected IAggregator aggregator;
+
+    @XmlElementWrapper(name = "data-groups")
+    @XmlElement(name = "group")
+    private Set<String> groups;
 
     private SortDirection sortDirection;
 
@@ -91,19 +98,36 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
         this.aggregator = aggregator;
     }
 
+    @Override
+    public Set<String> getGroups() {
+
+        if (groups == null || groups.size() == 0) {
+            HashSet nullSet = new HashSet();
+            nullSet.add(LayerDef.ALL_DATA_GROUP);
+            return nullSet;
+        } else {
+            return groups;
+        }
+
+    }
+
     public MatrixLayer() {
         // JAXB requirement
     }
 
     public MatrixLayer(String id, Class<T> valueClass) {
-        this(id, valueClass, null, null);
+        this(id, valueClass, null, null, new HashSet<String>());
     }
 
-    public MatrixLayer(String id, Class<T> valueClass, String name, String description) {
+    public MatrixLayer(String id, Class<T> valueClass, String name, String description, Set<String> groups) {
         this.id = id;
         this.valueClass = valueClass;
         this.name = name;
         this.description = description;
+        this.groups = groups;
+    }
+    public MatrixLayer(String id, Class<T> valueClass, String name, String description) {
+        this(id, valueClass, name, description, new HashSet<String>());
     }
 
     @Override
@@ -201,5 +225,27 @@ public class MatrixLayer<T> extends Model implements IMatrixLayer<T> {
 
     public String toString() {
         return (name != null ? name : id);
+    }
+
+    @Override
+    public void detach() {
+        this.cache = null;
+    }
+
+    transient Map<IKey, Object> cache;
+
+    public <T> void setCache(IKey<T> key, T value) {
+        this.getCacheMap().put(key, value);
+    }
+
+    public <T> T getCache(IKey<T> key) {
+        return (T) this.getCacheMap().get(key);
+    }
+
+    private Map<IKey, Object> getCacheMap() {
+        if (cache == null) {
+            cache = new HashMap<>();
+        }
+        return cache;
     }
 }

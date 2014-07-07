@@ -18,11 +18,11 @@
 
         thead {
             font-weight: bold;
-            font-size: 11px;
+            font-size: 16px;
         }
 
         table {
-            font-size: 9px;
+            font-size: 14px;
             border-bottom-width: 1px;
             border-color: black;
         }

@@ -27,15 +27,22 @@ import org.gitools.resource.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatrixDimension> extends Resource implements IMatrix {
+public abstract class AbstractMatrix<ML extends IMatrixLayers<? extends IMatrixLayer>, MD extends IMatrixDimension> extends Resource implements IMatrix {
 
     private MatrixDimensionKey[] dimensions;
     private Map<MatrixDimensionKey, MD> identifiers;
     private ML layers;
 
+    private transient Map<IKey, Object> cache;
+
     @Override
     public IMatrixPosition newPosition() {
         return new MatrixPosition(this);
+    }
+
+    @Override
+    public IMatrix subset(IMatrixDimension... dimensionSubsets) {
+        throw new UnsupportedOperationException(getClass().getSimpleName() + " don't support subsetting");
     }
 
     public AbstractMatrix(ML layers, MD... identifiers) {
@@ -92,6 +99,27 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers, MD extends IMatri
 
     @Override
     public void detach() {
+        this.cache = null;
+
+        for (IMatrixLayer layer : layers) {
+            layer.detach();
+        }
     }
+
+    public <T> void setMetadata(IKey<T> key, T value) {
+        this.getCacheMap().put(key, value);
+    }
+
+    public <T> T getMetadata(IKey<T> key) {
+        return (T) this.getCacheMap().get(key);
+    }
+
+    private Map<IKey, Object> getCacheMap() {
+        if (cache == null) {
+            cache = new HashMap<>();
+        }
+        return cache;
+    }
+
 
 }

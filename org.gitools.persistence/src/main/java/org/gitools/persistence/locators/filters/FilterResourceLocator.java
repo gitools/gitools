@@ -26,6 +26,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceFilter;
 import org.gitools.api.resource.IResourceLocator;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -33,7 +34,7 @@ import java.net.URL;
 
 public abstract class FilterResourceLocator implements IResourceLocator {
 
-    private final String name;
+    private String name;
     private String baseName;
     private final String extension;
     private final IResourceLocator resourceLocator;
@@ -46,9 +47,7 @@ public abstract class FilterResourceLocator implements IResourceLocator {
         this.name = name;
         this.extension = extension;
         this.resourceLocator = resourceLocator;
-
-        int startExtension = name.lastIndexOf(extension);
-        this.baseName = (startExtension == 0 ? name : name.substring(0, startExtension - 1));
+        setBaseName(name, extension);
     }
 
     @Override
@@ -57,13 +56,36 @@ public abstract class FilterResourceLocator implements IResourceLocator {
     }
 
     @Override
+    public File getReadFile() {
+        return resourceLocator.getReadFile();
+    }
+
+    @Override
+    public File getWriteFile() {
+        return resourceLocator.getWriteFile();
+    }
+
+    @Override
     public String getBaseName() {
         return baseName;
+    }
+
+    protected void setBaseName(String baseName) {
+        this.baseName = baseName;
+    }
+
+    protected void setBaseName(String name, String extension) {
+        int startExtension = name.lastIndexOf(extension);
+        this.baseName = (startExtension == 0 ? name : name.substring(0, startExtension - 1));
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    protected void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -78,27 +100,31 @@ public abstract class FilterResourceLocator implements IResourceLocator {
 
     @Override
     public long getContentLength() {
-        return getResourceLocator().getContentLength();
+        return getParentLocator().getContentLength();
     }
 
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
-        return getResourceLocator().getReferenceLocator(referenceName);
+        return getParentLocator().getReferenceLocator(referenceName);
     }
 
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
-        return getResourceLocator().openInputStream(progressMonitor);
+        return getParentLocator().openInputStream(progressMonitor);
     }
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
-        return getResourceLocator().openOutputStream();
+    public OutputStream openOutputStream(IProgressMonitor progressMonitor) throws IOException {
+        return getParentLocator().openOutputStream(progressMonitor);
     }
 
-    protected IResourceLocator getResourceLocator() {
+    @Override
+    public IResourceLocator getParentLocator() {
         return resourceLocator;
     }
 
-
+    @Override
+    public void close(IProgressMonitor monitor) {
+        resourceLocator.close(monitor);
+    }
 }

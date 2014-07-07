@@ -21,114 +21,155 @@
  */
 package org.gitools.matrix.model.iterable;
 
-import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.MatrixDimensionKey;
+import org.gitools.matrix.model.MatrixPosition;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Set;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
 
-    private IMatrixPosition position;
-    private IMatrixDimension iterateDimension;
+    private long size = 1;
 
-    private Collection<String> identifiers;
+    private MatrixPosition mainPosition;
 
-    protected AbstractSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension) {
-        this(position, iterateDimension, null);
-    }
-
-    protected AbstractSourceIterable(IMatrixPosition position, MatrixDimensionKey iterateDimension, Set<String> identifiers) {
-        this.position = position;
-        this.iterateDimension = position.getMatrix().getDimension(iterateDimension);
-
-        if (identifiers == null) {
-            this.identifiers = new ArrayList<>(this.iterateDimension.size());
-            for (String id : this.iterateDimension) {
-                this.identifiers.add(id);
-            }
-        } else {
-            this.identifiers = new ArrayList<>(Math.min(this.iterateDimension.size(), identifiers.size()));
-            for (String id : identifiers) {
-                if (this.iterateDimension.contains(id)) {
-                    this.identifiers.add(id);
-                }
-            }
+    // Thread safe position
+    private ThreadLocal<MatrixPosition> position = new ThreadLocal<MatrixPosition>() {
+        @Override
+        protected MatrixPosition initialValue() {
+            return new MatrixPosition(mainPosition);
         }
-    }
+    };
 
-    @Override
-    public IMatrixDimension getIterateDimension() {
-        return iterateDimension;
+    private IMatrixDimension[] iterateDimensions;
+
+    protected AbstractSourceIterable(MatrixPosition position, IMatrixDimension... iterateDimensions) {
+
+        // Iterate all dimensions if any dimension is set
+        if (iterateDimensions.length == 0) {
+
+            IMatrix matrix = position.getMatrix();
+            MatrixDimensionKey[] keys = matrix.getDimensionKeys();
+
+            iterateDimensions = new IMatrixDimension[keys.length];
+            for (int d=0; d < keys.length; d++) {
+                iterateDimensions[d] = matrix.getDimension(keys[d]);
+            }
+
+        }
+
+        this.mainPosition = position;
+        this.iterateDimensions = iterateDimensions;
+
+        for (IMatrixDimension dimension : iterateDimensions) {
+            size *= dimension.size();
+        }
+
     }
 
     public IMatrix getMatrix() {
-        return position.getMatrix();
+        return mainPosition.getMatrix();
     }
 
     @Override
     public IMatrixPosition getPosition() {
-        return position;
+        return position.get();
     }
 
     @Override
-    public int size() {
-        return identifiers.size();
-    }
-
-    @Override
-    public IMatrixIterable<T> from(String fromIdentifier) {
-        return between(fromIdentifier, null);
-    }
-
-    @Override
-    public IMatrixIterable<T> to(String toIdentifier) {
-        return between(null, toIdentifier);
-    }
-
-    @Override
-    public IMatrixIterable<T> between(String fromIdentifier, String toIdentifier) {
-
-        int from = fromIdentifier == null ? 0 : iterateDimension.indexOf(fromIdentifier);
-        int to = toIdentifier == null ? iterateDimension.size() - 1 : iterateDimension.indexOf(toIdentifier);
-
-        identifiers = new ArrayList<>(to - from + 1);
-
-        for (int i = from; i <= to; i++) {
-            identifiers.add(iterateDimension.getLabel(i));
-        }
-
-        return this;
+    public long size() {
+        return size;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new ValueIterator(identifiers.iterator());
+        return new ValueIterator();
     }
 
     protected abstract T getValue(IMatrixPosition position);
 
     private class ValueIterator implements Iterator<T> {
 
-        private Iterator<String> dimensionIterator;
+        // Current position
+        private String[] identifiers;
 
-        private ValueIterator(Iterator<String> dimensionIterator) {
-            this.dimensionIterator = dimensionIterator;
+        // Iteration status
+        private int activeDimension;
+        private List<Iterator<String>> iterators;
+        private boolean hasNext;
+
+        private ValueIterator() {
+
+            int length = iterateDimensions.length;
+            this.identifiers = new String[length];
+            this.iterators = new ArrayList<>(length);
+
+            try {
+
+                // Iterate to the first position
+                for (int d = 0; d < iterateDimensions.length; d++) {
+
+                    Iterator<String> iterator = iterateDimensions[d].iterator();
+                    this.iterators.add(iterator);
+                    this.identifiers[d] = iterator.next();
+                    this.activeDimension = d;
+                }
+
+                hasNext = true;
+
+            } catch (NoSuchElementException e) {
+
+                // If there is an empty iterate dimension it's impossible to iterate.
+                hasNext = false;
+
+            }
+
         }
 
         @Override
-        public boolean hasNext() {
-            return dimensionIterator.hasNext();
+        public synchronized boolean hasNext() {
+            return this.hasNext;
         }
 
         @Override
-        public T next() {
+        public synchronized T next() {
             return getValue(nextPosition());
         }
 
-        private IMatrixPosition nextPosition() {
-            return getPosition().set(iterateDimension, dimensionIterator.next());
+        private synchronized IMatrixPosition nextPosition() {
+
+            // Return current position
+            IMatrixPosition position = getPosition();
+            for (int d=0; d < iterateDimensions.length; d++) {
+                position.set(iterateDimensions[d], identifiers[d]);
+            }
+
+            // Iterate to next position
+            while(activeDimension >= 0) {
+                Iterator<String> activeIterator = iterators.get(activeDimension);
+                if (activeIterator.hasNext()) {
+                    identifiers[activeDimension] = activeIterator.next();
+
+                    if (activeDimension == iterateDimensions.length - 1) {
+                        return position;
+                    }
+
+                    activeDimension++;
+
+                } else {
+                    iterators.set(activeDimension, iterateDimensions[activeDimension].iterator());
+                    activeDimension--;
+                }
+            }
+
+            hasNext = false;
+
+            return position;
         }
 
         @Override
@@ -136,4 +177,5 @@ public abstract class AbstractSourceIterable<T> extends AbstractIterable<T> {
             throw new UnsupportedOperationException("Read only iterator");
         }
     }
+
 }

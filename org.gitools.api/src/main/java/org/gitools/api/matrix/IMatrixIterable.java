@@ -23,21 +23,14 @@ package org.gitools.api.matrix;
 
 import org.gitools.api.analysis.IProgressMonitor;
 
+import java.util.Collection;
 import java.util.Comparator;
 
 public interface IMatrixIterable<T> extends Iterable<T> {
 
-    int size();
+    long size();
 
     IMatrixPosition getPosition();
-
-    IMatrixDimension getIterateDimension();
-
-    IMatrixIterable<T> from(String fromIdentifier);
-
-    IMatrixIterable<T> to(String toIdentifier);
-
-    IMatrixIterable<T> between(String fromIdentifier, String toIdentifier);
 
     IMatrixIterable<T> filter(IMatrixPredicate<T> filter);
 
@@ -58,6 +51,8 @@ public interface IMatrixIterable<T> extends Iterable<T> {
     void store(IMatrix output, ILayerAdapter<T> layerAdapter);
 
     void store(IMatrix output, IMatrixLayer<T> layer);
+
+    void store(Collection<T> output);
 
     int count();
 

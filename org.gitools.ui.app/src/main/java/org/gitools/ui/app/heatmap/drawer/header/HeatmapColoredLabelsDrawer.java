@@ -29,7 +29,7 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.heatmap.drawer.AbstractHeatmapHeaderDrawer;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
+import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -45,6 +45,9 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
     }
 
     public void draw(Graphics2D g, Rectangle box, Rectangle clip) {
+
+        ColoredLabel precedingLabel = null;
+
 
         prepareDraw(g, box);
         Font previousFont = rotateFont(g);
@@ -68,15 +71,20 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
             ColoredLabel groupLabel = header.getColoredLabel(startGroupIndex);
 
-            while (endGroupIndex < lastIndex && groupLabel.equals(header.getColoredLabel(endGroupIndex + 1))) {
+            while (endGroupIndex < lastIndex && groupLabel.equals(header.getColoredLabel(endGroupIndex + 1))
+                    && !isHighlightedIndex(endGroupIndex + 1) && !isHighlightedIndex(endGroupIndex)) {
                 endGroupIndex++;
             }
 
             decoration.reset();
+            boolean highlighted = isHighlightedIndex(startGroupIndex);
             header.decorate(decoration, groupLabel, false);
 
             int fullSize = getHeatmapDimension().getFullSize();
-            int gridSize = (getHeatmapDimension().showGrid() ? getHeatmapDimension().getGridSize() : 0);
+            //gridSize = 0 (no grid) if same group
+            int gridSize = ((getHeatmapDimension().getCellSize() > 2 && !highlighted && !isHighlightedIndex(endGroupIndex + 1)
+                    || getHeatmapDimension().getCellSize() > 2 && !groupLabel.equals(header.getColoredLabel(endGroupIndex + 1)))
+                    ? getHeatmapDimension().getGridSize() : 0);
 
             paintCell(
                     decoration,
@@ -89,6 +97,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
                     box
             );
 
+            precedingLabel = groupLabel;
             startGroupIndex = endGroupIndex + 1;
             endGroupIndex = startGroupIndex;
         }

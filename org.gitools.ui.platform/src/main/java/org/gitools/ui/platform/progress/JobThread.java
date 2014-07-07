@@ -22,7 +22,7 @@
 package org.gitools.ui.platform.progress;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,9 +38,11 @@ public class JobThread implements JobRunnable {
 
     private Thread thread;
 
-    private JobProgressDialog dlg;
+    private IProgressComponent progressDialog;
 
     private JobProgressMonitor monitor;
+
+    private static boolean running = false;
 
     public static void execute(Window parent, JobRunnable runnable) {
         new JobThread(parent, runnable).execute();
@@ -51,7 +53,13 @@ public class JobThread implements JobRunnable {
         this.runnable = runnable;
     }
 
-    public JobThread(Window parent) {
+    private JobThread(Window parent, JobRunnable runnable, IProgressComponent dialog) {
+        this.parent = parent;
+        this.runnable = runnable;
+        this.progressDialog = dialog;
+    }
+
+    public JobThread(JFrame parent) {
         this.parent = parent;
         this.runnable = this;
     }
@@ -68,27 +76,27 @@ public class JobThread implements JobRunnable {
         this.thread = jobThread;
     }
 
-    private synchronized JobProgressDialog getDlg() {
-        if (dlg == null) {
-            dlg = new JobProgressDialog(parent, false, true);
-            dlg.addCancelListener(new JobProgressDialog.CancelListener() {
+    private synchronized IProgressComponent getProgressDialog() {
+        if (progressDialog == null) {
+            progressDialog = new JobProgressGlassPane(parent, true);
+            progressDialog.addCancelListener(new CancelListener() {
                 @Override
                 public void cancelled() {
                     cancelJob();
                 }
             });
         }
-        return dlg;
+        return progressDialog;
     }
 
-    private synchronized void setDlg(JobProgressDialog dlg) {
-        this.dlg = dlg;
+    private synchronized void setProgressDialog(IProgressComponent progressDialog) {
+        this.progressDialog = progressDialog;
     }
 
     void cancelJob() {
         getMonitor().cancel();
 
-        dlg.setMessage("Cancelling...");
+        progressDialog.setMessage("Cancelling...");
 
         Timer timer = new Timer("JobThread.cancelJob");
         timer.schedule(new TimerTask() {
@@ -109,10 +117,10 @@ public class JobThread implements JobRunnable {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                JobProgressDialog dlg = getDlg();
+                IProgressComponent dlg = getProgressDialog();
                 dlg.setVisible(false);
-                dlg.dispose();
-                setDlg(null);
+                //TODO progressDialog.dispose();
+                setProgressDialog(null);
             }
         });
     }
@@ -140,7 +148,7 @@ public class JobThread implements JobRunnable {
         return new Runnable() {
             @Override
             public void run() {
-                JobProgressMonitor m = new JobProgressMonitor(getDlg(), System.out, false, false);
+                JobProgressMonitor m = new JobProgressMonitor(getProgressDialog(), System.out, false, false);
 
                 setMonitor(m);
                 org.gitools.utils.progressmonitor.ProgressMonitor.set(m);
@@ -148,23 +156,28 @@ public class JobThread implements JobRunnable {
                 try {
 
                     monitor.start();
+                    running = true;
                     runnable.run(monitor);
+                    running = false;
                     monitor.end();
 
                 } catch (CancellationException e) {
                     if (!monitor.isCancelled()) {
                         monitor.exception(e);
                     }
-                } catch (Throwable cause) {
-                    m.exception(cause);
+                }
+                catch (Throwable cause) {
+                    if (!(cause.getCause() instanceof CancellationException && m.isCancelled())) {
+                        m.exception(cause);
+                    }
                 }
 
                 done();
 
                 setThread(null);
 
-                if (monitor.getCause() != null) {
-                    ExceptionDialog ed = new ExceptionDialog(parent, monitor.getCause());
+                if (monitor.getCause() != null && !(monitor.getCause() instanceof CancellationException && monitor.isCancelled())) {
+                    ExceptionGlassPane ed = new ExceptionGlassPane(parent, monitor.getCause());
                     ed.setVisible(true);
                 }
             }
@@ -174,8 +187,8 @@ public class JobThread implements JobRunnable {
     void execute() {
         startThread();
 
-        getDlg().setModal(true);
-        getDlg().setVisible(true);
+        //getProgressDialog().setModal(true);
+        getProgressDialog().setVisible(true);
     }
 
     public boolean isCancelled() {
@@ -189,5 +202,9 @@ public class JobThread implements JobRunnable {
     @Override
     public void run(IProgressMonitor monitor) {
         throw new UnsupportedOperationException("Opperation should be overrided");
+    }
+
+    public static boolean isRunning() {
+        return running;
     }
 }

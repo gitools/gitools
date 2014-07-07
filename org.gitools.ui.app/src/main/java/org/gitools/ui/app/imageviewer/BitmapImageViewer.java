@@ -21,9 +21,8 @@
  */
 package org.gitools.ui.app.imageviewer;
 
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.imageviewer.ImageViewer;
 import org.gitools.ui.platform.imageviewer.ResizeStrategy;
 

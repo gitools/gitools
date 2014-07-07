@@ -24,9 +24,10 @@ package org.gitools.ui.app.genomespace;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.persistence.locators.ProgressMonitorInputStream;
 import org.gitools.ui.app.genomespace.dm.HttpUtils;
+import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -34,31 +35,41 @@ import java.net.URL;
 
 public class GsResourceLocator implements IResourceLocator {
 
-    private final IResourceLocator resourceLocator;
+    private final IResourceLocator parentLocator;
 
-    public GsResourceLocator(IResourceLocator resourceLocator) throws PersistenceException {
+    public GsResourceLocator(IResourceLocator parentLocator) throws PersistenceException {
         super();
-        this.resourceLocator = resourceLocator;
+        this.parentLocator = parentLocator;
     }
 
     @Override
     public URL getURL() {
-        return resourceLocator.getURL();
+        return parentLocator.getURL();
+    }
+
+    @Override
+    public File getReadFile() {
+        return parentLocator.getReadFile();
+    }
+
+    @Override
+    public File getWriteFile() {
+        return parentLocator.getWriteFile();
     }
 
     @Override
     public String getBaseName() {
-        return resourceLocator.getBaseName();
+        return parentLocator.getBaseName();
     }
 
     @Override
     public String getExtension() {
-        return resourceLocator.getExtension();
+        return parentLocator.getExtension();
     }
 
     @Override
     public String getName() {
-        return resourceLocator.getName();
+        return parentLocator.getName();
     }
 
     @Override
@@ -77,19 +88,24 @@ public class GsResourceLocator implements IResourceLocator {
             }
         }
 
-        return resourceLocator.getContentLength();
+        return parentLocator.getContentLength();
 
+    }
+
+    @Override
+    public IResourceLocator getParentLocator() {
+        return parentLocator;
     }
 
 
     @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
-        return new GsResourceLocator(resourceLocator.getReferenceLocator(referenceName));
+        return new GsResourceLocator(parentLocator.getReferenceLocator(referenceName));
     }
 
     @Override
     public boolean isWritable() {
-        return resourceLocator.isWritable();
+        return parentLocator.isWritable();
     }
 
 
@@ -100,11 +116,17 @@ public class GsResourceLocator implements IResourceLocator {
             return new ProgressMonitorInputStream(progressMonitor, HttpUtils.getInstance().openConnectionStream(getURL()));
         }
 
-        return resourceLocator.openInputStream(progressMonitor);
+        return parentLocator.openInputStream(progressMonitor);
     }
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
-        return resourceLocator.openOutputStream();
+    public OutputStream openOutputStream(IProgressMonitor monitor) throws IOException {
+        return parentLocator.openOutputStream(monitor);
+    }
+
+
+    @Override
+    public void close(IProgressMonitor monitor) {
+        parentLocator.close(monitor);
     }
 }

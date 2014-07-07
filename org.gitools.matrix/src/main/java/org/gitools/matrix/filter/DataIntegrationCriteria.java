@@ -24,10 +24,21 @@ package org.gitools.matrix.filter;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 import org.gitools.utils.operators.Operator;
+import org.gitools.utils.xml.adapter.OperatorXmlAdapter;
 
-public class DataIntegrationCriteria extends ValueFilterCriteria {
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+public class DataIntegrationCriteria extends ValueFilterFunction {
+
+    @XmlJavaTypeAdapter(OperatorXmlAdapter.class)
     private Operator operator;
+
+    public DataIntegrationCriteria() {
+        //JAXB requirement
+    }
 
     public DataIntegrationCriteria(IMatrixLayer layer, CutoffCmp comparator, Double value, Double nullConversion, Operator operator) {
         super(layer, comparator, value, nullConversion);
@@ -46,6 +57,6 @@ public class DataIntegrationCriteria extends ValueFilterCriteria {
     @Override
     public String toString() {
         String empty = nullConversion == null ? "" : " (empty: " + nullConversion + ")";
-        return operator.getLongName() + " " + layer.getId() + " " + comparator.toString() + " " + value + empty;
+        return operator.getLongName() + " " + layerId + " " + comparator.toString() + " " + cutoffValue + empty;
     }
 }

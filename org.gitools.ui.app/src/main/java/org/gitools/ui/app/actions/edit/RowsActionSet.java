@@ -31,13 +31,15 @@ import java.awt.event.KeyEvent;
 
 public class RowsActionSet extends HeatmapDynamicActionSet {
 
-    public RowsActionSet() {
-        super("Rows", KeyEvent.VK_R);
+    public RowsActionSet(String name) {
+        super(name, KeyEvent.VK_R);
     }
 
     @Override
     protected void populateMenu(Heatmap heatmap, JMenu menu) {
         menu.removeAll();
+
+        menu.add(new AnnotationAction(heatmap.getRows().getId()));
 
         // Headers
         for (HeatmapHeader header : heatmap.getRows().getHeaders()) {
@@ -54,6 +56,7 @@ public class RowsActionSet extends HeatmapDynamicActionSet {
         menu.add(Actions.sortByRowsAnnotation);
         menu.add(Actions.sortRowsByValue);
         menu.add(Actions.sortRowsByMutualExclusion);
+        menu.add(Actions.sortByPredefinedListRowsAction);
 
         // Visibility
         menu.addSeparator();

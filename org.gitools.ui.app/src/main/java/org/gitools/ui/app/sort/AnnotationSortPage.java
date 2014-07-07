@@ -24,9 +24,9 @@ package org.gitools.ui.app.sort;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.utils.DocumentChangeListener;
-import org.gitools.ui.app.wizard.common.PatternSourcePage;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.pages.common.PatternSourcePage;
+import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 

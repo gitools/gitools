@@ -29,11 +29,11 @@ import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.MatrixViewSorter;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -90,30 +90,27 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
 
                 monitor.begin("Sorting ...", 1);
                 MatrixViewSorter.sortByValue(heatmap, criteriaArray, getDimension().getId() == ROWS, getDimension().getId() != ROWS, monitor);
+                Application.get().showNotification(getDimension().getId().getLabel() + "s sorted (" + sort.toString() + ")");
 
             }
         });
 
-        Application.get().setStatusText("Sorted.");
     }
 
     @Override
     public void onConfigure(HeatmapDimension sortDimension, HeatmapPosition position) {
 
-        Heatmap heatmap = getHeatmap();
-        HeatmapDimension otherDimension = heatmap.getRows() == sortDimension ? heatmap.getColumns() : heatmap.getRows();
-
         String layer = getHeatmap().getLayers().getTopLayer().getName();
 
         String selected = (sortDimension.getSelected().size() > 0 ? "selected " : "aggregated ");
 
-        int otherSize = otherDimension.getSelected().size();
+        int otherSize = sortDimension.getSelected().size();
         String dimCount = (otherSize > 0 ?
-                Integer.toString(otherSize) + " " + dimension.getLabel() + (otherSize > 1 ? "s" : ""):
+                Integer.toString(otherSize) + " " + dimension.getLabel() + (otherSize > 1 ? "s" : "") :
                 "all " + dimension.getLabel() + "s"
         );
 
-        setName("<html><i>Sort</i> " + dimCount + " " + currentSort.toString().substring(0,3).toLowerCase() + ". by " + selected + " '" + layer + "'</html>");
+        setName("<html><i>Sort</i> " + dimCount + " " + currentSort.toString().substring(0, 3).toLowerCase() + ". by " + selected + " '" + layer + "'</html>");
 
     }
 }

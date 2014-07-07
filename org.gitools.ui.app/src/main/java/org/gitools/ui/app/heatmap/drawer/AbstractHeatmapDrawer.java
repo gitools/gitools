@@ -22,9 +22,11 @@
 package org.gitools.ui.app.heatmap.drawer;
 
 import org.apache.commons.lang.StringUtils;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.Decoration;
+import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.utils.color.Colors;
 
 import java.awt.*;
@@ -33,11 +35,17 @@ import java.text.AttributedString;
 
 public abstract class AbstractHeatmapDrawer {
 
-    public static final Color SELECTED_COLOR = new Color(0, 0, 128, 100);
+    public static final Color SELECTED_COLOR = new Color(0, 0, 128, 60);
 
     protected Heatmap heatmap;
     protected HeatmapDimension rows;
     protected HeatmapDimension columns;
+    private static OnScreenRect onScreenRect;
+
+    public static final int HIGHLIGHT_POLICY_NORMAL = 0;
+    public static final int HIGHLIGHT_POLICY_FORCE = 1;
+    public static final int HIGHLIGHT_POLICY_AVOID = 2;
+
 
     private boolean pictureMode;
 
@@ -46,6 +54,9 @@ public abstract class AbstractHeatmapDrawer {
         this.columns = heatmap.getColumns();
         this.rows = heatmap.getRows();
         this.pictureMode = false;
+        if (onScreenRect == null) {
+            this.onScreenRect = new OnScreenRect();
+        }
     }
 
     public Heatmap getHeatmap() {
@@ -166,34 +177,91 @@ public abstract class AbstractHeatmapDrawer {
 
     }
 
-    protected void drawSelectedAndFocus(Graphics2D g, Rectangle box, HeatmapDimension dimension, boolean horizontal) {
+
+    protected void drawSelectedHighlightedAndFocus(Graphics2D g, Rectangle box, HeatmapDimension dimension, boolean drawingRows) {
+        drawSelectedHighlightedAndFocus(g, box, dimension, drawingRows, HIGHLIGHT_POLICY_NORMAL);
+    }
+
+    protected void drawSelectedHighlightedAndFocus(Graphics2D g, Rectangle box, HeatmapDimension dimension, boolean drawingRows, int highlightPolicy) {
 
         // Draw selected
-        g.setColor(SELECTED_COLOR);
+        Color selectedColor = SELECTED_COLOR;
+        Color highlightedColor = dimension.getHighlightingColor();
+
+        int start = -1;
+        int end = -1;
+        if (dimension.getId().equals(MatrixDimensionKey.ROWS)) {
+            start = this.onScreenRect.rowStart;
+            end = this.onScreenRect.rowEnd;
+        } else {
+            start = this.onScreenRect.colStart;
+            end = this.onScreenRect.colEnd;
+        }
+
         int cellSize = dimension.getFullSize();
-        for (String s : dimension.getSelected()) {
-            fillLine(g, box, dimension.indexOf(s) * cellSize, cellSize, horizontal);
+        for (int i = start; i <= end; i++) {
+            String id = dimension.getLabel(i);
+            Color paint = null;
+
+            // is selected
+            if (dimension.getSelected().contains(id)) {
+                paint = SELECTED_COLOR;
+            }
+
+            // is highlighted
+            if (highlightPolicy == HIGHLIGHT_POLICY_FORCE ||
+                    (dimension.isHighlighted(id) && highlightPolicy != HIGHLIGHT_POLICY_AVOID)) {
+                paint = (paint == null) ? highlightedColor : blend(SELECTED_COLOR, highlightedColor);
+            }
+
+            // draw selection and highlight
+            if (paint != null) {
+                g.setColor(paint);
+                fillLine(g, box, i * cellSize, cellSize, drawingRows);
+            }
         }
 
         // Draw row lead
         g.setColor(Color.DARK_GRAY);
         int lead = dimension.indexOf(dimension.getFocus());
         if (lead != -1) {
-            fillLine(g, box, (lead * cellSize) - 1, 1, horizontal);
-            fillLine(g, box, ((lead + 1) * cellSize) - 1, 1, horizontal);
+            fillLine(g, box, (lead * cellSize) - 1, 1, drawingRows);
+            fillLine(g, box, ((lead + 1) * cellSize) - 1, 1, drawingRows);
         }
     }
 
     /**
      * Paint a full horizontal or vertical line
      */
-    protected void fillLine(Graphics2D g, Rectangle box, int position, int size, boolean horizontal) {
-        if (horizontal) {
+    protected void fillLine(Graphics2D g, Rectangle box, int position, int size, boolean drawingRows) {
+        if (drawingRows) {
             g.fillRect(box.x, box.y + position, box.width, size);
         } else {
             g.fillRect(box.x + position, box.y, size, box.height);
         }
     }
 
+
+    public OnScreenRect getOnScreenRect() {
+        return this.onScreenRect;
+    }
+
+    public void setOnScreenRect(OnScreenRect onScreenRect) {
+        this.onScreenRect = onScreenRect;
+    }
+
+
+    public static Color blend(Color c0, Color c1) {
+        double totalAlpha = c0.getAlpha() + c1.getAlpha();
+        double weight0 = c0.getAlpha() / totalAlpha;
+        double weight1 = c1.getAlpha() / totalAlpha;
+
+        double r = weight0 * c0.getRed() + weight1 * c1.getRed();
+        double g = weight0 * c0.getGreen() + weight1 * c1.getGreen();
+        double b = weight0 * c0.getBlue() + weight1 * c1.getBlue();
+        double a = Math.max(c0.getAlpha(), c1.getAlpha());
+
+        return new Color((int) r, (int) g, (int) b, (int) a);
+    }
 
 }

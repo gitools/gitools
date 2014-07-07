@@ -48,7 +48,8 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
     public static final String PROPERTY_GRID_SIZE = "gridSize";
     public static final String PROPERTY_CELL_SIZE = "cellSize";
     public static final String PROPERTY_HEADERS = "headers";
-    public static final String PROPERTY_HIGHLIGHTED_LABELS = "highlightedLabels";
+    public static final String PROPERTY_HIGHLIGHTED = "highlighted";
+    public static final String PROPERTY_SELECTED_HEADER = "selectedHeader";
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<AnnotationMatrix> annotations;
@@ -70,6 +71,15 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
     @XmlTransient
     private Set<String> highlightedLabels;
 
+    @XmlTransient
+    private Set<String> highlightedHeaders;
+
+    @XmlTransient
+    private HeatmapHeader selectedHeader;
+
+    @XmlTransient
+    private static Color highlightingColor;
+
     public HeatmapDimension() {
         this(null);
     }
@@ -82,6 +92,8 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
         this.gridColor = Color.WHITE;
         this.cellSize = 14;
         this.highlightedLabels = new HashSet<>();
+        this.highlightedHeaders = new HashSet<>();
+        this.selectedHeader = null;
 
         init(matrixDimension);
     }
@@ -150,7 +162,7 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
     }
 
     public boolean showGrid() {
-        return getCellSize() > 1;
+        return getCellSize() > 4;
     }
 
     public int getFullSize() {
@@ -193,18 +205,30 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
 
     public void setHighlightedLabels(Set<String> highlightedLabels) {
         this.highlightedLabels = highlightedLabels;
-        firePropertyChange(PROPERTY_HIGHLIGHTED_LABELS, null, highlightedLabels);
-        updateHeaders();
+        firePropertyChange(PROPERTY_HIGHLIGHTED, null, highlightedLabels);
     }
 
     public void clearHighlightedLabels() {
         highlightedLabels.clear();
-        firePropertyChange(PROPERTY_HIGHLIGHTED_LABELS, null, highlightedLabels);
+        firePropertyChange(PROPERTY_HIGHLIGHTED, null, highlightedLabels);
+    }
+
+
+    public Set<String> getHighlightedHeaders() {
+        return highlightedHeaders;
+    }
+
+    public void setHighlightedHeaders(Set<String> highlightedHeaders) {
+        this.highlightedHeaders = highlightedHeaders;
+        firePropertyChange(PROPERTY_HIGHLIGHTED, null, highlightedLabels);
+    }
+
+    public void clearHighlightedHeaders() {
+        this.highlightedHeaders.clear();
+        firePropertyChange(PROPERTY_HIGHLIGHTED, null, highlightedLabels);
     }
 
     public void populateDetails(List<DetailsDecoration> details) {
-        details.add(new DetailsDecoration("Size", Integer.toString(size())));
-
         Iterable<HeatmapHeader> itHeaders = headers;
 
         if (getId() == MatrixDimensionKey.COLUMNS) {
@@ -213,8 +237,42 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
 
         for (HeatmapHeader header : itHeaders) {
             if (header.isVisible()) {
-                header.populateDetails(details, getFocus());
+                header.populateDetails(details, getFocus(), getSelectedHeader() == header);
             }
         }
+    }
+
+    public void setHighlightingColor(Color highlightingColor) {
+        this.highlightingColor = highlightingColor;
+        firePropertyChange(PROPERTY_HIGHLIGHTED, null, highlightedLabels);
+        updateHeaders();
+    }
+
+    public Color getHighlightingColor() {
+        if (highlightingColor == null) {
+            return getDefaultHighlightColor();
+        }
+        return highlightingColor;
+    }
+
+    private static Color getDefaultHighlightColor() {
+        return new Color(254, 254, 0, 127);
+    }
+
+    public HeatmapHeader getSelectedHeader() {
+        if (selectedHeader == null) {
+            selectedHeader = headers.getFirst();
+        }
+        return selectedHeader;
+    }
+
+    public void setSelectedHeader(HeatmapHeader header) {
+        HeatmapHeader old = getSelectedHeader();
+        this.selectedHeader = header;
+        firePropertyChange(PROPERTY_SELECTED_HEADER, old, header);
+    }
+
+    public void resetHighlightColor() {
+        setHighlightingColor(getDefaultHighlightColor());
     }
 }

@@ -25,8 +25,8 @@ import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;

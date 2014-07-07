@@ -28,7 +28,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.combination.wizard.CombinationAnalysisWizard;
 import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
-import org.gitools.ui.platform.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.AbstractEditor;
 
 import java.awt.event.KeyEvent;
 

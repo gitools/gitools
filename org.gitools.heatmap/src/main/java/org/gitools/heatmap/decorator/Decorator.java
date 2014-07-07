@@ -27,17 +27,24 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.decorator.impl.*;
 import org.gitools.matrix.MatrixUtils;
-import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.INumericColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.xml.bind.annotation.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlSeeAlso({BinaryDecorator.class, LinearDecorator.class, PValueDecorator.class, ZScoreDecorator.class, CorrelationDecorator.class, CategoricalDecorator.class})
-public abstract class Decorator<C extends IColorScale> extends Model {
+@XmlSeeAlso({BinaryDecorator.class, LinearDecorator.class,
+        PValueDecorator.class, ZScoreDecorator.class,
+        CorrelationDecorator.class, CategoricalDecorator.class,
+        PValueLogSumDecorator.class})
+public abstract class Decorator<C extends INumericColorScale> extends Model {
 
     public static final String PROPERTY_SHOW_VALUE = "showValue";
+    public static final String OUTSIDE_EVENTS_FUNCTION = "Outside Events";
+    public static final String NON_0_EVENTS_FUNCTION = "Non-0 Events";
 
     @XmlAttribute
     private String name;
@@ -45,11 +52,74 @@ public abstract class Decorator<C extends IColorScale> extends Model {
     @XmlElement(name = "show-value")
     private boolean showValue = false;
 
+    @XmlTransient
+    private List<NonEventToNullFunction> eventFunctions;
+
     public Decorator() {
         super();
     }
 
+
     public abstract void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, String... identifiers);
+
+    public abstract NonEventToNullFunction getDefaultEventFunction();
+
+    public List<NonEventToNullFunction> getEventFunctionAlternatives() {
+
+        if (eventFunctions == null) {
+            initEventFunctions();
+        }
+
+        return eventFunctions;
+
+    }
+
+    protected void initEventFunctions() {
+        eventFunctions = new ArrayList<>();
+
+        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), OUTSIDE_EVENTS_FUNCTION) {
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
+                if (value == null) {
+                    return null;
+                }
+
+                if (getColorScale().isOutsideRange(value)) {
+                    return value;
+                } else {
+                    return null;
+                }
+
+
+            }
+
+            @Override
+            public String getDescription() {
+                INumericColorScale scale = getColorScale();
+                return "All values below " + scale.getMinValue() + "  or above " +
+                        scale.getMaxValue() +
+                        " of the scale are events";
+            }
+        });
+
+        eventFunctions.add(new NonEventToNullFunction<INumericColorScale>(getScale(), NON_0_EVENTS_FUNCTION) {
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                this.position = position;
+                return (value == null || value == 0) ? null : value;
+            }
+
+            @Override
+            public String getDescription() {
+                return "All values not equal to 0 or 'empty' are events";
+            }
+        });
+
+
+    }
+
 
     public void decorate(Decoration decoration, ITextFormatter textFormatter, IMatrix matrix, IMatrixLayer layer, IMatrixPosition position) {
         decorate(decoration, textFormatter, matrix, layer, position.toVector());
@@ -70,9 +140,15 @@ public abstract class Decorator<C extends IColorScale> extends Model {
     }
 
     public void setShowValue(boolean showValue) {
+        setShowValue(showValue, false);
+    }
+
+    public void setShowValue(boolean showValue, boolean avoidFirePropertyChange) {
         boolean oldValue = this.showValue;
         this.showValue = showValue;
-        firePropertyChange(PROPERTY_SHOW_VALUE, oldValue, showValue);
+        if (!avoidFirePropertyChange) {
+            firePropertyChange(PROPERTY_SHOW_VALUE, oldValue, showValue);
+        }
     }
 
     protected static double toDouble(Object value) {

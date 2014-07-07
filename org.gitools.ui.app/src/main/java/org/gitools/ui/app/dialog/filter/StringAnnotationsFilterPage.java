@@ -23,12 +23,12 @@ package org.gitools.ui.app.dialog.filter;
 
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.DocumentChangeListener;
-import org.gitools.ui.app.utils.FileChooserUtils;
-import org.gitools.ui.app.wizard.common.PatternSourcePage;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.pages.common.PatternSourcePage;
+import org.gitools.ui.core.utils.DocumentChangeListener;
+import org.gitools.ui.core.utils.FileChooserUtils;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.ui.platform.wizard.PageDialog;
 
@@ -183,7 +183,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
                 }
             }
         } catch (IOException ex) {
-            ExceptionDialog dlg = new ExceptionDialog(Application.get(), ex);
+            ExceptionGlassPane dlg = new ExceptionGlassPane(Application.get(), ex);
             dlg.setVisible(true);
         }
 
@@ -353,7 +353,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
 
             patterns.setText(readNamesFromFile(file));
         } catch (IOException ex) {
-            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
+            ExceptionGlassPane edlg = new ExceptionGlassPane(Application.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_loadBtnActionPerformed
@@ -372,7 +372,7 @@ public class StringAnnotationsFilterPage extends AbstractWizardPage {
             bw.append(patterns.getText()).append('\n');
             bw.close();
         } catch (Exception ex) {
-            ExceptionDialog edlg = new ExceptionDialog(Application.get(), ex);
+            ExceptionGlassPane edlg = new ExceptionGlassPane(Application.get(), ex);
             edlg.setVisible(true);
         }
     }//GEN-LAST:event_saveBtnActionPerformed

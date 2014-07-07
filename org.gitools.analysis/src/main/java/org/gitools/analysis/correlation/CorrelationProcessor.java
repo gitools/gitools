@@ -82,7 +82,7 @@ public class CorrelationProcessor implements AnalysisProcessor {
                 break;
             }
 
-            for (String Y : positionY.iterate(correlatedDimension).from(X)) {
+            for (String Y : positionY.iterate(correlatedDimension.from(X))) {
 
                 monitor.info("Correlating " + X + " with " + Y);
 

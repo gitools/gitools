@@ -23,29 +23,26 @@ package org.gitools.ui.app.welcome;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
-import org.gitools.api.resource.IResource;
 import org.gitools.heatmap.format.HeatmapFormat;
-import org.gitools.persistence.locators.ProgressMonitorInputStream;
-import org.gitools.ui.app.actions.file.OpenFromFilesystemAction;
+import org.gitools.ui.app.actions.file.OpenFromFilesystemBrowseAction;
 import org.gitools.ui.app.actions.file.OpenFromGenomeSpaceAction;
 import org.gitools.ui.app.actions.help.ShortcutsAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.FileChoose;
-import org.gitools.ui.app.utils.FileChooserUtils;
-import org.gitools.ui.app.wizard.common.SaveFileWizard;
-import org.gitools.ui.platform.Application;
-import org.gitools.ui.platform.dialog.ExceptionDialog;
-import org.gitools.ui.platform.editor.HtmlEditor;
+import org.gitools.ui.app.wizard.SaveFileWizard;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.components.editor.HtmlEditor;
+import org.gitools.ui.core.utils.FileChoose;
+import org.gitools.ui.core.utils.FileChooserUtils;
+import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.HttpUtils;
+import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 
-import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -65,7 +62,7 @@ public class WelcomeEditor extends HtmlEditor {
 
     @Override
     protected void exception(Exception e) {
-        ExceptionDialog.show(Application.get(), e);
+        ExceptionGlassPane.show(Application.get(), e);
     }
 
     @Override
@@ -74,7 +71,7 @@ public class WelcomeEditor extends HtmlEditor {
             case "open": {
                 switch (params.get("ref")) {
                     case "filesystem":
-                        new OpenFromFilesystemAction().actionPerformed(new ActionEvent(this, 0, name));
+                        new OpenFromFilesystemBrowseAction().actionPerformed(new ActionEvent(this, 0, name));
                         break;
                     case "genomespace":
                         new OpenFromGenomeSpaceAction().actionPerformed(new ActionEvent(this, 0, name));
@@ -163,7 +160,7 @@ public class WelcomeEditor extends HtmlEditor {
 
     private static URL getWelcomeURL() {
         try {
-            URL url = new URL(Settings.get().getWelcomeUrl() + "?uuid="+Settings.get().getUuid());
+            URL url = new URL(Settings.get().getWelcomeUrl() + "?uuid=" + Settings.get().getUuid());
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(10000);
 

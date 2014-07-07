@@ -25,8 +25,8 @@ import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.stats.test.factory.BinomialTestFactory;
 import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.analysis.stats.test.factory.ZscoreTestFactory;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
@@ -82,7 +82,10 @@ public class StatisticalTestPage extends AbstractWizardPage {
                 estimatorCbox.setVisible(isZ);
             }
         });
-        testCbox.setModel(new DefaultComboBoxModel(new Test[]{new Test("Binomial (Bernoulli)", ""), new Test("Fisher Exact", ""), new Test("Z Score", "")}));
+        testCbox.setModel(new DefaultComboBoxModel(
+                new Test[]{new Test("Binomial (Bernoulli)", "Binomial: Use with binary data and big sample sizes"),
+                        new Test("Fisher Exact", "Fisher's Exact: Use with binary data and small sample sizes"),
+                        new Test("Z Score", "Z-Score: Use with continuous data and obtaining detailed enrichment status. The greater the sampling size the more accurate the result")}));
         testCbox.setSelectedIndex(0);
 
         samplingSizeCbox.setSelectedItem(String.valueOf(ZscoreTestFactory.DEFAULT_NUM_SAMPLES));

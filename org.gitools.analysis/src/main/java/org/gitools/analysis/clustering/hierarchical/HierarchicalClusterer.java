@@ -27,10 +27,9 @@ import org.gitools.analysis.clustering.distance.DistanceMeasure;
 import org.gitools.analysis.clustering.hierarchical.strategy.LinkageStrategy;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.matrix.IMatrix;
-import org.gitools.api.matrix.IMatrixDimension;
-import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.*;
+import org.gitools.api.matrix.view.IMatrixViewDimension;
+import org.gitools.heatmap.header.HierarchicalCluster;
 
 import java.awt.*;
 import java.util.*;
@@ -38,6 +37,7 @@ import java.util.List;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+import static com.google.common.collect.Sets.complementOf;
 import static com.google.common.collect.Sets.newHashSet;
 
 public class HierarchicalClusterer {
@@ -57,9 +57,38 @@ public class HierarchicalClusterer {
         Map<String, HierarchicalCluster> clusters = new HashMap<>(clusterDimension.size());
         SortedSet<ClusterPair> linkages = new ConcurrentSkipListSet<>();
 
+
+        // Aggregate all the values to sort the clusters by weight
+        monitor.begin("Aggregating values...", clusterDimension.size());
+        final Map<String, Double> aggregation = new HashMap<>(clusterDimension.size());
+        Set<String> allNullValues = new HashSet<>();
+        IMatrixPosition position = matrix.newPosition();
+        for (String id : position.iterate(clusterDimension)) {
+
+            Double value = aggregator.aggregate(position.iterate(layer, aggregationDimension));
+
+            if (value != null) {
+                aggregation.put(id, value);
+            } else {
+                allNullValues.add(id);
+            }
+
+        }
+
+        // First sort the clustering dimension to show the clusters ordered by weight at the end
+        if (clusterDimension instanceof IMatrixViewDimension) {
+            IMatrixViewDimension sortDimension = (IMatrixViewDimension) clusterDimension;
+            sortDimension.sort(new Comparator<String>() {
+                @Override
+                public int compare(String o1, String o2) {
+                    return SortDirection.ASCENDING.compare(aggregation.get(o1), aggregation.get(o2));
+                }
+            });
+        }
+
+        // Calculate all the distances
         IMatrixPosition position1 = matrix.newPosition();
         IMatrixPosition position2 = matrix.newPosition();
-
         monitor.begin("Calculating distances...", clusterDimension.size());
         for (String id1 : position1.iterate(clusterDimension)) {
 
@@ -69,13 +98,23 @@ public class HierarchicalClusterer {
                 throw new CancellationException();
             }
 
-            HierarchicalCluster cluster1 = newCluster(clusters, id1);
-            cluster1.setWeight( aggregator.aggregate(position1.iterate(layer, aggregationDimension)) );
+            // Skip all null values
+            if (allNullValues.contains(id1)) {
+                continue;
+            }
 
-            for (String id2 : position2.iterate(clusterDimension).from(id1)) {
+            HierarchicalCluster cluster1 = newCluster(clusters, id1);
+            cluster1.setWeight( aggregation.get(id1) );
+
+            for (String id2 : position2.iterate(clusterDimension.from(id1))) {
 
                 // Skip equal ids
                 if (id1.equals(id2)) continue;
+
+                // Skip all null columns
+                if (allNullValues.contains(id2)) {
+                    continue;
+                }
 
                 Double distance = measure.compute(
                         position1.iterate(layer, aggregationDimension),
@@ -88,16 +127,15 @@ public class HierarchicalClusterer {
             }
         }
 
-        /* Process */
+        // Create the clusters agglomerating nodes by the nearest distances
         HierarchyBuilder builder = new HierarchyBuilder(newHashSet(clusters.values()), linkages);
         builder.agglomerate(linkageStrategy, monitor, clusterDimension.size());
 
-        /* Set cluster names */
+        // Set cluster names ordered by weight
         HierarchicalCluster root = builder.getRootCluster();
         root.setName("");
         Color color = nameClusters(root.getChildren(), 1);
         root.setColor(color.getRGB());
-
         root.setName("root");
 
         return root;
@@ -128,7 +166,7 @@ public class HierarchicalClusterer {
             if (child.getChildren().isEmpty()) {
                 child.setName(JOINER.join(child.getIdentifiers()));
             } else {
-                child.setName(child.getParent().getName() + createLabel(i, digits));
+                child.setName(child.getParentName() + createLabel(i, digits));
             }
             Color colorChild = nameClusters(child.getChildren(), level+1);
             child.setColor(colorChild.getRGB());

@@ -56,7 +56,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 
     public void setTitle(String title) {
         this.title = title;
-        fireWizardUpdate();
+        pageUpdated(null);
     }
 
     @Override
@@ -66,7 +66,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
 
     protected void setLogo(Icon icon) {
         this.logo = icon;
-        fireWizardUpdate();
+        pageUpdated(null);
     }
 
     @Override
@@ -192,7 +192,7 @@ public abstract class AbstractWizard implements IWizard, IWizardPageUpdateListen
             l.pageUpdated(page);
     }
 
-    private void fireWizardUpdate() {
+    public void fireWizardUpdate() {
         for (IWizardUpdateListener l : listeners)
             l.wizardUpdated(this);
     }

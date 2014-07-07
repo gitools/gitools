@@ -21,11 +21,14 @@
  */
 package org.gitools.matrix.model.hashmatrix;
 
+import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.matrix.model.AbstractMatrixDimension;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class HashMatrixDimension extends AbstractMatrixDimension {
 
@@ -35,8 +38,8 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
     public HashMatrixDimension(MatrixDimensionKey id) {
         super(id);
 
-        this.labelToIndex = new HashMap<>();
-        this.indexToLabel = new HashMap<>();
+        this.labelToIndex = new ConcurrentHashMap<>();
+        this.indexToLabel = new ConcurrentHashMap<>();
     }
 
     public HashMatrixDimension(MatrixDimensionKey id, Iterable<String> labels) {
@@ -78,4 +81,26 @@ public class HashMatrixDimension extends AbstractMatrixDimension {
         this.indexToLabel.put(nextIndex, label);
     }
 
+    @Override
+    public IMatrixDimension subset(Set<String> identifiers) {
+        return new HashMatrixDimension(getId(), identifiers);
+    }
+
+    public void optimize(Iterable<String> identifiers) {
+
+        Map<String, Integer> allIds = labelToIndex;
+        this.labelToIndex = new HashMap<>();
+        this.indexToLabel = new HashMap<>();
+
+        for (String id : identifiers) {
+            add(id);
+            if (allIds.containsKey(id)) {
+                allIds.remove(id);
+            }
+        }
+
+        for (String id : allIds.keySet()) {
+            add(id);
+        }
+    }
 }

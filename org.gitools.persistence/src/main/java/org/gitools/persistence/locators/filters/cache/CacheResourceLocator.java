@@ -25,7 +25,7 @@ import org.apache.commons.io.IOUtils;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResourceLocator;
-import org.gitools.persistence.locators.ProgressMonitorInputStream;
+import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 
 import java.io.*;
 import java.net.URL;
@@ -45,6 +45,15 @@ public class CacheResourceLocator implements IResourceLocator {
     @Override
     public URL getURL() {
         return originalLocator.getURL();
+    }
+
+    @Override
+    public File getReadFile() {
+        return cachedFile == null ? originalLocator.getReadFile() : cachedFile;
+    }
+
+    public File getWriteFile() {
+        return originalLocator.getWriteFile();
     }
 
     @Override
@@ -77,6 +86,11 @@ public class CacheResourceLocator implements IResourceLocator {
     }
 
     @Override
+    public IResourceLocator getParentLocator() {
+        return originalLocator;
+    }
+
+    @Override
     public IResourceLocator getReferenceLocator(String referenceName) throws PersistenceException {
         return originalLocator.getReferenceLocator(referenceName);
     }
@@ -100,7 +114,12 @@ public class CacheResourceLocator implements IResourceLocator {
     }
 
     @Override
-    public OutputStream openOutputStream() throws IOException {
-        return originalLocator.openOutputStream();
+    public OutputStream openOutputStream(IProgressMonitor monitor) throws IOException {
+        return originalLocator.openOutputStream(monitor);
+    }
+
+    @Override
+    public void close(IProgressMonitor monitor)  {
+        originalLocator.close(monitor);
     }
 }

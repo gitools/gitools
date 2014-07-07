@@ -23,6 +23,8 @@ package org.gitools.heatmap;
 
 import com.google.common.base.Objects;
 import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -31,6 +33,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.Direction;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.matrix.model.AbstractMatrixDimension;
+import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.utils.xml.adapter.StringArrayXmlAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -105,6 +108,8 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         }
 
         visibleToIndex = null;
+        firePropertyChange(PROPERTY_VISIBLE, null, visible);
+
     }
 
     public List<String> toList() {
@@ -164,7 +169,6 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         visibleToIndex = null;
 
         firePropertyChange(PROPERTY_VISIBLE, null, visible);
-        firePropertyChange(PROPERTY_SELECTED, null, selected);
     }
 
     public void hide(Set<String> identifiers) {
@@ -200,6 +204,11 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         firePropertyChange(PROPERTY_VISIBLE, null, visible);
     }
 
+    /**
+     * Returns selected without guaranteeing it's order represeting the heatmap order
+     *
+     * @return
+     */
     @Override
     public Set<String> getSelected() {
         return selected;
@@ -246,7 +255,7 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
 
     @Override
     public String getLabel(int index) {
-        if (index < 0 || index > size()) {
+        if (index < 0 || index > size() - 1) {
             return null;
         }
 
@@ -293,4 +302,14 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
 
     }
 
+    @Override
+    public IMatrixDimension subset(Set<String> identifiers) {
+        return new HashMatrixDimension(getId(), Iterables.filter(visible, Predicates.in(identifiers)));
+    }
+
+
+    @Override
+    public void forceUpdate(String property) {
+        firePropertyChange(PROPERTY_VISIBLE, null, visible);
+    }
 }

@@ -21,9 +21,9 @@
  */
 package org.gitools.ui.app.dialog;
 
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.platform.help.Tips;
+import org.gitools.ui.platform.settings.Settings;
 import org.jdesktop.swingx.JXTipOfTheDay;
 import org.jdesktop.swingx.tips.TipLoader;
 import org.jdesktop.swingx.tips.TipOfTheDayModel;

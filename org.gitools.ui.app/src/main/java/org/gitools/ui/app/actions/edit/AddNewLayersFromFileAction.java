@@ -33,15 +33,16 @@ import org.gitools.matrix.FileFormats;
 import org.gitools.matrix.format.CdmMatrixFormat;
 import org.gitools.matrix.format.TdmMatrixFormat;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
-import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.fileimport.ImportManager;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.utils.FileChoose;
-import org.gitools.ui.app.utils.FileChooserUtils;
-import org.gitools.ui.app.utils.FileFormatFilter;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.utils.FileChoose;
+import org.gitools.ui.core.utils.FileChooserUtils;
+import org.gitools.ui.core.utils.FileFormatFilter;
+import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
     };
 
     public static FileFormatFilter[] FILE_FORMAT_FILTERS;
+
     static {
 
         List<FileFormatFilter> filters = new ArrayList<>();
@@ -91,12 +93,13 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
     }
 
     public AddNewLayersFromFileAction() {
-        super("New layer...");
+        super("New data layer...");
+        setSmallIconFromResource(IconNames.add16);
     }
 
     @Override
     public boolean isEnabledByModel(Object model) {
-        return (model instanceof Heatmap) && (((Heatmap)model).getContents() instanceof HashMatrix);
+        return (model instanceof Heatmap) && (((Heatmap) model).getContents() instanceof HashMatrix);
     }
 
     @Override
@@ -150,7 +153,7 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
             }
         };
         JobThread.execute(Application.get(), loadFile);
-        Application.get().setStatusText("Done.");
+        Application.get().showNotification("New data layer added");
     }
 
     private static void copyLayerValues(IMatrix fromMatrix, IMatrixLayer fromLayer, IMatrix toMatrix, IMatrixLayer toLayer) {

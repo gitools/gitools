@@ -21,30 +21,49 @@
  */
 package org.gitools.matrix.format;
 
+import edu.upf.bg.mtabix.MTabixConfig;
+import edu.upf.bg.mtabix.MTabixIndex;
+import edu.upf.bg.mtabix.compress.BlockCompressedStreamConstants;
+import edu.upf.bg.mtabix.parse.DefaultKeyParser;
+import org.apache.commons.io.IOUtils;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.IMatrixLayer;
+import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.matrix.model.mtabixmatrix.MTabixMatrix;
 import org.gitools.utils.readers.text.CSVReader;
 import org.gitools.utils.readers.text.RawFlatTextWriter;
 import org.gitools.utils.translators.DoubleTranslator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CancellationException;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
+import static com.google.common.collect.Lists.newArrayList;
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
 import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 @ApplicationScoped
 public class TdmMatrixFormat extends AbstractMatrixFormat {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(TdmMatrixFormat.class);
     public static final String EXSTENSION = "tdm";
 
     public TdmMatrixFormat() {
@@ -60,6 +79,9 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
     protected IMatrix readResource(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws PersistenceException {
 
         try {
+
+            MTabixIndex index = readMtabixIndex(resourceLocator, progressMonitor);
+
             InputStream in = resourceLocator.openInputStream(progressMonitor);
             CSVReader parser = new CSVReader(new InputStreamReader(in));
 
@@ -73,6 +95,14 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
                 layers[i - 2] = new MatrixLayer<>(header[i], Double.class);
             }
 
+            if (index != null) {
+
+                in.close();
+
+                return new MTabixMatrix(index, new MatrixLayers<MatrixLayer>(layers), ROWS, COLUMNS);
+            }
+
+            // Load all the matrix into memory
             HashMatrix resultsMatrix = new HashMatrix(new MatrixLayers<MatrixLayer>(layers), ROWS, COLUMNS);
 
             // read body
@@ -104,20 +134,99 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
 
     }
 
+    private MTabixIndex readMtabixIndex(IResourceLocator resourceLocator, IProgressMonitor progressMonitor) throws IOException, URISyntaxException {
+
+        // Check if we are using mtabix
+        URL dataURL = resourceLocator.getURL();
+
+        URL indexURL = null;
+
+        if (!dataURL.getPath().endsWith("zip")) {
+            IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
+            indexURL = mtabix.getURL();
+        } else {
+            //ZipFile zipFile = new ZipFile(new File(dataURL.toURI()));
+            ZipFile zipFile = new ZipFile(resourceLocator.getReadFile());
+            ZipEntry entry = zipFile.getEntry(resourceLocator.getName() + ".gz.mtabix");
+
+            if (entry == null) {
+                return null;
+            }
+
+            // Copy index to a temporal file
+            File indexFile = File.createTempFile("gitools-cache-", "zip_mtabix");
+            indexFile.deleteOnExit();
+            IOUtils.copy(zipFile.getInputStream(entry), new FileOutputStream(indexFile));
+            indexURL = indexFile.toURL();
+
+            // Copy data to a temporal file
+            File dataFile = File.createTempFile("gitools-cache-", "zip_bgz");
+            dataFile.deleteOnExit();
+
+            InputStream dataStream = resourceLocator.getParentLocator().openInputStream(progressMonitor);
+
+            IOUtils.copy(dataStream, new FileOutputStream(dataFile));
+            dataURL = dataFile.toURL();
+
+        }
+
+        File dataFile = new File(dataURL.toURI());
+        File indexFile = new File(indexURL.toURI());
+
+        if (!indexFile.exists()) {
+            return null;
+        }
+
+        MTabixConfig mtabixConfig = new MTabixConfig(dataFile, indexFile, new DefaultKeyParser(1, 0));
+        MTabixIndex index = new MTabixIndex(mtabixConfig);
+        index.loadIndex();
+
+        return index;
+
+    }
+
     @Override
     protected void writeResource(IResourceLocator resourceLocator, IMatrix results, IProgressMonitor monitor) throws PersistenceException {
 
-        monitor.begin("Saving results...", results.getRows().size());
+        monitor.begin("Saving results...", results.getColumns().size());
 
         try {
-            OutputStream out = resourceLocator.openOutputStream();
-            Writer writer = new OutputStreamWriter(out);
+            OutputStream out = resourceLocator.openOutputStream(monitor);
+            Writer writer = new OutputStreamWriter(new BufferedOutputStream(out, BlockCompressedStreamConstants.DEFAULT_UNCOMPRESSED_BLOCK_SIZE * 100));
             writeCells(writer, results, monitor);
             writer.close();
-            out.close();
         } catch (Exception e) {
             throw new PersistenceException(e);
         }
+
+
+        try {
+            writeMtabixIndex(resourceLocator, results, monitor);
+        } catch (Exception e) {
+            LOGGER.warn("Error creating mtabix index", e);
+        }
+
+
+    }
+
+    private void writeMtabixIndex(IResourceLocator resourceLocator, IMatrix results, IProgressMonitor monitor) throws URISyntaxException, IOException, NoSuchAlgorithmException {
+
+            IResourceLocator mtabix = resourceLocator.getReferenceLocator(resourceLocator.getName() + ".gz.mtabix");
+
+            Map<Integer, List<String>> identifiers = new HashMap<>(2);
+            identifiers.put(0, newArrayList(results.getColumns()));
+            identifiers.put(1, newArrayList(results.getRows()));
+
+            MTabixConfig mtabixConfig = new MTabixConfig(
+                    resourceLocator.getWriteFile(),
+                    mtabix.getWriteFile(),
+                    new DefaultKeyParser(1, 0),
+                    identifiers);
+
+            MTabixIndex index = new MTabixIndex(mtabixConfig);
+            index.buildIndex();
+            mtabix.close(monitor);
+
     }
 
     private void writeCells(Writer writer, IMatrix resultsMatrix, IProgressMonitor progressMonitor) {
@@ -138,38 +247,48 @@ public class TdmMatrixFormat extends AbstractMatrixFormat {
         IMatrixDimension columns = resultsMatrix.getColumns();
         IMatrixDimension rows = resultsMatrix.getRows();
 
-        for (String row : rows) {
-            for (String column : columns) {
-                writeLine(out, resultsMatrix, column, row, progressMonitor);
+        IMatrixLayers layers = resultsMatrix.getLayers();
+        String[] values = new String[layers.size()];
+        for (String column : columns) {
+
+            for (String row : rows) {
+                boolean allNulls = true;
+                for (int l=0; l < layers.size(); l++) {
+                    IMatrixLayer layer = layers.get(l);
+                    Object value = resultsMatrix.get(layer, row, column);
+
+                    //TODO Use IMatrixLayer translator
+                    if (value instanceof Double) {
+                        Double v = (Double) value;
+                        values[l] = DoubleTranslator.get().valueToString(v);
+                        allNulls = false;
+                    } else if (value != null) {
+                        values[l] = value.toString();
+                        allNulls = false;
+                    } else {
+                        values[l] = "-";
+                    }
+                }
+
+                if (!allNulls) {
+                    out.writeValue(column);
+                    out.writeSeparator();
+                    out.writeValue(row);
+
+                    for (int l = 0; l < layers.size(); l++) {
+                        out.writeSeparator();
+                        out.writeValue(values[l]);
+                    }
+                    
+                    out.writeNewLine();
+                }
             }
             progressMonitor.worked(1);
-        }
-
-    }
-
-    private void writeLine(RawFlatTextWriter out, IMatrix resultsMatrix, String column, String row, IProgressMonitor progressMonitor) {
-
-        out.writeQuotedValue(column);
-        out.writeSeparator();
-        out.writeQuotedValue(row);
-
-        for (IMatrixLayer layer : resultsMatrix.getLayers()) {
-            out.writeSeparator();
-
-            Object value = resultsMatrix.get(layer, row, column);
-            if (value instanceof Double) {
-                Double v = (Double) value;
-                out.write(DoubleTranslator.get().valueToString(v));
-            } else if (value instanceof Integer) {
-                out.writeValue(value.toString());
-            } else if (value != null) {
-                out.writeQuotedValue(value.toString());
-            } else {
-                out.writeValue("-");
+            if (progressMonitor.isCancelled()) {
+                throw new CancellationException();
             }
         }
 
-        out.writeNewLine();
     }
 
     @Deprecated

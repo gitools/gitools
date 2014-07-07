@@ -29,19 +29,19 @@ import java.io.PrintStream;
 
 public class JobProgressMonitor extends StreamProgressMonitor {
 
-    private final JobProgressDialog dlg;
+    private final IProgressComponent dlg;
 
     private static int TOTAL_WORK = 1000;
 
     private double correction;
 
-    public JobProgressMonitor(JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug) {
+    public JobProgressMonitor(IProgressComponent dlg, PrintStream out, boolean verbose, boolean debug) {
         super(out, verbose, debug);
 
         this.dlg = dlg;
     }
 
-    private JobProgressMonitor(IProgressMonitor parentMonitor, JobProgressDialog dlg, PrintStream out, boolean verbose, boolean debug) {
+    private JobProgressMonitor(IProgressMonitor parentMonitor, IProgressComponent dlg, PrintStream out, boolean verbose, boolean debug) {
         super(parentMonitor, out, verbose, debug);
 
         this.dlg = dlg;
@@ -99,7 +99,7 @@ public class JobProgressMonitor extends StreamProgressMonitor {
                 dlg.setWork(TOTAL_WORK);
                 dlg.setProgress(TOTAL_WORK);
                 if (level == 0) {
-                    dlg.dispose();
+                    //TODO dlg.dispose();
                 }
             }
         });

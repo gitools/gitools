@@ -22,11 +22,10 @@
 package org.gitools.ui.app.actions.edit;
 
 import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapLayerAction;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapLayerAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -38,7 +37,7 @@ public class MoveDownLayerAction extends HeatmapAction implements IHeatmapLayerA
     public MoveDownLayerAction() {
         super("Move down");
 
-        setSmallIconFromResource(IconNames.add16);
+        setSmallIconFromResource(IconNames.moveDown16);
     }
 
     @Override
@@ -54,8 +53,6 @@ public class MoveDownLayerAction extends HeatmapAction implements IHeatmapLayerA
 
         // Fire headers events
         getHeatmap().getLayers().updateLayers();
-
-        Application.get().setStatusText("Move down layer '" + layer.getName() + "'");
     }
 
     private int getHeaderCurrentIndex() {

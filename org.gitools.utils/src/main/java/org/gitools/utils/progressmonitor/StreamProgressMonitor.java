@@ -32,6 +32,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
     private final PrintStream out;
 
     private long timer;
+    private int lastPercentage;
 
     private String tabs;
     private boolean flag;
@@ -78,6 +79,12 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         super.worked(workInc);
         double progress = ((double) getWorked() / (double) totalWork);
 
+        int percentage = (int) Math.round(progress * 100);
+
+        if (percentage == lastPercentage) {
+            return;
+        }
+
         if (!showingbar) {
             print("\n");
             showingbar = true;
@@ -93,8 +100,10 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         for (; i < width; i++) {
             bar.append(" ");
         }
-        bar.append("] ").append((int) (progress * 100)).append("%");
+        bar.append("] ").append(percentage).append("%");
         print(bar.toString());
+
+        lastPercentage = percentage;
     }
 
 

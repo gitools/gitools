@@ -24,10 +24,11 @@ package org.gitools.ui.app.wizard;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.datasources.modules.importer.ModulesImporter;
 import org.gitools.matrix.FileFormats;
-import org.gitools.ui.app.IconNames;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.app.wizard.common.SaveFilePage;
+import org.gitools.ui.core.pages.common.BasicSaveFilePage;
+import org.gitools.ui.core.pages.common.SaveFilePage;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.AbstractWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
 
@@ -41,7 +42,7 @@ public class ModulesImportWizard extends AbstractWizard {
     private ModulesSourcePage moduleCategoryPage;
     private ModulesOrganismPage organismPage;
     private ModulesFeaturesPage featuresPage;
-    private SaveFilePage saveFilePage;
+    private BasicSaveFilePage saveFilePage;
 
     protected ModulesImportWizard(ModulesImporter importer) {
         this.importer = importer;
@@ -63,7 +64,7 @@ public class ModulesImportWizard extends AbstractWizard {
         addPage(featuresPage);
 
         // Destination
-        saveFilePage = new SaveFilePage() {
+        saveFilePage = new BasicSaveFilePage() {
             @Override
             public void updateModel() {
                 Settings.get().setLastMapPath(getFolder());

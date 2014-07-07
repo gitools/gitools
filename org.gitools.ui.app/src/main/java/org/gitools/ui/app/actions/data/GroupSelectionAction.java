@@ -25,9 +25,9 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapDimensionAction;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
 
 import java.awt.event.ActionEvent;
 import java.util.List;
@@ -43,7 +43,7 @@ public class GroupSelectionAction extends HeatmapDimensionAction implements IHea
     private HeatmapPosition position;
 
     public GroupSelectionAction(MatrixDimensionKey dimensionKey) {
-        super(dimensionKey, "<html><i>Group</i> selected <b>" + dimensionKey.getLabel() + "<i> here</html>");
+        super(dimensionKey, "<html><i>Group</i> selected <b>" + dimensionKey.getLabel() + "s<i> here</html>");
     }
 
     @Override
@@ -53,7 +53,7 @@ public class GroupSelectionAction extends HeatmapDimensionAction implements IHea
 
         groupSelected(dimension, position.get(dimension));
 
-        Application.get().setStatusText("Selected " + getDimensionLabel() + " grouped.");
+        Application.get().showNotification("Selected " + getDimensionLabel() + "s grouped.");
     }
 
     private void groupSelected(IMatrixViewDimension dimension, String identifier) {
@@ -61,13 +61,33 @@ public class GroupSelectionAction extends HeatmapDimensionAction implements IHea
         List<String> selected = newArrayList(dimension.getSelected());
         List<String> notSelected = newArrayList(filter(dimension, not(in(dimension.getSelected()))));
 
-        int split = dimension.indexOf(identifier) - selected.indexOf(identifier);
+        int split = dimension.indexOf(identifier) - selected.indexOf(identifier) - 1;
+        if (split < 0) {
+            split = 0;
+        }
+
+        int selectedAfterSplit = 0;
+        int selectedBeforeSplit = 0;
+        for (String s : selected) {
+            if (dimension.indexOf(s) > split) {
+                selectedAfterSplit++;
+            } else {
+                selectedBeforeSplit++;
+            }
+        }
+
+        if (selectedBeforeSplit > 0) {
+            //group after selected index:
+            split++;
+        }
+
+
 
         List<String> newOrder = newArrayList(
                 concat(
-                        notSelected.subList(0, split),
+                        notSelected.subList(0, split - selectedBeforeSplit),
                         selected,
-                        notSelected.subList(split, notSelected.size())
+                        notSelected.subList(split - selectedBeforeSplit, notSelected.size())
                 ));
 
         dimension.show(newOrder);

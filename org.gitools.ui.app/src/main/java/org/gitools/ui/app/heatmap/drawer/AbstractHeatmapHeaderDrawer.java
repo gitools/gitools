@@ -25,12 +25,12 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.core.HeatmapPosition;
 
 import java.awt.*;
 
 public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> extends AbstractHeatmapDrawer {
 
-    protected static final Color highlightingColor = Color.YELLOW;
     private final HT header;
     private HeatmapDimension heatmapDimension;
 
@@ -68,6 +68,10 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
 
     protected String getLabel(int index) {
         return getHeader().getIdentifierTransform().apply(getHeatmapDimension().getLabel(index));
+    }
+
+    protected boolean isHighlightedIndex(int i) {
+        return getHeatmapDimension().isHighlighted(getHeatmapDimension().getLabel(i));
     }
 
     @Override
@@ -148,6 +152,18 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
         int index = ((clipEnd + size - 1) / size);
         index = ((index + 1) > heatmapDimension.size() ? heatmapDimension.size() - 1 : index);
         return index;
+    }
+
+
+    /**
+     * Configure the header and drawer if necessary according to where
+     * the user has clicked in the heatmap header
+     * @param p
+     * @param x
+     * @param y
+     */
+    public void configure(Point p, int x, int y) {
+        // override if neccessary
     }
 
 }

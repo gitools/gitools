@@ -27,9 +27,9 @@ import com.jgoodies.binding.list.SelectionInList;
 import com.jgoodies.binding.value.AbstractValueModel;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decorator;
+import org.gitools.ui.app.decorators.SaveDecoratorDialog;
 import org.gitools.ui.app.heatmap.panel.settings.layer.decorators.DecoratorPanelContainer;
 import org.gitools.ui.app.heatmap.panel.settings.layer.decorators.DecoratorPanels;
-import org.gitools.ui.app.settings.decorators.SaveDecoratorDialog;
 import org.gitools.ui.platform.settings.ISettingsSection;
 
 import javax.swing.*;
@@ -45,10 +45,12 @@ public class ColorScaleSection implements ISettingsSection {
     private JPanel decoratorPanels;
     private JLabel colorScaleSave;
     private JLabel colorScaleOpen;
+    private String name;
 
 
     public ColorScaleSection(final HeatmapLayer heatmapLayer) {
 
+        this.name = "Color scale";
         PresentationModel<HeatmapLayer> layer = new PresentationModel<>(heatmapLayer);
 
         // Color scale
@@ -95,7 +97,7 @@ public class ColorScaleSection implements ISettingsSection {
 
     @Override
     public String getName() {
-        return "Color scale";
+        return name;
     }
 
     public JPanel getPanel() {
@@ -107,4 +109,7 @@ public class ColorScaleSection implements ISettingsSection {
     }
 
 
+    public void setName(String name) {
+        this.name = name;
+    }
 }

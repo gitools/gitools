@@ -28,12 +28,14 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.actions.AbstractAction;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.AbstractAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
 
 
 public class SelectLabelHeaderAction extends AbstractAction implements IHeatmapHeaderAction {
@@ -59,19 +61,34 @@ public class SelectLabelHeaderAction extends AbstractAction implements IHeatmapH
 
         HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
 
+        ArrayList<String> addToSelected = new ArrayList();
+
         for (String identifier : dimension) {
 
             String value = coloredHeader.getColoredLabel(identifier).getValue();
 
             if (StringUtils.equals(value, annotationValue)) {
-                dimension.getSelected().add(identifier);
+                addToSelected.add(identifier);
             }
+        }
+        if (addToSelected.size() > 0) {
+            int selectedBefore = dimension.getSelected().size();
+            dimension.getSelected().addAll(addToSelected);
+            int selectedDifference = Math.abs(selectedBefore - dimension.getSelected().size());
+            Application.get().showNotification("Selected " + selectedDifference + " new " + dimension.getId().getLabel() + "s");
+        } else {
+            Application.get().showNotification("Added none to selected");
         }
 
     }
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
+
+        if(header instanceof HierarchicalClusterHeatmapHeader) {
+            header = ((HierarchicalClusterHeatmapHeader) header).getInteractionLevelHeader();
+        }
+
         setEnabled(header instanceof HeatmapColoredLabelsHeader);
 
         if (header instanceof HeatmapColoredLabelsHeader) {
@@ -80,8 +97,9 @@ public class SelectLabelHeaderAction extends AbstractAction implements IHeatmapH
             annotationValue = position.getHeaderAnnotation();
 
             ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
+            String label = coloredHeaderLabel(coloredHeader, coloredLabel);
 
-            setName("<html><i>Select all <b>" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "</b> labels</html>");
+            setName("<html><i>Select all</i> <b>" + label + "</b> labels</html>");
         }
 
     }

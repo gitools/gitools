@@ -28,15 +28,15 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.matrix.FileFormats;
-import org.gitools.ui.app.actions.HeatmapAction;
 import org.gitools.ui.app.scale.ScaleExportWizard;
-import org.gitools.ui.app.settings.Settings;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.colorscale.ColorScaleDrawer;
-import org.gitools.utils.colorscale.IColorScale;
+import org.gitools.utils.colorscale.INumericColorScale;
 import org.gitools.utils.formatter.ITextFormatter;
 
 import javax.imageio.ImageIO;
@@ -65,7 +65,7 @@ public class ExportScaleImageAction extends HeatmapAction {
         Decorator cd = layer.getDecorator();
 
         final ITextFormatter textFormatter = layer.getShortFormatter();
-        final IColorScale scale = cd != null ? cd.getScale() : null;
+        final INumericColorScale scale = cd != null ? cd.getScale() : null;
 
         if (scale == null) {
             return;
@@ -121,6 +121,6 @@ public class ExportScaleImageAction extends HeatmapAction {
             }
         });
 
-        Application.get().setStatusText("Image created.");
+        Application.get().showNotification("Image created.", 2000);
     }
 }

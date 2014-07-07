@@ -21,77 +21,19 @@
  */
 package org.gitools.heatmap;
 
-import com.google.common.collect.Lists;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixLayer;
-import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.matrix.filter.PatternFunction;
-import org.gitools.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.matrix.sort.AggregationSortByValueComparator;
-import org.gitools.matrix.sort.SingleSortByValueComparator;
 import org.gitools.matrix.sort.SortByLabelComparator;
-import org.gitools.matrix.sort.mutualexclusion.MutualExclusionComparator;
 import org.gitools.utils.progressmonitor.NullProgressMonitor;
 
-import java.beans.PropertyChangeListener;
 import java.util.Set;
 
 public abstract class MatrixViewSorter {
-
-    public static void sortByMutualExclusion(final Heatmap heatmap, String pattern, Set<String> values, boolean regExChecked, boolean applyToColumns, IProgressMonitor monitor, boolean showProgress) {
-
-        IMatrixLayer<Double> layer = heatmap.getLayers().getTopLayer();
-        HeatmapDimension rows = heatmap.getRows();
-        HeatmapDimension columns = heatmap.getColumns();
-
-        if (applyToColumns) {
-            rows = heatmap.getColumns();
-            columns = heatmap.getRows();
-        }
-
-        rows.sort(new MutualExclusionComparator(
-                heatmap,
-                layer,
-                rows,
-                new IdentifiersPredicate<String>(rows, values, pattern, rows.getAnnotations()),
-                columns,
-                monitor));
-
-        monitor.begin("Sorting rows...", rows.size());
-
-        PropertyChangeListener[] listeners = columns.getPropertyChangeListeners();
-        if (!showProgress) {
-            // Remove listeners to avoid heatmap refresh at each iteration
-            for (PropertyChangeListener listener : listeners) {
-                columns.removePropertyChangeListener(listener);
-            }
-        }
-
-        IMatrixPosition position = heatmap.newPosition();
-        for (String row : Lists.reverse(Lists.newArrayList(rows))) {
-            monitor.worked(1);
-
-            if (monitor.isCancelled()) {
-                break;
-            }
-
-            position.set(rows, row);
-            columns.sort(new SingleSortByValueComparator(position, layer, columns, SortDirection.DESCENDING));
-        }
-
-        if (!showProgress) {
-            for (PropertyChangeListener listener : listeners) {
-                columns.addPropertyChangeListener(listener);
-            }
-
-            // Force to fire the events
-            columns.show(columns.toList());
-        }
-
-    }
 
     public static void sortByValue(IMatrixView matrixView, Iterable<IMatrixLayer> layers, boolean applyToRows, boolean applyToColumns, IProgressMonitor progressMonitor) {
 
@@ -111,6 +53,19 @@ public abstract class MatrixViewSorter {
         }
     }
 
+    private static int firstSortedPosition(IMatrixViewDimension sortDimension) {
+        int firstPosition = -1;
+        if (sortDimension.getSelected().size() > 0) {
+            for (String id : sortDimension.getSelected()) {
+                int pos  = sortDimension.indexOf(id);
+                if (firstPosition < 0 || pos < firstPosition) {
+                    firstPosition = pos;
+                }
+            }
+        }
+        return firstPosition;
+    }
+
     private static void sortByValue(final IMatrixView matrixView,
                                     final IMatrixViewDimension sortDimension, Set<String> sortSelection,
                                     final IMatrixViewDimension aggregationDimension, Set<String> aggregationSelection,
@@ -118,11 +73,12 @@ public abstract class MatrixViewSorter {
                                     final IProgressMonitor progressMonitor
     ) {
 
-
+        int firstPosition = firstSortedPosition(sortDimension);
         sortDimension.sort(new AggregationSortByValueComparator(
                 matrixView,
                 sortDimension,
                 sortSelection,
+                firstPosition,
                 aggregationDimension,
                 aggregationSelection,
                 progressMonitor,
@@ -131,7 +87,15 @@ public abstract class MatrixViewSorter {
 
     }
 
-    public static void sortByLabel(Heatmap heatmap, boolean sortRows, String rowsPattern, SortDirection rowsDirection, boolean rowsNumeric, boolean sortCols, String colsPattern, SortDirection colsDirection, boolean colsNumeric) {
+    public static void sortByLabel(Heatmap heatmap,
+                                   boolean sortRows,
+                                   String rowsPattern,
+                                   SortDirection rowsDirection,
+                                   boolean rowsNumeric,
+                                   boolean sortCols,
+                                   String colsPattern,
+                                   SortDirection colsDirection,
+                                   boolean colsNumeric) {
 
         if (sortRows) {
             sortByLabel(heatmap.getRows(), rowsDirection, rowsPattern, rowsNumeric);
@@ -142,8 +106,15 @@ public abstract class MatrixViewSorter {
         }
     }
 
-    private static void sortByLabel(HeatmapDimension sortDimension, SortDirection direction, String pattern, boolean asNumeric) {
-        sortDimension.sort(new SortByLabelComparator(direction, new PatternFunction(pattern, sortDimension.getAnnotations()), asNumeric));
+    public static void sortByLabel(HeatmapDimension sortDimension, SortDirection direction, String pattern, boolean asNumeric) {
+        int firstPosition = firstSortedPosition(sortDimension);
+        sortDimension.sort(
+                new SortByLabelComparator(
+                        sortDimension,
+                        direction,
+                        new PatternFunction(pattern, sortDimension.getAnnotations()),
+                        firstPosition,
+                        asNumeric));
     }
 
 }

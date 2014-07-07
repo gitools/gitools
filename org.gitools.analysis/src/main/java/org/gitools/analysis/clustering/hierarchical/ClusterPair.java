@@ -37,6 +37,8 @@
 
 package org.gitools.analysis.clustering.hierarchical;
 
+import org.gitools.heatmap.header.HierarchicalCluster;
+
 public class ClusterPair implements Comparable<ClusterPair> {
 
     private HierarchicalCluster lCluster;

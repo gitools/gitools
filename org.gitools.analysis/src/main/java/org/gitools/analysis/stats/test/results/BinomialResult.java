@@ -53,7 +53,10 @@ public class BinomialResult extends CommonResult {
         this.probability = p;
     }
 
-    @LayerDef(id = "observed", name = "Observed events", description = "Number of positive events observed")
+    @LayerDef(id = "observed",
+            name = "Observed events",
+            description = "Number of positive events observed",
+            groups = {CommonResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public int getObserved() {
         return observed;
     }
@@ -62,7 +65,10 @@ public class BinomialResult extends CommonResult {
         this.observed = observed;
     }
 
-    @LayerDef(id = "expected-mean", name = "Expected mean", description = "Number of positive events expected by chance")
+    @LayerDef(id = "expected-mean",
+            name = "Expected mean",
+            description = "Number of positive events expected by chance",
+            groups = {CommonResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getExpectedMean() {
         return expectedMean;
     }
@@ -71,7 +77,10 @@ public class BinomialResult extends CommonResult {
         this.expectedMean = expectedMean;
     }
 
-    @LayerDef(id = "expected-stdev", name = "Expected stddev", description = "Standard deviation of the number of positive events expected by chance")
+    @LayerDef(id = "expected-stdev",
+            name = "Expected stddev",
+            description = "Standard deviation of the number of positive events expected by chance",
+            groups = {CommonResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getExpectedStdev() {
         return expectedStdev;
     }
@@ -80,7 +89,10 @@ public class BinomialResult extends CommonResult {
         this.expectedStdev = expectedStdev;
     }
 
-    @LayerDef(id = "distribution", name = "Distribution", description = "Wich distribution has been used to do calculations (Binomial exact, Normal or Poisson)")
+    @LayerDef(id = "distribution",
+            name = "Distribution",
+            description = "Wich distribution has been used to do calculations (Binomial exact, Normal or Poisson)",
+            groups = {CommonResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public Distribution getDistribution() {
         return distribution;
     }
@@ -89,7 +101,10 @@ public class BinomialResult extends CommonResult {
         this.distribution = distribution;
     }
 
-    @LayerDef(id = "probability", name = "Probability", description = "Population probability of a positive event")
+    @LayerDef(id = "probability",
+            name = "Probability",
+            description = "Population probability of a positive event",
+            groups = {CommonResult.TEST_DETAILS_GROUP, LayerDef.ALL_DATA_GROUP})
     public double getProbability() {
         return probability;
     }

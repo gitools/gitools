@@ -26,17 +26,32 @@ import org.gitools.api.matrix.*;
 import org.gitools.matrix.model.iterable.IdentifierSourceIterable;
 import org.gitools.matrix.model.iterable.ValueSourceIterable;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class MatrixPosition implements IMatrixPosition {
 
     private IMatrix matrix;
+    private MatrixPosition parentPosition;
 
     private MatrixDimensionKey[] dimensions;
     private String[] identifiers;
     private Map<MatrixDimensionKey, Integer> positions;
+
+    public MatrixPosition(MatrixPosition position) {
+
+        this.parentPosition = position;
+        this.identifiers = Arrays.copyOf(position.identifiers, position.identifiers.length);
+        //0this.identifiers = position.identifiers;
+
+        this.matrix = position.matrix;
+        this.dimensions = position.dimensions;
+        this.positions = position.positions;
+
+
+
+    }
 
     public MatrixPosition(IMatrix matrix) {
         super();
@@ -81,6 +96,10 @@ public class MatrixPosition implements IMatrixPosition {
 
         if (identifier != null) {
             identifiers[positions.get(dimension)] = identifier;
+
+            if (parentPosition != null) {
+                parentPosition.identifiers[positions.get(dimension)] = identifier;
+            }
         }
 
         return this;
@@ -93,51 +112,50 @@ public class MatrixPosition implements IMatrixPosition {
 
     public MatrixPosition set(String... identifiers) {
         assert identifiers.length == dimensions.length : "This matrix position has " + dimensions.length + " and your identifier vector " + identifiers.length;
-        this.identifiers = identifiers;
+        this.identifiers = Arrays.copyOf(identifiers, identifiers.length);
+
+        if (parentPosition != null) {
+            parentPosition.identifiers = Arrays.copyOf(identifiers, identifiers.length);
+        }
+
         return this;
     }
 
     @Override
     public IMatrixIterable<String> iterate(IMatrixDimension dimension) {
-        return iterate(dimension.getId());
+        return new IdentifierSourceIterable(this, dimension);
     }
 
     @Override
-    public IMatrixIterable<String> iterate(IMatrixDimension dimension, Set<String> identifiers) {
-        return iterate(dimension.getId(), identifiers);
+    public <T> IMatrixIterable<T> iterate(ILayerAdapter<T> layerAdapter, IMatrixDimension... dimension) {
+        return new AdapterSourceIterable<>(this, layerAdapter, dimension);
     }
 
     @Override
-    public IMatrixIterable<String> iterate(MatrixDimensionKey dimensionKey) {
-        return new IdentifierSourceIterable(this, dimensionKey);
+    public <T> IMatrixIterable<T> iterate(IMatrixLayer<T> layer, IMatrixDimension... dimension) {
+        return new ValueSourceIterable<>(this, layer, dimension);
     }
 
     @Override
-    public IMatrixIterable<String> iterate(MatrixDimensionKey dimensionKey, Set<String> identifiers) {
-        return new IdentifierSourceIterable(this, dimensionKey, identifiers);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MatrixPosition that = (MatrixPosition) o;
+
+        if (!Arrays.equals(identifiers, that.identifiers)) return false;
+
+        return true;
     }
 
     @Override
-    public <T> IMatrixIterable<T> iterate(ILayerAdapter<T> layerAdapter, IMatrixDimension dimension) {
-        return new AdapterSourceIterable<>(this, dimension.getId(), layerAdapter);
-    }
-
-    @Override
-    public <T> IMatrixIterable<T> iterate(ILayerAdapter<T> layerAdapter, IMatrixDimension dimension, Set<String> identifiers) {
-        return new AdapterSourceIterable<>(this, dimension.getId(), layerAdapter, identifiers);
-    }
-
-    @Override
-    public <T> IMatrixIterable<T> iterate(IMatrixLayer<T> layer, IMatrixDimension dimension) {
-        return new ValueSourceIterable<>(this, dimension.getId(), layer);
-    }
-
-    public <T> IMatrixIterable<T> iterate(IMatrixLayer<T> layer, IMatrixDimension dimension, Set<String> identifiers) {
-        return new ValueSourceIterable<>(this, dimension.getId(), layer, identifiers);
+    public int hashCode() {
+        return Arrays.hashCode(identifiers);
     }
 
     @Override
     public String toString() {
         return " (" + Joiner.on(",").join(identifiers) + ")";
     }
+
 }

@@ -21,6 +21,8 @@
  */
 package org.gitools.analysis.clustering;
 
+import org.gitools.api.analysis.Clusters;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;

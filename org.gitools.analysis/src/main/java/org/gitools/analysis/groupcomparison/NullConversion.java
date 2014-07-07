@@ -22,8 +22,11 @@
 package org.gitools.analysis.groupcomparison;
 
 import com.google.common.base.Function;
+import org.gitools.api.matrix.IMatrixFunction;
+import org.gitools.api.matrix.IMatrixIterable;
+import org.gitools.api.matrix.IMatrixPosition;
 
-class NullConversion implements Function<Double, Double> {
+public class NullConversion implements Function<Double, Double>, IMatrixFunction<Double, Double> {
 
     private Double defaultValue;
 
@@ -34,5 +37,20 @@ class NullConversion implements Function<Double, Double> {
     @Override
     public Double apply(Double input) {
         return (input == null ? defaultValue : input);
+    }
+
+    @Override
+    public void onBeforeIterate(IMatrixIterable<Double> parentIterable) {
+
+    }
+
+    @Override
+    public void onAfterIterate(IMatrixIterable<Double> parentIterable) {
+
+    }
+
+    @Override
+    public Double apply(Double value, IMatrixPosition position) {
+        return apply(value);
     }
 }

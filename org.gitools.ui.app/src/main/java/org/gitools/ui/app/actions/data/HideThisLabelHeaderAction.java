@@ -26,9 +26,10 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.actions.HeatmapAction;
-import org.gitools.ui.app.heatmap.drawer.HeatmapPosition;
-import org.gitools.ui.app.heatmap.popupmenus.dynamicactions.IHeatmapHeaderAction;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
+import org.gitools.ui.core.HeatmapPosition;
+import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
 
 import java.awt.event.ActionEvent;
 
@@ -49,18 +50,24 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
         }
 
         final HeatmapDimension dimension = coloredHeader.getHeatmapDimension();
-        dimension.show(new Predicate<String>() {
-            @Override
-            public boolean apply(String input) {
-                String value = coloredHeader.getColoredLabel(input).getValue();
-                return !(value != null && value.equals(annotationValue));
-            }
-        });
+
+            dimension.show(new Predicate<String>() {
+                @Override
+                public boolean apply(String input) {
+                    String value = coloredHeader.getColoredLabel(input).getValue();
+                    return !(value != null && value.equals(annotationValue));
+                }
+            });
 
     }
 
     @Override
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
+
+        if(header instanceof HierarchicalClusterHeatmapHeader) {
+            header = ((HierarchicalClusterHeatmapHeader) header).getInteractionLevelHeader();
+        }
+
         setEnabled(header instanceof HeatmapColoredLabelsHeader);
 
         if (header instanceof HeatmapColoredLabelsHeader) {
@@ -69,8 +76,10 @@ public class HideThisLabelHeaderAction extends HeatmapAction implements IHeatmap
             annotationValue = position.getHeaderAnnotation();
 
             ColoredLabel coloredLabel = coloredHeader.getAssignedColoredLabel(annotationValue);
+            String label = coloredHeaderLabel(header, coloredLabel);
 
-            setName("<html><i>Hide</i> all <b>" + (coloredLabel == null ? annotationValue : coloredLabel.getDisplayedLabel()) + "</b> labels</html>");
+
+            setName("<html><i>Hide</i> all <b>" + label + "</b> labels</html>");
         }
 
     }

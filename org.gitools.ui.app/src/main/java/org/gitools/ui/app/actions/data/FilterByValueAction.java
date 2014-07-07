@@ -27,10 +27,10 @@ import org.gitools.api.matrix.IMatrixLayers;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.matrix.filter.MatrixViewValueFilter;
-import org.gitools.matrix.filter.ValueFilterCriteria;
-import org.gitools.ui.app.actions.HeatmapAction;
+import org.gitools.matrix.filter.ValueFilterFunction;
 import org.gitools.ui.app.dialog.filter.ValueFilterPage;
-import org.gitools.ui.platform.Application;
+import org.gitools.ui.core.Application;
+import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
@@ -61,8 +61,8 @@ public class FilterByValueAction extends HeatmapAction {
         IMatrixLayer selectedLayer = matrixView.getLayers().getTopLayer();
 
 
-        List<ValueFilterCriteria> initialCriteria = new ArrayList<>(1);
-        initialCriteria.add(new ValueFilterCriteria(selectedLayer, CutoffCmp.LT, 0.05, null));
+        List<ValueFilterFunction> initialCriteria = new ArrayList<>(1);
+        initialCriteria.add(new ValueFilterFunction(selectedLayer, CutoffCmp.LT, 0.05, null));
 
         final ValueFilterPage page = new ValueFilterPage(Application.get(),
                 layers,
@@ -87,10 +87,11 @@ public class FilterByValueAction extends HeatmapAction {
                         page.isAllElementsMatch(),
                         page.isHideMatching(),
                         page.isApplyToRows(),
-                        page.isApplyToColumns());
+                        page.isApplyToColumns(),
+                        monitor);
             }
         });
 
-        Application.get().setStatusText("Filter applied.");
+        Application.get().showNotification("Value filter applied.");
     }
 }

@@ -34,6 +34,8 @@ public class ToolFactory {
         addTool(new VersionTool());
         addTool(new AddHeaderTextLabelsTool());
         addTool(new AddHeaderColoredLabelsTool());
+        addTool(new SortByAnnotationTool());
+        addTool(new HelpTool(TOOLS.keySet()));
     }
 
     static void addTool(ITool tool) {
@@ -42,6 +44,10 @@ public class ToolFactory {
 
     public static ITool get(String toolName) {
         try {
+            if (!TOOLS.containsKey(toolName)) {
+                return new HelpTool(toolName, TOOLS.keySet());
+            }
+
             return TOOLS.get(toolName).newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
             e.printStackTrace();

@@ -22,9 +22,9 @@
 package org.gitools.ui.app.datasources.go.wizard;
 
 import org.gitools.datasources.modules.importer.ModulesImporter;
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.wizard.ModulesImportWizard;
 import org.gitools.ui.platform.IconUtils;
+import org.gitools.ui.platform.icons.IconNames;
 
 public class GoModulesImportWizard extends ModulesImportWizard {
 

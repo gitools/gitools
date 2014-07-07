@@ -22,7 +22,10 @@
 package org.gitools.analysis.combination.format;
 
 import org.gitools.analysis.combination.CombinationAnalysis;
+import org.gitools.api.PersistenceException;
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResourceLocator;
 import org.gitools.resource.AbstractXmlFormat;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -37,6 +40,16 @@ public class CombinationAnalysisFormat extends AbstractXmlFormat<CombinationAnal
 
     public CombinationAnalysisFormat() {
         super(EXTENSION, RESOURCE_CLASS);
+    }
+
+    @Override
+    protected void writeResource(IResourceLocator resourceLocator, CombinationAnalysis resource, IProgressMonitor monitor) throws PersistenceException {
+
+        //TODO Find a better solution for this error
+        resource.getData().get();
+        resource.getResults().get();
+
+        super.writeResource(resourceLocator, resource, monitor);
     }
 
 }

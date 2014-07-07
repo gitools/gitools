@@ -41,12 +41,18 @@ public interface IMatrix extends IResource {
 
     IMatrixPosition newPosition();
 
+    IMatrix subset(IMatrixDimension... dimensionSubsets);
+
     /**
      * This method is called when the matrix is not in use.
      * <p/>
      * It's a good practice to free all the caching memory usage.
      */
     void detach();
+
+    <T> void setMetadata(IKey<T> key, T value);
+
+    <T> T getMetadata(IKey<T> key);
 
     IMatrixDimension getRows();
 

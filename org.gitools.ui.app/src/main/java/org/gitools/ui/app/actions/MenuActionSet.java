@@ -21,25 +21,37 @@
  */
 package org.gitools.ui.app.actions;
 
-import org.gitools.ui.app.IconNames;
 import org.gitools.ui.app.actions.edit.ColumnsActionSet;
 import org.gitools.ui.app.actions.edit.LayersActionSet;
 import org.gitools.ui.app.actions.edit.RowsActionSet;
 import org.gitools.ui.app.actions.help.OpenURLAction;
-import org.gitools.ui.platform.actions.ActionSet;
-import org.gitools.ui.platform.actions.ActionSetUtils;
-import org.gitools.ui.platform.actions.BaseAction;
+import org.gitools.ui.core.actions.ActionSet;
+import org.gitools.ui.core.actions.ActionSetUtils;
+import org.gitools.ui.core.actions.BaseAction;
+import org.gitools.ui.platform.icons.IconNames;
 
 import javax.swing.*;
 import java.awt.event.KeyEvent;
 
 public class MenuActionSet extends ActionSet {
 
+    public static final String ACION_SCOPE_FILE = "File";
+    public static final String ACTION_SCOPE_EXPORT = "Export";
+    public static final String ACTION_SCOPE_EDIT = "Edit";
+    public static final String ACTION_SCOPE_ANALYSIS = "Analysis";
+    public static final String ACTION_SCOPE_DOWNLOAD = "Download";
+    public static final String ACTION_SCOPE_MODULES = "Modules";
+    public static final String ACTION_SCOPE_ANNOTATIONS = "Annotations";
+    public static final String ACTION_SCOPE_HELP = "Help";
+    public static final String ACTION_SCOPE_ROWS = "Rows";
+    public static final String ACTION_SCOPE_COLUMNS = "Columns";
+    public static final String ACTION_SCOPE_LAYERS = "Layers";
+
     public static MenuActionSet INSTANCE = new MenuActionSet();
 
     public MenuActionSet() {
         super(new BaseAction[]{
-                new ActionSet("File", KeyEvent.VK_F,
+                new ActionSet(ACION_SCOPE_FILE, KeyEvent.VK_F,
                         new BaseAction[]{
                                 Actions.open,
                                 Actions.openURL,
@@ -48,12 +60,13 @@ public class MenuActionSet extends ActionSet {
                                 Actions.saveAction,
                                 Actions.saveAsAction,
                                 BaseAction.separator,
-                                new ActionSet("Export", KeyEvent.VK_E,
+                                new ActionSet(ACTION_SCOPE_EXPORT, KeyEvent.VK_E,
                                         new BaseAction[]{
                                                 Actions.exportAnnotationAction,
                                                 Actions.exportMatrixAction,
                                                 Actions.exportTableAction,
                                                 Actions.exportHeatmapImageAction,
+                                                Actions.exportHeatmapSVGAction,
                                                 Actions.exportScaleImageAction,
                                                 Actions.exportHierarchicalTreeImageAction
                                         }
@@ -62,45 +75,45 @@ public class MenuActionSet extends ActionSet {
                                 Actions.exitAction
                         }
                 ),
-                new ActionSet("Edit", KeyEvent.VK_E,
+                new ActionSet(ACTION_SCOPE_EDIT, KeyEvent.VK_E,
                         new BaseAction[]{
-                                new ColumnsActionSet(),
-                                new RowsActionSet(),
-                                new LayersActionSet(),
+                                new ColumnsActionSet(ACTION_SCOPE_COLUMNS),
+                                new RowsActionSet(ACTION_SCOPE_ROWS),
+                                new LayersActionSet(ACTION_SCOPE_LAYERS),
                                 Actions.heatmapSettings,
                                 BaseAction.separator,
                                 Actions.searchRowsAction,
                                 Actions.createBookmarkAction
                         }
                 ),
-                new ActionSet("Analysis", KeyEvent.VK_A,
+                new ActionSet(ACTION_SCOPE_ANALYSIS, KeyEvent.VK_A,
                         new BaseAction[]{
                                 Actions.enrichment,
-                                Actions.oncodrive,
                                 Actions.correlations,
+                                Actions.groupComparison,
                                 Actions.combinations,
                                 Actions.overlapping,
-                                Actions.groupComparison,
                                 Actions.clusteringAction,
+
                         }
                 ),
-                new ActionSet("Download", KeyEvent.VK_D,
+                new ActionSet(ACTION_SCOPE_DOWNLOAD, KeyEvent.VK_D,
                         new BaseAction[]{
-                                new ActionSet("Modules", KeyEvent.VK_M, IconNames.empty16,
+                                new ActionSet(ACTION_SCOPE_MODULES, KeyEvent.VK_M, IconNames.empty16,
                                         new BaseAction[]{
                                                 Actions.importKeggModulesAction,
                                                 Actions.importGoModulesAction,
                                                 Actions.importBioMartModulesAction
                                         }
                                 ),
-                                new ActionSet("Annotations", KeyEvent.VK_A,
+                                new ActionSet(ACTION_SCOPE_ANNOTATIONS, KeyEvent.VK_A,
                                         new BaseAction[]{
                                                 Actions.importBioMartTableAction
                                         }
                                 )
                         }
                 ),
-                new ActionSet("Help", KeyEvent.VK_H,
+                new ActionSet(ACTION_SCOPE_HELP, KeyEvent.VK_H,
                         new BaseAction[]{
                                 HelpActions.welcomeAction,
                                 BaseAction.separator,

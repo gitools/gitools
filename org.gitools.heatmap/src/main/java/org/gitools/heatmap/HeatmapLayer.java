@@ -21,19 +21,28 @@
  */
 package org.gitools.heatmap;
 
+import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.heatmap.decorator.impl.*;
 import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.utils.aggregation.LogSumAggregator;
+import org.gitools.utils.aggregation.MeanAggregator;
+import org.gitools.utils.aggregation.NonZeroCountAggregator;
+import org.gitools.utils.aggregation.SumAggregator;
 import org.gitools.utils.events.EventUtils;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
+import org.gitools.utils.xml.adapter.FontXmlAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.awt.*;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -42,22 +51,46 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
     public static final String PROPERTY_DECORATOR = "decorator";
     public static final String PROPERTY_SHORT_FORMATTER = "shortFormatter";
     public static final String PROPERTY_LONG_FORMATTER = "longFormatter";
+    public static final String PROPERTY_FONT = "cellFont";
+    public static final String PROPERTY_EVENT_FUNCTION = "eventFunction";
 
     private transient ITextFormatter shortFormatter;
     private transient ITextFormatter longFormatter;
 
+    @XmlJavaTypeAdapter(FontXmlAdapter.class)
+    protected Font font;
+
     private Decorator decorator;
+
+    //TODO
+    @XmlTransient
+    protected NonEventToNullFunction eventFunction;
 
     public HeatmapLayer() {
         super();
 
-        // JAXB requirement
+        if (this.font == null) {
+            setFont(new Font(Font.MONOSPACED, Font.PLAIN, 9));
+        }
     }
 
     public HeatmapLayer(String id, Class<?> valueClass, Decorator decorator) {
         super(id, valueClass);
 
         this.decorator = decorator;
+        this.font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
+    }
+
+    public HeatmapLayer(IMatrixLayer layer) {
+        super(layer.getId(), layer.getValueClass(), layer.getName(), layer.getDescription(), layer.getGroups());
+        this.setAggregator(layer.getAggregator());
+        this.setSortDirection(layer.getSortDirection());
+
+        if (this.decorator == null) {
+            this.decorator = new LinearDecorator();
+        }
+        this.font = new Font(Font.MONOSPACED, Font.PLAIN, 9);
+
     }
 
     public Decorator getDecorator() {
@@ -68,9 +101,21 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         Decorator oldValue = this.decorator;
         this.decorator = decorator;
 
+        setEventFunction(decorator.getDefaultEventFunction());
+
         firePropertyChange(PROPERTY_DECORATOR, oldValue, decorator);
         EventUtils.moveListeners(oldValue, decorator);
 
+    }
+
+    public Font getFont() {
+        return this.font;
+    }
+
+    public void setFont(Font font) {
+        Font old = this.font;
+        this.font = font;
+        firePropertyChange(PROPERTY_FONT, old, font);
     }
 
     @XmlTransient
@@ -107,6 +152,44 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         return getName();
     }
 
+    @Override
+    public IAggregator getAggregator() {
+        if (this.aggregator == null) {
+            return defaultAggregator(decorator);
+        }
+
+        return aggregator;
+    }
+
+    private IAggregator defaultAggregator(Decorator decorator) {
+        if (decorator instanceof LinearDecorator ||
+                decorator instanceof ZScoreDecorator) {
+            return MeanAggregator.INSTANCE;
+        } else if (decorator instanceof CategoricalDecorator ||
+                decorator instanceof BinaryDecorator) {
+            return NonZeroCountAggregator.INSTANCE;
+        } else if (decorator instanceof PValueDecorator) {
+            return LogSumAggregator.INSTANCE;
+        }
+        return SumAggregator.INSTANCE;
+    }
+
+    public NonEventToNullFunction getEventFunction() {
+        if (eventFunction == null) {
+            return decorator.getDefaultEventFunction();
+        }
+        return eventFunction;
+    }
+
+    public void setEventFunction(NonEventToNullFunction eventFunction) {
+
+        NonEventToNullFunction old = this.eventFunction;
+
+        this.eventFunction = eventFunction;
+
+        firePropertyChange(PROPERTY_EVENT_FUNCTION, old, eventFunction);
+    }
+
     public void populateDetails(List<DetailsDecoration> details, IMatrix matrix, String row, String column, int layerIndex, boolean isSelected) {
         DetailsDecoration decoration = new DetailsDecoration(getName(), getDescription(), getDescriptionUrl(), null, getValueUrl());
         decoration.setReference(this);
@@ -116,10 +199,11 @@ public class HeatmapLayer extends MatrixLayer implements IMatrixLayer {
         }
         if (row != null && column != null) {
             boolean previousShowValue = getDecorator().isShowValue();
-            getDecorator().setShowValue(true);
+            getDecorator().setShowValue(true, true);
             getDecorator().decorate(decoration, getLongFormatter(), matrix, matrix.getLayers().get(layerIndex), row, column);
-            getDecorator().setShowValue(previousShowValue);
+            getDecorator().setShowValue(previousShowValue, true);
         }
         details.add(decoration);
     }
+
 }

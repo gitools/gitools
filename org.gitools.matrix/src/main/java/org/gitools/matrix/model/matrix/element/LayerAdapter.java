@@ -29,10 +29,7 @@ import org.gitools.matrix.model.MatrixLayers;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class LayerAdapter<T> implements ILayerAdapter<T> {
 
@@ -117,6 +114,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
     private void createLayers() {
 
         List<BeanMatrixLayer> layers = new ArrayList<>();
+        final HashMap<String, Integer> groupCount = new HashMap<>();
         for (Method m : getElementClass().getMethods()) {
             boolean isGet = m.getName().startsWith("get");
             if (m.getParameterTypes().length == 0 && !m.getName().equals("getClass") && (isGet || m.getName().startsWith("is"))) {
@@ -128,6 +126,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                 String id = getterName;
                 String name = id;
                 String description = "";
+                HashSet<String> groups = new HashSet();
 
                 LayerDef a = m.getAnnotation(LayerDef.class);
                 if (a != null) {
@@ -140,6 +139,13 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                     if (a.description() != null) {
                         description = a.description();
                     }
+                    if (a.groups() != null) {
+                        for (String group : a.groups()) {
+                            groupCount.put(group,
+                                    groupCount.get(group) == null ? 1 : groupCount.get(group)+1);
+                            groups.add(group);
+                        }
+                    }
                 }
 
                 Method setterMethod = null;
@@ -148,7 +154,7 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
                 } catch (Exception e) {
                 }
 
-                BeanMatrixLayer prop = new BeanMatrixLayer(id, name, description, propertyClass, m, setterMethod);
+                BeanMatrixLayer prop = new BeanMatrixLayer(id, name, description, propertyClass, groups, m, setterMethod);
                 layers.add(prop);
             }
         }
@@ -156,7 +162,39 @@ public class LayerAdapter<T> implements ILayerAdapter<T> {
         Collections.sort(layers, new Comparator<MatrixLayer>() {
             @Override
             public int compare(MatrixLayer o1, MatrixLayer o2) {
-                return o1.getId().compareTo(o2.getId());
+                String g1 = smallestGroup(o1, groupCount);
+                String g2 = smallestGroup(o2, groupCount);
+
+                // order by smallest group Size;
+                if (groupCount.get(g1) < groupCount.get(g2)) {
+                    return -1;
+                } else if (groupCount.get(g1) > groupCount.get(g2)) {
+                    return 1;
+                }
+
+                // if equal, order by group Name
+                int comp = g1.compareTo(g2);
+                if (comp != 0) {
+                    return comp;
+                } else {
+                    // if equal compare by layer name;
+                    return o1.getName().compareTo(o2.getName());
+                }
+            }
+
+            private String smallestGroup(MatrixLayer layer, HashMap<String, Integer> groupCount) {
+                int min = -1;
+                String name = "";
+                Iterator iterator = layer.getGroups().iterator();
+                while (iterator.hasNext()) {
+                    String group = (String) iterator.next();
+                    int size = groupCount.get(group);
+                    if (size < min || min < 0) {
+                        min = size;
+                        name = group;
+                    }
+                }
+                return name;
             }
         });
 
