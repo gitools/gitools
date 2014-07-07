@@ -184,7 +184,7 @@ public class DataFilterPage extends AbstractWizardPage {
         populationDefaultValueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "0", "Empty" }));
 
         populationNote1.setFont(populationNote1.getFont().deriveFont((populationNote1.getFont().getStyle() | java.awt.Font.ITALIC), populationNote1.getFont().getSize()-3));
-        populationNote1.setText("Binarize continuous data if you have selected Binomial or Fisher test");
+        populationNote1.setText("Binarize continuous data (f.ex. if you have selected Binomial or Fisher test)");
 
         populationNote3.setFont(populationNote3.getFont().deriveFont((populationNote3.getFont().getStyle() | java.awt.Font.ITALIC), populationNote3.getFont().getSize()-3));
         populationNote3.setText("Either a value or Null");
