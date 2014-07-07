@@ -26,7 +26,7 @@ Further details can be found at :doc:`UserGuide_Installation`.
 
 
 #. In the :download:`material folder <files/gitools-tutorial-data.zip>` you'll find a data_integration folder.
-The files in that folder contain data for the same samples cohort. But do they have the same format?
+    The files in that folder contain data for the same samples cohort. But do they have the same format?
 #. Check out each of the files and note what format they are in: What is the layout of the files, Matrix or Table?
     What separates the different data fields in the files? Comma, Tab, Semicolon, other character?
 #. How many data layers does the TCGA GBM heatmap have? What data is represented?
