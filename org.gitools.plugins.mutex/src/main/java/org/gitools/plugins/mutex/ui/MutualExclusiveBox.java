@@ -87,7 +87,7 @@ public class MutualExclusiveBox extends DetailsBox {
         for (String key : plugin.getKeys()) {
             MutualExclusiveBookmark bookmark = plugin.getBookmark(key);
             DetailsDecoration d =
-                    new DetailsDecoration(key + " p-value",
+                    new DetailsDecoration(bookmark.getName() + " p-value",
                             bookmark.getDescription(),
                             Double.toString(bookmark.getResult().getMutexPvalue()));
             d.setReference(key);

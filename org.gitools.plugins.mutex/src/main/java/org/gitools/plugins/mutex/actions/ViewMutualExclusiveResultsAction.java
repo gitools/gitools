@@ -22,6 +22,7 @@
 package org.gitools.plugins.mutex.actions;
 
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
+import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.ui.IMutualExclusiveAction;
 import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
 import org.gitools.ui.core.Application;
@@ -51,6 +52,10 @@ public class ViewMutualExclusiveResultsAction extends HeatmapAction implements I
         if (dlg.isCancelled()) {
             return;
         }
+
+        MutualExclusivePlugin plugin = (MutualExclusivePlugin) getHeatmap().getPluggedBoxes().get(MutualExclusivePlugin.ID);
+        plugin.forceUpdate();
+
     }
 
     @Override
