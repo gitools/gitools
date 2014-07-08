@@ -26,6 +26,7 @@ import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
+import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
 import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
@@ -91,11 +92,14 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
 
 
         //BOOKMARK NAME
-
+        MutualExclusivePlugin plugin = (MutualExclusivePlugin) heatmap.getPluggedBoxes().get(MutualExclusivePlugin.ID);
         forbiddenNames = new ArrayList<>();
         forbiddenNames.add("");
         forbiddenNames.add("-");
         forbiddenNames.add(" ");
+        for (String s : plugin.getKeys()) {
+            forbiddenNames.add(s);
+        }
         nameField.setText(bookmark.getName());
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
@@ -205,10 +209,10 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
     }
 
     public boolean uniqueMutexName() {
-        if (oldName != null && !oldName.toLowerCase().equals(bookmark.getName().toLowerCase())) {
+        if (oldName == null || bookmark.getName().equals("")) {
             return false;
         }
-        return (!forbiddenNames.contains(bookmark.getName()));
+        return (oldName.toLowerCase().equals(bookmark.getName().toLowerCase()) || !forbiddenNames.contains(bookmark.getName()));
     }
 
     @Override
