@@ -56,9 +56,9 @@ public abstract class HeaderCommand extends HeatmapCommand {
     @Override
     public void execute(IProgressMonitor monitor) throws CommandException {
 
-        try {
 
-            findHeatmap(monitor);
+        try {
+            super.execute(monitor);
 
             switch (side) {
                 case ROWS:

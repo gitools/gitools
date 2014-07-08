@@ -38,7 +38,12 @@ public abstract class HeatmapCommand extends AbstractCommand {
         this.heatmapid = heatmap;
     }
 
-    protected void findHeatmap(IProgressMonitor monitor) throws Exception {
+    @Override
+    public void execute(IProgressMonitor monitor) throws CommandException {
+        findHeatmap(monitor);
+    }
+
+    protected void findHeatmap(IProgressMonitor monitor) throws CommandException {
 
         Application appframe = Application.get();
 
@@ -48,7 +53,7 @@ public abstract class HeatmapCommand extends AbstractCommand {
                 heatmap = ((HeatmapEditor) editor).getModel();
                 return;
             } else {
-                throw new Exception("No selected or open. Indicate name or open and select heatmap");
+                throw new CommandException("No heatmap selected or open. Indicate name or open and select a heatmap");
             }
         }
 
@@ -73,7 +78,7 @@ public abstract class HeatmapCommand extends AbstractCommand {
         }
 
         if (heatmap == null) {
-            throw new Exception("No such heatmap loaded: " + heatmapid + availableHeatmaps);
+            throw new CommandException("No such heatmap loaded: " + heatmapid + availableHeatmaps);
         }
     }
 }

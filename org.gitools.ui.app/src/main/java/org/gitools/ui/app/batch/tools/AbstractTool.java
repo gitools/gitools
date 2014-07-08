@@ -91,6 +91,8 @@ public abstract class AbstractTool implements ITool {
             JobThread.execute(mainFrame, (JobRunnable) job);
             setExitStatus(job.getExitStatus());
 
+        } else {
+            throw new RuntimeException("No Job");
         }
     }
 

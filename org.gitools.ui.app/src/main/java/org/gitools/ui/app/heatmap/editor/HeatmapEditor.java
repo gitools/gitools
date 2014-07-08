@@ -223,8 +223,6 @@ public class HeatmapEditor extends AbstractEditor {
             Settings.get().setLastPath(file.getParent());
         }
 
-        heatmap.setGitoolsVersion(Application.getGitoolsVersion());
-
         String name = getName();
         int heatmapExt = name.indexOf(".heatmap");
         if (heatmapExt != -1) {
@@ -268,9 +266,19 @@ public class HeatmapEditor extends AbstractEditor {
             return;
         }
 
-        Settings.get().setLastPath(wiz.getFolder());
         file = wiz.getPathAsFile();
+        boolean discardHidden = page.isDiscardHidden();
+        boolean optimizeData = page.isOptimizeData();
+
+        doSaveAsNoUI(monitor, file, discardHidden, optimizeData, true);
+
+    }
+
+    public void doSaveAsNoUI(IProgressMonitor monitor, File file, boolean discardHidden, boolean optimizeData, boolean reload) {
+
         setFile(file);
+        heatmap.setGitoolsVersion(Application.getGitoolsVersion());
+
 
         IResourceLocator toLocator;
         if (heatmap.getLocator() == null) {
@@ -282,7 +290,7 @@ public class HeatmapEditor extends AbstractEditor {
         // Data matrix
         IMatrix data = heatmap.getData().get();
 
-        if (page.isDiscardHidden()) {
+        if (discardHidden) {
 
             // Discard hidden data
             data = new MatrixWrapper(data) {
@@ -304,26 +312,28 @@ public class HeatmapEditor extends AbstractEditor {
 
             heatmap.setData(new ResourceReference<>("data", data));
 
-        } else if (page.isOptimizeData()) {
-
-            // Optimize mtabix index
-            data = new MatrixWrapper(data) {
-                @Override
-                public boolean isChanged() {
-                    return true;
-                }
-            };
-
-            heatmap.setData(new ResourceReference<>("data", data));
-
         } else {
+            if (optimizeData) {
 
-            IResourceLocator locator = heatmap.getData().getLocator();
-            heatmap.setData(new ResourceReference<>("data", data));
-            heatmap.getData().setLocator(locator);
-            heatmap.getData().setChanged(data.isChanged());
-            heatmap.getData().setBaseName(toLocator.getBaseName() + "-data");
+                // Optimize mtabix index
+                data = new MatrixWrapper(data) {
+                    @Override
+                    public boolean isChanged() {
+                        return true;
+                    }
+                };
 
+                heatmap.setData(new ResourceReference<>("data", data));
+
+            } else {
+
+                IResourceLocator locator = heatmap.getData().getLocator();
+                heatmap.setData(new ResourceReference<>("data", data));
+                heatmap.getData().setLocator(locator);
+                heatmap.getData().setChanged(data.isChanged());
+                heatmap.getData().setBaseName(toLocator.getBaseName() + "-data");
+
+            }
         }
 
         HeatmapDimension rows = heatmap.getRows();
@@ -331,16 +341,17 @@ public class HeatmapEditor extends AbstractEditor {
         rows.setAnnotationsReference(new ResourceReference<>(rows.getId().toString().toLowerCase() + "-annotations", rows.getAnnotations()));
         columns.setAnnotationsReference(new ResourceReference<>(columns.getId().toString().toLowerCase() + "-annotations", columns.getAnnotations()));
 
-        doSave(toLocator, monitor);
+        Settings.get().setLastPath(file.getAbsoluteFile().getParent());
 
+        doSave(toLocator, monitor, reload);
     }
 
     @Override
     public void doSave(IProgressMonitor monitor) {
-        doSave(heatmap.getLocator(), monitor);
+        doSave(heatmap.getLocator(), monitor, true);
     }
 
-    private void doSave(IResourceLocator toLocator, IProgressMonitor monitor) {
+    public void doSave(IResourceLocator toLocator, IProgressMonitor monitor, boolean reload) {
 
         File file = getFile();
         if (file == null) {
@@ -373,7 +384,7 @@ public class HeatmapEditor extends AbstractEditor {
         Settings.get().save();
 
         // Force to reload the data after save
-        if (!toLocator.equals(heatmap.getLocator()) || heatmap.getData().get().isChanged()) {
+        if (reload && (!toLocator.equals(heatmap.getLocator()) || heatmap.getData().get().isChanged())) {
 
             monitor.title("Reloading the heatmap...");
 
@@ -392,7 +403,12 @@ public class HeatmapEditor extends AbstractEditor {
 
     @Override
     public boolean doClose() {
-        if (isDirty()) {
+        return doClose(true);
+    }
+
+    public boolean doClose(boolean UI) {
+
+        if (UI && isDirty()) {
             int res = JOptionPane.showOptionDialog(Application.get(), "File " + getName() + " is modified.\n" +
                     "Save changes ?", "Close", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new String[]{"Cancel", "Discard", "Save"}, "Save");
 

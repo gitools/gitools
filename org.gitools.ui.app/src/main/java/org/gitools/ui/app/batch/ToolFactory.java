@@ -35,7 +35,8 @@ public class ToolFactory {
         addTool(new AddHeaderTextLabelsTool());
         addTool(new AddHeaderColoredLabelsTool());
         addTool(new SortByAnnotationTool());
-        addTool(new HelpTool(TOOLS.keySet()));
+        addTool(new CloseAndSaveHeatmapTool());
+        addTool(new HelpTool(TOOLS.keySet())); //Last!
     }
 
     static void addTool(ITool tool) {
