@@ -25,7 +25,7 @@ import org.kohsuke.args4j.Option;
 
 public abstract class HeatmapTool extends AbstractTool {
 
-    @Option(name = "-h", aliases = "--heatmap", metaVar = "<heatmap>", required = true,
+    @Option(name = "-h", aliases = "--heatmap", metaVar = "<heatmap>", required = false,
             usage = "'LAST' or heatmap name")
     protected String heatmap;
 

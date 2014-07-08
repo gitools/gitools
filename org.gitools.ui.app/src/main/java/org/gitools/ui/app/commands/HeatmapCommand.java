@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.commands;
 
+import com.google.common.base.Strings;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
@@ -38,7 +39,19 @@ public abstract class HeatmapCommand extends AbstractCommand {
     }
 
     protected void findHeatmap(IProgressMonitor monitor) throws Exception {
+
         Application appframe = Application.get();
+
+        if (Strings.isNullOrEmpty(heatmapid)) {
+            AbstractEditor editor = Application.get().getEditorsPanel().getSelectedEditor();
+            if (editor instanceof HeatmapEditor) {
+                heatmap = ((HeatmapEditor) editor).getModel();
+                return;
+            } else {
+                throw new Exception("No selected or open. Indicate name or open and select heatmap");
+            }
+        }
+
 
         String availableHeatmaps = "<br/>Available hetamaps: ";
         monitor.begin("Executing command ...", 1);
