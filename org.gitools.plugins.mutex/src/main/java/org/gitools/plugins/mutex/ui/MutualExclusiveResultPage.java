@@ -32,6 +32,7 @@ import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.help.HelpContext;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
+import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -184,6 +185,10 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
         return "<html><b>" + HeatmapTextFormatter.TWO_DECIMALS.format(d) + "</b></html>";
     }
 
+    private String fillPValue(Double d) {
+        return "<html><b>" + ScientificHeatmapTextFormatter.INSTANCE.format(d) + "</b></html>";
+    }
+
     private String fill(Integer i) {
         return "<html><b>" + Integer.toString(i) + "</b></html>";
     }
@@ -198,8 +203,8 @@ public class MutualExclusiveResultPage extends AbstractWizardPage {
         rowNbLabel.setText(fill(rows));
         colNbLabel.setText(fill(cols));
         layerLabel.setText(fill(bookmark.getLayerId()));
-        mutexPvalueLabel.setText(fill(result.getMutexPvalue()));
-        coocPValueLabel.setText(fill(result.getCoocPvalue()));
+        mutexPvalueLabel.setText(fillPValue(result.getMutexPvalue()));
+        coocPValueLabel.setText(fillPValue(result.getCoocPvalue()));
         zscoreLabel.setText(fill(result.getZscore()));
         signalLabel.setText(fill(result.getSignal()));
         coverageLabel.setText(fill(result.getCoverage()));
