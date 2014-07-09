@@ -71,8 +71,11 @@ internet protocol. See below to understand how python can connect to Gitools and
 .. code-block:: python
 
     import socket
-    gitools = socket .socket(socket .AF\_INET, socket .SOCK\_STREAM)
-    gitools .connect(( ’localhost’, 50151))
-    command = ”load /home/user/matrix-file.tdm --cols /home/user/col-annotations.tsv --rows /home/user/row-annotations.tsv”
-    gitools .send( command )
-    gitools .close()
+    def gitools_command(command):
+        gitools = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        gitools.connect(("localhost", 50151))
+        gitools.sendall( command.encode('utf-8'))
+        gitools.close()
+
+    command = "load /home/user/matrix-file.tdm --cols /home/user/col-annotations.tsv --rows /home/user/row-annotations.tsv"
+    gitools_command(command)
