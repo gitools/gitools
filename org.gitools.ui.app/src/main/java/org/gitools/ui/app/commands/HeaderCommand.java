@@ -46,10 +46,12 @@ public abstract class HeaderCommand extends HeatmapCommand {
         super(heatmap);
         this.side = side;
         this.pattern = pattern;
-        if (sort.toLowerCase().contains("asc")) {
-            this.sort = SortDirection.ASCENDING;
-        } else if (sort.toLowerCase().contains("desc")) {
-            this.sort = SortDirection.ASCENDING;
+        if (sort != null) {
+            if (sort.toLowerCase().contains("asc")) {
+                this.sort = SortDirection.ASCENDING;
+            } else if (sort.toLowerCase().contains("desc")) {
+                this.sort = SortDirection.ASCENDING;
+            }
         }
     }
 
