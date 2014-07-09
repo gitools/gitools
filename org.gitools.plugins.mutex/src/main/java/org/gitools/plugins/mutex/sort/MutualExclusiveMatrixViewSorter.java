@@ -52,11 +52,13 @@ public class MutualExclusiveMatrixViewSorter {
 
         AggregationFunction function = new AggregationFunction(layer, NonNullCountAggregator.INSTANCE, columns, layer.getEventFunction());
 
+        IdentifiersPredicate<String> annotationResolver = new IdentifiersPredicate<String>(rows, values, pattern, rows.getAnnotations());
+
         rows.sort(new MutualExclusionComparator(
                 heatmap,
                 layer,
                 rows,
-                new IdentifiersPredicate<String>(rows, values, pattern, rows.getAnnotations()),
+                annotationResolver,
                 function,
                 monitor));
 
@@ -78,11 +80,12 @@ public class MutualExclusiveMatrixViewSorter {
                 break;
             }
 
-            if (!values.contains(row)) {
+            position.set(rows, row);
+
+            if (!annotationResolver.apply(row, position)) {
                 continue;
             }
 
-            position.set(rows, row);
             columns.sort(new MutualExclusiveSingleValueComparator(position, layer, columns, SortDirection.DESCENDING,
                     layer.getEventFunction()));
         }
