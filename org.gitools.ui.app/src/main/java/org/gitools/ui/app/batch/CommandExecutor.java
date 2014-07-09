@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.app.batch;
 
-import org.gitools.ui.app.batch.tools.ITool;
+import org.gitools.ui.core.commands.tools.ITool;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;

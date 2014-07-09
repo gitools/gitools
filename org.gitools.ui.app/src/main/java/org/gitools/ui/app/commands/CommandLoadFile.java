@@ -57,6 +57,7 @@ import org.gitools.ui.app.genomespace.GsResourceLocator;
 import org.gitools.ui.app.genomespace.dm.HttpUtils;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.commands.AbstractCommand;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.utils.color.ColorRegistry;
 

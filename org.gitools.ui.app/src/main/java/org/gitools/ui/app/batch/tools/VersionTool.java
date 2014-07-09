@@ -22,6 +22,7 @@
 package org.gitools.ui.app.batch.tools;
 
 import org.gitools.ui.app.Main;
+import org.gitools.ui.core.commands.tools.ITool;
 
 import java.io.PrintWriter;
 

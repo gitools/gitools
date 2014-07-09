@@ -19,12 +19,11 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.commands;
+package org.gitools.ui.core.commands;
 
 import com.google.common.base.Strings;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 
@@ -49,8 +48,8 @@ public abstract class HeatmapCommand extends AbstractCommand {
 
         if (Strings.isNullOrEmpty(heatmapid)) {
             AbstractEditor editor = Application.get().getEditorsPanel().getSelectedEditor();
-            if (editor instanceof HeatmapEditor) {
-                heatmap = ((HeatmapEditor) editor).getModel();
+            if (editor.getModel() != null && editor.getModel() instanceof Heatmap) {
+                heatmap = (Heatmap) editor.getModel();
                 return;
             } else {
                 throw new CommandException("No heatmap selected or open. Indicate name or open and select a heatmap");
@@ -61,17 +60,17 @@ public abstract class HeatmapCommand extends AbstractCommand {
         String availableHeatmaps = "<br/>Available hetamaps: ";
         monitor.begin("Executing command ...", 1);
         if (heatmapid.equals(LAST)) {
-            AbstractEditor e = appframe.getEditorsPanel().getSelectedEditor();
-            if (e instanceof HeatmapEditor) {
-                heatmap = ((HeatmapEditor) e).getModel();
+            AbstractEditor editor = appframe.getEditorsPanel().getSelectedEditor();
+            if (editor.getModel() != null && editor.getModel() instanceof Heatmap) {
+                heatmap = (Heatmap) editor.getModel();
             }
         } else {
-            for (AbstractEditor e : appframe.getEditorsPanel().getEditors()) {
-                if (e instanceof HeatmapEditor) {
-                    if (e.getName().equals(heatmapid)) {
-                        heatmap = ((HeatmapEditor) e).getModel();
+            for (AbstractEditor editor : appframe.getEditorsPanel().getEditors()) {
+                if (editor.getModel() != null && editor.getModel() instanceof Heatmap) {
+                    if (editor.getName().equals(heatmapid)) {
+                        heatmap = (Heatmap) editor.getModel();
                     } else {
-                        availableHeatmaps += "<br/>- " + e.getName();
+                        availableHeatmaps += "<br/>- " + editor.getName();
                     }
                 }
             }

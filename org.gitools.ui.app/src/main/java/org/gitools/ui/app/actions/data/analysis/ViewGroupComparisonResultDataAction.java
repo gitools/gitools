@@ -126,7 +126,7 @@ public class ViewGroupComparisonResultDataAction extends HeatmapAction implement
                     }
                 }
                 if (!hasHeader) {
-                    new AddHeaderColoredLabelsCommand(heatmapEditor.getName(), "COLUMNS", "${" + GROUP_GC_ANALYSIS_ANNOTATION + "}",
+                    new AddHeaderColoredLabelsCommand(heatmapEditor.getName(), MatrixDimensionKey.COLUMNS, "${" + GROUP_GC_ANALYSIS_ANNOTATION + "}",
                             null, null, true, true, "").execute(monitor);
                 }
 

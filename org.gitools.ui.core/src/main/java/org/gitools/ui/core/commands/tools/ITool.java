@@ -19,24 +19,16 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.batch.tools;
+package org.gitools.ui.core.commands.tools;
 
-import org.kohsuke.args4j.Option;
+import java.io.PrintWriter;
 
-public abstract class HeatmapTool extends AbstractTool {
+public interface ITool {
 
-    @Option(name = "-h", aliases = "--heatmap", metaVar = "<heatmap>", required = false,
-            usage = "'LAST' or heatmap name")
-    protected String heatmap;
+    String getName();
 
-    public HeatmapTool() {
-        super();
-    }
+    boolean run(String[] args, PrintWriter out);
 
-
-    @Override
-    public String getName() {
-        return "heatmap";
-    }
+    boolean check(String[] args, PrintWriter out);
 
 }

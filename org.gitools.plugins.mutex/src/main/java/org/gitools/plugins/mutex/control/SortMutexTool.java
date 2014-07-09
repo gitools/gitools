@@ -1,8 +1,8 @@
 /*
  * #%L
- * gitools-ui-app
+ * org.gitools.mutex
  * %%
- * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -19,32 +19,36 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.batch.tools;
+package org.gitools.plugins.mutex.control;
 
-import org.gitools.ui.app.commands.AddHeaderTextLabelsCommand;
 import org.gitools.ui.core.commands.Command;
 import org.gitools.ui.core.commands.tools.HeaderTool;
 import org.kohsuke.args4j.Option;
 
-public class AddHeaderTextLabelsTool extends HeaderTool {
+import java.util.List;
 
-    @Option(name = "-s", aliases = "--sort", metaVar = "<sort>", required = false,
-            usage = "Sort according to header. Specify either asc[ending] or desc[ending].")
-    protected String sort;
 
-    public AddHeaderTextLabelsTool() {
+public class SortMutexTool extends HeaderTool {
+
+    public SortMutexTool() {
         super();
     }
 
+    @Option(name = "-s", aliases = "--sort", metaVar = "<sort>", required = true,
+            usage = "Sort according to header. Specify either asc[ending] or desc[ending].")
+    protected String sort;
 
-    @Override
-    public String getName() {
-        return "add-header-text-labels";
-    }
-
+    @Option(name = "-i", aliases = "--identifier", metaVar = "<identifier>", required = false,
+            usage = "Specify this option for each identifier which you want to include in the mutex sorting")
+    private List<String> ids;
 
     @Override
     protected Command newJob() {
-        return new AddHeaderTextLabelsCommand(heatmap, dimensionKey, pattern, sort);
+        return new SortMutexCommand(heatmap, dimensionKey, sort, ids, pattern);
+    }
+
+    @Override
+    public String getName() {
+        return "sort-mutex";
     }
 }

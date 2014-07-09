@@ -22,7 +22,8 @@
 package org.gitools.ui.app.batch.tools;
 
 import org.gitools.ui.app.commands.CloseAndSaveCommand;
-import org.gitools.ui.app.commands.Command;
+import org.gitools.ui.core.commands.Command;
+import org.gitools.ui.core.commands.tools.HeatmapTool;
 import org.kohsuke.args4j.Option;
 
 import java.io.File;

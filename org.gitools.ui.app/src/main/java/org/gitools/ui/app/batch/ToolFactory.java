@@ -21,7 +21,9 @@
  */
 package org.gitools.ui.app.batch;
 
+import org.gitools.plugins.mutex.control.SortMutexTool;
 import org.gitools.ui.app.batch.tools.*;
+import org.gitools.ui.core.commands.tools.ITool;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +38,7 @@ public class ToolFactory {
         addTool(new AddHeaderColoredLabelsTool());
         addTool(new SortByAnnotationTool());
         addTool(new CloseAndSaveHeatmapTool());
+        addTool(new SortMutexTool());
         addTool(new HelpTool(TOOLS.keySet())); //Last!
     }
 

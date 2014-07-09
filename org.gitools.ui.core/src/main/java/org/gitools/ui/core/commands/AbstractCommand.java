@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.commands;
+package org.gitools.ui.core.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.platform.progress.JobRunnable;

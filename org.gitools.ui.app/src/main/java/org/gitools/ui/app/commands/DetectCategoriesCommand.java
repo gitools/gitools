@@ -27,6 +27,8 @@ import org.gitools.api.matrix.AbstractMatrixFunction;
 import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.IMatrixPosition;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.ui.core.commands.AbstractCommand;
+import org.gitools.ui.core.commands.Command;
 
 import java.util.ArrayList;
 import java.util.concurrent.CancellationException;

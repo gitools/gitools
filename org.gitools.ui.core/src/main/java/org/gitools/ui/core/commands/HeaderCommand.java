@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.commands;
+package org.gitools.ui.core.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -33,24 +33,24 @@ import java.util.concurrent.CancellationException;
 
 public abstract class HeaderCommand extends HeatmapCommand {
 
-    protected final String side;
+    protected final MatrixDimensionKey dimension;
     protected final String COLUMNS = "COLUMNS";
     protected final String ROWS = "ROWS";
 
-    protected HeatmapDimension hdim;
+    protected HeatmapDimension heatmapDimension;
     protected SortDirection sort;
     protected String pattern;
 
 
-    public HeaderCommand(String heatmap, String side, String sort, String pattern) {
+    public HeaderCommand(String heatmap, MatrixDimensionKey dimension, String sort, String pattern) {
         super(heatmap);
-        this.side = side;
+        this.dimension = dimension;
         this.pattern = pattern;
         if (sort != null) {
             if (sort.toLowerCase().contains("asc")) {
                 this.sort = SortDirection.ASCENDING;
             } else if (sort.toLowerCase().contains("desc")) {
-                this.sort = SortDirection.ASCENDING;
+                this.sort = SortDirection.DESCENDING;
             }
         }
     }
@@ -62,15 +62,12 @@ public abstract class HeaderCommand extends HeatmapCommand {
         try {
             super.execute(monitor);
 
-            switch (side) {
-                case ROWS:
-                    hdim = heatmap.getRows();
-                    break;
-                case COLUMNS:
-                    hdim = heatmap.getColumns();
-                    break;
-                default:
-                    throw new Exception("No valid side of heatmap. Choose rows or columns: " + side);
+            if (dimension != null) {
+
+                heatmapDimension = heatmap.getDimension(dimension);
+            } else {
+                throw new Exception("No valid dimension of heatmap. Choose rows or columns: " + dimension);
+
             }
 
         } catch (Exception e) {
@@ -94,8 +91,8 @@ public abstract class HeaderCommand extends HeatmapCommand {
 
     protected void applySort() {
         if (sort != null) {
-            MatrixViewSorter.sortByLabel(heatmap, hdim.getId().equals(MatrixDimensionKey.ROWS), pattern, sort,
-                    false, hdim.getId().equals(MatrixDimensionKey.COLUMNS), pattern, sort, false);
+            MatrixViewSorter.sortByLabel(heatmap, heatmapDimension.getId().equals(MatrixDimensionKey.ROWS), pattern, sort,
+                    false, heatmapDimension.getId().equals(MatrixDimensionKey.COLUMNS), pattern, sort, false);
         }
     }
 }

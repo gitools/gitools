@@ -28,9 +28,11 @@ import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.Clusters;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.commands.HeaderCommand;
 import org.gitools.utils.color.ColorGenerator;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 
@@ -46,7 +48,7 @@ public class AddHeaderColoredLabelsCommand extends HeaderCommand {
     private List<String> ids;
     private boolean autoGenerateColors;
 
-    public AddHeaderColoredLabelsCommand(String heatmap, String side, String pattern, List<String> colors, List<String> ids,
+    public AddHeaderColoredLabelsCommand(String heatmap, MatrixDimensionKey side, String pattern, List<String> colors, List<String> ids,
                                          boolean autoGenerateColors, boolean textVisible, String sort) {
         super(heatmap, side, sort, pattern);
         this.colors = colors;
@@ -66,10 +68,10 @@ public class AddHeaderColoredLabelsCommand extends HeaderCommand {
 
 
         List<ColoredLabel> cls = new ArrayList<>();
-        HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(hdim);
+        HeatmapColoredLabelsHeader header = new HeatmapColoredLabelsHeader(heatmapDimension);
 
         header.setAnnotationPattern(pattern);
-        header.setHeatmapDimension(hdim);
+        header.setHeatmapDimension(heatmapDimension);
         header.setTitle(header.deriveTitleFromPattern());
 
         if (textVisible) {
@@ -102,7 +104,7 @@ public class AddHeaderColoredLabelsCommand extends HeaderCommand {
 
         }
 
-        hdim.addHeader(header);
+        heatmapDimension.addHeader(header);
 
         applySort();
 

@@ -27,8 +27,8 @@ import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.matrix.sort.SortByLabelComparator;
-import org.gitools.ui.app.commands.AbstractCommand;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.commands.AbstractCommand;
 
 import java.util.HashMap;
 import java.util.Map;

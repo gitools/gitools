@@ -19,10 +19,10 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.batch.tools;
+package org.gitools.ui.core.commands.tools;
 
-import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.commands.Command;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.kohsuke.args4j.CmdLineException;

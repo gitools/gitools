@@ -24,6 +24,7 @@ package org.gitools.ui.app.commands;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.commands.HeatmapCommand;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
