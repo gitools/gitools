@@ -58,7 +58,6 @@ public class CloseAndSaveHeatmapTool extends HeatmapTool {
 
     @Override
     protected Command newJob() {
-        System.out.println("yeees");
         return new CloseAndSaveCommand(save,
                 (saveAsFilename != null) ? new File(saveAsFilename) : null,
                 optimize, discardHidden, heatmap);

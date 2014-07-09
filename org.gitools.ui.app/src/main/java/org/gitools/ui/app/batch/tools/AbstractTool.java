@@ -29,6 +29,7 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 
 import java.io.PrintWriter;
+import java.util.concurrent.CountDownLatch;
 
 public abstract class AbstractTool implements ITool {
 
@@ -60,7 +61,10 @@ public abstract class AbstractTool implements ITool {
         CmdLineParser parser = new CmdLineParser(this);
         try {
             parser.parseArgument(args);
+            out.print("RUNNING " + this.getName() + "\n");
+            out.flush();
             execute();
+            //exitStatus = 0;
         } catch (CmdLineException e) {
             out.print("USAGE | " + getName() + "\n");
             parser.printUsage(out, null);
@@ -76,7 +80,7 @@ public abstract class AbstractTool implements ITool {
         return true;
     }
 
-    void execute() {
+    void execute() throws InterruptedException {
         Command job = newJob();
 
         if (job != null) {
@@ -88,7 +92,9 @@ public abstract class AbstractTool implements ITool {
             mainFrame.setAlwaysOnTop(true);
             mainFrame.setAlwaysOnTop(false);
 
-            JobThread.execute(mainFrame, (JobRunnable) job);
+            CountDownLatch latch = new CountDownLatch(1);
+            JobThread.execute(mainFrame, (JobRunnable) job, latch);
+            latch.await();
             setExitStatus(job.getExitStatus());
 
         } else {
