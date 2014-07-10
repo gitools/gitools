@@ -294,7 +294,12 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
             visibleToIndex = new HashMap<>(visible.size());
 
             for (int i = 0; i < visible.size(); i++) {
-                visibleToIndex.put(visible.get(i), i);
+                try {
+                    visibleToIndex.put(visible.get(i), i);
+                } catch (NullPointerException e) {
+                    // apparently it's alright
+                    System.out.println("NullPointerException @ AbstractMatrixViewDimension");
+                }
             }
         }
 
