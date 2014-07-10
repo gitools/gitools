@@ -169,10 +169,7 @@ public class OverlappingAnalysisWizardPage extends AbstractWizardPage {
     // End of variables declaration//GEN-END:variables
 
     public String getAttributeName() {
-        if (layers != null) {
-            layers.get(attributeCb.getSelectedIndex()).getId();
-        }
-        return null;
+        return (String) attributeCb.getSelectedItem();
     }
 
     public boolean isReplaceNanValuesEnabled() {

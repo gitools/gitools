@@ -99,6 +99,9 @@ public class OverlappingProcessor implements AnalysisProcessor {
 
             for (String Y : positionY.iterate(columns.from(X))) {
 
+                if (monitor.isCancelled()) {
+                    break;
+                }
                 monitor.info("Overlapping " + X + " with " + Y);
 
                 int columnCount = 0;
