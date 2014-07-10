@@ -36,7 +36,7 @@ public class CloseAndSaveHeatmapTool extends HeatmapTool {
     protected boolean save;
 
     @Option(name = "-a", aliases = "--as", metaVar = "<FILE_NAME>", required = false,
-            usage = "path and filename indicating where to save")
+            usage = "path and filename indicating where to save the heatmap")
     protected String saveAsFilename;
 
     @Option(name = "-o", aliases = "--optimize", required = false,

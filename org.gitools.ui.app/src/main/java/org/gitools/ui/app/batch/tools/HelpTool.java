@@ -26,6 +26,7 @@ import org.gitools.ui.app.Main;
 import org.gitools.ui.core.commands.tools.ITool;
 
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Set;
 
 public class HelpTool implements ITool {
@@ -78,7 +79,9 @@ public class HelpTool implements ITool {
 
     private static void printAvailableTools(PrintWriter out) {
         out.println("Available commands:");
-        for (String tool : availableTools) {
+        String[] orderedtools = availableTools.toArray(new String[availableTools.size()]);
+        Arrays.sort(orderedtools);
+        for (String tool : orderedtools) {
             out.println("  " + tool);
         }
         out.println("Obtain more info running './gitools <command> --help' or at online documentation\n");

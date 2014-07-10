@@ -39,6 +39,9 @@ public class CommandExecutor {
 
         List<String> argsList = new ArrayList<>();
         for (String s : args) {
+            if (s.equals("")) {
+                continue;
+            }
             argsList.add(s);
         }
 
