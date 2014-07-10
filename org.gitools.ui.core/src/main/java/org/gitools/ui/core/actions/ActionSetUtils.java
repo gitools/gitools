@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.core.actions;
 
-import com.alee.laf.StyleConstants;
+import com.alee.global.StyleConstants;
 import com.alee.laf.button.WebButton;
 import com.alee.laf.toolbar.ToolbarStyle;
 import com.alee.laf.toolbar.WebToolBar;
+import com.alee.managers.language.data.TooltipWay;
 import com.alee.managers.tooltip.TooltipManager;
-import com.alee.managers.tooltip.TooltipWay;
 
 import javax.swing.*;
 import java.awt.*;
