@@ -10,29 +10,48 @@ Gitools is listening to the port **50151** by default. So it is possible to send
 Overview of commands
 -------------------------------------------------
 
-================================================  ============================================  ===================================================================================== ======================
- Command                                           Description                                   Options                                                                               as of Version
-================================================  ============================================  ===================================================================================== ======================
-**add-header-colored-labels**                      Adds a new colored labels header                                                                                                    2.0.0
-                                                                                                 - -c (--color) <color>     : A Hex color as '#FF0000' - depends on --value
-                                                                                                 - -h (--heatmap) <heatmap> : Heatmap name or ``last`` for the last added 
-                                                                                                 - -n (--no-auto-generate)  : Specify if auto color generation is not desired.
-                                                                                                 - -p (--pattern) <pattern> : The pattern of annotations as e.g. ${annotation-id}
-                                                                                                 - -d (--dimension) <dim>   : Indicate where to add the header: 'rows' or 'columns'.
-                                                                                                 - -t (--text-visible)      : Set for visible text labels
-                                                                                                 - -v (--value) <value>     : A value corresponding to a color
+================================================  ============================================  ========================================================================================= ======================
+ Command                                           Description                                   Options                                                                                  as of Version
+================================================  ============================================  ========================================================================================= ======================
+**add-header-colored-labels**                      Adds a new colored labels header                                                                                                        2.0.0
+                                                                                                 - ``-c (--color) <color>``     : A Hex color as '#FF0000' - depends on --value
+                                                                                                 - ``-n (--no-auto-generate)``  : Specify if auto color generation is not desired.
+                                                                                                 - ``-p (--pattern) <pattern>`` : The pattern of annotations as e.g. ${annotation-id}
+                                                                                                 - ``-d (--dimension) <dim>``   : Indicate where to add the header: 'rows' or 'columns'.
+                                                                                                 - ``-t (--text-visible)``      : Set for visible text labels
+                                                                                                 - ``-v (--value) <value>``     : A value corresponding to a color
+                                                                                                 - ``-h (--heatmap) <heatmap>`` : (Optional) Heatmap name or ``last`` for the last added
+
 **add-header-text-labels**                         Adds a new text header to the heatmap
-                                                                                                 -  -h (--heatmap) <heatmap> : Heatmap 
-                                                                                                 -  -p (--pattern) <pattern> : The pattern of annotations as e.g. ${annotation-id}     2.0.0
-                                                                                                 -  -d (--dimension) <dim>   : Indicate where to add the header: 'rows' or 'columns'.
+                                                                                                 - ``-p (--pattern) <pattern>`` : The pattern of annotations as e.g. ${annotation-id}      2.0.0
+                                                                                                 - ``-d (--dimension) <dim>``   : Indicate where to add the header: 'rows' or 'columns'.
+                                                                                                 - ``-h (--heatmap) <heatmap>`` : Heatmap name. Not compulsory if one is open.
+**close**                                          Closes a heatmap and optionally saves (as)
+                                                                                                 - ``-a (--as) <FILE_NAME>``    : path and filename indicating where to save the heatmap   2.2.1
+                                                                                                 - ``-d (--discard-hidden)``    : Discard hidden data
+                                                                                                 - ``-h (--heatmap) <heatmap>`` : (optional) 'LAST' or heatmap name
+                                                                                                 - ``-o (--optimize)``          : Optimize data file (slower saving process)
+                                                                                                 - ``-s (--save)``              : Save current state as heatmap
+**help**                                           Prints all available commands
+**load **\ matrix-file                             Tells Gitools to load a file.                 - ``--rows** (-r)``     : File rows annotations                                           1.7.0
+                                                                                                 - ``--cols (-c)``     : File cols annotations
 **sort-by-annotation**                             Sorts the heatmap by col or row annotation
-                                                                                                 -  -h (--heatmap) <heatmap> : Heatmap
-                                                                                                 -  -p (--pattern) <pattern> : The pattern of annotations as e.g. ${annotation-id}     2.2.0
-                                                                                                 -  -d (--dimension) <dim>   : Indicate where to add the header: 'rows' or 'columns'.
-**load **\ matrix-file                             Tells Gitools to load a file.                 - **--rows** ( **-r**)     : File rows annotations                                    1.7.0
-                                                                                                 - **--cols** ( **-c**)     : File cols annotations
-**version**                                        Prints Gitools version.                                                                                                             1.7.1
-================================================  ============================================  ===================================================================================== ======================
+                                                                                                 - ``-p (--pattern) <pattern>`` : The pattern of annotations as e.g. ${annotation-id}      2.2.0
+                                                                                                 - ``-d (--dimension) <dim>``   : Indicate where to add the header: 'rows' or 'columns'.
+                                                                                                 - ``-h (--heatmap) <heatmap>`` : Heatmap name. Not compulsory if one is open.
+**sort-mutex**                                     Sorts the visible layer by mutual excl.
+                                                                                                 - ``-d (--dimension) <dimension>``   : Indicate where to add the header: 'rows' or        2.2.1
+                                                                                                   'columns'.
+                                                                                                 - ``-h (--heatmap) <heatmap>``       : (optional) 'LAST' or heatmap name
+                                                                                                 - ``-i (--identifier) <identifier>`` : Specify this option for each identifier which
+                                                                                                   you want to include in the mutex sorting
+                                                                                                 - ``-p (--pattern) <pattern>``       : The pattern of annotations as e.g.
+                                                                                                   ${annotation-id}
+                                                                                                 - ``-s (--sort) <sort>``             : Sort according to header. Specify either
+                                                                                                   asc[ending] or desc[ending].
+
+**version**                                        Prints Gitools version.                                                                                                                 1.7.1
+================================================  ============================================  ========================================================================================= ======================
 
 
 
