@@ -66,7 +66,7 @@ public class Heatmap extends Resource implements IMatrixView {
 
     private HeatmapLayers layers;
 
-    private transient HeatmapDimension diagonalRows;
+    private transient MirrorDimension diagonalRows;
 
     private Bookmarks bookmarks;
 
@@ -246,6 +246,9 @@ public class Heatmap extends Resource implements IMatrixView {
 
     @Override
     public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
+        if (isDiagonal()) {
+            identifiers = diagonalRows.assertOrder(identifiers);
+        }
         return getContents().get(layer, identifiers);
     }
 
