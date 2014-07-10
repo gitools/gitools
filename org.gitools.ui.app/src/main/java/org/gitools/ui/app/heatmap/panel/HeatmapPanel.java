@@ -355,10 +355,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         super.updateUI();
     }
 
-    public HeatmapPanel(LayoutManager layout, boolean isDoubleBuffered) {
-        super(layout, isDoubleBuffered);
-    }
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
 
