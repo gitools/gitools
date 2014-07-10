@@ -25,8 +25,6 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.commands.HeatmapCommand;
-import org.gitools.ui.platform.progress.JobRunnable;
-import org.gitools.ui.platform.progress.JobThread;
 
 import java.io.File;
 
@@ -60,23 +58,14 @@ public class CloseAndSaveCommand extends HeatmapCommand {
         if (Application.get().getEditorsPanel().getSelectedEditor() instanceof HeatmapEditor) {
             final HeatmapEditor currentEditor = (HeatmapEditor) Application.get().getEditorsPanel().getSelectedEditor();
 
-            JobThread.execute(Application.get(), new JobRunnable() {
-                @Override
-                public void run(IProgressMonitor monitor) {
-
-                    if (saveAsFile != null) {
-                        currentEditor.doSaveAsNoUI(monitor, saveAsFile, discardHidden, optimize, false);
-                    } else if (save) {
-                        currentEditor.doSave(heatmap.getLocator(), monitor, false);
-                    }
-
-                    if (currentEditor.doClose(false)) {
-                        Application.get().getEditorsPanel().removeEditorNoUI(currentEditor);
-                    }
-
-                }
-            });
-
+            if (saveAsFile != null) {
+                currentEditor.doSaveAsNoUI(monitor, saveAsFile, discardHidden, optimize, false);
+            } else if (save) {
+                currentEditor.doSave(heatmap.getLocator(), monitor, false);
+            }
+            if (currentEditor.doClose(false)) {
+                Application.get().getEditorsPanel().removeEditorNoUI(currentEditor);
+            }
         }
     }
 
