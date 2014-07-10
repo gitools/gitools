@@ -152,7 +152,9 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     }
 
     private void updateEventDescription() {
-        eventsFunctionDescription.setText(((NonEventToNullFunction) eventsFunctionComboBox.getSelectedItem()).getDescription());
+        if (eventsFunctionDescription!=null && eventsFunctionComboBox.getSelectedItem() != null) {
+            eventsFunctionDescription.setText(((NonEventToNullFunction) eventsFunctionComboBox.getSelectedItem()).getDescription());
+        }
     }
 
     private void saveBtnAction() {
