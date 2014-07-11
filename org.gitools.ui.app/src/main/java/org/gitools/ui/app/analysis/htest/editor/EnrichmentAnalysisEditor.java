@@ -22,13 +22,10 @@
 package org.gitools.ui.app.analysis.htest.editor;
 
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
+import org.gitools.analysis.htest.enrichment.EnrichmentProcessor;
 import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
-import org.gitools.analysis.stats.test.factory.TestFactory;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.HeatmapLayer;
-import org.gitools.heatmap.decorator.impl.PValueDecorator;
-import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 
 public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<EnrichmentAnalysis> {
 
@@ -40,31 +37,15 @@ public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<Enrich
 
         IMatrix results = analysis.getResults().get();
 
+        results.setMetadata(EnrichmentAnalysis.CACHE_KEY_ENHRICHMENT, analysis);
+
         if (results instanceof Heatmap) {
+
             return (Heatmap) results;
         }
 
-        //Deprecated
-        Heatmap heatmap = new Heatmap(results);
-        heatmap.setTitle(analysis.getTitle() + " (results)");
-        String testName = analysis.getTestConfig().get(TestFactory.TEST_NAME_PROPERTY);
-        if (TestFactory.ZSCORE_TEST.equals(testName)) {
-            heatmap.getLayers().setTopLayerById("z-score");
-            heatmap.getLayers().getTopLayer().setDecorator(new ZScoreDecorator());
-        } else {
-            heatmap.getLayers().setTopLayerById("right-p-value");
-            heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
-        }
+        return EnrichmentProcessor.createResultHeatmapFromMatrix(analysis.getTitle(), analysis.getTestConfig(), results);
 
-        for (HeatmapLayer resultLayer : heatmap.getLayers()) {
-            if (resultLayer.getId().contains("p-value")) {
-                resultLayer.setDecorator(new PValueDecorator());
-            }
-        }
-
-        heatmap.setMetadata(EnrichmentAnalysis.CACHE_KEY_ENHRICHMENT, analysis);
-
-        return heatmap;
     }
 
 }
