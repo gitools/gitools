@@ -41,7 +41,8 @@ import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.NONE)
 @XmlRootElement
-public class HeatmapColoredLabelsHeader extends HeatmapHeader {
+public class
+        HeatmapColoredLabelsHeader extends HeatmapHeader {
 
     private static final String THICKNESS_CHANGED = "thickness";
     private static final String SEPARATION_GRID_CHANGED = "separationGrid";
@@ -71,7 +72,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
 
         size = 20;
         thickness = 14;
-        margin = 1;
+        margin = 10;
         separationGrid = true;
 
         labelVisible = true;

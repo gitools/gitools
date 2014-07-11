@@ -37,8 +37,6 @@ import java.util.List;
 
 public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<HeatmapColoredLabelsHeader> {
 
-    private static final double radianAngle90 = (90.0 / 180.0) * Math.PI;
-
 
     public HeatmapColoredLabelsDrawer(Heatmap heatmap, HeatmapDimension heatmapDimension, HeatmapColoredLabelsHeader header) {
         super(heatmap, heatmapDimension, header);
@@ -50,7 +48,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
 
 
         prepareDraw(g, box);
-        Font previousFont = rotateFont(g);
+        Font previousFont = changeFont(g);
 
         HeatmapColoredLabelsHeader header = getHeader();
         header.reset();
@@ -79,6 +77,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
             decoration.reset();
             boolean highlighted = isHighlightedIndex(startGroupIndex);
             header.decorate(decoration, groupLabel, false);
+            decoration.setRotate(true);
 
             int fullSize = getHeatmapDimension().getFullSize();
             //gridSize = 0 (no grid) if same group
@@ -115,13 +114,12 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
         return (isHorizontal() ? new HeatmapPosition(getHeatmap(), -1, index, label) : new HeatmapPosition(getHeatmap(), index, -1, label));
     }
 
-    private Font rotateFont(Graphics2D g) {
+    private Font changeFont(Graphics2D g) {
 
         Font previousFont = g.getFont();
         Font headerFont = getHeader().getLabelFont();
         g.setFont(headerFont);
         AffineTransform fontAT = new AffineTransform();
-        fontAT.rotate(radianAngle90);
         g.setFont(getHeader().getLabelFont().deriveFont(fontAT));
 
         return previousFont;

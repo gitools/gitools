@@ -31,11 +31,15 @@ public class Decoration implements Serializable {
     public static final String NONE = "None";
 
     private String value;
+
+    private boolean rotate;
+
     private Color bgColor;
 
     public Decoration(String value, Color bgColor) {
         this.value = value;
         this.bgColor = bgColor;
+        this.rotate = false;
     }
 
     public Decoration() {
@@ -45,6 +49,7 @@ public class Decoration implements Serializable {
     public Decoration reset() {
         this.value = "";
         this.bgColor = Color.WHITE;
+        this.rotate = false;
         return this;
     }
 
@@ -71,4 +76,11 @@ public class Decoration implements Serializable {
         this.bgColor = bgColor;
     }
 
+    public boolean isRotate() {
+        return rotate;
+    }
+
+    public void setRotate(boolean rotate) {
+        this.rotate = rotate;
+    }
 }
