@@ -143,6 +143,10 @@ public class WelcomeEditor extends HtmlEditor {
                 }
             });
 
+            // Track event
+            String baseName = FilenameUtils.getBaseName(href);
+            Application.get().trackEvent("datasets", "save", baseName);
+
         }
 
 
@@ -150,8 +154,16 @@ public class WelcomeEditor extends HtmlEditor {
 
     @Override
     protected void performLoad(String href) {
+
         CommandLoadFile loadFile = new CommandLoadFile(href);
+
+        // Execute
         JobThread.execute(Application.get(), loadFile);
+
+        // Track event
+        String baseName = FilenameUtils.getBaseName(href);
+        Application.get().trackEvent("datasets", "load", baseName);
+
     }
 
     @Override

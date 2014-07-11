@@ -65,12 +65,11 @@ public abstract class AbstractAction extends BaseAction {
     protected void track(String category, String label) {
 
         if (actionName == null) {
-            getClass().getSimpleName().replace("Action", "");
+            actionName = getClass().getSimpleName().replace("Action", "");
         }
 
         Application.get().trackEvent(category, actionName, label);
     }
-
 
     public void setParentWindow(Window parentWindow) {
         this.parentWindow = parentWindow;
