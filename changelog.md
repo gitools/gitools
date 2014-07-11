@@ -1,3 +1,9 @@
+Gitools 2.2.1
+-------------------------------------------------------------
+* New external commands: mutex-sort, close (and save)
+* Mutex bugfixes
+* Overlap wizard bugfixes
+
 Gitools 2.2.0
 -------------------------------------------------------------
 * Mutual exclusion plugin (new)
