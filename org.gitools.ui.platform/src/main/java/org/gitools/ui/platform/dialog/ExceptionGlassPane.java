@@ -90,9 +90,24 @@ public class ExceptionGlassPane extends GitoolsGlassPane {
                 description = description.substring(0, 145);
             }
 
-            track.trackException(description);
+            track.trackException(anonymizer(description));
         }
 
+    }
+
+    private String anonymizer(String description) {
+
+        //replace custom strings between ' '
+        description = description.replaceAll("('[^']*')", "*");
+
+        //replace folders and urls
+        description = description.replaceAll("/[^ ]+", "*");
+
+        //replace java package name
+        description = description.replaceAll("at [a-z\\.A-Z0-9]*\\(\n", "at (");
+        description = description.replaceAll("^[a-z\\.]*", "");
+
+        return description;
     }
 
     private String getFriendlyMessage(Throwable cause) {
