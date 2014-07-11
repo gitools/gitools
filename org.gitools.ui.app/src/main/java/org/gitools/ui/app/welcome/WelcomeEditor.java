@@ -172,7 +172,7 @@ public class WelcomeEditor extends HtmlEditor {
 
     private static URL getWelcomeURL() {
         try {
-            URL url = new URL(Settings.get().getWelcomeUrl() + "?uuid=" + Settings.get().getUuid());
+            URL url = new URL(Settings.get().getWelcomeUrl() + "?appversion=" + Application.getGitoolsVersion().toString() + "&uuid=" + Settings.get().getUuid());
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(10000);
 
