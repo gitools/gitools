@@ -26,10 +26,6 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.MatrixViewSorter;
-import org.gitools.ui.core.Application;
-import org.gitools.ui.platform.dialog.MessageUtils;
-
-import java.util.concurrent.CancellationException;
 
 public abstract class HeaderCommand extends HeatmapCommand {
 
@@ -59,33 +55,9 @@ public abstract class HeaderCommand extends HeatmapCommand {
     public void execute(IProgressMonitor monitor) throws CommandException {
 
 
-        try {
-            super.execute(monitor);
+        super.execute(monitor);
+        heatmapDimension = heatmap.getDimension(dimension);
 
-            if (dimension != null) {
-
-                heatmapDimension = heatmap.getDimension(dimension);
-            } else {
-                throw new Exception("No valid dimension of heatmap. Choose rows or columns: " + dimension);
-
-            }
-
-        } catch (Exception e) {
-
-            if (!(e.getCause() instanceof CancellationException)) {
-                String text = "<html>Command error:<br>" +
-                        "<div style='margin: 5px 0px; padding:10px; width:300px; border: 1px solid black;'><strong>" +
-                        e.getLocalizedMessage() +
-                        "</strong></div>" +
-                        "You may find the <strong>'User guide'</strong> at <a href='http://www.gitools.org'>" +
-                        "www.gitools.org</a><br></html>";
-                MessageUtils.showErrorMessage(Application.get(), text, e);
-            }
-            setExitStatus(1);
-            return;
-        }
-
-        setExitStatus(0);
         return;
     }
 

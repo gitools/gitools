@@ -60,6 +60,8 @@ public class CommandListener implements Runnable {
                 // Pass the arguments to the other gitools instance
                 Socket socket = null;
                 try {
+                    System.out.println("Sending commands to running Gitools application");
+
                     socket = new Socket("localhost", port);
                     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                     InputStream in = socket.getInputStream();
@@ -77,8 +79,13 @@ public class CommandListener implements Runnable {
                         } catch (Exception ee) {
                         }
                     }
+
+                    // Print command output
                     BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-                    reader.readLine();
+                    String responseLine;
+                    while (socket.isConnected() && ((responseLine = reader.readLine()) != null)) {
+                        System.out.println(responseLine);
+                    }
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -97,6 +104,7 @@ public class CommandListener implements Runnable {
             }
         }
 
+        System.out.println("Starting command listener on port " + port);
         listener = new CommandListener(port);
         listener.listenerThread.start();
     }
@@ -216,6 +224,8 @@ public class CommandListener implements Runnable {
                 } else {
                     // Port command
                     cmdExe.execute(inputLine.split(" "), out);
+                    return;
+
                 }
             }
         } catch (IOException e) {

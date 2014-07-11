@@ -29,6 +29,10 @@ public interface ITool {
 
     boolean run(String[] args, PrintWriter out);
 
+    String getExitMessage();
+
+    int getExitStatus();
+
     boolean check(String[] args, PrintWriter out);
 
 }

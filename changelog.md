@@ -18,6 +18,7 @@ Gitools 2.2.0
 * Layer groups (new)
 * Recent files (new)
 * .mtabix data file compression (new)
+* Parellization: use multiple cores for many tasks
 * Many performance improvements
 * UI improvements
 

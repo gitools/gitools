@@ -29,6 +29,8 @@ import java.util.List;
 
 public class CommandExecutor {
 
+    boolean noErrors;
+
     public boolean checkArguments(String[] args, PrintWriter out) {
 
         if (args.length == 0) {
@@ -83,7 +85,13 @@ public class CommandExecutor {
         }
 
 
-        while (argsList.contains(";")) {
+        // run all comands
+        noErrors = true;
+        while (argsList.contains(";") && noErrors) {
+
+            if (!noErrors) {
+                break;
+            }
 
             int sepIndex = argsList.indexOf(";");
             List<String> sublist = argsList.subList(0, sepIndex);
@@ -132,8 +140,10 @@ public class CommandExecutor {
             out.println("OK");
             out.flush();
         } else {
+            out.println(tool.getExitMessage());
             out.println("NOT OK");
             out.flush();
+            noErrors = false;
         }
     }
 

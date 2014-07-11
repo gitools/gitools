@@ -32,12 +32,14 @@ public abstract class AbstractCommand implements Command, JobRunnable, Runnable 
     public abstract void execute(IProgressMonitor monitor) throws CommandException;
 
     private int exitStatus = -1;
+    private String exitMessage;
 
     @Override
     public void run(IProgressMonitor monitor) {
         try {
             execute(monitor);
         } catch (CommandException e) {
+            setExitMessage(e.getMessage());
             monitor.exception(e);
         }
     }
@@ -54,5 +56,13 @@ public abstract class AbstractCommand implements Command, JobRunnable, Runnable 
 
     protected void setExitStatus(int exitStatus) {
         this.exitStatus = exitStatus;
+    }
+
+    public String getExitMessage() {
+        return exitMessage;
+    }
+
+    public void setExitMessage(String exitMessage) {
+        this.exitMessage = exitMessage;
     }
 }

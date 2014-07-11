@@ -67,6 +67,16 @@ public class HelpTool implements ITool {
         return true;
     }
 
+    @Override
+    public String getExitMessage() {
+        return null;
+    }
+
+    @Override
+    public int getExitStatus() {
+        return 0;
+    }
+
     public static String getVersion() {
         return "Gitools " + Main.class.getPackage().getImplementationVersion();
     }

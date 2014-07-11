@@ -44,4 +44,6 @@ public interface Command {
     void execute(IProgressMonitor monitor) throws CommandException;
 
     int getExitStatus();
+
+    String getExitMessage();
 }

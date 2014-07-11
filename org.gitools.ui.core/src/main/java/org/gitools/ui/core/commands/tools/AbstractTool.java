@@ -34,6 +34,7 @@ import java.util.concurrent.CountDownLatch;
 public abstract class AbstractTool implements ITool {
 
     private int exitStatus = -1;
+    private String exitMessage = "";
 
 
     @Override
@@ -43,7 +44,7 @@ public abstract class AbstractTool implements ITool {
         try {
             parser.parseArgument(args);
         } catch (CmdLineException e) {
-            out.println(e.getMessage());
+            out.println("\n" + e.getMessage() + "\n");
             out.print("USAGE | " + getName() + "\n");
             parser.printUsage(out, null);
             return false;
@@ -62,7 +63,6 @@ public abstract class AbstractTool implements ITool {
         try {
             parser.parseArgument(args);
             out.print("RUNNING " + this.getName() + "\n");
-            out.flush();
             execute();
             //exitStatus = 0;
         } catch (CmdLineException e) {
@@ -96,6 +96,8 @@ public abstract class AbstractTool implements ITool {
             JobThread.execute(mainFrame, (JobRunnable) job, latch);
             latch.await();
             setExitStatus(job.getExitStatus());
+            setExitMessage(job.getExitMessage());
+
 
         } else {
             throw new RuntimeException("No Job");
@@ -106,6 +108,18 @@ public abstract class AbstractTool implements ITool {
         this.exitStatus = exitStatus;
     }
 
+    public int getExitStatus() {
+        return this.exitStatus;
+    }
+
 
     protected abstract Command newJob();
+
+    public String getExitMessage() {
+        return exitMessage;
+    }
+
+    public void setExitMessage(String exitMessage) {
+        this.exitMessage = exitMessage;
+    }
 }

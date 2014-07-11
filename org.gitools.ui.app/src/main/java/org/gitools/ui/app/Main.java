@@ -66,6 +66,16 @@ public class Main {
 
     public static void main(final String[] args) {
 
+        // Start CommandListener
+        boolean portEnabled = Settings.get().isPortEnabled();
+        String portString = null;
+        if (portEnabled || portString != null) {
+            int port = Settings.get().getDefaultPort();
+            if (portString != null) {
+                port = Integer.parseInt(portString);
+            }
+            CommandListener.start(port, args);
+        }
 
         // Initialize look and feel
         WebLookAndFeel.install();
@@ -130,18 +140,6 @@ public class Main {
         } catch (Exception ex) {
             System.err.println("Error loading help system:");
             ex.printStackTrace();
-        }
-
-        // Start CommandListener
-        setProgressText(progress, "Starting command listener");
-        boolean portEnabled = Settings.get().isPortEnabled();
-        String portString = null;
-        if (portEnabled || portString != null) {
-            int port = Settings.get().getDefaultPort();
-            if (portString != null) {
-                port = Integer.parseInt(portString);
-            }
-            CommandListener.start(port, args);
         }
 
         // Initialize actions

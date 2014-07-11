@@ -52,7 +52,7 @@ public abstract class HeatmapCommand extends AbstractCommand {
                 heatmap = (Heatmap) editor.getModel();
                 return;
             } else {
-                throw new CommandException("No heatmap selected or open. Indicate name or open and select a heatmap");
+                throw new CommandException("No heatmap selected or open. Indicate name or open a heatmap (load command)");
             }
         }
 
