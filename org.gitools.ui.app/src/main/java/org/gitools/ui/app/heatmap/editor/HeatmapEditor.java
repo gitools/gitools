@@ -492,7 +492,7 @@ public class HeatmapEditor extends AbstractEditor {
 
                 LOGGER.warn("Memory too low, cleaning cache.");
                 this.lastDetach = System.currentTimeMillis();
-
+                Application.get().trackException("Memory too low");
                 detach();
             }
         }
