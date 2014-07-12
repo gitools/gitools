@@ -198,7 +198,7 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
         int min = 0;
         int max = dimension.getFullCellSize() * dimension.size();
-        int margin = (dimension.getFullCellSize()*3 < 30) ? dimension.getFullCellSize()*3 : 30;
+        int margin = (dimension.getFullCellSize() * 3 < 10) ? dimension.getFullCellSize() * 3 : 10;
         int scrollPosition = scrollBar.getValue();
 
 
@@ -352,12 +352,6 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
 
             popupMenuColumns.show(e.getComponent(), e.getX(), e.getY());
         }
-    }
-
-
-    @Override
-    public void update(Graphics g) {
-        super.update(g);
     }
 
     @Override

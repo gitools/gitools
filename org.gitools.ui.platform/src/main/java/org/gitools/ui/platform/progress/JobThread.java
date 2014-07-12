@@ -126,6 +126,7 @@ public class JobThread implements JobRunnable {
     }
 
     void done() {
+        running = false;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
