@@ -3,6 +3,7 @@ Gitools 2.2.1
 * New external commands: mutex-sort, close (and save)
 * Mutex bugfixes
 * Overlap wizard bugfixes
+* Exception bug fixes
 
 Gitools 2.2.0
 -------------------------------------------------------------
