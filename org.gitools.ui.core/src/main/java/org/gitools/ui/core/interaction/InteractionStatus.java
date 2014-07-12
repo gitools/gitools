@@ -21,6 +21,8 @@
  */
 package org.gitools.ui.core.interaction;
 
+import org.gitools.ui.core.Application;
+
 public class InteractionStatus {
 
     private static Interaction interaction = Interaction.none;
@@ -56,5 +58,7 @@ public class InteractionStatus {
 
     public static void setInteractionStatus(Interaction interaction) {
         InteractionStatus.interaction = interaction;
+        Application.get().setInteractionStatus(interaction.toString());
+
     }
 }

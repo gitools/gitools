@@ -26,11 +26,7 @@ import com.alee.managers.notification.NotificationIcon;
 import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.NotificationOption;
 import com.alee.managers.notification.WebNotificationPopup;
-import com.brsanthu.googleanalytics.AwtRequestParameterDiscoverer;
-import com.brsanthu.googleanalytics.EventHit;
-import com.brsanthu.googleanalytics.ExceptionHit;
-import com.brsanthu.googleanalytics.GoogleAnalytics;
-import com.brsanthu.googleanalytics.GoogleAnalyticsConfig;
+import com.brsanthu.googleanalytics.*;
 import org.gitools.resource.SemanticVersion;
 import org.gitools.ui.core.components.StatusBar;
 import org.gitools.ui.core.components.editor.AbstractEditor;
@@ -254,6 +250,10 @@ public class Application extends JFrame implements IApplicationTracking {
 
     public void showNotificationPopup(WebNotificationPopup popup) {
         NotificationManager.showNotification(popup);
+    }
+
+    public void setInteractionStatus(String status) {
+        statusBar.setText(status);
     }
 
     public void refresh() {
