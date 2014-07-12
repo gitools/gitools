@@ -7,7 +7,6 @@ Gitools 2.2.1
 Gitools 2.2.0
 -------------------------------------------------------------
 * Mutual exclusion plugin (new)
-* New cancer genomics data .matibx compressed (new)
 * SVG image export (new)
 * Hierarchical cluster heatmap header with contextual menu (new)
 * View enrichment data via contextual menu in results (new)
