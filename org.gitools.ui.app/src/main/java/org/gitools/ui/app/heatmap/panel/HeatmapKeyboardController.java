@@ -241,7 +241,7 @@ class HeatmapKeyboardController extends KeyAdapter {
             case KeyEvent.VK_HOME:
                 if (shiftDown) {
                     col = 0;
-                    ip.setLead(++col, mv.getColumns());
+                    ip.setLead(col, mv.getColumns());
                     if (selectingColumns) {
                         ip.addToSelected(col, mv.getColumns());
                         ip.setLastSelectedCol(col);

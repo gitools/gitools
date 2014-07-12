@@ -89,6 +89,8 @@ public class Settings extends Model {
     private boolean showTipsAtStartup = true;
     private boolean showMutualExclusionProgress = false;
     private String welcomeUrl = DEFAULT_WELCOME_URL;
+    private boolean debugMode = false;
+
 
     // Port parameters
     private boolean portEnabled = true;
@@ -257,6 +259,14 @@ public class Settings extends Model {
         boolean old = this.showTipsAtStartup;
         this.showTipsAtStartup = showTipsAtStartup;
         firePropertyChange(PROPERTY_TIPS, old, showTipsAtStartup);
+    }
+
+    public boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 
     public boolean isPortEnabled() {

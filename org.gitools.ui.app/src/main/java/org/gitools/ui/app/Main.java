@@ -97,7 +97,7 @@ public class Main {
         progress.setVisible(true);
 
 
-        setProgressText(progress, "Loading persistance manager");
+        setProgressText(progress, "Loading Gitools interface");
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
         ApplicationContext.setPersistenceManager(container.instance().select(PersistenceManager.class).get());

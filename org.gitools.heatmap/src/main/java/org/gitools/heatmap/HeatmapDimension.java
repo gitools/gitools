@@ -165,7 +165,7 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
         return getCellSize() > 4;
     }
 
-    public int getFullSize() {
+    public int getFullCellSize() {
         if (showGrid()) {
             return getCellSize() + getGridSize();
         }

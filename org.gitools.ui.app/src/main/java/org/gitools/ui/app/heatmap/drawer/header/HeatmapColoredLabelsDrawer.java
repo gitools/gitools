@@ -79,7 +79,7 @@ public class HeatmapColoredLabelsDrawer extends AbstractHeatmapHeaderDrawer<Heat
             header.decorate(decoration, groupLabel, false);
             decoration.setRotate(true);
 
-            int fullSize = getHeatmapDimension().getFullSize();
+            int fullSize = getHeatmapDimension().getFullCellSize();
             //gridSize = 0 (no grid) if same group
             int gridSize = ((getHeatmapDimension().getCellSize() > 2 && !highlighted && !isHighlightedIndex(endGroupIndex + 1)
                     || getHeatmapDimension().getCellSize() > 2 && !groupLabel.equals(header.getColoredLabel(endGroupIndex + 1)))

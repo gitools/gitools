@@ -216,7 +216,7 @@ public abstract class AbstractHeatmapDrawer {
             end = this.onScreenRect.colEnd;
         }
 
-        int cellSize = dimension.getFullSize();
+        int cellSize = dimension.getFullCellSize();
         for (int i = start; i <= end; i++) {
             String id = dimension.getLabel(i);
             Color paint = null;

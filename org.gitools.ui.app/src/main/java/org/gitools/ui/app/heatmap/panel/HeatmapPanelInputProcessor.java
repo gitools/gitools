@@ -42,11 +42,11 @@ public class HeatmapPanelInputProcessor {
 
     private IMatrixView mv;
     private Heatmap heatmap;
-    private HeatmapPanel panel;
+    private HeatmapPanel heatmapPanel;
 
     public HeatmapPanelInputProcessor(HeatmapPanel heatmapPanel) {
 
-        this.panel = heatmapPanel;
+        this.heatmapPanel = heatmapPanel;
         this.mv = heatmapPanel.getHeatmap();
         this.heatmap = heatmapPanel.getHeatmap();
 
@@ -127,11 +127,11 @@ public class HeatmapPanelInputProcessor {
     public void scroll(int units, boolean horizontal) {
 
         if (horizontal) {
-            HeatmapPosition pos = panel.getScrollPosition();
-            panel.setScrollColumnPosition(pos.column + units);
+            HeatmapPosition pos = heatmapPanel.getScrollPosition();
+            heatmapPanel.setScrollColumnPosition(pos.column + units);
         } else {
-            HeatmapPosition pos = panel.getScrollPosition();
-            panel.setScrollRowPosition(pos.row + units);
+            HeatmapPosition pos = heatmapPanel.getScrollPosition();
+            heatmapPanel.setScrollRowPosition(pos.row + units);
         }
     }
 
@@ -196,6 +196,7 @@ public class HeatmapPanelInputProcessor {
     }
 
     public void setLead(int i, IMatrixViewDimension dim) {
+
         int max = dim.size() - 1;
         if (i >= max) {
             dim.setFocus(dim.getLabel(max));
@@ -204,9 +205,18 @@ public class HeatmapPanelInputProcessor {
         } else {
             dim.setFocus(dim.getLabel(i));
         }
+
+        if (dim.getId().equals(MatrixDimensionKey.COLUMNS)) {
+            heatmapPanel.makeColumnFocusVisible();
+        } else {
+            heatmapPanel.makeRowFocusVisible();
+        }
+
+
         BoxManager.protect(MatrixDimensionKey.COLUMNS.name(), MatrixDimensionKey.ROWS.name());
         BoxManager.openOnly(LayerValuesBox.ID);
         BoxManager.reset();
+
     }
 
     public void setLead(int row, int col) {

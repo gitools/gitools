@@ -252,6 +252,9 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
     }
 
     @Override
+    /**
+     * Size of items (rows or columsn)
+     */
     public int size() {
         return visible.size();
     }

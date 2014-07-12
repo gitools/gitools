@@ -22,10 +22,12 @@
 package org.gitools.ui.core.interaction;
 
 import org.gitools.ui.core.Application;
+import org.gitools.ui.platform.settings.Settings;
 
 public class InteractionStatus {
 
     private static Interaction interaction = Interaction.none;
+    private static Settings settings = Settings.get();
 
 
     /**
@@ -58,7 +60,9 @@ public class InteractionStatus {
 
     public static void setInteractionStatus(Interaction interaction) {
         InteractionStatus.interaction = interaction;
-        Application.get().setInteractionStatus(interaction.toString());
+        if (settings.isDebugMode()) {
+            Application.get().setInteractionStatus(interaction.toString());
+        }
 
     }
 }
