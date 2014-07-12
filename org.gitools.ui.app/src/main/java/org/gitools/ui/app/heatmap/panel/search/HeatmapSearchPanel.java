@@ -21,10 +21,14 @@
  */
 package org.gitools.ui.app.heatmap.panel.search;
 
+import com.alee.laf.label.WebLabel;
+import com.alee.managers.notification.NotificationIcon;
+import com.alee.managers.notification.WebNotificationPopup;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.platform.icons.IconNames;
 
@@ -52,6 +56,9 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
     private final Color defaultSearchTextBgColor;
     private final Color defaultSearchTextFgColor;
+    private String foundAnnotation;
+    private String foundValue;
+    private WebNotificationPopup notificationPopup;
 
     public HeatmapSearchPanel(Heatmap hm, HeatmapPanel heatmapPanel) {
         this.hm = hm;
@@ -194,6 +201,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
         }
 
         if (searchPat.matcher(label).find()) {
+            foundAnnotation = "ids";
+            foundValue = label;
             return true;
         }
 
@@ -215,6 +224,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             found = searchPat.matcher(value).find();
 
             if (found) {
+                foundAnnotation = annotation;
+                foundValue = value;
                 break;
             }
         }
@@ -224,6 +235,7 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
 
     private void updateSearch() {
         StringBuilder sb = new StringBuilder();
+        sb.append("(");
         if (!searchText.getText().isEmpty()) {
             if (anyWordChk.isSelected()) {
                 String[] tokens = searchText.getText().split(" ");
@@ -235,6 +247,8 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             } else {
                 sb.append(Pattern.quote(searchText.getText()));
             }
+            sb.append(")");
+
 
             if (matchCaseChk.isSelected()) {
                 searchPat = Pattern.compile(sb.toString());
@@ -335,8 +349,12 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             if (index == leadRow) {
                 found = checkMatch(mv, am, mv.getRows().getLabel(index));
             }
-            mv.getRows().setFocus(hm.getRows().getLabel(index));
-            heatmapPanel.makeRowFocusVisible();
+            if (found) {
+                mv.getRows().setFocus(hm.getRows().getLabel(index));
+                showSearchNotification();
+                heatmapPanel.makeRowFocusVisible();
+            }
+
 
         } else if (!searchRows && leadCol != -1) {
 
@@ -361,12 +379,31 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             if (index == leadCol) {
                 found = checkMatch(mv, am, mv.getColumns().getLabel(index));
             }
-            mv.getColumns().setFocus(mv.getColumns().getLabel(index));
-            heatmapPanel.makeColumnFocusVisible();
+            if (found) {
+                mv.getColumns().setFocus(mv.getColumns().getLabel(index));
+                showSearchNotification();
+                heatmapPanel.makeColumnFocusVisible();
+            }
         }
 
         setNotFound(!found);
 
+    }
+
+    private void showSearchNotification() {
+        String text = "<html>Found <b>"
+                + searchPat.matcher(foundValue).replaceAll("<u>$1</u>")
+                //+ foundValue.replaceAll(searchPat.toString(), "<u>" + searchPat.toString() + "</u>")
+                + "</b> in <i>" + foundAnnotation + "</i></html>";
+
+        if (notificationPopup == null) {
+            notificationPopup = new WebNotificationPopup();
+            notificationPopup.setIcon(NotificationIcon.text);
+        }
+
+        notificationPopup.setContent(new WebLabel(text));
+        Application.get().showNotificationPopup(notificationPopup);
+        searchText.requestFocus();
     }
 
     private void searchNext() {
@@ -408,8 +445,12 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             if (index == leadRow) {
                 found = checkMatch(mv, am, mv.getRows().getLabel(index));
             }
-            mv.getRows().setFocus(mv.getRows().getLabel(index));
-            heatmapPanel.makeRowFocusVisible();
+
+            if (found) {
+                mv.getRows().setFocus(mv.getRows().getLabel(index));
+                showSearchNotification();
+                heatmapPanel.makeRowFocusVisible();
+            }
 
         } else if (!searchRows && leadCol != -1) {
 
@@ -434,8 +475,13 @@ public class HeatmapSearchPanel extends javax.swing.JPanel {
             if (index == leadCol) {
                 found = checkMatch(mv, am, mv.getColumns().getLabel(index));
             }
-            mv.getColumns().setFocus(mv.getColumns().getLabel(index));
-            heatmapPanel.makeColumnFocusVisible();
+
+            if (found) {
+                mv.getColumns().setFocus(mv.getColumns().getLabel(index));
+                showSearchNotification();
+                heatmapPanel.makeColumnFocusVisible();
+            }
+
 
         }
 
