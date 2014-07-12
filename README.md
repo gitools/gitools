@@ -9,12 +9,16 @@ Web site
 Documentation
 --------------
 
-+ See [Gitools documentation files](doc/source/index.rst) in the repository or at <http://help.gitools.org>
++ See <http://help.gitools.org> or [Gitools documentation files](doc/source/index.rst) in the repository
 
 Source code
 -----------
 
 + <https://github.com/gitools/gitools>
+
+Changelog
+----------
++ see recent changes in the software in the [changelog](changelog.md)
 
 Versioning
 ----------

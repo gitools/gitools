@@ -143,6 +143,10 @@ public class WelcomeEditor extends HtmlEditor {
                 }
             });
 
+            // Track event
+            String baseName = FilenameUtils.getBaseName(href);
+            Application.get().trackEvent("datasets", "save", baseName);
+
         }
 
 
@@ -150,8 +154,16 @@ public class WelcomeEditor extends HtmlEditor {
 
     @Override
     protected void performLoad(String href) {
+
         CommandLoadFile loadFile = new CommandLoadFile(href);
+
+        // Execute
         JobThread.execute(Application.get(), loadFile);
+
+        // Track event
+        String baseName = FilenameUtils.getBaseName(href);
+        Application.get().trackEvent("datasets", "load", baseName);
+
     }
 
     @Override
@@ -160,7 +172,7 @@ public class WelcomeEditor extends HtmlEditor {
 
     private static URL getWelcomeURL() {
         try {
-            URL url = new URL(Settings.get().getWelcomeUrl() + "?uuid=" + Settings.get().getUuid());
+            URL url = new URL(Settings.get().getWelcomeUrl() + "?appversion=" + Application.getGitoolsVersion().toString() + "&uuid=" + Settings.get().getUuid());
             URLConnection connection = url.openConnection();
             connection.setConnectTimeout(10000);
 

@@ -32,6 +32,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.gitools.ui.core.interaction.InteractionStatus.getInteractionStatus;
+import static org.gitools.ui.core.interaction.InteractionStatus.setInteractionStatus;
+
 public class HeatmapBodyMouseController implements MouseListener, MouseMotionListener, MouseWheelListener, KeyListener {
 
     private final IMatrixView heatmap;
@@ -40,7 +43,6 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     private final HeatmapPanel panel;
     private final HeatmapBodyPanel bodyPanel;
 
-    private Interaction interaction;
     private Point point;
     private HeatmapPosition coord;
 
@@ -74,7 +76,6 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         this.ip = inputProcessor;
         keyboardController = new HeatmapKeyboardController(heatmap, inputProcessor);
 
-        this.interaction = Interaction.none;
     }
 
     public void addHeatmapMouseListener(HeatmapMouseListener listener) {
@@ -103,8 +104,8 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
         int modifiers = e.getModifiers();
         boolean shiftDown = ((modifiers & shiftMask) != 0);
 
-        interaction = shiftDown ? Interaction.selectingRowsAndCols : Interaction.dragging;
-        switch (interaction) {
+        setInteractionStatus(shiftDown ? Interaction.selectingRowsAndCols : Interaction.dragging);
+        switch (getInteractionStatus()) {
             case dragging:
                 updateLeadSelection(e);
                 dragHeatmap(e, true);
@@ -120,7 +121,7 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
     @Override
     public void mouseReleased(MouseEvent e) {
         panel.mouseReleased(e);
-        interaction = Interaction.none;
+        setInteractionStatus(Interaction.none);
     }
 
     @Override
@@ -172,12 +173,12 @@ public class HeatmapBodyMouseController implements MouseListener, MouseMotionLis
             wheelPosition = null;
         }
 
-        interaction = (ctrlDown) ? Interaction.zooming : Interaction.scrolling;
+        setInteractionStatus((ctrlDown) ? Interaction.zooming : Interaction.scrolling);
 
-        if (interaction == Interaction.scrolling) {
+        if (getInteractionStatus() == Interaction.scrolling) {
             ip.scroll(unitsToScroll, shiftDown);
 
-        } else if (interaction == Interaction.zooming) {
+        } else if (getInteractionStatus() == Interaction.zooming) {
 
             ip.zoomHeatmap(unitsToScroll > 0 ? 1 : -1);
         }

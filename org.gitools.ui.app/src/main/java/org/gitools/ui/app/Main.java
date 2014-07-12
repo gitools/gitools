@@ -66,6 +66,16 @@ public class Main {
 
     public static void main(final String[] args) {
 
+        // Start CommandListener
+        boolean portEnabled = Settings.get().isPortEnabled();
+        String portString = null;
+        if (portEnabled || portString != null) {
+            int port = Settings.get().getDefaultPort();
+            if (portString != null) {
+                port = Integer.parseInt(portString);
+            }
+            CommandListener.start(port, args);
+        }
 
         // Initialize look and feel
         WebLookAndFeel.install();
@@ -87,7 +97,7 @@ public class Main {
         progress.setVisible(true);
 
 
-        setProgressText(progress, "Loading persistance manager");
+        setProgressText(progress, "Loading Gitools interface");
         // Initialize Weld and ApplicationContext
         WeldContainer container = new StartMain(args).go();
         ApplicationContext.setPersistenceManager(container.instance().select(PersistenceManager.class).get());
@@ -130,18 +140,6 @@ public class Main {
         } catch (Exception ex) {
             System.err.println("Error loading help system:");
             ex.printStackTrace();
-        }
-
-        // Start CommandListener
-        setProgressText(progress, "Starting command listener");
-        boolean portEnabled = Settings.get().isPortEnabled();
-        String portString = null;
-        if (portEnabled || portString != null) {
-            int port = Settings.get().getDefaultPort();
-            if (portString != null) {
-                port = Integer.parseInt(portString);
-            }
-            CommandListener.start(port, args);
         }
 
         // Initialize actions

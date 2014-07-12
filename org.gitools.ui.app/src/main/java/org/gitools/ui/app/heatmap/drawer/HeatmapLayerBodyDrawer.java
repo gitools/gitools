@@ -178,18 +178,18 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
 
     @Override
     public Dimension getSize() {
-        return new Dimension(columns.getFullSize() * columns.size(), rows.getFullSize() * rows.size());
+        return new Dimension(columns.getFullCellSize() * columns.size(), rows.getFullCellSize() * rows.size());
     }
 
 
     @Override
     public HeatmapPosition getPosition(Point p) {
 
-        int cellHeight = rows.getFullSize();
+        int cellHeight = rows.getFullCellSize();
         int rowCount = rows.size();
         int totalHeight = cellHeight * rowCount;
 
-        int cellWidth = columns.getFullSize();
+        int cellWidth = columns.getFullCellSize();
         int columnCount = columns.size();
         int totalWidth = cellWidth * columnCount;
 
@@ -203,11 +203,11 @@ public class HeatmapLayerBodyDrawer extends AbstractHeatmapDrawer {
     @Override
     public Point getPoint(HeatmapPosition p) {
 
-        int cellHeight = rows.getFullSize();
+        int cellHeight = rows.getFullCellSize();
         int rowCount = rows.size();
         int totalHeight = cellHeight * rowCount;
 
-        int cellWidth = columns.getFullSize();
+        int cellWidth = columns.getFullCellSize();
         int columnCount = columns.size();
         int totalWidth = cellWidth * columnCount;
 

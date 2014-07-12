@@ -192,15 +192,25 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         checkFocusOutOfVisibleArea(heatmap.getRows(), rowSB, bodyVP.getSize().height);
     }
 
-    private void checkFocusOutOfVisibleArea(HeatmapDimension dimension, JScrollBar scrollBar, int visibleLength) {
+    private void checkFocusOutOfVisibleArea(HeatmapDimension dimension, JScrollBar scrollBar, int visibleSize) {
 
-        int focusPoint = (dimension.indexOf(dimension.getFocus()) * dimension.getFullSize());
+        int leadPoint = (dimension.indexOf(dimension.getFocus()) * dimension.getFullCellSize());
 
-        if (
-                (focusPoint < scrollBar.getValue()) ||
-                        (scrollBar.getValue() + visibleLength < focusPoint)
-                ) {
-            scrollBar.setValue(focusPoint);
+        int min = 0;
+        int max = dimension.getFullCellSize() * dimension.size();
+        int margin = (dimension.getFullCellSize() * 3 < 10) ? dimension.getFullCellSize() * 3 : 10;
+        int scrollPosition = scrollBar.getValue();
+
+
+        if (leadPoint - margin < scrollPosition)  {
+
+            int topFocus = leadPoint - margin;
+            scrollBar.setValue(topFocus < min ? min : topFocus);
+
+        } else if (leadPoint + margin > scrollPosition + visibleSize) {
+            int bottomFocus = leadPoint - visibleSize + margin;
+
+            scrollBar.setValue(bottomFocus < max ? bottomFocus : max - visibleSize);
         }
     }
 
@@ -344,19 +354,9 @@ public class HeatmapPanel extends JPanel implements PropertyChangeListener {
         }
     }
 
-
-    @Override
-    public void update(Graphics g) {
-        super.update(g);
-    }
-
     @Override
     public void updateUI() {
         super.updateUI();
-    }
-
-    public HeatmapPanel(LayoutManager layout, boolean isDoubleBuffered) {
-        super(layout, isDoubleBuffered);
     }
 
     @Override

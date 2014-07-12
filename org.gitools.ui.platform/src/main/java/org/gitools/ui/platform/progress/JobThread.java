@@ -29,12 +29,14 @@ import java.awt.*;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
+import java.util.concurrent.CountDownLatch;
 
 public class JobThread implements JobRunnable {
 
     private final Window parent;
 
     private final JobRunnable runnable;
+    private CountDownLatch latch;
 
     private Thread thread;
 
@@ -48,9 +50,19 @@ public class JobThread implements JobRunnable {
         new JobThread(parent, runnable).execute();
     }
 
+    public static void execute(Window parent, JobRunnable runnable, CountDownLatch waitingLatch) {
+        new JobThread(parent, runnable, waitingLatch).execute();
+    }
+
     private JobThread(Window parent, JobRunnable runnable) {
         this.parent = parent;
         this.runnable = runnable;
+    }
+
+    private JobThread(Window parent, JobRunnable runnable, CountDownLatch latch) {
+        this.parent = parent;
+        this.runnable = runnable;
+        this.latch = latch;
     }
 
     private JobThread(Window parent, JobRunnable runnable, IProgressComponent dialog) {
@@ -114,6 +126,7 @@ public class JobThread implements JobRunnable {
     }
 
     void done() {
+        running = false;
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
@@ -138,6 +151,10 @@ public class JobThread implements JobRunnable {
             @Override
             public void run() {
                 newRunnable().run();
+                // notify waiting thread
+                if (latch != null) {
+                    latch.countDown();
+                }
             }
         };
         thread.start();

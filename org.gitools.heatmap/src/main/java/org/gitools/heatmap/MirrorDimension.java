@@ -32,6 +32,8 @@ import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
@@ -40,6 +42,7 @@ public class MirrorDimension extends HeatmapDimension {
 
     private HeatmapDimension main;
     private HeatmapDimension mirror;
+    private Comparator<String> dimensionComparator;
 
     public MirrorDimension(HeatmapDimension main, HeatmapDimension mirror) {
         super(mirror);
@@ -59,6 +62,8 @@ public class MirrorDimension extends HeatmapDimension {
                 MirrorDimension.this.firePropertyChange(evt);
             }
         });
+
+        createComparator();
     }
 
     @Override
@@ -209,5 +214,19 @@ public class MirrorDimension extends HeatmapDimension {
     @Override
     public void setAnnotationsReference(ResourceReference<AnnotationMatrix> annotationsReference) {
         mirror.setAnnotationsReference(annotationsReference);
+    }
+
+    private void createComparator() {
+        dimensionComparator = new Comparator<String>() {
+            @Override
+            public int compare(String o1, String o2) {
+                return mirror.indexOf(o1) - mirror.indexOf(o2);
+            }
+        };
+    }
+
+    public String[] assertOrder(String[] ids) {
+        Arrays.sort(ids, dimensionComparator);
+        return ids;
     }
 }

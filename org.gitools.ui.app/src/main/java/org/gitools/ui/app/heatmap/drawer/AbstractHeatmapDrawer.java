@@ -46,6 +46,7 @@ public abstract class AbstractHeatmapDrawer {
     public static final int HIGHLIGHT_POLICY_FORCE = 1;
     public static final int HIGHLIGHT_POLICY_AVOID = 2;
 
+    private static final double radianAngle90 = (90.0 / 180.0) * Math.PI;
 
     private boolean pictureMode;
 
@@ -140,7 +141,7 @@ public abstract class AbstractHeatmapDrawer {
 
             Font font = g.getFont();
 
-            boolean isRotated = !font.getTransform().isIdentity();
+            boolean isRotated = decoration.isRotate();
 
             int fontHeight = (int) font.getSize2D();
 
@@ -166,11 +167,28 @@ public abstract class AbstractHeatmapDrawer {
                         int superscriptEnd = text.length();
                         AttributedString attText = new AttributedString(text);
                         attText.addAttribute(TextAttribute.SUPERSCRIPT, TextAttribute.SUPERSCRIPT_SUPER, e_pos, superscriptEnd);
-                        g.drawString(attText.getIterator(), x + leftMargin, y + height - bottomMargin);
+                        if (isRotated) {
+                            g.rotate(radianAngle90);
+                            g.drawString(attText.getIterator(), y + height - bottomMargin, - x - leftMargin - 1);
+                            g.rotate(-radianAngle90);
+                        } else {
+                            g.drawString(attText.getIterator(), x + leftMargin, y + height - bottomMargin);
+                        }
                     } else {
-                        g.drawString(text, x + leftMargin, y + height - bottomMargin);
-                    }
 
+                        if (isRotated) {
+                            g.rotate(radianAngle90);
+                            g.drawString(text, y + height - bottomMargin, - x - leftMargin - 1);
+
+                            if ("CoCA-08".equals(text)) {
+                                System.out.println("x = " + x + " leftMargin = " + leftMargin + " width = " + width + " fontHeight = " + fontHeight);
+                            }
+
+                            g.rotate(-radianAngle90);
+                        } else {
+                            g.drawString(text, x + leftMargin, y + height - bottomMargin);
+                        }
+                    }
                 }
             }
         }
@@ -198,7 +216,7 @@ public abstract class AbstractHeatmapDrawer {
             end = this.onScreenRect.colEnd;
         }
 
-        int cellSize = dimension.getFullSize();
+        int cellSize = dimension.getFullCellSize();
         for (int i = start; i <= end; i++) {
             String id = dimension.getLabel(i);
             Color paint = null;

@@ -48,7 +48,7 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
-        <release>70</release>
+        <release>75</release>
     </mart>
     <mart>
         <name>ensembl_74</name>
@@ -58,7 +58,7 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
-        <release>69</release>
+        <release>74</release>
     </mart>
     <mart>
         <name>ensembl_73</name>
@@ -68,7 +68,7 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
-        <release>69</release>
+        <release>73</release>
     </mart>
     <mart>
         <name>ensembl_72</name>
@@ -78,7 +78,7 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
-        <release>69</release>
+        <release>72</release>
     </mart>
     <mart>
         <name>ensembl_71</name>
@@ -88,7 +88,7 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
-        <release>69</release>
+        <release>71</release>
     </mart>
     <mart>
         <name>ensembl_70</name>
@@ -98,7 +98,7 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
-        <release>69</release>
+        <release>70</release>
     </mart>
     <mart>
         <name>ensembl_69</name>

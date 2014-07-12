@@ -22,11 +22,13 @@
 package org.gitools.ui.app.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.commands.HeaderCommand;
 
 public class SortByAnnotationsCommand extends HeaderCommand {
 
-    public SortByAnnotationsCommand(String heatmap, String side, String pattern, String sort) {
+    public SortByAnnotationsCommand(String heatmap, MatrixDimensionKey side, String pattern, String sort) {
         super(heatmap, side, sort, pattern);
     }
 

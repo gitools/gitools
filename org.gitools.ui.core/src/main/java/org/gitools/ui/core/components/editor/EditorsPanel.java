@@ -120,13 +120,17 @@ public class EditorsPanel extends WebTabbedPane {
         }
 
         if (editor.doClose()) {
-            int i = indexOfComponent(editor);
-            if (i != -1) {
-                remove(i);
-            }
-
-            refreshActions();
+            removeEditorNoUI(editor);
         }
+    }
+
+    public void removeEditorNoUI(AbstractEditor editor) {
+        int i = indexOfComponent(editor);
+        if (i != -1) {
+            remove(i);
+        }
+
+        refreshActions();
     }
 
 

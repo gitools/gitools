@@ -35,6 +35,8 @@ import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.matrix.model.AbstractMatrixDimension;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.utils.xml.adapter.StringArrayXmlAdapter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -47,6 +49,7 @@ import static com.google.common.collect.Collections2.filter;
 
 public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimension implements IMatrixViewDimension {
 
+    private static final Logger log = LoggerFactory.getLogger(AbstractMatrixViewDimension.class);
     public static final String PROPERTY_FOCUS = "selectionLead";
     public static final String PROPERTY_SELECTED = "selected";
     public static final String PROPERTY_VISIBLE = "visible";
@@ -249,6 +252,9 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
     }
 
     @Override
+    /**
+     * Size of items (rows or columsn)
+     */
     public int size() {
         return visible.size();
     }
@@ -293,9 +299,16 @@ public abstract class AbstractMatrixViewDimension extends AbstractMatrixDimensio
         if (visibleToIndex == null) {
             visibleToIndex = new HashMap<>(visible.size());
 
-            for (int i = 0; i < visible.size(); i++) {
-                visibleToIndex.put(visible.get(i), i);
+            try {
+
+                for (int i = 0; i < visible.size(); i++) {
+                    visibleToIndex.put(visible.get(i), i);
+                }
+
+            } catch (NullPointerException e) {
+                log.error("NullPointerException @ AbstractMatrixViewDimension", e);
             }
+
         }
 
         return visibleToIndex;

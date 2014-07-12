@@ -23,6 +23,7 @@ package org.gitools.analysis.htest.enrichment;
 
 import com.google.common.base.Function;
 import org.gitools.analysis.AnalysisProcessor;
+import org.gitools.analysis.ToolConfig;
 import org.gitools.analysis.stats.mtc.MTCFactory;
 import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.ZscoreTest;
@@ -32,6 +33,10 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.decorator.impl.PValueDecorator;
+import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.matrix.model.hashmatrix.HashMatrixDimension;
 import org.gitools.matrix.model.iterable.IdentityMatrixFunction;
@@ -198,7 +203,28 @@ public class EnrichmentProcessor implements AnalysisProcessor {
 
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
-        analysis.setResults(new ResourceReference<>("results", resultsMatrix));
+        Heatmap heatmap = createResultHeatmapFromMatrix(analysis.getTitle(), analysis.getTestConfig(), resultsMatrix);
+        analysis.setResults(new ResourceReference<IMatrix>("results", heatmap));
 
+    }
+
+    public static Heatmap createResultHeatmapFromMatrix(String title, ToolConfig config, IMatrix results) {
+        Heatmap heatmap = new Heatmap(results);
+        heatmap.setTitle(title + " (results)");
+        String testName = config.get(TestFactory.TEST_NAME_PROPERTY);
+        if (TestFactory.ZSCORE_TEST.equals(testName)) {
+            heatmap.getLayers().setTopLayerById("z-score");
+            heatmap.getLayers().getTopLayer().setDecorator(new ZScoreDecorator());
+        } else {
+            heatmap.getLayers().setTopLayerById("right-p-value");
+            heatmap.getLayers().getTopLayer().setDecorator(new PValueDecorator());
+        }
+
+        for (HeatmapLayer resultLayer : heatmap.getLayers()) {
+            if (resultLayer.getId().contains("p-value")) {
+                resultLayer.setDecorator(new PValueDecorator());
+            }
+        }
+        return heatmap;
     }
 }

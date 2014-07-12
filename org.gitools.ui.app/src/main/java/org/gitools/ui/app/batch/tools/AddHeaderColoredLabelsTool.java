@@ -22,16 +22,13 @@
 package org.gitools.ui.app.batch.tools;
 
 import org.gitools.ui.app.commands.AddHeaderColoredLabelsCommand;
-import org.gitools.ui.app.commands.Command;
+import org.gitools.ui.core.commands.Command;
+import org.gitools.ui.core.commands.tools.HeaderTool;
 import org.kohsuke.args4j.Option;
 
 import java.util.List;
 
 public class AddHeaderColoredLabelsTool extends HeaderTool {
-
-    @Option(name = "-p", aliases = "--pattern", metaVar = "<pattern>", required = true,
-            usage = "The pattern of annotations as e.g. ${annotation-id}")
-    private String pattern;
 
     @Option(name = "-c", aliases = "--color", metaVar = "<color>", required = false,
             usage = "A Hex color corresponding to the string for id: #FF0000")
@@ -66,7 +63,7 @@ public class AddHeaderColoredLabelsTool extends HeaderTool {
 
     @Override
     protected Command newJob() {
-        return new AddHeaderColoredLabelsCommand(heatmap, side.name(), pattern, colors, ids, !noAutoGenerate, textVisible, sort);
+        return new AddHeaderColoredLabelsCommand(heatmap, dimensionKey, pattern, colors, ids, !noAutoGenerate, textVisible, sort);
     }
 
 }

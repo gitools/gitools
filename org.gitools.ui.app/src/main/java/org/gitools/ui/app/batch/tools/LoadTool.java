@@ -23,8 +23,9 @@ package org.gitools.ui.app.batch.tools;
 
 import com.google.common.base.Strings;
 import org.apache.commons.io.FilenameUtils;
-import org.gitools.ui.app.commands.Command;
 import org.gitools.ui.app.commands.CommandLoadFile;
+import org.gitools.ui.core.commands.Command;
+import org.gitools.ui.core.commands.tools.AbstractTool;
 import org.kohsuke.args4j.Argument;
 import org.kohsuke.args4j.Option;
 
@@ -85,7 +86,7 @@ public class LoadTool extends AbstractTool {
         }
 
         String basePath = System.getProperty("user.dir");
-        
+
         return FilenameUtils.concat(basePath, file);
     }
 }

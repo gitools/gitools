@@ -104,11 +104,14 @@ public class HeatmapInfoBox extends DetailsBox {
 
         if (heatmap.getGitoolsVersion().isNewerThan(Application.getGitoolsVersion())) {
 
-            String warningText = "You may be loosing data because " +
+
+            //TODO: WARNING
+
+           /* String warningText = "You may be loosing data because " +
                     "this heatmap has been created with a newer version (" + heatmap.getGitoolsVersion().toString() + ") " +
                     "than you are currently using.";
             DetailsDecoration warningDetail = new DetailsDecoration("WARNING", warningText, null, "Using old version: " + warningText, "http://www.gitools.org/downlaod");
-            details.add(warningDetail);
+            details.add(warningDetail);  */
         }
 
         if (heatmap.getDescription() != null && heatmap.getDescription().length() > 0) {

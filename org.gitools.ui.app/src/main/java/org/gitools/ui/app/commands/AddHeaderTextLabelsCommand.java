@@ -22,12 +22,14 @@
 package org.gitools.ui.app.commands;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.ui.core.Application;
+import org.gitools.ui.core.commands.HeaderCommand;
 
 public class AddHeaderTextLabelsCommand extends HeaderCommand {
 
-    public AddHeaderTextLabelsCommand(String heatmap, String side, String pattern, String sort) {
+    public AddHeaderTextLabelsCommand(String heatmap, MatrixDimensionKey side, String pattern, String sort) {
         super(heatmap, side, sort, pattern);
     }
 
@@ -41,7 +43,7 @@ public class AddHeaderTextLabelsCommand extends HeaderCommand {
 
         HeatmapTextLabelsHeader header = new HeatmapTextLabelsHeader();
         header.setLabelPattern(pattern);
-        hdim.addHeader(header);
+        heatmapDimension.addHeader(header);
 
         applySort();
 

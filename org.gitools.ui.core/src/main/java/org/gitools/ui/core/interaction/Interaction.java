@@ -22,5 +22,25 @@
 package org.gitools.ui.core.interaction;
 
 public enum Interaction {
-    none, selectingLead, selectingRowsAndCols, dragging, moving, zooming, scrolling, movingSelected, highlighting;
+    none(""),
+    selectingLead("selecting lead"),
+    selectingRowsAndCols("selecting Rows/Cols"),
+    dragging("dragging heatmap"),
+    moving("moving"),
+    zooming("zooming"),
+    scrolling("scrolling"),
+    movingSelected("moving selection"),
+    highlighting("highlighting");
+
+    private String interactionString;
+
+    Interaction(String interaction) {
+
+        this.interactionString = interaction;
+    }
+
+    @Override
+    public String toString() {
+        return this.interactionString;
+    }
 }

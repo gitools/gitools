@@ -55,7 +55,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     protected int getHeaderPoint(int index) {
 
         HeatmapDimension hdim = getHeatmapDimension();
-        int cellSize = hdim.getFullSize();
+        int cellSize = hdim.getFullCellSize();
         int totalSize = cellSize * hdim.size();
 
         int point = index >= 0 ? index * cellSize : 0;
@@ -84,7 +84,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     protected int getHeaderPosition(int point) {
         HeatmapDimension hdim = getHeatmapDimension();
         int index = -1;
-        int cellSize = hdim.getFullSize();
+        int cellSize = hdim.getFullCellSize();
         int totalSize = cellSize * hdim.size();
         if (point >= 0 && point < totalSize) {
             index = point / cellSize;
@@ -95,7 +95,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     @Override
     public Dimension getSize() {
         HeatmapDimension hdim = getHeatmapDimension();
-        int total = (hdim.getFullSize()) * hdim.size();
+        int total = (hdim.getFullCellSize()) * hdim.size();
         return (isHorizontal() ? new Dimension(total, getHeader().getSize()) : new Dimension(getHeader().getSize(), total));
     }
 
@@ -112,7 +112,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
     }
 
     protected int fullCellSize() {
-        return heatmapDimension.getFullSize();
+        return heatmapDimension.getFullCellSize();
     }
 
     protected void prepareDraw(Graphics2D g, Rectangle box) {
@@ -128,7 +128,7 @@ public abstract class AbstractHeatmapHeaderDrawer<HT extends HeatmapHeader> exte
                 decoration,
                 header.getBackgroundColor(),
                 gridSize,
-                offset, index * (heatmapDimension.getFullSize()),
+                offset, index * (heatmapDimension.getFullCellSize()),
                 width,
                 heatmapDimension.getCellSize(),
                 g,

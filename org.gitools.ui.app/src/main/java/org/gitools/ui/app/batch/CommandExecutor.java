@@ -21,11 +21,15 @@
  */
 package org.gitools.ui.app.batch;
 
-import org.gitools.ui.app.batch.tools.ITool;
+import org.gitools.ui.core.commands.tools.ITool;
 
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandExecutor {
+
+    boolean noErrors;
 
     public boolean checkArguments(String[] args, PrintWriter out) {
 
@@ -35,10 +39,76 @@ public class CommandExecutor {
             return false;
         }
 
-        String toolName = args[0];
-        String toolArgs[] = new String[args.length - 1];
-        System.arraycopy(args, 1, toolArgs, 0, toolArgs.length);
+        List<String> argsList = new ArrayList<>();
+        for (String s : args) {
+            if (s.equals("")) {
+                continue;
+            }
+            argsList.add(s);
+        }
 
+        if (!argsList.get(argsList.size() - 1).equals(";")) {
+            argsList.add(";");
+        }
+
+        boolean allOk = true;
+        while (argsList.contains(";")) {
+
+            int sepIndex = argsList.indexOf(";");
+            List<String> sublist = argsList.subList(0, sepIndex);
+            allOk = checkArguments(sublist, out);
+            if (!allOk) {
+                return false;
+            }
+
+            for (int i = 0; i < sepIndex && argsList.size() > 0; i++) {
+                argsList.remove(0);
+            }
+        }
+        return allOk;
+    }
+
+    public void execute(String[] args, PrintWriter out) {
+
+        if (args.length == 0) {
+            out.println(errorMsg());
+            return;
+        }
+
+        List<String> argsList = new ArrayList<>();
+        for (String s : args) {
+            argsList.add(s);
+        }
+
+        if (!argsList.get(argsList.size() - 1).equals(";")) {
+            argsList.add(";");
+        }
+
+
+        // run all comands
+        noErrors = true;
+        while (argsList.contains(";") && noErrors) {
+
+            if (!noErrors) {
+                break;
+            }
+
+            int sepIndex = argsList.indexOf(";");
+            List<String> sublist = argsList.subList(0, sepIndex);
+            execute(sublist, out);
+            for (int i = 0; i < sepIndex && argsList.size() > 0; i++) {
+                argsList.remove(0);
+            }
+        }
+
+    }
+
+
+    private boolean checkArguments(List<String> args, PrintWriter out) {
+
+        String toolName = args.get(0);
+        args.remove(toolName);
+        String toolArgs[] = args.toArray(new String[args.size()]);
         ITool tool = ToolFactory.get(toolName);
 
         if (tool == null) {
@@ -50,16 +120,12 @@ public class CommandExecutor {
         return tool.check(toolArgs, out);
     }
 
-    public void execute(String[] args, PrintWriter out) {
 
-        if (args.length == 0) {
-            out.println(errorMsg());
-            return;
-        }
+    private void execute(List<String> args, PrintWriter out) {
 
-        String toolName = args[0];
-        String toolArgs[] = new String[args.length - 1];
-        System.arraycopy(args, 1, toolArgs, 0, toolArgs.length);
+        String toolName = args.get(0);
+        args.remove(toolName);
+        String toolArgs[] = args.toArray(new String[args.size()]);
 
         ITool tool = ToolFactory.get(toolName.toLowerCase());
 
@@ -74,10 +140,11 @@ public class CommandExecutor {
             out.println("OK");
             out.flush();
         } else {
+            out.println(tool.getExitMessage());
             out.println("NOT OK");
             out.flush();
+            noErrors = false;
         }
-
     }
 
 

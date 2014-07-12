@@ -50,9 +50,8 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class MutualExclusiveProcessor implements AnalysisProcessor {
 
-    private final static Key<Map<MatrixDimensionKey, Map<String, Double>>> CACHEKEY =
-            new Key<Map<MatrixDimensionKey, Map<String, Double>>>() {
-            };
+    private final static Key<MutexWeightCache> CACHEKEY = new Key<MutexWeightCache>() {
+    };
 
     private final MutualExclusiveAnalysis analysis;
 
@@ -151,27 +150,40 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
         return resultsMatrix;
     }
 
-    private Map<String, Double> getCachedWeights(IMatrixLayer<Double> dataLayer, IMatrixDimension weightDimension) {
-        Map<MatrixDimensionKey, Map<String, Double>> cachedWeights = dataLayer.getCache(CACHEKEY);
-        if (cachedWeights == null || cachedWeights.get(weightDimension.getId()) == null) {
-            return new HashMap<>();
+    private Map<String, Double> getCachedWeights(IMatrixLayer<Double> dataLayer,
+                                                 IMatrixDimension weightDimension,
+                                                 NonEventToNullFunction<?> eventFunction) {
+        MutexWeightCache mutexCache = dataLayer.getCache(CACHEKEY);
+        if (mutexCache == null) {
+            mutexCache = new MutexWeightCache();
         }
-        return cachedWeights.get(weightDimension.getId());
+
+
+        return mutexCache.getCacheWeights(
+                createFingerprint(eventFunction, weightDimension));
+
     }
 
-    private void setCachedWeights(IMatrixLayer<Double> dataLayer, Map<String, Double> cachedWeights, IMatrixDimension weightDimension) {
-        Map<MatrixDimensionKey, Map<String, Double>> cache = dataLayer.getCache(CACHEKEY);
+    private String createFingerprint(NonEventToNullFunction<?> eventFunction, IMatrixDimension weightDimension) {
+        return weightDimension.getId().getLabel() + "-" + eventFunction.getDescription();
+    }
+
+    private void setCachedWeights(IMatrixLayer<Double> dataLayer,
+                                  Map<String, Double> cachedWeights,
+                                  IMatrixDimension weightDimension,
+                                  NonEventToNullFunction function) {
+        MutexWeightCache cache = dataLayer.getCache(CACHEKEY);
         if (cache == null) {
-            cache = new HashMap<>();
+            cache = new MutexWeightCache();
         }
-        cache.put(weightDimension.getId(), cachedWeights);
+        cache.setCacheWeights(createFingerprint(function, weightDimension), cachedWeights);
         dataLayer.setCache(CACHEKEY, cache);
     }
 
     private double[] getWeights(IProgressMonitor monitor, IMatrix data, final IMatrixLayer<Double> dataLayer, IMatrixDimension testDimension, IMatrixDimension weightDimension, String weightGroupInfo, final NonEventToNullFunction<?> eventFunction) {
 
         IMatrixIterable<Double> weightIterator;
-        final Map<String, Double> cachedWeights = getCachedWeights(dataLayer, weightDimension);
+        final Map<String, Double> cachedWeights = getCachedWeights(dataLayer, weightDimension, eventFunction);
         int cacheSize = cachedWeights.size();
         final AggregationFunction aggregation = new AggregationFunction(dataLayer, NonNullCountAggregator.INSTANCE, testDimension, eventFunction);
 
@@ -198,7 +210,7 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
         double[] weights = Doubles.toArray(newArrayList(weightIterator));
 
         if (cacheSize != cachedWeights.size()) {
-            setCachedWeights(dataLayer, cachedWeights, weightDimension);
+            setCachedWeights(dataLayer, cachedWeights, weightDimension, eventFunction);
         }
 
         return weights;
@@ -245,6 +257,31 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
                 .filter(new NotNullPredicate<Integer>());
         return Ints.toArray(newArrayList(it));
 
+    }
+
+
+    private class MutexWeightCache {
+
+        //1st String: DimensionID + event description
+        //2nd String id of row or col
+        //Double weight
+        Map<String, Map<String, Double>> cacheWeightsCatalog;
+
+        public MutexWeightCache() {
+            cacheWeightsCatalog = new HashMap<>();
+        }
+
+        public Map<String, Double> getCacheWeights(String fingerprint) {
+            if (cacheWeightsCatalog == null || !cacheWeightsCatalog.containsKey(fingerprint)) {
+                return new HashMap<>();
+            }
+
+            return cacheWeightsCatalog.get(fingerprint);
+        }
+
+        public void setCacheWeights(String fingerprint, Map<String, Double> cacheWeights) {
+            this.cacheWeightsCatalog.put(fingerprint, cacheWeights);
+        }
     }
 
 }
