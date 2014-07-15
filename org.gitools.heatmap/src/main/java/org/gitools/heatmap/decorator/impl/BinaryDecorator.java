@@ -156,7 +156,7 @@ public class BinaryDecorator extends Decorator<BinaryColorScale> {
                 public Double apply(Double value, IMatrixPosition position) {
                     this.position = position;
                     boolean satisfies = value != null && CutoffCmp.getFromName(getColorScale().getComparator()).compare(value, getColorScale().getCutoff());
-                    return satisfies ? null : 1.0;
+                    return satisfies ? 1.0 : null;
                 }
 
                 @Override
