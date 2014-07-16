@@ -19,10 +19,9 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.core.components.editor;
+package org.gitools.api.components;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.ui.platform.view.IView;
 
 public interface IEditor<M> extends IView {
 
@@ -61,4 +60,9 @@ public interface IEditor<M> extends IView {
      * needed.
      */
     void detach();
+
+    boolean canCreate(Object object);
+
+    IEditor create(Object object);
+
 }

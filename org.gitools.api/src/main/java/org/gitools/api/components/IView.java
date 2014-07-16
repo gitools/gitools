@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.platform.view;
+package org.gitools.api.components;
 
 import javax.swing.*;
 
