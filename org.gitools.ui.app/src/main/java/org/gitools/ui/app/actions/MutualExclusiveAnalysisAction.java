@@ -59,7 +59,7 @@ public class MutualExclusiveAnalysisAction extends HeatmapAction {
         }
 
         MutexAnalysisCommand command = new MutexAnalysisCommand("",
-                MatrixDimensionKey.COLUMNS,
+                MatrixDimensionKey.ROWS,
                 "ascending",
                 page.getColumnGroupsPattern(),
                 page.getRowsGroupsPattern(),

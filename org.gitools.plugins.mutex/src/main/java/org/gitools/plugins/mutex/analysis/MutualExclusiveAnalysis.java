@@ -29,6 +29,7 @@ import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
+import org.gitools.heatmap.decorator.impl.PValueDecorator;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -125,6 +126,9 @@ public class MutualExclusiveAnalysis extends Analysis {
 
     public void setResults(ResourceReference<Heatmap> results) {
         this.results = results;
+        results.get().getLayers().get(MutualExclusiveResult.COOC_PVALUE).setDecorator(new PValueDecorator());
+        results.get().getLayers().get(MutualExclusiveResult.MUTEX_PVALUE).setDecorator(new PValueDecorator());
+        results.get().getLayers().get(MutualExclusiveResult.Z_SCORE).setDecorator(new PValueDecorator());
     }
 
     public IMatrixDimension getWeightDimension() {

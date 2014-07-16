@@ -21,11 +21,15 @@
  */
 package org.gitools.plugins.mutex.analysis;
 
+import org.gitools.analysis.stats.test.results.SimpleResult;
 import org.gitools.matrix.model.matrix.element.LayerDef;
 
 
 public class MutualExclusiveResult {
 
+    public static final String COOC_PVALUE = "coocPvalue";
+    public static final String MUTEX_PVALUE = "mutexPvalue";
+    public static final String Z_SCORE = "z-score";
     private int N;
     private double mutexPvalue;
     private double coocPvalue;
@@ -70,7 +74,8 @@ public class MutualExclusiveResult {
         N = n;
     }
 
-    @LayerDef(id = "mutexPvalue", name = "Mut-Ex p-value", description = "Mutual exclusive p-value")
+    @LayerDef(id = MUTEX_PVALUE, name = "Mut-Ex p-value", description = "Mutual exclusive p-value",
+            groups = {SimpleResult.RESULTS_GROUP,LayerDef.ALL_DATA_GROUP})
     public double getMutexPvalue() {
         return mutexPvalue;
     }
@@ -79,7 +84,8 @@ public class MutualExclusiveResult {
         this.mutexPvalue = mutexPvalue;
     }
 
-    @LayerDef(id = "coocPvalue", name = "Co-oc p-value", description = "Co-occurrence p-value")
+    @LayerDef(id = COOC_PVALUE, name = "Co-oc p-value", description = "Co-occurrence p-value",
+    groups = {SimpleResult.RESULTS_GROUP,LayerDef.ALL_DATA_GROUP})
     public double getCoocPvalue() {
         return coocPvalue;
     }
@@ -133,7 +139,8 @@ public class MutualExclusiveResult {
         this.expectedVar = expectedVar;
     }
 
-    @LayerDef(id = "z-score", name = "Z Score", description = "Z Score")
+    @LayerDef(id = Z_SCORE, name = "Z Score", description = "Z Score",
+            groups = {SimpleResult.RESULTS_GROUP,LayerDef.ALL_DATA_GROUP})
     public double getZscore() {
         return zscore;
     }
