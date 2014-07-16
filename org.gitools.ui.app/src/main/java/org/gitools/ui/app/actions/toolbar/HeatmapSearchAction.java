@@ -21,12 +21,12 @@
  */
 package org.gitools.ui.app.actions.toolbar;
 
+import org.gitools.api.components.IEditor;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.EditorsPanel;
-import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.platform.icons.IconNames;
 
 import javax.swing.*;

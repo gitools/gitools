@@ -22,6 +22,7 @@
 package org.gitools.ui.core.components.editor;
 
 import org.apache.commons.lang.StringUtils;
+import org.gitools.api.components.IEditor;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicButtonUI;

@@ -22,6 +22,7 @@
 package org.gitools.api;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.components.IEditorManager;
 import org.gitools.api.persistence.IPersistenceManager;
 import org.gitools.api.plugins.IPluginManager;
 
@@ -30,6 +31,7 @@ public class ApplicationContext {
     private static IPersistenceManager persistenceManager;
     private static IProgressMonitor progressMonitor;
     private static IPluginManager pluginManger;
+    private static IEditorManager editorManger;
 
     public static IPersistenceManager getPersistenceManager() {
         return persistenceManager;
@@ -54,4 +56,14 @@ public class ApplicationContext {
     public static IPluginManager getPluginManger() {
         return pluginManger;
     }
+
+    public static void setEditorManger(IEditorManager editorManger) {
+        ApplicationContext.editorManger = editorManger;
+    }
+
+    public static IEditorManager getEditorManger() {
+        return editorManger;
+    }
+
+
 }

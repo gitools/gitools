@@ -23,6 +23,7 @@ package org.gitools.ui.app.actions.file;
 
 import org.apache.commons.io.FilenameUtils;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.components.IEditor;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.matrix.FileFormats;
@@ -32,7 +33,6 @@ import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.AbstractAction;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.editor.EditorsPanel;
-import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.settings.Settings;

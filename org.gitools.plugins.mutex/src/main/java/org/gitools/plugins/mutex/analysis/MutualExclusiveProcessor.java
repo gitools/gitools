@@ -28,6 +28,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 import org.gitools.matrix.filter.NotNullPredicate;
 import org.gitools.matrix.filter.ValueFilterFunction;
@@ -65,20 +66,20 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
         Date startTime = new Date();
 
         // Prepare results matrix
-        analysis.setResults(new ResourceReference<>("results",
-                calculate(
-                        monitor,
-                        analysis.getData().get(),
-                        analysis.getData().get().getLayers().get(analysis.getLayer()),
-                        analysis.getTestGroupsModuleMap().get(),
-                        analysis.getWeightGroupsModuleMap().get(),
-                        analysis.getTestDimension(),
-                        analysis.getWeightDimension(),
-                        analysis.getIterations(),
-                        analysis.getEventFunction()
-                )
-        ));
 
+        IMatrix results = calculate(
+                monitor,
+                analysis.getData().get(),
+                analysis.getData().get().getLayers().get(analysis.getLayer()),
+                analysis.getTestGroupsModuleMap().get(),
+                analysis.getWeightGroupsModuleMap().get(),
+                analysis.getTestDimension(),
+                analysis.getWeightDimension(),
+                analysis.getIterations(),
+                analysis.getEventFunction()
+        );
+
+        analysis.setResults(new ResourceReference<>("results", new Heatmap(results)));
         analysis.setStartTime(startTime);
         analysis.setElapsedTime(new Date().getTime() - startTime.getTime());
 

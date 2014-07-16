@@ -26,9 +26,11 @@ import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.platform.icons.IconNames;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.swing.*;
 import java.awt.*;
 
+@ApplicationScoped
 public class DendrogramEditor extends AbstractEditor {
 
     private HierarchicalCluster model;

@@ -26,9 +26,11 @@ import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.imageviewer.ImageViewer;
 import org.gitools.ui.platform.imageviewer.ResizeStrategy;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+@ApplicationScoped
 public class BitmapImageViewer extends AbstractEditor {
 
     private ImageViewer imageViewer;

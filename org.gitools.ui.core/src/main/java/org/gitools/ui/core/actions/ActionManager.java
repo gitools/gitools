@@ -21,7 +21,7 @@
  */
 package org.gitools.ui.core.actions;
 
-import org.gitools.ui.core.components.editor.IEditor;
+import org.gitools.api.components.IEditor;
 
 import java.util.HashMap;
 import java.util.HashSet;

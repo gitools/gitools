@@ -39,9 +39,11 @@ import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.swing.*;
 import java.util.Map;
 
+@ApplicationScoped
 public class CorrelationAnalysisEditor extends AnalysisEditor<CorrelationAnalysis> {
 
     public CorrelationAnalysisEditor(CorrelationAnalysis analysis) {

@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.gitools.api.components.IEditor;
 import org.gitools.ui.core.actions.ActionSet;
 import org.gitools.ui.core.actions.ActionSetUtils;
 import org.gitools.ui.core.actions.BaseAction;
-import org.gitools.ui.core.components.editor.IEditor;
 
 import javax.swing.*;
 

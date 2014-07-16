@@ -29,6 +29,7 @@ import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.components.IEditor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.persistence.FileFormat;
@@ -62,6 +63,7 @@ import org.gitools.utils.MemoryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
@@ -77,6 +79,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
 
+@ApplicationScoped
 public class HeatmapEditor extends AbstractEditor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HeatmapEditor.class);
@@ -496,5 +499,18 @@ public class HeatmapEditor extends AbstractEditor {
                 detach();
             }
         }
+    }
+
+    @Override
+    public boolean canCreate(Object object) {
+        return (object instanceof Heatmap) ? true : false;
+    }
+
+    @Override
+    public IEditor create(Object object) {
+        if (object instanceof Heatmap) {
+            return new HeatmapEditor((Heatmap) object);
+        }
+        return null;
     }
 }

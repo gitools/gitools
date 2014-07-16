@@ -28,12 +28,12 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.iterable.IdentifiersPredicate;
 import org.gitools.matrix.model.matrix.element.LayerAdapter;
-import org.gitools.matrix.modulemap.HashModuleMap;
 import org.gitools.plugins.mutex.MutualExclusiveBookmark;
 import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
+import org.gitools.plugins.mutex.control.MutexAnalysisCommand;
 import org.gitools.plugins.mutex.sort.MutualExclusiveMatrixViewSorter;
 import org.gitools.plugins.mutex.ui.MutualExclusionSortPage;
 import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
@@ -103,7 +103,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                                     .filter(new IdentifiersPredicate<String>(testDimension, page.getValues(),
                                             page.getPattern(), hm.getDimension(dimensionKey).getAnnotations()))
                     );
-                    prepareAnalysis(analysis, testDimension, selected, hm);
+                    MutexAnalysisCommand.prepareSingularAnalysis(analysis, testDimension, selected, hm);
 
                     MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
                     processor.run(monitor);
@@ -155,26 +155,6 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                 }
             }
         });
-    }
-
-    private void prepareAnalysis(MutualExclusiveAnalysis analysis, IMatrixDimension testDimension, ArrayList<String> selected, Heatmap hm) {
-        HashModuleMap weightMap = new HashModuleMap();
-        HashModuleMap testMap = new HashModuleMap();
-        IMatrixDimension weightDimension = dimensionKey.equals(MatrixDimensionKey.ROWS) ?
-                hm.getDimension(MatrixDimensionKey.COLUMNS) :
-                hm.getDimension(MatrixDimensionKey.ROWS);
-
-        weightMap.addMapping(weightDimension.getId().getLabel(), hm.newPosition().iterate(weightDimension));
-
-        testMap.addMapping(testDimension.getId().getLabel(), selected);
-
-        analysis.setTestDimension(testDimension);
-        analysis.setTestGroupsModuleMap(testMap);
-        analysis.setWeightDimension(weightDimension);
-        analysis.setWeightGroupsModuleMap(weightMap);
-        analysis.setData(hm);
-        analysis.setLayer(hm.getLayers().getTopLayer().getId());
-        analysis.setEventFunction(hm.getLayers().get(analysis.getLayer()).getEventFunction());
     }
 
 }

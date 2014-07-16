@@ -128,6 +128,8 @@ public class Actions {
 
     public static final BaseAction clusteringAction = new ClusteringAction();
 
+    public static final BaseAction mutexAnalysisAction = new MutualExclusiveAnalysisAction();
+
     public static final BaseAction enrichment = new EnrichmentAnalysisAction();
 
     public static final BaseAction combinations = new CombinationsAction();

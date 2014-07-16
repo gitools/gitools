@@ -23,6 +23,7 @@ package org.gitools.ui.core.components.editor;
 
 import com.alee.laf.tabbedpane.TabbedPaneStyle;
 import com.alee.laf.tabbedpane.WebTabbedPane;
+import org.gitools.api.components.IEditor;
 import org.gitools.ui.core.actions.ActionManager;
 import org.gitools.ui.platform.component.scrollbar.Gray;
 

@@ -31,6 +31,7 @@ import com.alee.laf.progressbar.WebProgressBar;
 import com.alee.managers.notification.NotificationManager;
 import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
+import org.gitools.api.components.IEditorManager;
 import org.gitools.heatmap.plugins.PluginManager;
 import org.gitools.persistence.PersistenceManager;
 import org.gitools.ui.app.actions.Actions;
@@ -102,6 +103,7 @@ public class Main {
         WeldContainer container = new StartMain(args).go();
         ApplicationContext.setPersistenceManager(container.instance().select(PersistenceManager.class).get());
         ApplicationContext.setPluginManger(container.instance().select(PluginManager.class).get());
+        ApplicationContext.setEditorManger(container.instance().select(IEditorManager.class).get());
         ApplicationContext.setProgressMonitor(new NullProgressMonitor());
 
         setProgressText(progress, "Loading command executor");

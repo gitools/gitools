@@ -23,10 +23,12 @@ package org.gitools.ui.core.components.editor;
 
 import org.gitools.ui.platform.panel.Html4Panel;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.awt.*;
 import java.net.URL;
 import java.util.Map;
 
+@ApplicationScoped
 public class HtmlEditor extends AbstractEditor {
 
     private String title;

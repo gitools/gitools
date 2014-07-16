@@ -39,9 +39,11 @@ import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.swing.*;
 import java.util.Map;
 
+@ApplicationScoped
 public class CombinationAnalysisEditor extends AnalysisEditor<CombinationAnalysis> {
 
     public CombinationAnalysisEditor(CombinationAnalysis analysis) {

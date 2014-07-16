@@ -43,6 +43,7 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.HttpUtils;
 import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -52,6 +53,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
+@ApplicationScoped
 public class WelcomeEditor extends HtmlEditor {
 
     private static final long serialVersionUID = 6851947500231401412L;

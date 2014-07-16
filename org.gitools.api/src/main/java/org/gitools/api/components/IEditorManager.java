@@ -1,8 +1,8 @@
 /*
  * #%L
- * gitools-ui-platform
+ * org.gitools.api
  * %%
- * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
+ * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -19,32 +19,19 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.platform.view;
-
-import org.gitools.api.components.IView;
-
-import javax.swing.*;
-
-public abstract class AbstractView extends JPanel implements IView {
-
-    private Icon icon;
-
-    @Override
-    public Icon getIcon() {
-        return icon;
-    }
-
-    public void setIcon(Icon icon) {
-        this.icon = icon;
-    }
+package org.gitools.api.components;
 
 
-    @Override
-    public JPanel getPanel() {
-        return this;
-    }
+import java.util.List;
 
-    @Override
-    public void refresh() {
-    }
+/**
+ * Created by mschroeder on 7/16/14.
+ */
+public interface IEditorManager {
+
+    public abstract List<IEditor> getEditors();
+
+    public abstract IEditor createEditor(Object object);
+
+    public abstract void addEditor(Object object);
 }

@@ -23,13 +23,13 @@ package org.gitools.ui.app.heatmap.panel.settings.layer.decorators;
 
 import com.jgoodies.binding.adapter.Bindings;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.components.IEditor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.CategoricalDecorator;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.ui.app.commands.DetectCategoriesCommand;
 import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroupsPage;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.core.utils.landf.MyWebColorChooserField;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;

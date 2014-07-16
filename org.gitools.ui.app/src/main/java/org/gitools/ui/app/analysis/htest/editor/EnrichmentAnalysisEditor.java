@@ -27,6 +27,9 @@ import org.gitools.analysis.htest.enrichment.format.EnrichmentAnalysisFormat;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.heatmap.Heatmap;
 
+import javax.enterprise.context.ApplicationScoped;
+
+@ApplicationScoped
 public class EnrichmentAnalysisEditor extends AbstractHtestAnalysisEditor<EnrichmentAnalysis> {
 
     public EnrichmentAnalysisEditor(EnrichmentAnalysis analysis) {

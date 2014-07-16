@@ -41,11 +41,13 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
 
+@ApplicationScoped
 public class OverlappingAnalysisEditor extends AnalysisEditor<OverlappingAnalysis> {
 
     public OverlappingAnalysisEditor(OverlappingAnalysis analysis) {

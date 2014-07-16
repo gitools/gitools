@@ -39,11 +39,13 @@ import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.swing.*;
 import java.util.List;
 import java.util.Map;
 
 
+@ApplicationScoped
 public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupComparisonAnalysis> {
 
     public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis) {

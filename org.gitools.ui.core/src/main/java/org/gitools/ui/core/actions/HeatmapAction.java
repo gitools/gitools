@@ -21,10 +21,10 @@
  */
 package org.gitools.ui.core.actions;
 
+import org.gitools.api.components.IEditor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.EditorsPanel;
-import org.gitools.ui.core.components.editor.IEditor;
 
 public abstract class HeatmapAction extends AbstractAction {
 

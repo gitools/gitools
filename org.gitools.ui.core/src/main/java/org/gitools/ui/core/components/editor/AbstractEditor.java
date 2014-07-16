@@ -22,6 +22,7 @@
 package org.gitools.ui.core.components.editor;
 
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.components.IEditor;
 import org.gitools.ui.core.actions.ActionManager;
 import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.platform.view.AbstractView;
@@ -145,4 +146,13 @@ public abstract class AbstractEditor<M> extends AbstractView implements IEditor<
 
     }
 
+    @Override
+    public boolean canCreate(Object object) {
+        return false;
+    }
+
+    @Override
+    public IEditor create(Object object) {
+        return null;
+    }
 }

@@ -94,6 +94,7 @@ public class MenuActionSet extends ActionSet {
                                 Actions.combinations,
                                 Actions.overlapping,
                                 Actions.clusteringAction,
+                                Actions.mutexAnalysisAction,
 
                         }
                 ),

@@ -21,11 +21,11 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.gitools.api.components.IEditor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.DynamicActionSet;
 import org.gitools.ui.core.components.editor.EditorsPanel;
-import org.gitools.ui.core.components.editor.IEditor;
 
 import javax.swing.*;
 

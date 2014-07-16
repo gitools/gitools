@@ -27,6 +27,7 @@ import com.alee.managers.notification.NotificationManager;
 import com.alee.managers.notification.NotificationOption;
 import com.alee.managers.notification.WebNotificationPopup;
 import com.brsanthu.googleanalytics.*;
+import org.gitools.api.components.IEditor;
 import org.gitools.resource.SemanticVersion;
 import org.gitools.ui.core.components.StatusBar;
 import org.gitools.ui.core.components.editor.AbstractEditor;
@@ -160,8 +161,10 @@ public class Application extends JFrame implements IApplicationTracking {
         add(statusBar, BorderLayout.SOUTH);
     }
 
-    public void addEditor(AbstractEditor editor) {
-        editorsPanel.addEditor(editor);
+    public void addEditor(IEditor editor) {
+        if (editor instanceof AbstractEditor) {
+            editorsPanel.addEditor((AbstractEditor) editor);
+        }
     }
 
     public void start() {

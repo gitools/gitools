@@ -23,6 +23,7 @@ package org.gitools.ui.app.actions.data;
 
 import com.google.common.collect.Sets;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.components.IEditor;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.matrix.view.IMatrixView;
 import org.gitools.heatmap.Heatmap;
@@ -32,7 +33,6 @@ import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.ui.app.dialog.filter.StringAnnotationsFilterPage;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.AbstractAction;
-import org.gitools.ui.core.components.editor.IEditor;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
