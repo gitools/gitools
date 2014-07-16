@@ -170,7 +170,7 @@ public class Main {
                     // Execute arguments
                     cmdExecutor.execute(args, new PrintWriter(System.err));
 
-                    Application.get().trackEvent("main", "start", "with arguments");
+                    Application.get().trackEvent("main", isRunningJavaWebStart() ? "webstart" : "start", "with arguments");
 
                 } else {
 
@@ -190,7 +190,7 @@ public class Main {
 
                     }
 
-                    Application.get().trackEvent("main", "start", "no arguments");
+                    Application.get().trackEvent("main", isRunningJavaWebStart() ? "webstart" : "start", "no arguments");
                 }
 
 
@@ -200,6 +200,17 @@ public class Main {
         // Displaying Gitools and hiding loading dialog
         progress.setVisible(false);
 
+    }
+
+    private static boolean isRunningJavaWebStart() {
+        boolean hasJNLP = false;
+        try {
+            Class.forName("javax.jnlp.ServiceManager");
+            hasJNLP = true;
+        } catch (ClassNotFoundException ex) {
+            hasJNLP = false;
+        }
+        return hasJNLP;
     }
 
     private static void setProgressText(WebProgressDialog progress, String s) {
