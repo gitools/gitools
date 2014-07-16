@@ -24,7 +24,7 @@ package org.gitools.ui.app.actions;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.plugins.mutex.control.MutexAnalysisCommand;
+import org.gitools.plugins.mutex.control.MutalExclusiveAnalysisCommand;
 import org.gitools.plugins.mutex.ui.MutualExclusiveAnalysisPage;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
@@ -64,7 +64,7 @@ public class MutualExclusiveAnalysisAction extends HeatmapAction {
             @Override
             public void run(IProgressMonitor monitor) {
 
-                MutexAnalysisCommand command = new MutexAnalysisCommand("",
+                MutalExclusiveAnalysisCommand command = new MutalExclusiveAnalysisCommand("",
                         MatrixDimensionKey.ROWS,
                         "ascending",
                         page.getColumnGroupsPattern(),

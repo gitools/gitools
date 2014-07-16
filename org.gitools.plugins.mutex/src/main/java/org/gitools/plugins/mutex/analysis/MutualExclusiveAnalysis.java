@@ -31,6 +31,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
+import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -130,7 +131,7 @@ public class MutualExclusiveAnalysis extends Analysis {
         HeatmapLayers layers = results.get().getLayers();
         layers.get(MutualExclusiveResult.COOC_PVALUE).setDecorator(new PValueDecorator());
         layers.get(MutualExclusiveResult.MUTEX_PVALUE).setDecorator(new PValueDecorator());
-        layers.get(MutualExclusiveResult.Z_SCORE).setDecorator(new PValueDecorator());
+        layers.get(MutualExclusiveResult.Z_SCORE).setDecorator(new ZScoreDecorator());
         layers.setTopLayer(layers.get(MutualExclusiveResult.MUTEX_PVALUE));
     }
 

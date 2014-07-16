@@ -40,7 +40,7 @@ import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 import java.util.*;
 
 
-public class MutexAnalysisCommand extends HeaderCommand {
+public class MutalExclusiveAnalysisCommand extends HeaderCommand {
 
 
     private final String colGroupsPattern;
@@ -48,12 +48,12 @@ public class MutexAnalysisCommand extends HeaderCommand {
     private final boolean isAllColumnsGroup;
     private Heatmap results;
 
-    public MutexAnalysisCommand(String heatmap,
-                                MatrixDimensionKey sortDimension,
-                                String sort,
-                                String colGroupsPattern,
-                                String rowGroupsPattern,
-                                boolean isAllColumnsGroup) {
+    public MutalExclusiveAnalysisCommand(String heatmap,
+                                         MatrixDimensionKey sortDimension,
+                                         String sort,
+                                         String colGroupsPattern,
+                                         String rowGroupsPattern,
+                                         boolean isAllColumnsGroup) {
         super(heatmap, sortDimension, sort, colGroupsPattern);
 
         this.colGroupsPattern = colGroupsPattern;
@@ -71,7 +71,7 @@ public class MutexAnalysisCommand extends HeaderCommand {
 
         MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis();
 
-        MutexAnalysisCommand.prepareAnalysis(analysis, heatmap.getContents().getDimension(heatmapDimension.getId()), columnGroups, rowGroups, heatmap);
+        MutalExclusiveAnalysisCommand.prepareAnalysis(analysis, heatmap.getContents().getDimension(heatmapDimension.getId()), columnGroups, rowGroups, heatmap);
 
         MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
         processor.run(monitor);

@@ -33,7 +33,7 @@ import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
-import org.gitools.plugins.mutex.control.MutexAnalysisCommand;
+import org.gitools.plugins.mutex.control.MutalExclusiveAnalysisCommand;
 import org.gitools.plugins.mutex.sort.MutualExclusiveMatrixViewSorter;
 import org.gitools.plugins.mutex.ui.MutualExclusionSortPage;
 import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
@@ -103,7 +103,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                                     .filter(new IdentifiersPredicate<String>(testDimension, page.getValues(),
                                             page.getPattern(), hm.getDimension(dimensionKey).getAnnotations()))
                     );
-                    MutexAnalysisCommand.prepareSingularAnalysis(analysis, testDimension, selected, hm);
+                    MutalExclusiveAnalysisCommand.prepareSingularAnalysis(analysis, testDimension, selected, hm);
 
                     MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
                     processor.run(monitor);
