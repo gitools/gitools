@@ -49,6 +49,8 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
         super("Mutual exclusion & Co-occurrence analysis");
         this.heatmap = heatmap;
 
+        setTitle("Mutual Exclusion & Co-occurrence analysis");
+        setMessage("Select which groups of columns and rows you want to test");
 
         Collection<String> colAnnlabels = heatmap.getColumns().getAnnotations().getLabels();
         Collection<String> rowAnnlabels = heatmap.getRows().getAnnotations().getLabels();
@@ -62,12 +64,13 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
                 rowAnnlabels.toArray(new String[rowAnnlabels.size()])
         ));
 
-        eventsFunctionComboBox.addActionListener(new ActionListener() {
+        ActionListener actionListener = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 updateControls();
             }
-        });
+        };
+        eventsFunctionComboBox.addActionListener(actionListener);
         eventsFunctionComboBox.setModel(
                 new ComboBoxAdapter<>(
                         new SelectionInList<NonEventToNullFunction>(
@@ -76,15 +79,12 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
                         )
                 )
         );
+        allColumnsCheckBox.addActionListener(actionListener);
+        columnAnnotationGroupingBox.addActionListener(actionListener);
 
 
-        columnAnnotationGroupingBox.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                updateControls();
-            }
-        });
-        setComplete(true);
+
+        updateControls();
 
 
     }
@@ -111,10 +111,14 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
 
     @Override
     public void updateControls() {
+
+
+
         columnGroupingPattern.setEnabled(columnAnnotationGroupingBox.isSelected());
         if (eventsFunctionDescription!=null && eventsFunctionComboBox.getSelectedItem() != null) {
             eventsFunctionDescription.setText(((NonEventToNullFunction) eventsFunctionComboBox.getSelectedItem()).getDescription());
         }
+        setComplete(columnAnnotationGroupingBox.isSelected() || isAllColumnsGroup());
     }
 
     @Override

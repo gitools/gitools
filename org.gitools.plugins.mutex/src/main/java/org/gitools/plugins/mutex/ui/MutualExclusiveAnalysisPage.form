@@ -44,7 +44,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="Column Groupings (all or by group by annotation)"/>
+          <text value="Column Groupings "/>
         </properties>
       </component>
       <component id="97a42" class="javax.swing.JComboBox" binding="rowGroupingPattern">
@@ -62,6 +62,7 @@
           <forms/>
         </constraints>
         <properties>
+          <selected value="true"/>
           <text value="Annotation grouping"/>
         </properties>
       </component>
@@ -80,7 +81,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="All columns"/>
+          <text value="All columns as group"/>
         </properties>
       </component>
       <component id="8a9bd" class="javax.swing.JLabel">

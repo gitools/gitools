@@ -34,7 +34,7 @@ import java.util.Set;
 public class MutualExclusiveTest {
 
     private static final NormalDistribution NORMAL = new NormalDistribution();
-    ;
+
     Random random;
     private String name;
 

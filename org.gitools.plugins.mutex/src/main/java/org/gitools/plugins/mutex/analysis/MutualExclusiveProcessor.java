@@ -110,24 +110,32 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
         String weightGroupInfo;
         int counter = 0;
         for (final String weightGroup : resultWeightDimension) {
-            weightGroupInfo = weightGroup + " (" + ++counter + "/" + resultWeightDimension.size() + ")";
 
-            final double[] weights;
+            ++counter;
 
-            weights = getWeights(monitor, data, dataLayer, testDimension, weightDimension, weightGroupInfo, eventFunction);
-
-            if (monitor.isCancelled()) {
-                break;
-            }
-
-
-            monitor.begin("Performing test for " + weightGroupInfo, resultTestDimension.size() * iterations);
             for (String testGroup : resultTestDimension) {
+
+                weightGroupInfo = weightGroup + " (" + counter + "/" + resultWeightDimension.size() + ")";
+
+                final double[] weights;
+
+                IMatrixDimension weightDimensionSubset = weightDimension.subset(weightGroups.getMappingItems(weightGroup));
+                IMatrixDimension testDimensionSubset = testDimension.subset(testGroups.getMappingItems(testGroup));
+
+
+                weights = getWeights(monitor, data, dataLayer, testDimension, weightDimensionSubset, weightGroupInfo, eventFunction);
+
+                if (monitor.isCancelled()) {
+                    break;
+                }
+
+                monitor.begin("Performing test for " + weightGroupInfo, resultTestDimension.size() * iterations);
+
                 monitor.info("Group: " + testGroup);
 
-                int coverage = getCoverage(data, dataLayer, testGroups, weightGroups, testDimension, weightDimension, eventFunction, weightGroup, testGroup);
+                int coverage = getCoverage(data, dataLayer, testDimensionSubset, weightDimensionSubset, eventFunction);
 
-                int[] draws = getDraws(data, dataLayer, testGroups, testDimension, weightDimension, testGroup, eventFunction);
+                int[] draws = getDraws(data, dataLayer, testDimensionSubset, weightDimensionSubset, eventFunction);
 
                 int signal = 0;
                 for (int d : draws) {
@@ -138,7 +146,7 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
                     break;
                 }
                 //sets monitor.worked
-                MutualExclusiveResult r = test.processTest(draws, weights, coverage, signal, iterations, monitor);
+                MutualExclusiveResult r = new MutualExclusiveTest().processTest(draws, weights, coverage, signal, iterations, monitor);
 
                 if (monitor.isCancelled()) {
                     break;
@@ -221,12 +229,12 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
      * Calculates the coverage: Which items of the weightDimension have at least
      * one positive event.
      */
-    private int getCoverage(IMatrix data, IMatrixLayer<Double> dataLayer, IModuleMap testGroups, IModuleMap weightGroups, IMatrixDimension testDimension, final IMatrixDimension weightDimension, NonEventToNullFunction<?> eventFunction, String weightGroup, String testGroup) {
+    private int getCoverage(IMatrix data, IMatrixLayer<Double> dataLayer, IMatrixDimension testDimension, final IMatrixDimension weightDimension, NonEventToNullFunction<?> eventFunction) {
 
         IMatrixIterable<String> it = data.newPosition()
                 .iterate(dataLayer,
-                        testDimension.subset(testGroups.getMappingItems(testGroup)),
-                        weightDimension.subset(weightGroups.getMappingItems(weightGroup)))
+                        testDimension,
+                        weightDimension)
                 .transform(eventFunction)
                 .transform(new AbstractMatrixFunction<String, Double>() {
                     @Override
@@ -248,11 +256,11 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
     /**
      * Calculate for each item how many positive events are available.
      */
-    private int[] getDraws(IMatrix data, IMatrixLayer<Double> dataLayer, IModuleMap testGroups, IMatrixDimension testDimension, IMatrixDimension weightDimension, String testGroup, NonEventToNullFunction<?> eventFunction) {
+    private int[] getDraws(IMatrix data, IMatrixLayer<Double> dataLayer, IMatrixDimension testDimension, IMatrixDimension weightDimension, NonEventToNullFunction<?> eventFunction) {
 
         IMatrixIterable<Integer> it;
         it = data.newPosition()
-                .iterate(testDimension.subset(testGroups.getMappingItems(testGroup)))
+                .iterate(testDimension)
                 .transform(new AggregationFunction(dataLayer, NonNullCountAggregator.INSTANCE, weightDimension, eventFunction))
                 .transform(new DoubleToIntegerFunction())
                 .filter(new NotNullPredicate<Integer>());
