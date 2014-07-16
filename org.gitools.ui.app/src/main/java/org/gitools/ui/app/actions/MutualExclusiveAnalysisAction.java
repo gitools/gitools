@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.plugins.mutex.control.MutexAnalysisCommand;
@@ -28,6 +29,7 @@ import org.gitools.plugins.mutex.ui.MutualExclusiveAnalysisPage;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 
@@ -58,23 +60,30 @@ public class MutualExclusiveAnalysisAction extends HeatmapAction {
             return;
         }
 
-        MutexAnalysisCommand command = new MutexAnalysisCommand("",
-                MatrixDimensionKey.ROWS,
-                "ascending",
-                page.getColumnGroupsPattern(),
-                page.getRowsGroupsPattern(),
-                page.isAllColumnsGroup());
+        JobThread.execute(Application.get(), new JobRunnable() {
+            @Override
+            public void run(IProgressMonitor monitor) {
 
-        CountDownLatch waitingLatch = new CountDownLatch(1);
-        JobThread.execute(Application.get(), command, waitingLatch);
+                MutexAnalysisCommand command = new MutexAnalysisCommand("",
+                        MatrixDimensionKey.ROWS,
+                        "ascending",
+                        page.getColumnGroupsPattern(),
+                        page.getRowsGroupsPattern(),
+                        page.isAllColumnsGroup());
 
-        try {
-            waitingLatch.await();
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
-        }
+                CountDownLatch waitingLatch = new CountDownLatch(1);
+                JobThread.execute(Application.get(), command, waitingLatch);
 
-        Application.get().getEditorsPanel().addEditor(new HeatmapEditor(command.getResults()));
+                try {
+                    waitingLatch.await();
+                } catch (InterruptedException e1) {
+                    e1.printStackTrace();
+                }
+
+                Application.get().getEditorsPanel().addEditor(new HeatmapEditor(command.getResults()));
+            }
+        });
+
 
 
     }

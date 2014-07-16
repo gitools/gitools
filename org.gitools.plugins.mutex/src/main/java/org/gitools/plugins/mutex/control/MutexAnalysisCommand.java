@@ -71,7 +71,7 @@ public class MutexAnalysisCommand extends HeaderCommand {
 
         MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis();
 
-        MutexAnalysisCommand.prepareAnalysis(analysis, heatmapDimension, columnGroups, rowGroups, heatmap);
+        MutexAnalysisCommand.prepareAnalysis(analysis, heatmap.getContents().getDimension(heatmapDimension.getId()), columnGroups, rowGroups, heatmap);
 
         MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
         processor.run(monitor);
