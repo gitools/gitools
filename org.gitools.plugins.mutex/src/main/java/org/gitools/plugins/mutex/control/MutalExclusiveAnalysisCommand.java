@@ -46,6 +46,7 @@ public class MutalExclusiveAnalysisCommand extends HeaderCommand {
     private final String colGroupsPattern;
     private final String rowGroupsPattern;
     private final boolean isAllColumnsGroup;
+    private static int permutations;
     private Heatmap results;
 
     public MutalExclusiveAnalysisCommand(String heatmap,
@@ -53,12 +54,14 @@ public class MutalExclusiveAnalysisCommand extends HeaderCommand {
                                          String sort,
                                          String colGroupsPattern,
                                          String rowGroupsPattern,
-                                         boolean isAllColumnsGroup) {
+                                         boolean isAllColumnsGroup,
+                                         int permutations) {
         super(heatmap, sortDimension, sort, colGroupsPattern);
 
         this.colGroupsPattern = colGroupsPattern;
         this.rowGroupsPattern = rowGroupsPattern;
         this.isAllColumnsGroup = isAllColumnsGroup;
+        this.permutations = permutations;
     }
 
 
@@ -181,6 +184,7 @@ public class MutalExclusiveAnalysisCommand extends HeaderCommand {
         analysis.setData(hm);
         analysis.setLayer(hm.getLayers().getTopLayer().getId());
         analysis.setEventFunction(hm.getLayers().get(analysis.getLayer()).getEventFunction());
+        analysis.setIterations(permutations < 100 ? 100 : permutations);
     }
 
 }

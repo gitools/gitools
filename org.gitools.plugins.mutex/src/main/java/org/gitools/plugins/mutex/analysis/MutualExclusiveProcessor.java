@@ -113,23 +113,24 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
 
             ++counter;
 
+            double[] weights = new double[0];
+
             for (String testGroup : resultTestDimension) {
 
                 weightGroupInfo = weightGroup + " (" + counter + "/" + resultWeightDimension.size() + ")";
-
-                final double[] weights;
 
                 IMatrixDimension weightDimensionSubset = weightDimension.subset(weightGroups.getMappingItems(weightGroup));
                 IMatrixDimension testDimensionSubset = testDimension.subset(testGroups.getMappingItems(testGroup));
 
 
-                weights = getWeights(monitor, data, dataLayer, testDimension, weightDimensionSubset, weightGroupInfo, eventFunction);
+                if (weights.length == 0) {
+                    weights = getWeights(monitor, data, dataLayer, testDimension, weightDimensionSubset, weightGroupInfo, eventFunction);
+                    monitor.begin("Performing test for " + weightGroupInfo, resultTestDimension.size() * iterations);
+                }
 
                 if (monitor.isCancelled()) {
                     break;
                 }
-
-                monitor.begin("Performing test for " + weightGroupInfo, resultTestDimension.size() * iterations);
 
                 monitor.info("Group: " + testGroup);
 

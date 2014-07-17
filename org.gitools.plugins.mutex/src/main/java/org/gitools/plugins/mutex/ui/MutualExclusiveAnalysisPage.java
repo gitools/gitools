@@ -42,6 +42,7 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
     private JCheckBox columnAnnotationGroupingBox;
     private JComboBox eventsFunctionComboBox;
     private JLabel eventsFunctionDescription;
+    private JSpinner permutationSpinner;
     private Heatmap heatmap;
 
 
@@ -83,6 +84,7 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
         columnAnnotationGroupingBox.addActionListener(actionListener);
 
 
+        permutationSpinner.setModel(new SpinnerNumberModel(10000, 100, 10000000, 1000));
 
         updateControls();
 
@@ -126,4 +128,7 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
         return rootPanel;
     }
 
+    public int getPermutations() {
+        return Integer.parseInt(permutationSpinner.getValue().toString());
+    }
 }

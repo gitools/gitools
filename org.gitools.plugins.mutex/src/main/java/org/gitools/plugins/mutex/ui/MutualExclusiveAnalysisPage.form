@@ -18,6 +18,10 @@
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
@@ -44,6 +48,7 @@
           <forms/>
         </constraints>
         <properties>
+          <font style="1"/>
           <text value="Column Groupings "/>
         </properties>
       </component>
@@ -72,6 +77,7 @@
           <forms/>
         </constraints>
         <properties>
+          <font style="1"/>
           <text value="Row Groupings"/>
         </properties>
       </component>
@@ -90,6 +96,7 @@
           <forms/>
         </constraints>
         <properties>
+          <font style="1"/>
           <text value="Data events:"/>
         </properties>
       </component>
@@ -109,6 +116,23 @@
           <font size="10" style="2"/>
           <text value="eventsFunctionDescription"/>
         </properties>
+      </component>
+      <component id="7f019" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="18" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <font style="1"/>
+          <text value="Permutations:"/>
+        </properties>
+      </component>
+      <component id="a6195" class="javax.swing.JSpinner" binding="permutationSpinner">
+        <constraints>
+          <grid row="20" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <forms defaultalign-horz="false"/>
+        </constraints>
+        <properties/>
       </component>
     </children>
   </grid>

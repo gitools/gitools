@@ -132,7 +132,7 @@ public class MutualExclusiveAnalysis extends Analysis {
         layers.get(MutualExclusiveResult.COOC_PVALUE).setDecorator(new PValueDecorator());
         layers.get(MutualExclusiveResult.MUTEX_PVALUE).setDecorator(new PValueDecorator());
         layers.get(MutualExclusiveResult.Z_SCORE).setDecorator(new ZScoreDecorator());
-        layers.setTopLayer(layers.get(MutualExclusiveResult.MUTEX_PVALUE));
+        layers.setTopLayer(layers.get(MutualExclusiveResult.Z_SCORE));
     }
 
     public IMatrixDimension getWeightDimension() {

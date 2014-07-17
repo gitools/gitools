@@ -69,7 +69,8 @@ public class MutualExclusiveAnalysisAction extends HeatmapAction {
                         "ascending",
                         page.getColumnGroupsPattern(),
                         page.getRowsGroupsPattern(),
-                        page.isAllColumnsGroup());
+                        page.isAllColumnsGroup(),
+                        page.getPermutations());
 
                 CountDownLatch waitingLatch = new CountDownLatch(1);
                 JobThread.execute(Application.get(), command, waitingLatch);
