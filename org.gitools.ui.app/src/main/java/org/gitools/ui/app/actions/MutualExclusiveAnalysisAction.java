@@ -70,7 +70,8 @@ public class MutualExclusiveAnalysisAction extends HeatmapAction {
                         page.getColumnGroupsPattern(),
                         page.getRowsGroupsPattern(),
                         page.isAllColumnsGroup(),
-                        page.getPermutations());
+                        page.getPermutations(),
+                        page.getDiscardEmpty());
 
                 CountDownLatch waitingLatch = new CountDownLatch(1);
                 JobThread.execute(Application.get(), command, waitingLatch);
@@ -84,7 +85,6 @@ public class MutualExclusiveAnalysisAction extends HeatmapAction {
                 Application.get().getEditorsPanel().addEditor(new HeatmapEditor(command.getResults()));
             }
         });
-
 
 
     }

@@ -43,6 +43,7 @@ import java.util.*;
 public class MutalExclusiveAnalysisCommand extends HeaderCommand {
 
 
+    private static boolean discardEmpty;
     private final String colGroupsPattern;
     private final String rowGroupsPattern;
     private final boolean isAllColumnsGroup;
@@ -55,13 +56,15 @@ public class MutalExclusiveAnalysisCommand extends HeaderCommand {
                                          String colGroupsPattern,
                                          String rowGroupsPattern,
                                          boolean isAllColumnsGroup,
-                                         int permutations) {
+                                         int permutations,
+                                         boolean discardEmpty) {
         super(heatmap, sortDimension, sort, colGroupsPattern);
 
         this.colGroupsPattern = colGroupsPattern;
         this.rowGroupsPattern = rowGroupsPattern;
         this.isAllColumnsGroup = isAllColumnsGroup;
         this.permutations = permutations;
+        this.discardEmpty = discardEmpty;
     }
 
 
@@ -116,7 +119,7 @@ public class MutalExclusiveAnalysisCommand extends HeaderCommand {
     }
 
 
-    public Map<String, Set<String>> getRowGroups()  {
+    public Map<String, Set<String>> getRowGroups() {
 
         ClusteringData data = new AnnPatClusteringData(heatmap.getRows(), rowGroupsPattern);
         Clusters results = null;
@@ -152,7 +155,7 @@ public class MutalExclusiveAnalysisCommand extends HeaderCommand {
     public static void prepareAnalysis(MutualExclusiveAnalysis analysis,
                                        IMatrixDimension testDimension,
                                        Map<String, Set<String>> columnGroups,
-                                       Map<String, Set<String>>  rowGroups,
+                                       Map<String, Set<String>> rowGroups,
                                        Heatmap hm) {
 
         HashModuleMap weightMap = new HashModuleMap();
@@ -185,6 +188,7 @@ public class MutalExclusiveAnalysisCommand extends HeaderCommand {
         analysis.setLayer(hm.getLayers().getTopLayer().getId());
         analysis.setEventFunction(hm.getLayers().get(analysis.getLayer()).getEventFunction());
         analysis.setIterations(permutations < 100 ? 100 : permutations);
+        analysis.setDiscardEmpty(discardEmpty);
     }
 
 }

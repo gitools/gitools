@@ -26,6 +26,7 @@ import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
@@ -35,14 +36,16 @@ import java.util.Collection;
 
 
 public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
-    private JComboBox columnGroupingPattern;
+    private JComboBox columnAnnotationCombo;
     private JPanel rootPanel;
-    private JComboBox rowGroupingPattern;
+    private JComboBox rowAnnotationCombo;
     private JCheckBox allColumnsCheckBox;
     private JCheckBox columnAnnotationGroupingBox;
     private JComboBox eventsFunctionComboBox;
     private JLabel eventsFunctionDescription;
     private JSpinner permutationSpinner;
+    private JCheckBox discardEmpty;
+    private JLabel testDescription;
     private Heatmap heatmap;
 
 
@@ -57,11 +60,11 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
         Collection<String> rowAnnlabels = heatmap.getRows().getAnnotations().getLabels();
 
 
-        columnGroupingPattern.setModel(new DefaultComboBoxModel(
+        columnAnnotationCombo.setModel(new DefaultComboBoxModel(
                 colAnnlabels.toArray(new String[colAnnlabels.size()])
         ));
 
-        rowGroupingPattern.setModel(new DefaultComboBoxModel(
+        rowAnnotationCombo.setModel(new DefaultComboBoxModel(
                 rowAnnlabels.toArray(new String[rowAnnlabels.size()])
         ));
 
@@ -86,6 +89,9 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
 
         permutationSpinner.setModel(new SpinnerNumberModel(10000, 100, 10000000, 1000));
 
+        testDescription.setText("All " + heatmap.getContents().getRows().size() + " " + heatmap.getRows().getId().getLabel() + "s will be taken into account " +
+                "for a weighted permutation test to assess probability of mutual exclusion and co-occurence");
+
         updateControls();
 
 
@@ -95,7 +101,7 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
 
 
     public String getRowsGroupsPattern() {
-        return "${" + rowGroupingPattern.getSelectedItem() + "}";
+        return "${" + rowAnnotationCombo.getSelectedItem() + "}";
 
     }
 
@@ -105,7 +111,7 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
 
     public String getColumnGroupsPattern () {
         if (columnAnnotationGroupingBox.isSelected()) {
-            return "${" + columnGroupingPattern.getSelectedItem() + "}";
+            return "${" + columnAnnotationCombo.getSelectedItem() + "}";
         } else {
             return null;
         }
@@ -115,8 +121,21 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
     public void updateControls() {
 
 
+        boolean hasColAnnotation = columnAnnotationCombo.getModel().getSize() > 0;
+        boolean hasRowAnnotation = rowAnnotationCombo.getModel().getSize() > 0;
 
-        columnGroupingPattern.setEnabled(columnAnnotationGroupingBox.isSelected());
+        if (!hasColAnnotation) {
+            columnAnnotationGroupingBox.setEnabled(false);
+            columnAnnotationGroupingBox.setSelected(false);
+            allColumnsCheckBox.setSelected(true);
+        }
+
+        if (!hasRowAnnotation) {
+            setComplete(false);
+            setMessage(MessageStatus.ERROR, "No row annotation available for grouping. For all rows, use Edit > Row > Sort by Mut.Ex.");
+        }
+
+        columnAnnotationCombo.setEnabled(columnAnnotationGroupingBox.isSelected());
         if (eventsFunctionDescription!=null && eventsFunctionComboBox.getSelectedItem() != null) {
             eventsFunctionDescription.setText(((NonEventToNullFunction) eventsFunctionComboBox.getSelectedItem()).getDescription());
         }
@@ -130,5 +149,9 @@ public class MutualExclusiveAnalysisPage extends AbstractWizardPage {
 
     public int getPermutations() {
         return Integer.parseInt(permutationSpinner.getValue().toString());
+    }
+
+    public boolean getDiscardEmpty() {
+        return discardEmpty.isSelected();
     }
 }

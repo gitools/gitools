@@ -61,6 +61,8 @@ public class MutualExclusiveAnalysis extends Analysis {
 
     private NonEventToNullFunction eventFunction;
 
+    private boolean discardEmpty = false;
+
     public MutualExclusiveAnalysis() {
     }
 
@@ -157,5 +159,13 @@ public class MutualExclusiveAnalysis extends Analysis {
 
     public void setEventFunction(NonEventToNullFunction eventFunction) {
         this.eventFunction = eventFunction;
+    }
+
+    public boolean isDiscardEmpty() {
+        return discardEmpty;
+    }
+
+    public void setDiscardEmpty(boolean discardEmpty) {
+        this.discardEmpty = discardEmpty;
     }
 }

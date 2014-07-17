@@ -39,10 +39,7 @@ import org.gitools.matrix.sort.AggregationFunction;
 import org.gitools.utils.aggregation.NonNullCountAggregator;
 import org.gitools.utils.cutoffcmp.CutoffCmp;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 import static com.google.common.collect.Lists.newArrayList;
 import static org.gitools.api.matrix.MatrixDimensionKey.COLUMNS;
@@ -76,7 +73,8 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
                 analysis.getTestDimension(),
                 analysis.getWeightDimension(),
                 analysis.getIterations(),
-                analysis.getEventFunction()
+                analysis.getEventFunction(),
+                analysis.isDiscardEmpty()
         );
 
         analysis.setResults(new ResourceReference<>("results", new Heatmap(results)));
@@ -93,7 +91,7 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
                               final IMatrixDimension testDimension,
                               final IMatrixDimension weightDimension,
                               final int iterations,
-                              NonEventToNullFunction eventFunction) {
+                              NonEventToNullFunction eventFunction, boolean discardEmpty) {
 
         final IMatrixDimension resultWeightDimension = new HashMatrixDimension(COLUMNS, weightGroups.getModules());
         final IMatrixDimension resultTestDimension = new HashMatrixDimension(ROWS, testGroups.getModules());
@@ -114,19 +112,29 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
             ++counter;
 
             double[] weights = new double[0];
+            weightGroupInfo = weightGroup + " (" + counter + "/" + resultWeightDimension.size() + ")";
+            boolean weightGroupInfoSet = false;
+            IMatrixDimension weightDimensionSubset = null;
 
             for (String testGroup : resultTestDimension) {
 
-                weightGroupInfo = weightGroup + " (" + counter + "/" + resultWeightDimension.size() + ")";
-
-                IMatrixDimension weightDimensionSubset = weightDimension.subset(weightGroups.getMappingItems(weightGroup));
                 IMatrixDimension testDimensionSubset = testDimension.subset(testGroups.getMappingItems(testGroup));
 
-
-                if (weights.length == 0) {
+                Set<String> samples = weightGroups.getMappingItems(weightGroup);
+                if (discardEmpty) {
+                    samples = getNonEmptySamples(data, dataLayer, testDimensionSubset, weightDimension.subset(samples), eventFunction);
+                    weightDimensionSubset = weightDimension.subset(samples);
+                    weights = getWeights(monitor, data, dataLayer, testDimension, weightDimensionSubset, weightGroupInfo + ": " + testGroup, eventFunction);
+                } else if (weights.length == 0) {
+                    weightDimensionSubset = weightDimension.subset(samples);
                     weights = getWeights(monitor, data, dataLayer, testDimension, weightDimensionSubset, weightGroupInfo, eventFunction);
-                    monitor.begin("Performing test for " + weightGroupInfo, resultTestDimension.size() * iterations);
                 }
+
+                if (!weightGroupInfoSet) {
+                    monitor.begin("Performing test for " + weightGroupInfo, resultTestDimension.size() * iterations);
+                    weightGroupInfoSet = true;
+                }
+
 
                 if (monitor.isCancelled()) {
                     break;
@@ -158,6 +166,22 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
         }
 
         return resultsMatrix;
+    }
+
+    private Set<String> getNonEmptySamples(IMatrix data, IMatrixLayer<Double> dataLayer, IMatrixDimension testDimensionSubset, IMatrixDimension weightDimensionSubset, NonEventToNullFunction eventFunction) {
+
+        //Set<String> samples = new HashSet<>();
+
+        IMatrixIterable<String> iterable = data.newPosition()
+                .iterate(weightDimensionSubset)
+                .transform(new AggregationFunction(dataLayer, NonNullCountAggregator.INSTANCE, testDimensionSubset, eventFunction))
+                .transform(new DoubleToIntegerFunction())
+                .filter(new NotNullPredicate<Integer>())
+                .transform(new DimensionIdFunction(weightDimensionSubset));
+
+        ArrayList<String> samples = newArrayList(iterable);
+
+        return new HashSet<>(samples);
     }
 
     private Map<String, Double> getCachedWeights(IMatrixLayer<Double> dataLayer,
