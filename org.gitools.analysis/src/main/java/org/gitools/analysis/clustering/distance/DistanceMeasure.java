@@ -23,6 +23,6 @@ package org.gitools.analysis.clustering.distance;
 
 public interface DistanceMeasure {
 
-    Double compute(Iterable<Double> a, Iterable<Double> b);
+    Double compute(Iterable<? extends Number> a, Iterable<? extends Number> b);
 
 }

@@ -486,6 +486,8 @@ public class HeatmapEditor extends AbstractEditor {
 
     private class CleanCacheTimer extends TimerTask {
 
+        private boolean trackException = true;
+
         private long lastDetach;
 
         private CleanCacheTimer() {
@@ -498,7 +500,12 @@ public class HeatmapEditor extends AbstractEditor {
 
                 LOGGER.warn("Memory too low, cleaning cache.");
                 this.lastDetach = System.currentTimeMillis();
-                Application.get().trackException("Memory too low");
+
+                if (trackException) {
+                    Application.get().trackException("Memory too low");
+                    trackException = false;
+                }
+
                 detach();
             }
         }

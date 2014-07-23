@@ -37,22 +37,22 @@ public class EuclideanDistance implements DistanceMeasure {
     }
 
     @Override
-    public Double compute(Iterable<Double> a, Iterable<Double> b) {
+    public Double compute(Iterable<? extends Number> a, Iterable<? extends Number> b) {
 
-        Iterator<Double> ai = a.iterator();
-        Iterator<Double> bi = b.iterator();
+        Iterator<? extends Number> ai = a.iterator();
+        Iterator<? extends Number> bi = b.iterator();
 
         double sum = 0.0;
         while (ai.hasNext() && bi.hasNext()) {
 
-            Double p1 = ai.next();
-            Double p2 = bi.next();
+            Number p1 = ai.next();
+            Number p2 = bi.next();
 
             if (p1 == null || p2 == null) {
                 continue;
             }
 
-            final double dp = p1 - p2;
+            final double dp = p1.doubleValue() - p2.doubleValue();
             sum += dp * dp;
         }
 
