@@ -1,3 +1,10 @@
+Gitools 2.2.2
+------------------------------------------------------------
+* Preliminary mutex analysis
+* Bugfix: Excel import
+* Bugfix: integer clustering
+
+
 Gitools 2.2.1
 -------------------------------------------------------------
 * New external commands: mutex-sort, close (and save)
