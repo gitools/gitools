@@ -22,7 +22,7 @@
 package org.gitools.plugins.mutex;
 
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.plugins.mutex.control.MutalExclusiveAnalysisCommand;
+import org.gitools.plugins.mutex.control.MutualExclusiveAnalysisCommand;
 import org.gitools.plugins.mutex.ui.MutualExclusiveAnalysisWizard;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
@@ -53,7 +53,7 @@ public class MutualExclusiveAnalysisAction extends HeatmapAction {
             @Override
             public void run(IProgressMonitor monitor) {
 
-                MutalExclusiveAnalysisCommand command = new MutalExclusiveAnalysisCommand(wizard.createAnalysis());
+                MutualExclusiveAnalysisCommand command = new MutualExclusiveAnalysisCommand(wizard.createAnalysis());
                 JobThread.execute(Application.get(), command);
 
             }

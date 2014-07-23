@@ -28,9 +28,9 @@ import org.kohsuke.args4j.Option;
 import java.util.List;
 
 
-public class SortMutexTool extends HeaderTool {
+public class SortMutualExclusiveTool extends HeaderTool {
 
-    public SortMutexTool() {
+    public SortMutualExclusiveTool() {
         super();
     }
 
@@ -44,7 +44,7 @@ public class SortMutexTool extends HeaderTool {
 
     @Override
     protected Command newJob() {
-        return new SortMutexCommand(heatmap, dimensionKey, sort, ids, pattern);
+        return new SortMutualExclusiveCommand(heatmap, dimensionKey, sort, ids, pattern);
     }
 
     @Override

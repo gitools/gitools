@@ -30,11 +30,11 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MutualExclusionComparator implements Comparator<String> {
+public class MutualExclusiveComparator implements Comparator<String> {
 
     private final Map<String, Double> aggregationCache;
 
-    public MutualExclusionComparator(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension sortDimension, IMatrixPredicate<String> validIdentifiers, AggregationFunction aggregationFunction, IProgressMonitor monitor) {
+    public MutualExclusiveComparator(IMatrix matrix, IMatrixLayer<Double> layer, IMatrixDimension sortDimension, IMatrixPredicate<String> validIdentifiers, AggregationFunction aggregationFunction, IProgressMonitor monitor) {
 
         aggregationCache = new HashMap<>(sortDimension.size());
 

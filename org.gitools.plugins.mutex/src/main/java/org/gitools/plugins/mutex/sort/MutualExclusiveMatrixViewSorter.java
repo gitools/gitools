@@ -54,7 +54,7 @@ public class MutualExclusiveMatrixViewSorter {
 
         IdentifiersPredicate<String> annotationResolver = new IdentifiersPredicate<String>(rows, values, pattern, rows.getAnnotations());
 
-        rows.sort(new MutualExclusionComparator(
+        rows.sort(new MutualExclusiveComparator(
                 heatmap,
                 layer,
                 rows,

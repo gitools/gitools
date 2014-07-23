@@ -48,7 +48,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class MutualExclusiveProcessor implements AnalysisProcessor {
 
-    private final static Key<MutexWeightCache> CACHEKEY = new Key<MutexWeightCache>() {
+    private final static Key<MutualExclusiveWeightCache> CACHEKEY = new Key<MutualExclusiveWeightCache>() {
     };
 
     private final MutualExclusiveAnalysis analysis;
@@ -198,9 +198,9 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
     private Map<String, Double> getCachedWeights(IMatrixLayer<Double> dataLayer,
                                                  IMatrixDimension weightDimension,
                                                  NonEventToNullFunction<?> eventFunction) {
-        MutexWeightCache mutexCache = dataLayer.getCache(CACHEKEY);
+        MutualExclusiveWeightCache mutexCache = dataLayer.getCache(CACHEKEY);
         if (mutexCache == null) {
-            mutexCache = new MutexWeightCache();
+            mutexCache = new MutualExclusiveWeightCache();
         }
 
 
@@ -217,9 +217,9 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
                                   Map<String, Double> cachedWeights,
                                   IMatrixDimension weightDimension,
                                   NonEventToNullFunction function) {
-        MutexWeightCache cache = dataLayer.getCache(CACHEKEY);
+        MutualExclusiveWeightCache cache = dataLayer.getCache(CACHEKEY);
         if (cache == null) {
-            cache = new MutexWeightCache();
+            cache = new MutualExclusiveWeightCache();
         }
         cache.setCacheWeights(createFingerprint(function, weightDimension), cachedWeights);
         dataLayer.setCache(CACHEKEY, cache);
@@ -306,14 +306,14 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
     }
 
 
-    private class MutexWeightCache {
+    private class MutualExclusiveWeightCache {
 
         //1st String: DimensionID + event description
         //2nd String id of row or col
         //Double weight
         Map<String, Map<String, Double>> cacheWeightsCatalog;
 
-        public MutexWeightCache() {
+        public MutualExclusiveWeightCache() {
             cacheWeightsCatalog = new HashMap<>();
         }
 

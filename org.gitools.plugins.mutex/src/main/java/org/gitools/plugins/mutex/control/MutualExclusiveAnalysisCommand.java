@@ -34,18 +34,18 @@ import org.gitools.ui.core.commands.HeatmapCommand;
 import java.util.ArrayList;
 
 
-public class MutalExclusiveAnalysisCommand extends HeatmapCommand {
+public class MutualExclusiveAnalysisCommand extends HeatmapCommand {
 
 
     private Heatmap results;
     private MutualExclusiveAnalysis analysis;
 
-    public MutalExclusiveAnalysisCommand(MatrixDimensionKey testDimensionKey,
-                                         String colGroupsPattern,
-                                         String rowGroupsPattern,
-                                         boolean isAllColumnsGroup,
-                                         int permutations,
-                                         boolean discardEmpty) {
+    public MutualExclusiveAnalysisCommand(MatrixDimensionKey testDimensionKey,
+                                          String colGroupsPattern,
+                                          String rowGroupsPattern,
+                                          boolean isAllColumnsGroup,
+                                          int permutations,
+                                          boolean discardEmpty) {
         super("");
 
 
@@ -56,7 +56,7 @@ public class MutalExclusiveAnalysisCommand extends HeatmapCommand {
 
     }
 
-    public MutalExclusiveAnalysisCommand(MutualExclusiveAnalysis analysis) {
+    public MutualExclusiveAnalysisCommand(MutualExclusiveAnalysis analysis) {
         super("");
         this.analysis = analysis;
     }  
