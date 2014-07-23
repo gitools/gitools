@@ -29,7 +29,6 @@ import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.components.IEditor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.persistence.FileFormat;
@@ -63,7 +62,6 @@ import org.gitools.utils.MemoryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
@@ -98,7 +96,7 @@ public class HeatmapEditor extends AbstractEditor {
         //weld requirement
     }
 
-    public HeatmapEditor(Heatmap heatmap) {
+    public HeatmapEditor(final Heatmap heatmap) {
 
         IResourceLocator locator = heatmap.getLocator();
         if (locator != null && locator.getURL().getProtocol().equals("file")) {
@@ -116,7 +114,9 @@ public class HeatmapEditor extends AbstractEditor {
 
         setIcon(IconUtils.getIconResource(IconNames.heatmap16));
 
-        if (heatmap.getTitle() == null) {
+        if (!Strings.isNullOrEmpty(heatmap.getTitle())) {
+            setName(heatmap.getTitle());
+        } else {
             heatmap.setTitle(getName());
         }
 
@@ -139,6 +139,12 @@ public class HeatmapEditor extends AbstractEditor {
         heatmap.getColumns().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().getTopLayer().getDecorator().addPropertyChangeListener(dirtyListener);
+        heatmap.addPropertyChangeListener(Heatmap.PROPERTY_TITLE, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                setName(heatmap.getTitle());
+            }
+        });
 
         // Create a timer that watches every 5 seconds the available memory
         // and detach the heatmap if it is below a minimum threshold.

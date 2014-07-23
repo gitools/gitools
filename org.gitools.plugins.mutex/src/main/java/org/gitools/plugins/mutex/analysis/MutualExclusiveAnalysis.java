@@ -175,7 +175,7 @@ public class MutualExclusiveAnalysis extends Analysis {
         this.results = results;
 
         Heatmap heatmap = results.get();
-        heatmap.setTitle(getTitle() + "(Results)");
+        heatmap.setTitle(getTitle() + " (Results)");
 
         heatmap.setAuthorName(Settings.get().getAuthorName());
         heatmap.setAuthorEmail(Settings.get().getAuthorEmail());
