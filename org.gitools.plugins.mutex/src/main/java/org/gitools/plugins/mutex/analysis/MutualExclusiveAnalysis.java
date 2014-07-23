@@ -21,20 +21,33 @@
  */
 package org.gitools.plugins.mutex.analysis;
 
+import com.google.common.base.Strings;
 import org.gitools.analysis.Analysis;
-import org.gitools.api.matrix.IMatrix;
+import org.gitools.analysis.clustering.ClusteringData;
+import org.gitools.analysis.clustering.ClusteringException;
+import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
+import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
+import org.gitools.api.analysis.Clusters;
 import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
 import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
 import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
+import org.gitools.matrix.modulemap.HashModuleMap;
+import org.gitools.ui.platform.settings.Settings;
+import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 @XmlRootElement
 public class MutualExclusiveAnalysis extends Analysis {
@@ -45,13 +58,13 @@ public class MutualExclusiveAnalysis extends Analysis {
     private ResourceReference<Heatmap> results;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
-    private ResourceReference<IMatrix> data;
+    private ResourceReference<Heatmap> data;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
-    private ResourceReference<IModuleMap> testGroupsModuleMap;
+    private ResourceReference<IModuleMap> rowsModuleMap;
 
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
-    private ResourceReference<IModuleMap> weightGroupsModuleMap;
+    private ResourceReference<IModuleMap> columnsModuleMap;
 
     private IMatrixDimension testDimension;
 
@@ -63,7 +76,35 @@ public class MutualExclusiveAnalysis extends Analysis {
 
     private boolean discardEmpty = false;
 
-    public MutualExclusiveAnalysis() {
+    public MutualExclusiveAnalysis(Heatmap heatmap) {
+        setData(heatmap);
+    }
+
+    public static HashModuleMap createModules(String columnPattern, boolean allItemGroup, HeatmapDimension columns) {
+
+        HashModuleMap moduleMap = new HashModuleMap();
+
+        Map<String, Set<String>> colGroups = new HashMap<>();
+        if (!Strings.isNullOrEmpty(columnPattern)) {
+            ClusteringData data = new AnnPatClusteringData(columns, columnPattern);
+            Clusters results = null;
+            try {
+                results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
+            } catch (ClusteringException e) {
+                e.printStackTrace();
+            }
+            colGroups = results.getClustersMap();
+        }
+
+        for (String key : colGroups.keySet()) {
+            moduleMap.addMapping(key, colGroups.get(key));
+        }
+
+        if (allItemGroup) {
+            moduleMap.addMapping("All " + columns.getId().getLabel() + "s", columns.toList());
+        }
+
+        return moduleMap;
     }
 
 
@@ -73,41 +114,43 @@ public class MutualExclusiveAnalysis extends Analysis {
 
     public void setTestDimension(IMatrixDimension testDimension) {
         this.testDimension = testDimension;
+        this.weightDimension = data.get().getDimension(testDimension.getId().equals(MatrixDimensionKey.ROWS) ?
+                MatrixDimensionKey.COLUMNS : MatrixDimensionKey.ROWS);
     }
 
-    public ResourceReference<IModuleMap> getTestGroupsModuleMap() {
-        return testGroupsModuleMap;
+    public ResourceReference<IModuleMap> getRowsModuleMap() {
+        return rowsModuleMap;
     }
 
-    public void setTestGroupsModuleMap(ResourceReference<IModuleMap> testGroupsModuleMap) {
-        this.testGroupsModuleMap = testGroupsModuleMap;
+    public void setRowsModuleMap(ResourceReference<IModuleMap> rowsModuleMap) {
+        this.rowsModuleMap = rowsModuleMap;
     }
 
-    public void setTestGroupsModuleMap(IModuleMap testGroupsModuleMap) {
-        setTestGroupsModuleMap(new ResourceReference<>("testGroupsModuleMap", testGroupsModuleMap));
+    public void setRowModuleMap(IModuleMap rowsModuleMap) {
+        setRowsModuleMap(new ResourceReference<>("rowsModuleMap", rowsModuleMap));
     }
 
-    public ResourceReference<IModuleMap> getWeightGroupsModuleMap() {
-        return weightGroupsModuleMap;
+    public ResourceReference<IModuleMap> getColumnsModuleMap() {
+        return columnsModuleMap;
     }
 
-    public void setWeightGroupsModuleMap(ResourceReference<IModuleMap> weightGroupsModuleMap) {
-        this.weightGroupsModuleMap = weightGroupsModuleMap;
+    public void setColumnsModuleMap(ResourceReference<IModuleMap> columnsModuleMap) {
+        this.columnsModuleMap = columnsModuleMap;
     }
 
-    public void setWeightGroupsModuleMap(IModuleMap weightGroupsModuleMap) {
-        setWeightGroupsModuleMap(new ResourceReference<>("weightGroupsModuleMap", weightGroupsModuleMap));
+    public void setColumnsModuleMap(IModuleMap columnsModuleMap) {
+        setColumnsModuleMap(new ResourceReference<>("setColumnsModuleMap", columnsModuleMap));
     }
 
-    public ResourceReference<IMatrix> getData() {
+    public ResourceReference<Heatmap> getData() {
         return data;
     }
 
-    public void setData(ResourceReference<IMatrix> data) {
+    private void setData(ResourceReference<Heatmap> data) {
         this.data = data;
     }
 
-    public void setData(IMatrix data) {
+    private void setData(Heatmap data) {
         setData(new ResourceReference<>("data", data));
     }
 
@@ -130,7 +173,14 @@ public class MutualExclusiveAnalysis extends Analysis {
 
     public void setResults(ResourceReference<Heatmap> results) {
         this.results = results;
-        HeatmapLayers layers = results.get().getLayers();
+
+        Heatmap heatmap = results.get();
+        heatmap.setTitle(getTitle() + "(Results)");
+
+        heatmap.setAuthorName(Settings.get().getAuthorName());
+        heatmap.setAuthorEmail(Settings.get().getAuthorEmail());
+
+        HeatmapLayers layers = heatmap.getLayers();
         layers.get(MutualExclusiveResult.COOC_PVALUE).setDecorator(new PValueDecorator());
         layers.get(MutualExclusiveResult.MUTEX_PVALUE).setDecorator(new PValueDecorator());
         layers.get(MutualExclusiveResult.Z_SCORE).setDecorator(new ZScoreDecorator());
@@ -139,10 +189,6 @@ public class MutualExclusiveAnalysis extends Analysis {
 
     public IMatrixDimension getWeightDimension() {
         return weightDimension;
-    }
-
-    public void setWeightDimension(IMatrixDimension weightDimension) {
-        this.weightDimension = weightDimension;
     }
 
     public int getIterations() {

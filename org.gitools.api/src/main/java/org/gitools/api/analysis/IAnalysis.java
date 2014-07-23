@@ -1,6 +1,6 @@
 /*
  * #%L
- * org.gitools.ui.app
+ * org.gitools.api
  * %%
  * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
@@ -19,13 +19,16 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.analysis.htest.wizard;
+package org.gitools.api.analysis;
 
-import org.gitools.analysis.Analysis;
-import org.gitools.ui.platform.wizard.AbstractWizard;
+import java.util.Date;
 
-public abstract class AnalysisWizard<A extends Analysis> extends AbstractWizard {
+public interface IAnalysis {
+    Date getStartTime();
 
-    public abstract A createAnalysis();
+    long getElapsedTime();
 
+    void setStartTime(Date startTime);
+
+    void setElapsedTime(long elapsedTime);
 }

@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.analysis.wizard;
+package org.gitools.ui.core.components.wizard;
 
 import org.gitools.resource.Property;
 import org.gitools.ui.platform.IconUtils;

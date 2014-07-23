@@ -94,7 +94,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                     //TEST
                     monitor.begin("Analyse ...", 1);
 
-                    MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis();
+                    MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis(getHeatmap());
 
                     IMatrixDimension testDimension = hm.getContents().getDimension(dimensionKey);
                     ArrayList<String> selected = newArrayList(

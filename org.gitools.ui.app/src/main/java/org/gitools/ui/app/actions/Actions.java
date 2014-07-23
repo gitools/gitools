@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.gitools.plugins.mutex.MutualExclusiveAnalysisAction;
 import org.gitools.plugins.mutex.actions.MutualExclusiveSortAction;
 import org.gitools.ui.app.actions.analysis.*;
 import org.gitools.ui.app.actions.data.*;

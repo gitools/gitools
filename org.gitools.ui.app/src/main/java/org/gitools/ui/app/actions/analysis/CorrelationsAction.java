@@ -27,8 +27,8 @@ import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.wizard.CorrelationAnalysisWizard;
-import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.wizard.AnalysisWizard;
 
 import java.awt.event.KeyEvent;
 

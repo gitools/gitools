@@ -21,12 +21,7 @@
  */
 package org.gitools.plugins.mutex.control;
 
-import com.google.common.base.Strings;
-import org.gitools.analysis.clustering.ClusteringData;
-import org.gitools.analysis.clustering.ClusteringException;
-import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
-import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
-import org.gitools.api.analysis.Clusters;
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.matrix.MatrixDimensionKey;
@@ -34,161 +29,78 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.modulemap.HashModuleMap;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
-import org.gitools.ui.core.commands.HeaderCommand;
-import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
+import org.gitools.ui.core.commands.HeatmapCommand;
 
-import java.util.*;
-
-
-public class MutalExclusiveAnalysisCommand extends HeaderCommand {
+import java.util.ArrayList;
 
 
-    private static boolean discardEmpty;
-    private final String colGroupsPattern;
-    private final String rowGroupsPattern;
-    private final boolean isAllColumnsGroup;
-    private static int permutations;
+public class MutalExclusiveAnalysisCommand extends HeatmapCommand {
+
+
     private Heatmap results;
+    private MutualExclusiveAnalysis analysis;
 
-    public MutalExclusiveAnalysisCommand(String heatmap,
-                                         MatrixDimensionKey sortDimension,
-                                         String sort,
+    public MutalExclusiveAnalysisCommand(MatrixDimensionKey testDimensionKey,
                                          String colGroupsPattern,
                                          String rowGroupsPattern,
                                          boolean isAllColumnsGroup,
                                          int permutations,
                                          boolean discardEmpty) {
-        super(heatmap, sortDimension, sort, colGroupsPattern);
+        super("");
 
-        this.colGroupsPattern = colGroupsPattern;
-        this.rowGroupsPattern = rowGroupsPattern;
-        this.isAllColumnsGroup = isAllColumnsGroup;
-        this.permutations = permutations;
-        this.discardEmpty = discardEmpty;
+
+
+        analysis = new MutualExclusiveAnalysis(heatmap);
+        prepareAnalysisDetails(analysis, heatmap, testDimensionKey, colGroupsPattern, rowGroupsPattern, isAllColumnsGroup,
+                permutations, discardEmpty);
+
     }
 
+    public MutalExclusiveAnalysisCommand(MutualExclusiveAnalysis analysis) {
+        super("");
+        this.analysis = analysis;
+    }  
 
     @Override
     public void execute(IProgressMonitor monitor) throws CommandException {
         super.execute(monitor);
-
-        Map<String, Set<String>> columnGroups = getColumnGroups();
-        Map<String, Set<String>> rowGroups = getRowGroups();
-
-        MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis();
-
-        MutalExclusiveAnalysisCommand.prepareAnalysis(analysis, heatmap.getContents().getDimension(heatmapDimension.getId()), columnGroups, rowGroups, heatmap);
 
         MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
         processor.run(monitor);
 
         results = analysis.getResults().get();
 
-
-        //todo add via editor manager (Weld not working welll
-        /*IEditorManager man = ApplicationContext.getEditorManger();
-        man.getEditors();
-        man.createEditor(results);*/
-    }
-
-
-    public Heatmap getResults() {
-        return results;
-    }
-
-    public Map<String, Set<String>> getColumnGroups() {
-
-        Map<String, Set<String>> colGroups = new HashMap<>();
-        if (!Strings.isNullOrEmpty(colGroupsPattern)) {
-            ClusteringData data = new AnnPatClusteringData(heatmap.getColumns(), colGroupsPattern);
-            Clusters results = null;
-            try {
-                results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
-            } catch (ClusteringException e) {
-                e.printStackTrace();
-            }
-            colGroups = results.getClustersMap();
-        }
-
-        if (isAllColumnsGroup) {
-            colGroups.put("All columns", new HashSet<>(heatmap.getColumns().toList()));
-        }
-
-
-        return colGroups;
-    }
-
-
-    public Map<String, Set<String>> getRowGroups() {
-
-        ClusteringData data = new AnnPatClusteringData(heatmap.getRows(), rowGroupsPattern);
-        Clusters results = null;
-        try {
-            results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
-        } catch (ClusteringException e) {
-            e.printStackTrace();
-        }
-        return results.getClustersMap();
-
+        ApplicationContext.getEditorManger().addEditor(results);
     }
 
     public static void prepareSingularAnalysis(MutualExclusiveAnalysis analysis, IMatrixDimension testDimension, ArrayList<String> singleModuleIds, Heatmap hm) {
-        HashModuleMap weightMap = new HashModuleMap();
-        HashModuleMap testMap = new HashModuleMap();
+        HashModuleMap colMap = new HashModuleMap();
+        HashModuleMap rowMap = new HashModuleMap();
         IMatrixDimension weightDimension = testDimension.getId().equals(MatrixDimensionKey.ROWS) ?
                 hm.getDimension(MatrixDimensionKey.COLUMNS) :
                 hm.getDimension(MatrixDimensionKey.ROWS);
 
-        weightMap.addMapping(weightDimension.getId().getLabel(), hm.newPosition().iterate(weightDimension));
+        colMap.addMapping(weightDimension.getId().getLabel(), hm.newPosition().iterate(weightDimension));
 
-        testMap.addMapping(testDimension.getId().getLabel(), singleModuleIds);
+        rowMap.addMapping(testDimension.getId().getLabel(), singleModuleIds);
 
         analysis.setTestDimension(testDimension);
-        analysis.setTestGroupsModuleMap(testMap);
-        analysis.setWeightDimension(weightDimension);
-        analysis.setWeightGroupsModuleMap(weightMap);
-        analysis.setData(hm);
+        analysis.setRowModuleMap(rowMap);
+        analysis.setColumnsModuleMap(colMap);
         analysis.setLayer(hm.getLayers().getTopLayer().getId());
         analysis.setEventFunction(hm.getLayers().get(analysis.getLayer()).getEventFunction());
     }
 
-    public static void prepareAnalysis(MutualExclusiveAnalysis analysis,
-                                       IMatrixDimension testDimension,
-                                       Map<String, Set<String>> columnGroups,
-                                       Map<String, Set<String>> rowGroups,
-                                       Heatmap hm) {
+    private void prepareAnalysisDetails(MutualExclusiveAnalysis analysis, Heatmap heatmap, MatrixDimensionKey testDimension, String colGroupsPattern, String rowGroupsPattern, boolean isAllColumnsGroup, int permutations, boolean discardEmpty) {
 
-        HashModuleMap weightMap = new HashModuleMap();
-        HashModuleMap testMap = new HashModuleMap();
-        IMatrixDimension weightDimension = testDimension.getId().equals(MatrixDimensionKey.ROWS) ?
-                hm.getDimension(MatrixDimensionKey.COLUMNS) :
-                hm.getDimension(MatrixDimensionKey.ROWS);
-
-        if (weightDimension.getId().equals(MatrixDimensionKey.ROWS)) {
-            //interchagne column and rows group
-            Map<String, Set<String>> tempGroup = rowGroups;
-            rowGroups = columnGroups;
-            columnGroups = tempGroup;
-        }
-
-        for (String key : columnGroups.keySet()) {
-            weightMap.addMapping(key, columnGroups.get(key));
-        }
-
-        for (String key : rowGroups.keySet()) {
-            testMap.addMapping(key, rowGroups.get(key));
-        }
-
-
-        analysis.setTestDimension(testDimension);
-        analysis.setTestGroupsModuleMap(testMap);
-        analysis.setWeightDimension(weightDimension);
-        analysis.setWeightGroupsModuleMap(weightMap);
-        analysis.setData(hm);
-        analysis.setLayer(hm.getLayers().getTopLayer().getId());
-        analysis.setEventFunction(hm.getLayers().get(analysis.getLayer()).getEventFunction());
+        analysis.setTestDimension(heatmap.getDimension(testDimension));
+        analysis.setLayer(heatmap.getLayers().getTopLayer().getId());
+        analysis.setEventFunction(heatmap.getLayers().get(analysis.getLayer()).getEventFunction());
         analysis.setIterations(permutations < 100 ? 100 : permutations);
         analysis.setDiscardEmpty(discardEmpty);
+        analysis.setRowModuleMap(MutualExclusiveAnalysis.createModules(rowGroupsPattern, false, heatmap.getRows()));
+        analysis.setColumnsModuleMap(MutualExclusiveAnalysis.createModules(colGroupsPattern, isAllColumnsGroup, heatmap.getColumns()));
+
     }
 
 }
