@@ -146,13 +146,4 @@ public abstract class AbstractEditor<M> extends AbstractView implements IEditor<
 
     }
 
-    @Override
-    public boolean canCreate(Object object) {
-        return false;
-    }
-
-    @Override
-    public IEditor create(Object object) {
-        return null;
-    }
 }

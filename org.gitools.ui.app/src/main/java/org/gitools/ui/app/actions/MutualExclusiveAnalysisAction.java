@@ -21,7 +21,9 @@
  */
 package org.gitools.ui.app.actions;
 
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.components.IEditor;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.plugins.mutex.control.MutalExclusiveAnalysisCommand;
@@ -29,10 +31,13 @@ import org.gitools.plugins.mutex.ui.MutualExclusiveAnalysisPage;
 import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
+import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.EditorManager;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.PageDialog;
 
+import javax.inject.Inject;
 import java.awt.event.ActionEvent;
 import java.util.concurrent.CountDownLatch;
 
@@ -40,7 +45,6 @@ import java.util.concurrent.CountDownLatch;
 //TODO: move to plugin when EditorManager weld works well!!!
 
 public class MutualExclusiveAnalysisAction extends HeatmapAction {
-
 
     public MutualExclusiveAnalysisAction() {
         super("<html>Mutual exclusion & Co-occurrence</html>");
@@ -82,7 +86,9 @@ public class MutualExclusiveAnalysisAction extends HeatmapAction {
                     e1.printStackTrace();
                 }
 
-                Application.get().getEditorsPanel().addEditor(new HeatmapEditor(command.getResults()));
+
+                ApplicationContext.getEditorManger().addEditor(command.getResults());
+                //Application.get().getEditorsPanel().addEditor(new HeatmapEditor(command.getResults()));
             }
         });
 

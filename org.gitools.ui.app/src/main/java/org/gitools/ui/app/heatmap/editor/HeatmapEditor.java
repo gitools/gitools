@@ -79,7 +79,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
 
-@ApplicationScoped
 public class HeatmapEditor extends AbstractEditor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HeatmapEditor.class);
@@ -94,6 +93,10 @@ public class HeatmapEditor extends AbstractEditor {
     private int lastMouseRow = -1;
     private int lastMouseCol = -1;
     private Timer timer;
+
+    public HeatmapEditor() {
+        //weld requirement
+    }
 
     public HeatmapEditor(Heatmap heatmap) {
 
@@ -501,16 +504,4 @@ public class HeatmapEditor extends AbstractEditor {
         }
     }
 
-    @Override
-    public boolean canCreate(Object object) {
-        return (object instanceof Heatmap) ? true : false;
-    }
-
-    @Override
-    public IEditor create(Object object) {
-        if (object instanceof Heatmap) {
-            return new HeatmapEditor((Heatmap) object);
-        }
-        return null;
-    }
 }

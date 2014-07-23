@@ -1,6 +1,6 @@
 /*
  * #%L
- * org.gitools.api
+ * org.gitools.ui.app
  * %%
  * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
@@ -19,11 +19,27 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.api.components;
+package org.gitools.ui.app.heatmap.editor;
 
-public interface IEditorManager {
+import org.gitools.api.components.IEditor;
+import org.gitools.api.components.IEditorCreator;
+import org.gitools.heatmap.Heatmap;
 
-    IEditor createEditor(Object object);
+import javax.enterprise.context.ApplicationScoped;
 
-    void addEditor(Object object);
+@ApplicationScoped
+public class HeatmapEditorCreator implements IEditorCreator {
+
+    @Override
+    public boolean canCreate(Object object) {
+        return (object instanceof Heatmap) ? true : false;
+    }
+
+    @Override
+    public IEditor create(Object object) {
+        if (object instanceof Heatmap) {
+            return new HeatmapEditor((Heatmap) object);
+        }
+        return null;
+    }
 }

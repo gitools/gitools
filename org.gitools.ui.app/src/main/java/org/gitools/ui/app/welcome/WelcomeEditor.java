@@ -53,7 +53,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.Map;
 
-@ApplicationScoped
 public class WelcomeEditor extends HtmlEditor {
 
     private static final long serialVersionUID = 6851947500231401412L;

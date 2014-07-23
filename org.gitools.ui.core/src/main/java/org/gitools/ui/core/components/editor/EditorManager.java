@@ -23,6 +23,7 @@ package org.gitools.ui.core.components.editor;
 
 
 import org.gitools.api.components.IEditor;
+import org.gitools.api.components.IEditorCreator;
 import org.gitools.api.components.IEditorManager;
 import org.gitools.ui.core.Application;
 
@@ -40,27 +41,23 @@ public class EditorManager implements IEditorManager {
 
     @Inject
     @Any
-    private Instance<AbstractEditor> editorIterator;
-    private List<IEditor> editors;
+    private Instance<IEditorCreator> iterator;
+    private List<IEditorCreator> creators;
 
     public EditorManager() {
     }
 
     @PostConstruct
     public void init() {
-        editors = new ArrayList<>();
-        for (IEditor editor : editorIterator) {
-            editors.add(editor);
+        creators = new ArrayList<>();
+        for (IEditorCreator editor : iterator) {
+            creators.add(editor);
         }
-    }
-
-    public List<IEditor> getEditors() {
-        return editors;
     }
 
     @Override
     public IEditor createEditor(Object object) {
-        for (IEditor editor : editorIterator) {
+        for (IEditorCreator editor : iterator) {
             if(editor.canCreate(object)) {
                 return editor.create(object);
             }

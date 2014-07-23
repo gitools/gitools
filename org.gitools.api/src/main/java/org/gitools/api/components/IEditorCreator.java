@@ -1,8 +1,8 @@
 /*
  * #%L
- * org.gitools.api
+ * gitools-ui-platform
  * %%
- * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
+ * Copyright (C) 2013 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as
@@ -21,9 +21,10 @@
  */
 package org.gitools.api.components;
 
-public interface IEditorManager {
+public interface IEditorCreator {
 
-    IEditor createEditor(Object object);
+    boolean canCreate(Object object);
 
-    void addEditor(Object object);
+    IEditor create(Object object);
+
 }
