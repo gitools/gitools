@@ -19,36 +19,28 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.heatmap.editor;
+package org.gitools.ui.app.analysis.overlapping;
 
+
+import org.gitools.analysis.overlapping.OverlappingAnalysis;
 import org.gitools.api.components.IEditor;
 import org.gitools.api.components.IEditorCreator;
-import org.gitools.api.modulemap.IModuleMap;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.heatmap.decorator.impl.BinaryDecorator;
-import org.gitools.matrix.modulemap.ModuleMapUtils;
 
 import javax.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class HeatmapEditorCreator implements IEditorCreator {
+public class OverlappingAnalysisEditorCreator implements IEditorCreator{
 
     @Override
     public boolean canCreate(Object object) {
-        return (object instanceof Heatmap) || (IModuleMap.class.isAssignableFrom(object.getClass()));
+        return object instanceof OverlappingAnalysis;
     }
 
     @Override
     public IEditor create(Object object) {
-        if (object instanceof Heatmap) {
-            return new HeatmapEditor((Heatmap) object);
-
-        } else if (IModuleMap.class.isAssignableFrom(object.getClass())) {
-            Heatmap heatmap = new Heatmap(ModuleMapUtils.convertToMatrix((IModuleMap) object));
-            heatmap.getLayers().iterator().next().setDecorator(new BinaryDecorator());
-            return new HeatmapEditor(heatmap);
+        if (canCreate(object)) {
+            return new OverlappingAnalysisEditor((OverlappingAnalysis) object);
         }
-
         return null;
     }
 }
