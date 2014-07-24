@@ -25,9 +25,7 @@ import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.correlation.CorrelationProcessor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.analysis.correlation.editor.CorrelationAnalysisEditor;
 import org.gitools.ui.app.analysis.correlation.wizard.CorrelationAnalysisWizard;
-import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.wizard.AnalysisWizard;
 
 import java.awt.event.KeyEvent;
@@ -36,11 +34,6 @@ public class CorrelationsAction extends AbstractAnalysisAction<CorrelationAnalys
 
     public CorrelationsAction() {
         super("Correlations...", KeyEvent.VK_C);
-    }
-
-    @Override
-    protected AbstractEditor newEditor(CorrelationAnalysis analysis) {
-        return new CorrelationAnalysisEditor(analysis);
     }
 
     @Override

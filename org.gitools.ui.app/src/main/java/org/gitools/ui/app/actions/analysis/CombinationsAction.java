@@ -25,9 +25,7 @@ import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.combination.CombinationAnalysis;
 import org.gitools.analysis.combination.CombinationProcessor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.analysis.combination.editor.CombinationAnalysisEditor;
 import org.gitools.ui.app.analysis.combination.wizard.CombinationAnalysisWizard;
-import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.wizard.AnalysisWizard;
 
 import java.awt.event.KeyEvent;
@@ -36,11 +34,6 @@ public class CombinationsAction extends AbstractAnalysisAction<CombinationAnalys
 
     public CombinationsAction() {
         super("Combinations...", KeyEvent.VK_M);
-    }
-
-    @Override
-    protected AbstractEditor newEditor(CombinationAnalysis analysis) {
-        return new CombinationAnalysisEditor(analysis);
     }
 
     @Override

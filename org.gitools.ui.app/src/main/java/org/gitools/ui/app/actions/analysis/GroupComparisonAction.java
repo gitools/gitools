@@ -25,9 +25,7 @@ import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonProcessor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.analysis.groupcomparison.editor.GroupComparisonAnalysisEditor;
 import org.gitools.ui.app.analysis.groupcomparison.wizard.GroupComparisonAnalysisWizard;
-import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.wizard.AnalysisWizard;
 
 import java.awt.event.KeyEvent;
@@ -36,11 +34,6 @@ public class GroupComparisonAction extends AbstractAnalysisAction<GroupCompariso
 
     public GroupComparisonAction() {
         super("Group comparison...", KeyEvent.VK_G);
-    }
-
-    @Override
-    protected AbstractEditor newEditor(GroupComparisonAnalysis analysis) {
-        return new GroupComparisonAnalysisEditor(analysis);
     }
 
     @Override

@@ -26,9 +26,7 @@ import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentProcessor;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.ui.app.actions.analysis.AbstractAnalysisAction;
-import org.gitools.ui.app.analysis.htest.editor.EnrichmentAnalysisEditor;
 import org.gitools.ui.app.analysis.htest.wizard.EnrichmentAnalysisWizard;
-import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.wizard.AnalysisWizard;
 import org.gitools.ui.platform.icons.IconNames;
 
@@ -40,11 +38,6 @@ public class EnrichmentAnalysisAction extends AbstractAnalysisAction<EnrichmentA
         super("Enrichment...", KeyEvent.VK_E);
         setDesc("Run an enrichment analysis");
         setSmallIconFromResource(IconNames.empty16);
-    }
-
-    @Override
-    protected AbstractEditor newEditor(EnrichmentAnalysis analysis) {
-        return new EnrichmentAnalysisEditor(analysis);
     }
 
     @Override
