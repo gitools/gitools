@@ -61,7 +61,7 @@ public class ExportScaleImageAction extends HeatmapAction {
     public void actionPerformed(ActionEvent e) {
 
         Heatmap hm = getHeatmap();
-        HeatmapLayer layer = hm.getLayers().getTopLayer();
+        final HeatmapLayer layer = hm.getLayers().getTopLayer();
         Decorator cd = layer.getDecorator();
 
         final ITextFormatter textFormatter = layer.getShortFormatter();
@@ -111,7 +111,7 @@ public class ExportScaleImageAction extends HeatmapAction {
                     g.setColor(Color.WHITE);
                     g.fillRect(0, 0, size.width, size.height);
 
-                    drawer.draw(g, new Rectangle(new Point(), size), new Rectangle(new Point(), size));
+                    drawer.draw(g, new Rectangle(new Point(), size), new Rectangle(new Point(), size), layer.getName());
 
                     ImageIO.write(bi, formatExtension, file);
 

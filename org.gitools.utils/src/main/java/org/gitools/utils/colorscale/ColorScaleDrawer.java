@@ -75,7 +75,7 @@ public class ColorScaleDrawer {
         this.scale = (NumericColorScale) scale;
     }
 
-    public void draw(Graphics2D g, Rectangle bounds, Rectangle clip) {
+    public void draw(Graphics2D g, Rectangle bounds, Rectangle clip, String name) {
 
         g.setColor(bgColor);
         g.fillRect(bounds.x, bounds.y, bounds.width, bounds.height);
@@ -163,6 +163,10 @@ public class ColorScaleDrawer {
             rangeXLeft = rangeEnd;
 
         }
+
+        g.setFont(g.getFont().deriveFont(Font.BOLD));
+        g.drawString(name, scaleXLeft, scaleYBottom + legendPadding * 2 + g.getFontMetrics().getHeight()*2);
+
     }
 
     private double getValueForX(int x, String type, int minX, int maxX, double minValue, double maxValue) {
@@ -216,7 +220,7 @@ public class ColorScaleDrawer {
         if (legendEnabled) {
             BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
             Graphics g = image.getGraphics();
-            height += g.getFontMetrics(legendFont).getHeight() + legendPadding;
+            height += (g.getFontMetrics(legendFont).getHeight() + legendPadding) * 2 ;
         }
 
         int width = widthPadding + 20;
