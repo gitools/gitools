@@ -26,8 +26,8 @@ import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.pages.common.PatternSourcePage;
+import org.gitools.ui.platform.dialog.GlassPanePageDialog;
 import org.gitools.ui.platform.icons.IconNames;
-import org.gitools.ui.platform.wizard.PageDialog;
 
 import java.awt.event.ActionEvent;
 
@@ -46,11 +46,13 @@ public class AnnotationAction extends HeatmapDimensionAction {
 
         PatternSourcePage annotationPage = new PatternSourcePage(heatmapDimension, true, true);
         annotationPage.setTitle("View and load available " + heatmapDimension.getId().getLabel() + " annotations");
-        PageDialog tdlg = new PageDialog(Application.get(), annotationPage);
 
-        tdlg.setTitle("Header type selection");
-        tdlg.open();
-        if (tdlg.isCancelled())
+        GlassPanePageDialog p = new GlassPanePageDialog(Application.get(), annotationPage);
+        //PageDialog tdlg = new PageDialog(Application.get(), annotationPage);
+
+        //tdlg.setTitle("Header type selection");
+        p.open();
+        if (p.isCancelled())
             return;
 
     }

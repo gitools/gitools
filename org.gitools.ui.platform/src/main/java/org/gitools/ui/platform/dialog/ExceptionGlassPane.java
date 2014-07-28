@@ -204,6 +204,11 @@ public class ExceptionGlassPane extends GitoolsGlassPane {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea traceArea;
 
+    @Override
+    protected void escapePressed() {
+        doClose();
+    }
+
     public Container getContentPane() {
         return this;
     }

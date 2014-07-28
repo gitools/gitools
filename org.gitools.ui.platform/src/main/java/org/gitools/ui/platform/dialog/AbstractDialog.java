@@ -26,24 +26,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
-public abstract class AbstractDialog extends JDialog {
+public abstract class AbstractDialog extends JDialog implements IDialog {
 
     private static final long serialVersionUID = 5886096207448862426L;
 
     private DialogHeaderPanel hdrPanel;
 
     private JComponent container;
-
-    /**
-     * A return status code - returned if Cancel button has been pressed
-     */
-    protected static final int RET_CANCEL = 0;
-    /**
-     * A return status code - returned if OK button has been pressed
-     */
-    public static final int RET_OK = 1;
 
     private int returnStatus = RET_CANCEL;
 
@@ -74,12 +64,11 @@ public abstract class AbstractDialog extends JDialog {
         return rootPane;
     }
 
-    protected abstract void escapePressed();
-
     protected AbstractDialog(Window owner, String title, Icon icon, Dimension minimum, Dimension prefered) {
         this(owner, title, "", "", MessageStatus.INFO, icon, minimum, prefered);
     }
 
+    @Override
     public void open() {
 
         if (!SwingUtilities.isEventDispatchThread()) {
@@ -89,7 +78,6 @@ public abstract class AbstractDialog extends JDialog {
         super.setVisible(true);
     }
 
-    @Override
     public void setVisible(boolean b) {
 
         if (b) {
@@ -101,7 +89,7 @@ public abstract class AbstractDialog extends JDialog {
         super.setVisible(b);
     }
 
-    protected JComponent getContainer() {
+    public JComponent getContainer() {
         return container;
     }
 
@@ -124,7 +112,7 @@ public abstract class AbstractDialog extends JDialog {
 
         container = createContainer();
 
-        final DialogButtonsPanel buttonsPanel = new DialogButtonsPanel(createButtons());
+        final DialogButtonsPanel buttonsPanel = getButtonsPanel();
 
         JPanel bp = new JPanel();
         bp.setLayout(new BorderLayout());
@@ -139,15 +127,23 @@ public abstract class AbstractDialog extends JDialog {
         add(bp, BorderLayout.SOUTH);
     }
 
-    protected DialogHeaderPanel getHeaderPanel() {
+
+    protected void escapePressed() {
+        doClose(returnStatus);
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return false;
+    }
+
+    @Override
+    public DialogHeaderPanel getHeaderPanel() {
         return hdrPanel;
     }
 
-    protected abstract JComponent createContainer();
 
-    protected abstract List<JButton> createButtons();
-
-    protected void doClose(int retStatus) {
+    private void doClose(int retStatus) {
         returnStatus = retStatus;
         setVisible(false);
         dispose();
@@ -156,8 +152,11 @@ public abstract class AbstractDialog extends JDialog {
     /**
      * @return the return status of this dialog - one of RET_OK or RET_CANCEL
      */
+    @Override
     public int getReturnStatus() {
         return returnStatus;
     }
+
+    protected abstract JComponent createContainer();
 
 }

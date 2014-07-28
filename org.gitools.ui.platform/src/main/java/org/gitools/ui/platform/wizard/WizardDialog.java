@@ -33,8 +33,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.*;
-import java.util.List;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 public class WizardDialog extends AbstractDialog {
 
@@ -165,7 +167,7 @@ public class WizardDialog extends AbstractDialog {
     }
 
     @Override
-    protected void escapePressed() {
+    public void escapePressed() {
         cancelActionPerformed();
     }
 
@@ -175,8 +177,7 @@ public class WizardDialog extends AbstractDialog {
         return pagePanel;
     }
 
-    @Override
-    protected List<JButton> createButtons() {
+    public DialogButtonsPanel getButtonsPanel() {
 
         helpButton = new JButton("Help");
         helpButton.addActionListener(new ActionListener() {
@@ -220,10 +221,11 @@ public class WizardDialog extends AbstractDialog {
 
         nextButton.setDefaultCapable(true);
 
-        return Arrays.asList(backButton, nextButton, DialogButtonsPanel.SEPARATOR, cancelButton, DialogButtonsPanel.SEPARATOR, finishButton, DialogButtonsPanel.SEPARATOR, helpButton);
+        return new DialogButtonsPanel(
+                Arrays.asList(backButton, nextButton, DialogButtonsPanel.SEPARATOR, cancelButton, DialogButtonsPanel.SEPARATOR, finishButton, DialogButtonsPanel.SEPARATOR, helpButton));
     }
 
-    private void helpActionPerformed() {
+    public void helpActionPerformed() {
         final IWizard wizard = currentPage.getWizard();
         HelpContext context = currentPage.getHelpContext();
         if (context == null) {
@@ -258,7 +260,7 @@ public class WizardDialog extends AbstractDialog {
         setCurrentPage(wizard.getNextPage(currentPage));
     }
 
-    private void finishActionPerformed() {
+    public void finishActionPerformed() {
         if (currentPage != null) {
             currentPage.updateModel();
             currentPage.getWizard().pageLeft(currentPage);
@@ -270,7 +272,7 @@ public class WizardDialog extends AbstractDialog {
         setVisible(false);
     }
 
-    private void cancelActionPerformed() {
+    public void cancelActionPerformed() {
         if (currentPage != null) {
             currentPage.getWizard().performCancel();
         }

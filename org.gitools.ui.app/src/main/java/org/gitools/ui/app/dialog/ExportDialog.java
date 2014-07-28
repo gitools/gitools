@@ -22,6 +22,7 @@
 package org.gitools.ui.app.dialog;
 
 import org.gitools.ui.platform.dialog.AbstractDialog;
+import org.gitools.ui.platform.dialog.DialogButtonsPanel;
 import org.gitools.ui.platform.dialog.MessageStatus;
 
 import javax.swing.*;
@@ -74,11 +75,25 @@ public class ExportDialog extends AbstractDialog {
     }
 
 
-    @Override
-    protected List<JButton> createButtons() {
+    public DialogButtonsPanel getButtonsPanel() {
         List<JButton> buttons = new ArrayList<JButton>();
         buttons.add(new JButton("Accept"));
         buttons.add(new JButton("Cancel"));
-        return buttons;
+        return new DialogButtonsPanel(buttons);
+    }
+
+    @Override
+    public void helpActionPerformed() {
+        //none
+    }
+
+    @Override
+    public void cancelActionPerformed() {
+
+    }
+
+    @Override
+    public void finishActionPerformed() {
+
     }
 }
