@@ -30,9 +30,9 @@ import org.gitools.ui.app.actions.file.OpenFromFilesystemBrowseAction;
 import org.gitools.ui.app.actions.file.OpenFromGenomeSpaceAction;
 import org.gitools.ui.app.actions.help.ShortcutsAction;
 import org.gitools.ui.app.commands.CommandLoadFile;
-import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.HtmlEditor;
+import org.gitools.ui.core.components.wizard.SaveFileWizard;
 import org.gitools.ui.core.utils.FileChoose;
 import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.platform.dialog.ExceptionGlassPane;
@@ -43,7 +43,6 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 import org.gitools.utils.HttpUtils;
 import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.io.FileOutputStream;

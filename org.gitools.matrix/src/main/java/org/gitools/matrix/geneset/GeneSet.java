@@ -24,12 +24,15 @@ package org.gitools.matrix.geneset;
 
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.api.resource.SemanticVersion;
 
 import java.util.LinkedHashSet;
 
 public class GeneSet extends LinkedHashSet<String> implements IResource {
 
     private IResourceLocator locator;
+    private String title;
+    private SemanticVersion gitoolsVersion;
 
     public GeneSet() {
         super();
@@ -46,5 +49,26 @@ public class GeneSet extends LinkedHashSet<String> implements IResource {
 
     public void setLocator(IResourceLocator locator) {
         this.locator = locator;
+    }
+
+    public SemanticVersion getGitoolsVersion() {
+        if (gitoolsVersion == null) {
+            return new SemanticVersion(SemanticVersion.OLD_VERSION);
+        }
+        return gitoolsVersion;
+    }
+
+    public void setGitoolsVersion(SemanticVersion gitoolsVersion) {
+        this.gitoolsVersion = gitoolsVersion;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        String oldValue = this.title;
+        this.title = title;
+        //firePropertyChange(PROPERTY_TITLE, oldValue, title);
     }
 }

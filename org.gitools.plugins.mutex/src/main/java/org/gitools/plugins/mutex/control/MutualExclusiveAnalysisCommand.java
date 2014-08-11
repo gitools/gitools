@@ -67,10 +67,7 @@ public class MutualExclusiveAnalysisCommand extends HeatmapCommand {
 
         MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
         processor.run(monitor);
-
-        results = analysis.getResults().get();
-
-        ApplicationContext.getEditorManger().addEditor(results);
+        ApplicationContext.getEditorManger().addEditor(analysis);
     }
 
     public static void prepareSingularAnalysis(MutualExclusiveAnalysis analysis, IMatrixDimension testDimension, ArrayList<String> singleModuleIds, Heatmap hm) {

@@ -28,6 +28,7 @@ import org.gitools.resource.Property;
 import org.gitools.ui.core.components.wizard.AnalysisDetailsPage;
 import org.gitools.ui.core.components.wizard.AnalysisWizard;
 import org.gitools.ui.platform.wizard.IWizardPage;
+import org.gitools.utils.textpattern.TextPattern;
 
 import java.util.List;
 
@@ -96,8 +97,11 @@ public class MutualExclusiveAnalysisWizard extends AnalysisWizard<MutualExclusiv
 
         analysis.setProperties(analysisDetailsPage.getAnalysisProperties());
         List<Property> props = analysis.getProperties();
-        props.add(new Property("Column grouping", mutexPage.getColumnGroupsPattern()));
-        props.add(new Property("Rows grouping", mutexPage.getColumnGroupsPattern()));
+        props.add(new Property("Column grouping",
+                new TextPattern(mutexPage.getColumnGroupsPattern()).getVariableTokens().get(0).getVariableName()));
+        props.add(new Property("Rows grouping",
+                new TextPattern(mutexPage.getRowsGroupsPattern()).getVariableTokens().get(0).getVariableName()));
+
 
         analysis.setTestDimension(heatmap.getRows());
         analysis.setLayer(heatmap.getLayers().getTopLayer().getId());
@@ -106,7 +110,6 @@ public class MutualExclusiveAnalysisWizard extends AnalysisWizard<MutualExclusiv
         analysis.setIterations(mutexPage.getPermutations());
         analysis.setRowModuleMap(MutualExclusiveAnalysis.createModules(mutexPage.getRowsGroupsPattern(), false, heatmap.getRows()));
         analysis.setColumnsModuleMap(MutualExclusiveAnalysis.createModules(mutexPage.getColumnGroupsPattern(), false, heatmap.getColumns()));
-
 
         return analysis;
     }

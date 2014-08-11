@@ -28,7 +28,7 @@ import com.alee.managers.notification.NotificationOption;
 import com.alee.managers.notification.WebNotificationPopup;
 import com.brsanthu.googleanalytics.*;
 import org.gitools.api.components.IEditor;
-import org.gitools.resource.SemanticVersion;
+import org.gitools.api.resource.SemanticVersion;
 import org.gitools.ui.core.components.StatusBar;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.editor.EditorsPanel;

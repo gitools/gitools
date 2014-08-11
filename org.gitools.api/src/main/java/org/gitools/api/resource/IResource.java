@@ -29,4 +29,11 @@ public interface IResource {
 
     void setLocator(IResourceLocator locator);
 
+    void setGitoolsVersion(SemanticVersion v);
+
+    SemanticVersion getGitoolsVersion();
+
+    String getTitle();
+
+    void setTitle(String title);
 }

@@ -19,23 +19,22 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.analysis.groupcomparison.editor;
+package org.gitools.plugins.mutex.ui;
 
 import org.apache.velocity.VelocityContext;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
-import org.gitools.analysis.groupcomparison.format.GroupComparisonAnalysisFormat;
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysisFormat;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.components.editor.AnalysisEditor;
 import org.gitools.ui.core.components.editor.EditorsPanel;
-import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 
@@ -46,26 +45,29 @@ import java.util.Map;
 
 
 @ApplicationScoped
-public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupComparisonAnalysis> {
+public class MutualExclusiveAnalysisEditor extends AnalysisEditor<MutualExclusiveAnalysis> {
 
-    public GroupComparisonAnalysisEditor(GroupComparisonAnalysis analysis) {
-        super(analysis, "/vm/analysis/groupcomparison/analysis_details.vm", GroupComparisonAnalysisFormat.EXTENSION);
+    public MutualExclusiveAnalysisEditor(MutualExclusiveAnalysis analysis) {
+        super(analysis, "/vm/analysis_details.vm", MutualExclusiveAnalysisFormat.EXTENSION);
+        setName(analysis.getTitle());
     }
 
     @Override
     protected void prepareContext(VelocityContext context) {
 
-        GroupComparisonAnalysis analysis = getModel();
+        MutualExclusiveAnalysis analysis = getModel();
 
         IResourceLocator fileRef = analysis.getData().getLocator();
 
         context.put("dataFile", fileRef != null ? fileRef.getName() : "Not defined");
 
+        /*
         if (analysis.getMtc().equals("bh")) {
             context.put("mtc", "Benjamini Hochberg FDR");
         } else if (analysis.getMtc().equals("bonferroni")) {
             context.put("mtc", "Bonferroni");
         }
+        */
 
         if (analysis.getProperties().size() > 0) {
             context.put("analysis.attributes", analysis.getProperties());
@@ -94,27 +96,22 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
 
     private void newDataHeatmap() {
 
-        final GroupComparisonAnalysis analysis = getModel();
+        final MutualExclusiveAnalysis analysis = getModel();
 
         if (analysis.getData() == null) {
             Application.get().showNotificationPermanent("Analysis doesn't contain data.");
             return;
         }
 
-        final EditorsPanel editorPanel = Application.get().getEditorsPanel();
-
         JobThread.execute(Application.get(), new JobRunnable() {
             @Override
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Creating new heatmap from data ...", 1);
 
-                final HeatmapEditor editor = new HeatmapEditor(createDataHeatmap(analysis));
-                editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-data", ""));
-
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        editorPanel.addEditor(editor);
+                        ApplicationContext.getEditorManger().addEditor(analysis.getData().get());
                         Application.get().showNotification("Data heatmap created.");
                     }
                 });
@@ -124,12 +121,15 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
 
     private void newResultsHeatmap() {
 
-        final GroupComparisonAnalysis analysis = getModel();
+        final MutualExclusiveAnalysis analysis = getModel();
 
         if (analysis.getResults() == null) {
             Application.get().showNotificationPermanent("Analysis doesn't contain results.");
             return;
         }
+
+        final Heatmap analysisResult = getModel().getResults().get();
+
 
         final EditorsPanel editorPanel = Application.get().getEditorsPanel();
 
@@ -138,17 +138,13 @@ public class GroupComparisonAnalysisEditor extends AnalysisEditor<GroupCompariso
             public void run(IProgressMonitor monitor) {
                 monitor.begin("Obtaining heatmap from results ...", 1);
 
-                final HeatmapEditor editor = new HeatmapEditor(createResultsHeatmap(analysis));
-                editor.setIcon(IconUtils.getIconResource(IconNames.analysisHeatmap16));
-
-                editor.getModel().setMetadata(GroupComparisonAnalysis.CACHE_KEY_GC_ANALYSIS, analysis);
-
-                editor.setName(editorPanel.deriveName(getName(), GroupComparisonAnalysisFormat.EXTENSION, "-results", ""));
+                analysisResult.setMetadata(MutualExclusiveAnalysis.CACHE_KEY_MUTEX_ANALYSIS, analysis);
 
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        editorPanel.addEditor(editor);
+
+                        ApplicationContext.getEditorManger().addEditor(analysisResult);
                         Application.get().showNotification("Heatmap for group comparison results created.");
                     }
                 });

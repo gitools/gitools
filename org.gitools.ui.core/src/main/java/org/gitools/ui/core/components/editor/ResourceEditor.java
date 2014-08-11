@@ -19,20 +19,19 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.platform;
+package org.gitools.ui.core.components.editor;
 
 
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.persistence.FileFormat;
+import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
 import org.gitools.heatmap.format.HeatmapFormat;
 import org.gitools.persistence.locators.UrlResourceLocator;
-import org.gitools.resource.Resource;
-import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.wizard.SaveFileWizard;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.settings.Settings;
@@ -42,7 +41,7 @@ import javax.swing.*;
 import java.io.File;
 import java.net.URISyntaxException;
 
-public abstract class ResourceEditor<R extends Resource> extends AbstractEditor<R> {
+public abstract class ResourceEditor<R extends IResource> extends AbstractEditor<R> {
 
     private R resource;
 

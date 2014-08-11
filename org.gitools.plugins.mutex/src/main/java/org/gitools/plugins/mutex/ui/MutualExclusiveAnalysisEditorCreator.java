@@ -1,6 +1,6 @@
 /*
  * #%L
- * org.gitools.api
+ * org.gitools.ui.app
  * %%
  * Copyright (C) 2013 - 2014 Universitat Pompeu Fabra - Biomedical Genomics group
  * %%
@@ -19,18 +19,27 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.api.analysis;
+package org.gitools.plugins.mutex.ui;
 
-import org.gitools.api.resource.IResource;
+import org.gitools.api.components.IEditor;
+import org.gitools.api.components.IEditorCreator;
+import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
 
-import java.util.Date;
+import javax.enterprise.context.ApplicationScoped;
 
-public interface IAnalysis extends IResource {
-    Date getStartTime();
+@ApplicationScoped
+public class MutualExclusiveAnalysisEditorCreator implements IEditorCreator {
 
-    long getElapsedTime();
+    @Override
+    public boolean canCreate(Object object) {
+        return (object instanceof MutualExclusiveAnalysis);
+    }
 
-    void setStartTime(Date startTime);
-
-    void setElapsedTime(long elapsedTime);
+    @Override
+    public IEditor create(Object object) {
+        if (object instanceof MutualExclusiveAnalysis) {
+            return new MutualExclusiveAnalysisEditor((MutualExclusiveAnalysis) object);
+        }
+        return null;
+    }
 }

@@ -28,7 +28,9 @@ import org.gitools.analysis.clustering.ClusteringException;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.Clusters;
+import org.gitools.api.matrix.IKey;
 import org.gitools.api.matrix.IMatrixDimension;
+import org.gitools.api.matrix.Key;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.api.modulemap.IModuleMap;
 import org.gitools.api.resource.ResourceReference;
@@ -40,10 +42,12 @@ import org.gitools.heatmap.decorator.impl.NonEventToNullFunction;
 import org.gitools.heatmap.decorator.impl.PValueDecorator;
 import org.gitools.heatmap.decorator.impl.ZScoreDecorator;
 import org.gitools.matrix.modulemap.HashModuleMap;
+import org.gitools.resource.Property;
 import org.gitools.ui.platform.settings.Settings;
 import org.gitools.utils.progressmonitor.DefaultProgressMonitor;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.HashMap;
 import java.util.Map;
@@ -51,6 +55,9 @@ import java.util.Set;
 
 @XmlRootElement
 public class MutualExclusiveAnalysis extends Analysis {
+
+    @XmlTransient
+    public static IKey<MutualExclusiveAnalysis> CACHE_KEY_MUTEX_ANALYSIS = new Key<>();
 
     private String layer;
 
@@ -66,18 +73,23 @@ public class MutualExclusiveAnalysis extends Analysis {
     @XmlJavaTypeAdapter(ResourceReferenceXmlAdapter.class)
     private ResourceReference<IModuleMap> columnsModuleMap;
 
-    private IMatrixDimension testDimension;
+    private MatrixDimensionKey testDimensionKey;
 
-    private IMatrixDimension weightDimension;
+    private MatrixDimensionKey weightDimensionKey;
 
     private int iterations = 10000;
 
+    @XmlTransient
     private NonEventToNullFunction eventFunction;
 
     private boolean discardEmpty = false;
 
     public MutualExclusiveAnalysis(Heatmap heatmap) {
         setData(heatmap);
+    }
+
+    public MutualExclusiveAnalysis() {
+        //JAXB requirement
     }
 
     public static HashModuleMap createModules(String columnPattern, boolean allItemGroup, HeatmapDimension columns) {
@@ -109,13 +121,13 @@ public class MutualExclusiveAnalysis extends Analysis {
 
 
     public IMatrixDimension getTestDimension() {
-        return testDimension;
+        return getData().get().getDimension(testDimensionKey);
     }
 
     public void setTestDimension(IMatrixDimension testDimension) {
-        this.testDimension = testDimension;
-        this.weightDimension = data.get().getDimension(testDimension.getId().equals(MatrixDimensionKey.ROWS) ?
-                MatrixDimensionKey.COLUMNS : MatrixDimensionKey.ROWS);
+        this.testDimensionKey = testDimension.getId();
+        this.weightDimensionKey = testDimensionKey.equals(MatrixDimensionKey.ROWS) ?
+                MatrixDimensionKey.COLUMNS : MatrixDimensionKey.ROWS;
     }
 
     public ResourceReference<IModuleMap> getRowsModuleMap() {
@@ -188,7 +200,7 @@ public class MutualExclusiveAnalysis extends Analysis {
     }
 
     public IMatrixDimension getWeightDimension() {
-        return weightDimension;
+        return getData().get().getDimension(weightDimensionKey);
     }
 
     public int getIterations() {
@@ -200,6 +212,7 @@ public class MutualExclusiveAnalysis extends Analysis {
     }
 
     public NonEventToNullFunction getEventFunction() {
+        this.addProperty(new Property("Events", eventFunction.getDescription()));
         return eventFunction;
     }
 

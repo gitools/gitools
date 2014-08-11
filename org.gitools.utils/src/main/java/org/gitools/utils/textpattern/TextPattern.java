@@ -30,6 +30,16 @@ public class TextPattern {
         return tokens;
     }
 
+    public List<VariableToken> getVariableTokens() {
+        List<VariableToken> variableTokens = new ArrayList<>();
+        for (Token t : tokens) {
+            if (t instanceof VariableToken) {
+                variableTokens.add((VariableToken) t);
+            }
+        }
+        return variableTokens;
+    }
+
     private final List<Token> tokens;
 
     public TextPattern(String pattern) {

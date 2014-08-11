@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.wizard;
+package org.gitools.ui.core.components.wizard;
 
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.ui.core.pages.common.BasicSaveFilePage;

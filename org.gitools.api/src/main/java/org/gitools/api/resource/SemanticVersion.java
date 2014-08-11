@@ -19,7 +19,7 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.resource;
+package org.gitools.api.resource;
 
 
 import javax.xml.bind.annotation.XmlAccessType;
