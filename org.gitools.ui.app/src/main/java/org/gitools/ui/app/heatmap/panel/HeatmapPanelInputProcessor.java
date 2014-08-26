@@ -287,10 +287,12 @@ public class HeatmapPanelInputProcessor {
                 }
                 break;
         }
-        Set<String> sel = dimension.getSelected();
-        if (sel.size() > 0) {
-            dimension.move(dir, sel);
-            shiftSelStart(dimension, shift);
+        if (dimension != null) {
+            Set<String> sel = dimension.getSelected();
+            if (sel.size() > 0) {
+                dimension.move(dir, sel);
+                shiftSelStart(dimension, shift);
+            }
         }
     }
 
