@@ -183,6 +183,11 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         return new AnnotationFunction(sortLabel, getHeatmapDimension().getAnnotations());
     }
 
+    @Override
+    public String getAnnotationPattern() {
+        return "${" + getSortLabel() + "}";
+    }
+
     public String getSortLabel() {
         return sortLabel;
     }
