@@ -22,15 +22,25 @@
 package org.gitools.ui.app.heatmap.panel.settings.headers;
 
 import com.jgoodies.binding.PresentationModel;
+import com.jgoodies.binding.adapter.ComboBoxAdapter;
+import com.jgoodies.binding.beans.PropertyAdapter;
+import com.jgoodies.binding.list.SelectionInList;
+import org.gitools.heatmap.HeatmapLayer;
+import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.core.utils.FontUtils;
 import org.gitools.ui.core.utils.landf.MyWebColorChooserField;
 import org.gitools.ui.platform.dialog.FontChooserDialog;
 import org.gitools.ui.platform.settings.ISettingsSection;
+import org.gitools.utils.formatter.HeatmapTextFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
+import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
+import java.util.List;
 
 import static com.jgoodies.binding.adapter.Bindings.bind;
 
@@ -41,6 +51,15 @@ public class FormatSection implements ISettingsSection {
     private JTextField fontTextField;
     private JButton changeButton;
     private JCheckBox showValueCheckBox;
+    private JComboBox numericFormatComboBox;
+
+    private static List<? extends ITextFormatter> FORMATTERS = Arrays.asList(
+            HeatmapTextFormatter.TWO_DECIMALS,
+            ScientificHeatmapTextFormatter.INSTANCE,
+            HeatmapTextFormatter.NO_DECIMALS,
+            HeatmapTextFormatter.FOUR_DECIMALS,
+            HeatmapTextFormatter.ONE_DECIMALS
+    );
 
     public FormatSection(boolean showColors, boolean showValue, final HeatmapHeader heatmapHeader) {
 
@@ -73,6 +92,20 @@ public class FormatSection implements ISettingsSection {
         textColorTextField.setEnabled(showColors);
         backgroundColorTextField.setEnabled(showColors);
         showValueCheckBox.setVisible(showValue);
+
+        if (heatmapHeader instanceof HeatmapDecoratorHeader) {
+            HeatmapDecoratorHeader decoratorHeader = (HeatmapDecoratorHeader) heatmapHeader;
+            numericFormatComboBox.setModel(new ComboBoxAdapter<>(
+                    new SelectionInList<>(
+                            FORMATTERS,
+                            new PropertyAdapter<>(decoratorHeader, HeatmapDecoratorHeader.PROPERTY_NUMERIC_FORMATTER)
+                    )
+            ));
+        } else {
+            numericFormatComboBox.setVisible(false);
+        }
+
+
 
     }
 

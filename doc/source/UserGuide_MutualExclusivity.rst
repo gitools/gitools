@@ -4,9 +4,12 @@ Mutual exclusion and co-occurrence test
 
 .. contents::
 
-When sorting heatmap rows according to mutual exclusivity of :doc:`UserGuide_DataEvents` it is possible to also carry
-out a test of significance for the mutual-exclusive or co-occurring distribution of those events
+There are two scenarios where Gitools can perform a mutex or co-oc test: 
 
+#. When sorting heatmap rows according to mutual exclusivity of :doc:`UserGuide_DataEvents` it is possible to also carry
+   out a test of significance for the mutual-exclusive or co-occurring distribution of those events
+#. Having row and/or column annotation which describe subgroups of each dimension allow to carry out a test for 
+   each combination of column-row group via the Analysis - menu
 
 Data files needed
 ----------------------------------------------

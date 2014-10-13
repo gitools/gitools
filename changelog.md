@@ -5,6 +5,7 @@ Gitools 2.2.2
 * Bugfix: integer clustering
 * Bugfix: Numeric header sorting
 * Non-0 event function for linear numeric (color) scale
+* Numeric Header value formatter
 
 
 Gitools 2.2.1
