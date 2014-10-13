@@ -187,7 +187,7 @@
         <properties>
           <font style="2"/>
           <foreground color="-65536"/>
-          <text value="This analysis currently only yields a result heatmap instead of the complete analysis"/>
+          <text value="Choose groupings according to available row and column annotations"/>
         </properties>
       </component>
     </children>

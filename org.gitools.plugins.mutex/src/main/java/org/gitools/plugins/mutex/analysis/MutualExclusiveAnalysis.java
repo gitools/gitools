@@ -92,13 +92,13 @@ public class MutualExclusiveAnalysis extends Analysis {
         //JAXB requirement
     }
 
-    public static HashModuleMap createModules(String columnPattern, boolean allItemGroup, HeatmapDimension columns) {
+    public static HashModuleMap createModules(String pattern, boolean allItemGroup, HeatmapDimension dimension) {
 
         HashModuleMap moduleMap = new HashModuleMap();
 
         Map<String, Set<String>> colGroups = new HashMap<>();
-        if (!Strings.isNullOrEmpty(columnPattern)) {
-            ClusteringData data = new AnnPatClusteringData(columns, columnPattern);
+        if (!Strings.isNullOrEmpty(pattern)) {
+            ClusteringData data = new AnnPatClusteringData(dimension, pattern);
             Clusters results = null;
             try {
                 results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
@@ -113,7 +113,7 @@ public class MutualExclusiveAnalysis extends Analysis {
         }
 
         if (allItemGroup) {
-            moduleMap.addMapping("All " + columns.getId().getLabel() + "s", columns.toList());
+            moduleMap.addMapping("All " + dimension.getId().getLabel() + "s", dimension.toList());
         }
 
         return moduleMap;

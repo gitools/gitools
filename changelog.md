@@ -3,6 +3,8 @@ Gitools 2.2.2
 * Preliminary mutex analysis
 * Bugfix: Excel import
 * Bugfix: integer clustering
+* Bugfix: Numeric header sorting
+* Non-0 event function for linear numeric (color) scale
 
 
 Gitools 2.2.1

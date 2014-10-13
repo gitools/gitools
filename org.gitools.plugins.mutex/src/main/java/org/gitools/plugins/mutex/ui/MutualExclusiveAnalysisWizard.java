@@ -97,8 +97,10 @@ public class MutualExclusiveAnalysisWizard extends AnalysisWizard<MutualExclusiv
 
         analysis.setProperties(analysisDetailsPage.getAnalysisProperties());
         List<Property> props = analysis.getProperties();
-        props.add(new Property("Column grouping",
+        if (mutexPage.getColumnGroupsPattern() != null)
+        { props.add(new Property("Column grouping",
                 new TextPattern(mutexPage.getColumnGroupsPattern()).getVariableTokens().get(0).getVariableName()));
+        }
         props.add(new Property("Rows grouping",
                 new TextPattern(mutexPage.getRowsGroupsPattern()).getVariableTokens().get(0).getVariableName()));
 
@@ -109,7 +111,7 @@ public class MutualExclusiveAnalysisWizard extends AnalysisWizard<MutualExclusiv
         analysis.setDiscardEmpty(mutexPage.getDiscardEmpty());
         analysis.setIterations(mutexPage.getPermutations());
         analysis.setRowModuleMap(MutualExclusiveAnalysis.createModules(mutexPage.getRowsGroupsPattern(), false, heatmap.getRows()));
-        analysis.setColumnsModuleMap(MutualExclusiveAnalysis.createModules(mutexPage.getColumnGroupsPattern(), false, heatmap.getColumns()));
+        analysis.setColumnsModuleMap(MutualExclusiveAnalysis.createModules(mutexPage.getColumnGroupsPattern(), mutexPage.isAllColumnsGroup(), heatmap.getColumns()));
 
         return analysis;
     }
