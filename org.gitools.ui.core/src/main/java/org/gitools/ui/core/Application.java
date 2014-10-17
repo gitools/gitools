@@ -43,6 +43,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Properties;
@@ -199,13 +200,12 @@ public class Application extends JFrame implements IApplicationTracking {
 
     boolean isNewerGitoolsAvailable() throws Exception {
 
+        Proxy proxy = Settings.get().getProxy();
         SemanticVersion thisVersion = Application.getGitoolsVersion();
-
         URL latestUrl = new URL("http://www.gitools.org/downloads/latest.txt");
-
-        URLConnection con = latestUrl.openConnection();
-        con.setConnectTimeout(5);
-        con.setReadTimeout(5);
+        URLConnection con = latestUrl.openConnection(proxy);
+        con.setConnectTimeout(1000);
+        con.setReadTimeout(1000);
 
         BufferedReader in = new BufferedReader(new InputStreamReader(latestUrl.openStream()));
 
