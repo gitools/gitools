@@ -174,6 +174,47 @@
             </plugin>
 
             <plugin>
+                <groupId>com.akathist.maven.plugins.launch4j</groupId>
+                <artifactId>launch4j-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>l4j-gui</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>launch4j</goal>
+                        </goals>
+                        <configuration>
+                            <headerType>gui</headerType>
+                            <outfile>target/gitools.exe</outfile>
+                            <jar>target/${artifactId}-${version}.jar</jar>
+                            <errTitle>App Err</errTitle>
+                            <classPath>
+                                <mainClass>${mainClass}</mainClass>
+                                <jarLocation>lib/</jarLocation>
+                            </classPath>
+                            <icon>src/main/resources/img/LogoMini.ico</icon>
+                            <jre>
+                                <minVersion>1.7.0</minVersion>
+                                <initialHeapPercent>10</initialHeapPercent>
+                                <maxHeapPercent>50</maxHeapPercent>
+                            </jre>
+                            <versionInfo>
+                                <fileVersion>1.0.0.0</fileVersion>
+                                <txtFileVersion>1.0.0.0</txtFileVersion>
+                                <fileDescription>Desc</fileDescription>
+                                <copyright>C</copyright>
+                                <productVersion>1.0.0.0</productVersion>
+                                <txtProductVersion>1.0.0.0</txtProductVersion>
+                                <productName>Product</productName>
+                                <internalName>Product</internalName>
+                                <originalFilename>App.exe</originalFilename>
+                            </versionInfo>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
                 <executions>

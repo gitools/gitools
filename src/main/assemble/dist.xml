@@ -49,6 +49,14 @@
         </fileSet>
 
         <fileSet>
+            <directory>org.gitools.ui.app/target</directory>
+            <includes>
+                <include>gitools.exe</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+
+        <fileSet>
             <includes>
                 <include>LICENSE.txt</include>
             </includes>
