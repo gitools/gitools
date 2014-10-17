@@ -109,6 +109,13 @@ OPEN_JDK=$?
 BITS=$?
 "$RM" -f "$VERSION_LOG"
 
+if [[ "$JDK" ]]; then
+    echo $(java -version)
+    JAVA_VER=$(java -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q')
+    [ "$JAVA_VER" -ge 17 ] && echo "Satisfactory Java version found" || echo "Old Java version found - please upgrade to 1.7"
+    [ "$JAVA_VER" -ge 17 ] && echo "" || exit
+fi
+
 if [ $BITS -eq 0 ]; then
   BITS="64"
 else

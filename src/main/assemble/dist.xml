@@ -33,8 +33,21 @@
         <fileSet>
             <directory>org.gitools.cli/src/main/command</directory>
             <includes>
+                <include>gitools</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+            <fileMode>0770</fileMode>
+            <filtered>true</filtered>
+        </fileSet>
+
+        <fileSet>
+            <directory>org.gitools.cli/src/main/command</directory>
+            <includes>
                 <include>*</include>
             </includes>
+            <excludes>
+                <exclude>gitools</exclude>
+            </excludes>
             <outputDirectory>bin</outputDirectory>
             <fileMode>0770</fileMode>
             <filtered>true</filtered>

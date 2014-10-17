@@ -1,7 +1,8 @@
 Gitools 2.2.3
 ------------------------------------------------------------
 * Biomart sources update
-
+* Windows .executable at root: gitools.exe
+* Unix (Linux & OS X) executable at root: gitools
 
 Gitools 2.2.2
 ------------------------------------------------------------
