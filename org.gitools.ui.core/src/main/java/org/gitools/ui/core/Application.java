@@ -43,6 +43,7 @@ import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
@@ -75,7 +76,13 @@ public class Application extends JFrame implements IApplicationTracking {
 
         GoogleAnalyticsConfig config = new GoogleAnalyticsConfig();
         config.setRequestParameterDiscoverer(new AwtRequestParameterDiscoverer());
-        analytics = new GoogleAnalytics(appTracking, appName, appVersion.toString());
+
+        if (Settings.get().isProxyEnabled()) {
+            config.setProxyHost(Settings.get().getProxyHost());
+            config.setProxyPort(Settings.get().getProxyPort());
+        }
+
+        analytics = new GoogleAnalytics(config, appTracking, appName, appVersion.toString());
         analytics.getDefaultRequest().clientId(Settings.get().getUuid());
     }
 

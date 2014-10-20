@@ -50,7 +50,12 @@ public class Html4Panel extends JPanel {
     private void createComponents() {
         panel = new HtmlPanel();
         panel.setBackground(Color.WHITE);
-        rcontext = new LocalHtmlRendererContext(panel, new SimpleUserAgentContext());
+
+        SimpleUserAgentContext agent = new SimpleUserAgentContext();
+        if (Settings.get().isProxyEnabled()) {
+            agent.setProxy(Settings.get().getProxy());
+        }
+        rcontext = new LocalHtmlRendererContext(panel, agent);
 
         setLayout(new BorderLayout());
         add(panel, BorderLayout.CENTER);
