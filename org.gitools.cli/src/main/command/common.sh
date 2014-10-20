@@ -125,7 +125,7 @@ else
   BITS=32
 fi
 
-source $BINDIR/freemem.sh
+source "$BINDIR/freemem.sh"
 
 javacmd="$JDK/bin/java $VMOPTIONS"
 echo $javacmd
