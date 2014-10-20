@@ -12,4 +12,7 @@ BINDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"/bin
 
 source "$BINDIR/common.sh"
 
+echo "STARTING UP GITOOLS"
+echo ""
+
 $javacmd -jar "$LIBDIR/org.gitools.ui.app-${project.version}.jar" $*

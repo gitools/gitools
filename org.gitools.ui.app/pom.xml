@@ -197,7 +197,7 @@
                             <jre>
                                 <minVersion>1.7.0</minVersion>
                                 <initialHeapPercent>10</initialHeapPercent>
-                                <maxHeapPercent>50</maxHeapPercent>
+                                <maxHeapPercent>90</maxHeapPercent>
                             </jre>
                             <versionInfo>
                                 <fileVersion>1.0.0.0</fileVersion>
