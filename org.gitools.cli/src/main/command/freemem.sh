@@ -35,11 +35,8 @@ if [ "$(uname)" == "Darwin" ]; then
     let "MACHINE_MEM = $MACHINE_MEM_K / 1024 / 1024"
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Do something under Linux platform
-    MACHINE_MEM=$(free -m | awk '/^Mem:/{print $2}')M
+    MACHINE_MEM=$(free -m | awk '/^Mem:/{print $2}')
 fi
-
-#MACHINE_MEM=${MACHINE_MEM::(-1)}
-MACHINE_MEM=$(echo ${MACHINE_MEM%?})
 
 echo "MACHINE MEM: "$MACHINE_MEM"M"
 
