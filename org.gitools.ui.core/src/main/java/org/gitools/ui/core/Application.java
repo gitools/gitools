@@ -214,7 +214,7 @@ public class Application extends JFrame implements IApplicationTracking {
         con.setConnectTimeout(1000);
         con.setReadTimeout(1000);
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(latestUrl.openStream()));
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
 
         String latestVersion;
         latestVersion = in.readLine();
