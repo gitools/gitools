@@ -31,7 +31,8 @@
 MACHINE_MEM=0
 if [ "$(uname)" == "Darwin" ]; then
     # Do something under Mac OS X platform
-    MACHINE_MEM=$(top -l 1 | head | grep PhysMem | sed -e 's/ /\'$'\n/g' | head -2 | tail -1)
+    MACHINE_MEM_K=$(sysctl -a | grep 'hw.memsize:' | tr " " "\n" | tail -1)
+    let "MACHINE_MEM = $MACHINE_MEM_K / 1024 / 1024"
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     # Do something under Linux platform
     MACHINE_MEM=$(free -m | awk '/^Mem:/{print $2}')M
