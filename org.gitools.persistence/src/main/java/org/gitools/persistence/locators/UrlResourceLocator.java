@@ -21,6 +21,7 @@
  */
 package org.gitools.persistence.locators;
 
+import com.google.common.base.Strings;
 import edu.upf.bg.mtabix.compress.SeekableBufferedStream;
 import edu.upf.bg.mtabix.compress.SeekableFileStream;
 import edu.upf.bg.mtabix.compress.SeekableHTTPStream;
@@ -32,7 +33,9 @@ import org.gitools.utils.HttpUtils;
 import org.gitools.utils.progressmonitor.ProgressMonitorInputStream;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.regex.Pattern;
@@ -212,8 +215,16 @@ public class UrlResourceLocator implements IResourceLocator {
     @Override
     public InputStream openInputStream(IProgressMonitor progressMonitor) throws IOException {
 
+        Object proxyHost = System.getProperties().get("http.proxyHost");
+        Object proxyPort = System.getProperties().get("http.proxyPort");
+
+        Proxy proxy = Proxy.NO_PROXY;
+        if (proxyHost != null && proxyPort != null && proxyPort instanceof Integer) {
+            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.toString(), (Integer) proxyPort));
+        }
+
         if (readFile == null) {
-            return new ProgressMonitorInputStream(progressMonitor, new SeekableBufferedStream(new SeekableHTTPStream(getURL())));
+            return new ProgressMonitorInputStream(progressMonitor, new SeekableBufferedStream(new SeekableHTTPStream(getURL(), proxy)));
         }
 
         return new ProgressMonitorInputStream(progressMonitor, new SeekableFileStream(readFile));
