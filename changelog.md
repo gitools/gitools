@@ -15,7 +15,7 @@ Gitools 2.2.2
 * Bugfix: Numeric header sorting
 * Non-0 event function for linear numeric (color) scale
 * Numeric Header value formatter
-
+* Update color scale load in numeric header wizard
 
 Gitools 2.2.1
 -------------------------------------------------------------

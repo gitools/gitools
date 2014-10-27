@@ -29,7 +29,6 @@ import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.decorator.impl.LinearDecorator;
 import org.gitools.matrix.filter.AnnotationFunction;
-import org.gitools.utils.formatter.HeatmapTextFormatter;
 import org.gitools.utils.formatter.ITextFormatter;
 import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 
@@ -106,6 +105,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
 
     public void setDecorator(Decorator decorator) {
         this.decorator = decorator;
+        firePropertyChange(this.PROPERTY_DECORATOR, decorator, null);
     }
 
     public List<String> getAnnotationLabels() {

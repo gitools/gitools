@@ -49,6 +49,7 @@ public abstract class HeatmapHeader extends Model {
     public static final String PROPERTY_DESCRIPTION = "description";
     public static final String PROPERTY_DESCRIPTION_URL = "descriptionUrl";
     public static final String PROPERTY_VALUE_URL = "valueUrl";
+    public static final String PROPERTY_DECORATOR = "decorator";
 
     @XmlElement
     private String title;
