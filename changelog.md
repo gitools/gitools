@@ -5,6 +5,7 @@ Gitools 2.2.3
 * Unix (Linux & OS X) executable at root: gitools
 * Use always the proxy settings if present
 * Reduce network connection timeout
+* Fix empty string header sort
 
 Gitools 2.2.2
 ------------------------------------------------------------
