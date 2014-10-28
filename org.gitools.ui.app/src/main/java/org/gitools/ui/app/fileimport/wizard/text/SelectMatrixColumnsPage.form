@@ -5,17 +5,17 @@
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:13px:noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:34px:noGrow"/>
+    <rowspec value="center:37px:noGrow"/>
+    <rowspec value="top:10dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:11dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
+    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:5dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:4dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:7dlu:noGrow"/>
-    <rowspec value="center:max(d;4px):noGrow"/>
-    <rowspec value="top:5dlu:noGrow"/>
-    <rowspec value="top:4dlu:noGrow"/>
+    <rowspec value="top:10dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
     <rowspec value="top:4dlu:noGrow"/>
     <rowspec value="center:max(d;4px):noGrow"/>
@@ -26,14 +26,14 @@
     <colspec value="fill:158px:grow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
-    <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:d:grow"/>
-    <colspec value="left:4dlu:noGrow"/>
+    <colspec value="left:10dlu:noGrow"/>
+    <colspec value="fill:205px:grow"/>
+    <colspec value="left:10dlu:noGrow"/>
     <colspec value="fill:208px:grow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <constraints>
-      <xy x="20" y="20" width="698" height="381"/>
+      <xy x="20" y="20" width="713" height="381"/>
     </constraints>
     <properties/>
     <border type="none"/>

@@ -222,12 +222,12 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
                 } else if (rows.getSize() == 0) {
                     rows.addElement(header);
                 } else {
-                    int colIndex = header.getPos();
+                    /*int colIndex = header.getPos();
                     if (isUntranslatable(preview, colIndex)) {
                         ignored.addElement(header);
-                    } else {
-                        values.addElement(header);
-                    }
+                    } else {  */
+                    values.addElement(header);
+                    //}
                 }
             }
 
