@@ -22,6 +22,7 @@
 package org.gitools.ui.platform.wizard;
 
 import org.gitools.ui.platform.dialog.AbstractDialog;
+import org.gitools.ui.platform.dialog.DialogButtonsPanel;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 import org.gitools.ui.platform.dialog.ExceptionGlassPane;
 import org.gitools.ui.platform.help.Help;
@@ -33,7 +34,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
-import java.util.List;
 
 
 public class PageDialog extends AbstractDialog {
@@ -71,15 +71,13 @@ public class PageDialog extends AbstractDialog {
         page.updateControls();
     }
 
-    @Override
     protected JComponent createContainer() {
         pagePanel = new JPanel(new BorderLayout());
         return pagePanel;
     }
 
 
-    @Override
-    protected List<JButton> createButtons() {
+    public DialogButtonsPanel getButtonsPanel() {
         helpButton = new JButton("Help");
         helpButton.addActionListener(new ActionListener() {
             @Override
@@ -106,10 +104,10 @@ public class PageDialog extends AbstractDialog {
 
         finishButton.setDefaultCapable(true);
 
-        return Arrays.asList(cancelButton, finishButton, helpButton);
+        return new DialogButtonsPanel(Arrays.asList(cancelButton, finishButton, helpButton));
     }
 
-    private void helpActionPerformed() {
+    public void helpActionPerformed() {
         HelpContext context = page.getHelpContext();
         if (context != null) {
             try {
@@ -122,17 +120,16 @@ public class PageDialog extends AbstractDialog {
     }
 
     @Override
-    protected void escapePressed() {
+    public void escapePressed() {
         cancelActionPerformed();
     }
 
-    private void cancelActionPerformed() {
+    public void cancelActionPerformed() {
         cancelled = true;
-
         setVisible(false);
     }
 
-    private void finishActionPerformed() {
+    public void finishActionPerformed() {
         page.updateModel();
 
         cancelled = false;
@@ -140,6 +137,7 @@ public class PageDialog extends AbstractDialog {
         setVisible(false);
     }
 
+    @Override
     public boolean isCancelled() {
         return cancelled;
     }

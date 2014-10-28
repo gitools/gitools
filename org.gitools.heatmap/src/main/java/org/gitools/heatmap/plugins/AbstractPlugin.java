@@ -24,7 +24,7 @@ package org.gitools.heatmap.plugins;
 
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.plugins.IPlugin;
-import org.gitools.resource.SemanticVersion;
+import org.gitools.api.resource.SemanticVersion;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;

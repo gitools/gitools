@@ -23,6 +23,7 @@ package org.gitools.matrix.model;
 
 import org.gitools.api.matrix.*;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.api.resource.SemanticVersion;
 
 public abstract class MatrixWrapper implements IMatrix {
 
@@ -115,5 +116,25 @@ public abstract class MatrixWrapper implements IMatrix {
     @Override
     public void setLocator(IResourceLocator locator) {
         wrapMatrix.setLocator(locator);
+    }
+
+    @Override
+    public void setGitoolsVersion(SemanticVersion v) {
+
+    }
+
+    @Override
+    public SemanticVersion getGitoolsVersion() {
+        return null;
+    }
+
+    @Override
+    public String getTitle() {
+        return null;
+    }
+
+    @Override
+    public void setTitle(String title) {
+
     }
 }

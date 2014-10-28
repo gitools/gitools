@@ -104,7 +104,7 @@ public class ExceptionGlassPane extends GitoolsGlassPane {
         description = description.replaceAll("/[^ ]+", "*");
 
         //replace java package name
-        description = description.replaceAll("at [a-z\\.A-Z0-9]*\\(\n", "at (");
+        description = description.replaceAll("at [a-z\\.A-Z0-9]*\\(", "at (");
         description = description.replaceAll("^[a-z\\.]*", "");
 
         return description;
@@ -203,6 +203,11 @@ public class ExceptionGlassPane extends GitoolsGlassPane {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTextArea traceArea;
+
+    @Override
+    protected void escapePressed() {
+        doClose();
+    }
 
     public Container getContentPane() {
         return this;

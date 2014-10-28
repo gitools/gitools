@@ -1,3 +1,22 @@
+Gitools 2.2.3
+------------------------------------------------------------
+* Biomart sources update
+* Windows .executable at root: gitools.exe
+* Unix (Linux & OS X) executable at root: gitools
+* Use always the proxy settings if present
+* Reduce network connection timeout
+* Fix empty string header sort
+
+Gitools 2.2.2
+------------------------------------------------------------
+* Preliminary mutex analysis
+* Bugfix: Excel import
+* Bugfix: integer clustering
+* Bugfix: Numeric header sorting
+* Non-0 event function for linear numeric (color) scale
+* Numeric Header value formatter
+* Update color scale load in numeric header wizard
+
 Gitools 2.2.1
 -------------------------------------------------------------
 * New external commands: mutex-sort, close (and save)

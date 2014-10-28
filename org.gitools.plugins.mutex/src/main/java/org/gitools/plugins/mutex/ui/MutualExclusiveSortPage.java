@@ -57,7 +57,7 @@ import static com.google.common.collect.Iterables.transform;
 import static com.google.common.collect.Lists.newArrayList;
 
 
-public class MutualExclusionSortPage extends AbstractWizardPage {
+public class MutualExclusiveSortPage extends AbstractWizardPage {
 
     private JPanel rootPanel;
     private JTextField patternsField;
@@ -78,7 +78,7 @@ public class MutualExclusionSortPage extends AbstractWizardPage {
     private final MatrixDimensionKey sortDimension;
     private String pattern;
 
-    public MutualExclusionSortPage(Heatmap hm, MatrixDimensionKey sortDimension) {
+    public MutualExclusiveSortPage(Heatmap hm, MatrixDimensionKey sortDimension) {
         super();
         patternsArea.getDocument().addDocumentListener(new DocumentChangeListener() {
             @Override

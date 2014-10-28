@@ -61,8 +61,5 @@ public interface IEditor<M> extends IView {
      */
     void detach();
 
-    boolean canCreate(Object object);
-
-    IEditor create(Object object);
 
 }

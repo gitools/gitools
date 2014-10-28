@@ -21,6 +21,7 @@
  */
 package org.gitools.analysis;
 
+import org.gitools.api.analysis.IAnalysis;
 import org.gitools.resource.Resource;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -28,7 +29,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import java.util.Date;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class Analysis extends Resource {
+public class Analysis extends Resource implements IAnalysis {
 
     private static final long serialVersionUID = 44219853082656184L;
 
@@ -45,18 +46,22 @@ public class Analysis extends Resource {
     protected Analysis() {
     }
 
+    @Override
     public Date getStartTime() {
         return startTime;
     }
 
+    @Override
     public long getElapsedTime() {
         return elapsedTime;
     }
 
+    @Override
     public void setStartTime(Date startTime) {
         this.startTime = startTime;
     }
 
+    @Override
     public void setElapsedTime(long elapsedTime) {
         this.elapsedTime = elapsedTime;
     }

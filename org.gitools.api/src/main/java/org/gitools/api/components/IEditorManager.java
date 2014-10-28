@@ -21,17 +21,9 @@
  */
 package org.gitools.api.components;
 
-
-import java.util.List;
-
-/**
- * Created by mschroeder on 7/16/14.
- */
 public interface IEditorManager {
 
-    public abstract List<IEditor> getEditors();
+    IEditor createEditor(Object object);
 
-    public abstract IEditor createEditor(Object object);
-
-    public abstract void addEditor(Object object);
+    void addEditor(Object object);
 }

@@ -19,13 +19,28 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.analysis.htest.wizard;
+package org.gitools.ui.app.analysis.groupcomparison.editor;
 
-import org.gitools.analysis.Analysis;
-import org.gitools.ui.platform.wizard.AbstractWizard;
 
-public abstract class AnalysisWizard<A extends Analysis> extends AbstractWizard {
+import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
+import org.gitools.api.components.IEditor;
+import org.gitools.api.components.IEditorCreator;
 
-    public abstract A createAnalysis();
+import javax.enterprise.context.ApplicationScoped;
 
+@ApplicationScoped
+public class GroupComparisonAnalysisEditorCreator implements IEditorCreator{
+
+    @Override
+    public boolean canCreate(Object object) {
+        return object instanceof GroupComparisonAnalysis;
+    }
+
+    @Override
+    public IEditor create(Object object) {
+        if (canCreate(object)) {
+            return new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) object);
+        }
+        return null;
+    }
 }

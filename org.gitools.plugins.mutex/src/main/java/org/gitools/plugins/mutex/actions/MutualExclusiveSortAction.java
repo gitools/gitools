@@ -33,10 +33,10 @@ import org.gitools.plugins.mutex.MutualExclusivePlugin;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveAnalysis;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveProcessor;
 import org.gitools.plugins.mutex.analysis.MutualExclusiveResult;
-import org.gitools.plugins.mutex.control.MutalExclusiveAnalysisCommand;
+import org.gitools.plugins.mutex.control.MutualExclusiveAnalysisCommand;
 import org.gitools.plugins.mutex.sort.MutualExclusiveMatrixViewSorter;
-import org.gitools.plugins.mutex.ui.MutualExclusionSortPage;
 import org.gitools.plugins.mutex.ui.MutualExclusiveResultPage;
+import org.gitools.plugins.mutex.ui.MutualExclusiveSortPage;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.components.boxes.BoxManager;
@@ -65,7 +65,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
 
         final Heatmap hm = getHeatmap();
 
-        final MutualExclusionSortPage page = new MutualExclusionSortPage(hm, dimensionKey);
+        final MutualExclusiveSortPage page = new MutualExclusiveSortPage(hm, dimensionKey);
         PageDialog dlg = new PageDialog(Application.get(), page);
 
         dlg.open();
@@ -94,7 +94,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                     //TEST
                     monitor.begin("Analyse ...", 1);
 
-                    MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis();
+                    MutualExclusiveAnalysis analysis = new MutualExclusiveAnalysis(getHeatmap());
 
                     IMatrixDimension testDimension = hm.getContents().getDimension(dimensionKey);
                     ArrayList<String> selected = newArrayList(
@@ -103,7 +103,7 @@ public class MutualExclusiveSortAction extends HeatmapAction {
                                     .filter(new IdentifiersPredicate<String>(testDimension, page.getValues(),
                                             page.getPattern(), hm.getDimension(dimensionKey).getAnnotations()))
                     );
-                    MutalExclusiveAnalysisCommand.prepareSingularAnalysis(analysis, testDimension, selected, hm);
+                    MutualExclusiveAnalysisCommand.prepareSingularAnalysis(analysis, testDimension, selected, hm);
 
                     MutualExclusiveProcessor processor = new MutualExclusiveProcessor(analysis);
                     processor.run(monitor);

@@ -48,7 +48,7 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class MutualExclusiveProcessor implements AnalysisProcessor {
 
-    private final static Key<MutexWeightCache> CACHEKEY = new Key<MutexWeightCache>() {
+    private final static Key<MutualExclusiveWeightCache> CACHEKEY = new Key<MutualExclusiveWeightCache>() {
     };
 
     private final MutualExclusiveAnalysis analysis;
@@ -63,14 +63,25 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
         Date startTime = new Date();
 
         // Prepare results matrix
+        IMatrixDimension testDimension = analysis.getTestDimension();
+        IModuleMap testGroups;
+        IModuleMap weightGroups;
+
+        if (testDimension.getId().equals(ROWS))  {
+            testGroups = analysis.getRowsModuleMap().get();
+            weightGroups = analysis.getColumnsModuleMap().get();
+        } else {
+            weightGroups = analysis.getRowsModuleMap().get();
+            testGroups = analysis.getColumnsModuleMap().get();                 }
+
 
         IMatrix results = calculate(
                 monitor,
                 analysis.getData().get(),
                 analysis.getData().get().getLayers().get(analysis.getLayer()),
-                analysis.getTestGroupsModuleMap().get(),
-                analysis.getWeightGroupsModuleMap().get(),
-                analysis.getTestDimension(),
+                testGroups,
+                weightGroups,
+                testDimension,
                 analysis.getWeightDimension(),
                 analysis.getIterations(),
                 analysis.getEventFunction(),
@@ -84,7 +95,7 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
     }
 
     private IMatrix calculate(final IProgressMonitor monitor,
-                              final IMatrix data,
+                              final Heatmap data,
                               final IMatrixLayer<Double> dataLayer,
                               final IModuleMap testGroups,
                               final IModuleMap weightGroups,
@@ -124,10 +135,10 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
                 if (discardEmpty) {
                     samples = getNonEmptySamples(data, dataLayer, testDimensionSubset, weightDimension.subset(samples), eventFunction);
                     weightDimensionSubset = weightDimension.subset(samples);
-                    weights = getWeights(monitor, data, dataLayer, testDimension, weightDimensionSubset, weightGroupInfo + ": " + testGroup, eventFunction);
+                    weights = getWeights(monitor, data, dataLayer, testDimension.getId(), weightDimensionSubset, weightGroupInfo + ": " + testGroup, eventFunction);
                 } else if (weights.length == 0) {
                     weightDimensionSubset = weightDimension.subset(samples);
-                    weights = getWeights(monitor, data, dataLayer, testDimension, weightDimensionSubset, weightGroupInfo, eventFunction);
+                    weights = getWeights(monitor, data, dataLayer, testDimension.getId(), weightDimensionSubset, weightGroupInfo, eventFunction);
                 }
 
                 if (!weightGroupInfoSet) {
@@ -187,9 +198,9 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
     private Map<String, Double> getCachedWeights(IMatrixLayer<Double> dataLayer,
                                                  IMatrixDimension weightDimension,
                                                  NonEventToNullFunction<?> eventFunction) {
-        MutexWeightCache mutexCache = dataLayer.getCache(CACHEKEY);
+        MutualExclusiveWeightCache mutexCache = dataLayer.getCache(CACHEKEY);
         if (mutexCache == null) {
-            mutexCache = new MutexWeightCache();
+            mutexCache = new MutualExclusiveWeightCache();
         }
 
 
@@ -206,20 +217,21 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
                                   Map<String, Double> cachedWeights,
                                   IMatrixDimension weightDimension,
                                   NonEventToNullFunction function) {
-        MutexWeightCache cache = dataLayer.getCache(CACHEKEY);
+        MutualExclusiveWeightCache cache = dataLayer.getCache(CACHEKEY);
         if (cache == null) {
-            cache = new MutexWeightCache();
+            cache = new MutualExclusiveWeightCache();
         }
         cache.setCacheWeights(createFingerprint(function, weightDimension), cachedWeights);
         dataLayer.setCache(CACHEKEY, cache);
     }
 
-    private double[] getWeights(IProgressMonitor monitor, IMatrix data, final IMatrixLayer<Double> dataLayer, IMatrixDimension testDimension, IMatrixDimension weightDimension, String weightGroupInfo, final NonEventToNullFunction<?> eventFunction) {
+    private double[] getWeights(IProgressMonitor monitor, Heatmap data, final IMatrixLayer<Double> dataLayer, MatrixDimensionKey testDimensionKey, IMatrixDimension weightDimension, String weightGroupInfo, final NonEventToNullFunction<?> eventFunction) {
 
         IMatrixIterable<Double> weightIterator;
         final Map<String, Double> cachedWeights = getCachedWeights(dataLayer, weightDimension, eventFunction);
         int cacheSize = cachedWeights.size();
-        final AggregationFunction aggregation = new AggregationFunction(dataLayer, NonNullCountAggregator.INSTANCE, testDimension, eventFunction);
+        IMatrixDimension completeDataDimension = data.getContents().getDimension(testDimensionKey);
+        final AggregationFunction aggregation = new AggregationFunction(dataLayer, NonNullCountAggregator.INSTANCE, completeDataDimension, eventFunction);
 
         final AbstractMatrixFunction<Double, String> readWeightFunction =
                 new AbstractMatrixFunction<Double, String>() {
@@ -294,14 +306,14 @@ public class MutualExclusiveProcessor implements AnalysisProcessor {
     }
 
 
-    private class MutexWeightCache {
+    private class MutualExclusiveWeightCache {
 
         //1st String: DimensionID + event description
         //2nd String id of row or col
         //Double weight
         Map<String, Map<String, Double>> cacheWeightsCatalog;
 
-        public MutexWeightCache() {
+        public MutualExclusiveWeightCache() {
             cacheWeightsCatalog = new HashMap<>();
         }
 

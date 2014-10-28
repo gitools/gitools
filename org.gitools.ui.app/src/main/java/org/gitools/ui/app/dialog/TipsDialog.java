@@ -59,7 +59,7 @@ public class TipsDialog {
 
             @Override
             public boolean isShowingOnStartup() {
-                return settingsShowDialog;
+                return settingsShowDialog && !Settings.get().isProxyEnabled();
             }
 
 

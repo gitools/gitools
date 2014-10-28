@@ -37,7 +37,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @XmlAccessorType(XmlAccessType.NONE)
@@ -185,18 +184,15 @@ public class LinearDecorator extends Decorator<LinearTwoSidedColorScale> {
     @Override
     public List<NonEventToNullFunction> getEventFunctionAlternatives() {
 
-        List<NonEventToNullFunction> list = new ArrayList<>();
-        list.add(getDefaultEventFunction());
-
-        if (aboveScaleFunction == null) {
-            initEventFunctions();
+        if (aboveScaleFunction != null) {
+            return super.getEventFunctionAlternatives();
         }
+
+        initEventFunctions();
+        List<NonEventToNullFunction> list = super.getEventFunctionAlternatives();
 
         list.add(aboveScaleFunction);
         list.add(belowScaleFunction);
-
-
-
 
         return list;
     }

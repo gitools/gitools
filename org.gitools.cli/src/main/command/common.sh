@@ -40,6 +40,9 @@ RM=`which rm`
 CAT=`which cat`
 TR=`which tr`
 
+echo "DETECTING JAVA VERSION"
+echo ""
+
 if [ -z "$UNAME" -o -z "$GREP" -o -z "$CUT" -o -z "$MKTEMP" -o -z "$RM" -o -z "$CAT" -o -z "$TR" ]; then
   echo "ERROR: required tools are missing - check beginning of \"$0\" file for details."
   exit 1
@@ -109,22 +112,22 @@ OPEN_JDK=$?
 BITS=$?
 "$RM" -f "$VERSION_LOG"
 
+if [[ "$JDK" ]]; then
+    echo $($JDK/bin/java -version)
+    JAVA_VER=$($JDK/bin/java -version 2>&1 | sed 's/java version "\(.*\)\.\(.*\)\..*"/\1\2/; 1q')
+    [ "$JAVA_VER" -ge 17 ] && echo "Satisfactory Java version found" || echo "Old Java version found - please upgrade to 1.7"
+    [ "$JAVA_VER" -ge 17 ] && echo "" || exit
+fi
+
 if [ $BITS -eq 0 ]; then
-  BITS="64"
+  BITS=64
 else
-  BITS=""
+  BITS=32
 fi
 
-VM_OPTIONS_FILE="$IDEA_VM_OPTIONS"
-if [ -z "$VM_OPTIONS_FILE" ]; then
-  VM_OPTIONS_FILE="$BINDIR/gitools$BITS.vmoptions"
-fi
+source "$BINDIR/freemem.sh"
 
-if [ -r "$VM_OPTIONS_FILE" ]; then
-  VM_OPTIONS=`"$CAT" "$VM_OPTIONS_FILE" | "$GREP" -v "^#.*" | "$TR" '\n' ' '`
-  VM_OPTIONS="$VM_OPTIONS -Djb.vmOptionsFile=\"$VM_OPTIONS_FILE\""
-fi
-
-javacmd="$JDK/bin/java $VM_OPTIONS"
-
+javacmd="$JDK/bin/java $VMOPTIONS"
+echo $javacmd
+echo ""
 

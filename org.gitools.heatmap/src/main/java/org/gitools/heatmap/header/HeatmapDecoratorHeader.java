@@ -29,7 +29,8 @@ import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
 import org.gitools.heatmap.decorator.impl.LinearDecorator;
 import org.gitools.matrix.filter.AnnotationFunction;
-import org.gitools.utils.formatter.HeatmapTextFormatter;
+import org.gitools.utils.formatter.ITextFormatter;
+import org.gitools.utils.formatter.ScientificHeatmapTextFormatter;
 
 import javax.xml.bind.annotation.*;
 import java.awt.*;
@@ -41,6 +42,7 @@ import java.util.List;
 @XmlRootElement
 public class HeatmapDecoratorHeader extends HeatmapHeader {
 
+    public static final String PROPERTY_NUMERIC_FORMATTER = "numericFormatter";
     public enum LabelPositionEnum {
         leftOf,
         rightOf,
@@ -58,6 +60,9 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
 
     @XmlElement
     private List<String> annotationLabels;
+
+
+    private transient ITextFormatter numericFormatter = ScientificHeatmapTextFormatter.INSTANCE;
 
     @XmlTransient
     private String sortLabel;
@@ -100,6 +105,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
 
     public void setDecorator(Decorator decorator) {
         this.decorator = decorator;
+        firePropertyChange(this.PROPERTY_DECORATOR, decorator, null);
     }
 
     public List<String> getAnnotationLabels() {
@@ -121,7 +127,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
 
         decorator.decorate(
                 decoration,
-                HeatmapTextFormatter.TWO_DECIMALS,
+                numericFormatter,
                 annotations,
                 annotations.getLayers().get(annotation),
                 identifier);
@@ -183,6 +189,11 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         return new AnnotationFunction(sortLabel, getHeatmapDimension().getAnnotations());
     }
 
+    @Override
+    public String getAnnotationPattern() {
+        return "${" + getSortLabel() + "}";
+    }
+
     public String getSortLabel() {
         return sortLabel;
     }
@@ -196,6 +207,20 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
         }
 
     }
+
+
+    public ITextFormatter getNumericFormatter() {
+        if (numericFormatter == null) {
+            return ScientificHeatmapTextFormatter.INSTANCE;
+        }
+        return numericFormatter;
+    }
+
+    public void setNumericFormatter(ITextFormatter numericFormatter) {
+        this.numericFormatter = numericFormatter;
+        firePropertyChange(PROPERTY_NUMERIC_FORMATTER, null, numericFormatter);
+    }
+
 
     @Override
     public boolean isNumeric() {

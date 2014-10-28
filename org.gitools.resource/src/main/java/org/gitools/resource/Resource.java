@@ -24,6 +24,7 @@ package org.gitools.resource;
 import com.jgoodies.binding.beans.Model;
 import org.gitools.api.resource.IResource;
 import org.gitools.api.resource.IResourceLocator;
+import org.gitools.api.resource.SemanticVersion;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

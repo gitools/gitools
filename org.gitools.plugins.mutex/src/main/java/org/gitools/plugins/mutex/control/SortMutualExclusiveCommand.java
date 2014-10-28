@@ -31,12 +31,12 @@ import java.util.HashSet;
 import java.util.List;
 
 
-public class SortMutexCommand extends HeaderCommand {
+public class SortMutualExclusiveCommand extends HeaderCommand {
 
 
     private final List<String> items;
 
-    public SortMutexCommand(String heatmap, MatrixDimensionKey dimension, String sort, List<String> items, String pattern) {
+    public SortMutualExclusiveCommand(String heatmap, MatrixDimensionKey dimension, String sort, List<String> items, String pattern) {
         super(heatmap, dimension, sort, pattern);
 
         this.items = items;

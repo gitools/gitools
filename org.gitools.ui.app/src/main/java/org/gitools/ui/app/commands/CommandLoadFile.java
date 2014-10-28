@@ -28,7 +28,10 @@ import org.gitools.analysis.correlation.CorrelationAnalysis;
 import org.gitools.analysis.groupcomparison.GroupComparisonAnalysis;
 import org.gitools.analysis.htest.enrichment.EnrichmentAnalysis;
 import org.gitools.analysis.overlapping.OverlappingAnalysis;
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.components.IEditor;
+import org.gitools.api.components.IEditorManager;
 import org.gitools.api.matrix.IAnnotations;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.modulemap.IModuleMap;
@@ -59,6 +62,7 @@ import org.gitools.ui.app.heatmap.editor.HeatmapEditor;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.commands.AbstractCommand;
 import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.editor.EditorManager;
 import org.gitools.utils.color.ColorRegistry;
 
 import javax.swing.*;
@@ -224,24 +228,10 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
 
     private AbstractEditor createEditor(IResource resource, IProgressMonitor progressMonitor) throws CommandException {
 
-        if (resource instanceof EnrichmentAnalysis) {
-            return new EnrichmentAnalysisEditor((EnrichmentAnalysis) resource);
-        } else if (resource instanceof CorrelationAnalysis) {
-            return new CorrelationAnalysisEditor((CorrelationAnalysis) resource);
-        } else if (resource instanceof CombinationAnalysis) {
-            return new CombinationAnalysisEditor((CombinationAnalysis) resource);
-        } else if (resource instanceof OverlappingAnalysis) {
-            return new OverlappingAnalysisEditor((OverlappingAnalysis) resource);
-        } else if (resource instanceof GroupComparisonAnalysis) {
-            return new GroupComparisonAnalysisEditor((GroupComparisonAnalysis) resource);
-        } else if (resource instanceof Heatmap) {
-            ((Heatmap) resource).init();
-            registerAssignedColors(((Heatmap) resource));
-            return new HeatmapEditor((Heatmap) resource);
-        } else if (IModuleMap.class.isAssignableFrom(resource.getClass())) {
-            Heatmap heatmap = new Heatmap(ModuleMapUtils.convertToMatrix((IModuleMap) resource));
-            heatmap.getLayers().iterator().next().setDecorator(new BinaryDecorator());
-            return new HeatmapEditor(heatmap);
+        IEditorManager manager = ApplicationContext.getEditorManger();
+        AbstractEditor editor = (AbstractEditor) manager.createEditor(resource);
+        if (editor != null) {
+            return editor;
         }
 
         return createHeatmapEditor((IMatrix) resource, progressMonitor);
@@ -272,7 +262,7 @@ public class CommandLoadFile extends AbstractCommand implements ImportWizard.Cal
             loadAnnotations(colsFile, heatmap.getColumns());
         }
 
-        return new HeatmapEditor(heatmap);
+        return (AbstractEditor) ApplicationContext.getEditorManger().createEditor(heatmap);
     }
 
     private void registerAssignedColors(Heatmap heatmap) {

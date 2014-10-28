@@ -29,7 +29,6 @@ import com.google.common.base.Strings;
 import org.gitools.api.ApplicationContext;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
-import org.gitools.api.components.IEditor;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixDimension;
 import org.gitools.api.persistence.FileFormat;
@@ -46,12 +45,12 @@ import org.gitools.ui.app.heatmap.panel.HeatmapMouseListener;
 import org.gitools.ui.app.heatmap.panel.HeatmapPanel;
 import org.gitools.ui.app.heatmap.panel.details.DetailsPanel;
 import org.gitools.ui.app.heatmap.panel.search.HeatmapSearchPanel;
-import org.gitools.ui.app.wizard.SaveFileWizard;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.commands.Command;
 import org.gitools.ui.core.components.boxes.Box;
 import org.gitools.ui.core.components.editor.AbstractEditor;
 import org.gitools.ui.core.components.editor.EditorsPanel;
+import org.gitools.ui.core.components.wizard.SaveFileWizard;
 import org.gitools.ui.core.pages.common.SaveHeatmapFilePage;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.icons.IconNames;
@@ -63,7 +62,6 @@ import org.gitools.utils.MemoryUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.enterprise.context.ApplicationScoped;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
@@ -79,7 +77,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CancellationException;
 
-@ApplicationScoped
 public class HeatmapEditor extends AbstractEditor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HeatmapEditor.class);
@@ -95,7 +92,11 @@ public class HeatmapEditor extends AbstractEditor {
     private int lastMouseCol = -1;
     private Timer timer;
 
-    public HeatmapEditor(Heatmap heatmap) {
+    public HeatmapEditor() {
+        //weld requirement
+    }
+
+    public HeatmapEditor(final Heatmap heatmap) {
 
         IResourceLocator locator = heatmap.getLocator();
         if (locator != null && locator.getURL().getProtocol().equals("file")) {
@@ -113,7 +114,9 @@ public class HeatmapEditor extends AbstractEditor {
 
         setIcon(IconUtils.getIconResource(IconNames.heatmap16));
 
-        if (heatmap.getTitle() == null) {
+        if (!Strings.isNullOrEmpty(heatmap.getTitle())) {
+            setName(heatmap.getTitle());
+        } else {
             heatmap.setTitle(getName());
         }
 
@@ -136,6 +139,12 @@ public class HeatmapEditor extends AbstractEditor {
         heatmap.getColumns().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().addPropertyChangeListener(dirtyListener);
         heatmap.getLayers().getTopLayer().getDecorator().addPropertyChangeListener(dirtyListener);
+        heatmap.addPropertyChangeListener(Heatmap.PROPERTY_TITLE, new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                setName(heatmap.getTitle());
+            }
+        });
 
         // Create a timer that watches every 5 seconds the available memory
         // and detach the heatmap if it is below a minimum threshold.
@@ -483,6 +492,8 @@ public class HeatmapEditor extends AbstractEditor {
 
     private class CleanCacheTimer extends TimerTask {
 
+        private boolean trackException = true;
+
         private long lastDetach;
 
         private CleanCacheTimer() {
@@ -495,22 +506,15 @@ public class HeatmapEditor extends AbstractEditor {
 
                 LOGGER.warn("Memory too low, cleaning cache.");
                 this.lastDetach = System.currentTimeMillis();
-                Application.get().trackException("Memory too low");
+
+                if (trackException) {
+                    Application.get().trackException("Memory too low");
+                    trackException = false;
+                }
+
                 detach();
             }
         }
     }
 
-    @Override
-    public boolean canCreate(Object object) {
-        return (object instanceof Heatmap) ? true : false;
-    }
-
-    @Override
-    public IEditor create(Object object) {
-        if (object instanceof Heatmap) {
-            return new HeatmapEditor((Heatmap) object);
-        }
-        return null;
-    }
 }

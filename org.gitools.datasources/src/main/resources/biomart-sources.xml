@@ -48,6 +48,26 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>77</release>
+    </mart>
+    <mart>
+        <name>ensembl_76</name>
+        <description>Ensembl 76 (Aug 2014)</description>
+        <version>0.6</version>
+        <host>aug2014.archive.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>76</release>
+    </mart>
+    <mart>
+        <name>ensembl_75</name>
+        <description>Ensembl 75 (Feb 2014)</description>
+        <version>0.6</version>
+        <host>feb2014.archive.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
         <release>75</release>
     </mart>
     <mart>

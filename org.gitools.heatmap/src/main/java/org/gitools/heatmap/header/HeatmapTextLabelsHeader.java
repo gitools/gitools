@@ -133,6 +133,11 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
     }
 
     @Override
+    public String getAnnotationPattern() {
+        return "${" + getLabelAnnotation() + "}";
+    }
+
+    @Override
     public void populateDetails(List<DetailsDecoration> details, String identifier, boolean selected) {
         String value = (identifier == null ? "None" : getIdentifierTransform().apply(identifier));
 

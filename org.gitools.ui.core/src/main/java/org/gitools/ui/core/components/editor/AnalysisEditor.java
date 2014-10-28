@@ -19,14 +19,13 @@
  * <http://www.gnu.org/licenses/gpl-3.0.html>.
  * #L%
  */
-package org.gitools.ui.app.analysis.editor;
+package org.gitools.ui.core.components.editor;
 
 import org.apache.velocity.VelocityContext;
-import org.gitools.analysis.Analysis;
+import org.gitools.api.analysis.IAnalysis;
 import org.gitools.api.persistence.FileFormat;
 import org.gitools.ui.core.utils.LogUtils;
 import org.gitools.ui.platform.IconUtils;
-import org.gitools.ui.platform.ResourceEditor;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.panel.TemplatePanel;
 import org.gitools.utils.formatter.HeatmapTextFormatter;
@@ -38,7 +37,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.Map;
 
-public abstract class AnalysisEditor<A extends Analysis> extends ResourceEditor<A> {
+public abstract class AnalysisEditor<A extends IAnalysis> extends ResourceEditor<A> {
     private static final Logger log = LoggerFactory.getLogger(AnalysisEditor.class);
 
     private final String template;

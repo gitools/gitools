@@ -33,8 +33,21 @@
         <fileSet>
             <directory>org.gitools.cli/src/main/command</directory>
             <includes>
+                <include>gitools</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+            <fileMode>0770</fileMode>
+            <filtered>true</filtered>
+        </fileSet>
+
+        <fileSet>
+            <directory>org.gitools.cli/src/main/command</directory>
+            <includes>
                 <include>*</include>
             </includes>
+            <excludes>
+                <exclude>gitools</exclude>
+            </excludes>
             <outputDirectory>bin</outputDirectory>
             <fileMode>0770</fileMode>
             <filtered>true</filtered>
@@ -44,6 +57,14 @@
             <directory>org.gitools.ui.app/src/main/resources/img</directory>
             <includes>
                 <include>LogoMini.png</include>
+            </includes>
+            <outputDirectory></outputDirectory>
+        </fileSet>
+
+        <fileSet>
+            <directory>org.gitools.ui.app/target</directory>
+            <includes>
+                <include>gitools.exe</include>
             </includes>
             <outputDirectory></outputDirectory>
         </fileSet>

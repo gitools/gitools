@@ -24,12 +24,13 @@ package org.gitools.ui.app.actions.analysis;
 import com.google.common.base.Strings;
 import org.gitools.analysis.Analysis;
 import org.gitools.analysis.AnalysisProcessor;
+import org.gitools.api.ApplicationContext;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.heatmap.Heatmap;
-import org.gitools.ui.app.analysis.htest.wizard.AnalysisWizard;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.components.editor.AbstractEditor;
+import org.gitools.ui.core.components.wizard.AnalysisWizard;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
@@ -67,7 +68,7 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
                 SwingUtilities.invokeLater(new Runnable() {
                     @Override
                     public void run() {
-                        AbstractEditor editor = newEditor(analysis);
+                        AbstractEditor editor = (AbstractEditor) ApplicationContext.getEditorManger().createEditor(analysis);
 
                         String title = analysis.getTitle();
 
@@ -84,8 +85,6 @@ public abstract class AbstractAnalysisAction<A extends Analysis> extends Heatmap
             }
         });
     }
-
-    protected abstract AbstractEditor newEditor(A analysis);
 
     protected abstract AnalysisWizard<? extends A> newWizard(Heatmap heatmap);
 

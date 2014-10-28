@@ -27,6 +27,7 @@ import com.jgoodies.binding.value.AbstractValueModel;
 import com.jgoodies.binding.value.ValueModel;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.app.decorators.SaveDecoratorDialog;
 import org.gitools.ui.app.heatmap.panel.settings.layer.decorators.DecoratorPanelContainer;
 import org.gitools.ui.app.heatmap.panel.settings.layer.decorators.DecoratorPanels;
@@ -36,6 +37,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class ColorScalePage extends AbstractWizardPage {
     private JPanel mainPanel;
@@ -49,8 +52,8 @@ public class ColorScalePage extends AbstractWizardPage {
         super();
 
         // Bind color scale controls
-        DecoratorPanels decorators = new DecoratorPanels();
-        DecoratorPanelContainer decoratorsPanels = (DecoratorPanelContainer) this.decoratorPanels;
+        final DecoratorPanels decorators = new DecoratorPanels();
+        final DecoratorPanelContainer decoratorsPanels = (DecoratorPanelContainer) this.decoratorPanels;
 
         final ValueModel decoratorModel = new AbstractValueModel() {
             @Override
@@ -64,12 +67,26 @@ public class ColorScalePage extends AbstractWizardPage {
             }
         };
 
-        decoratorsPanels.init(decorators, decoratorModel);
+ /*       decoratorsPanels.init(decorators, decoratorModel);
 
         Bindings.bind(decoratorPanelSelector, new SelectionInList<>(
                 decorators,
                 decoratorsPanels.getCurrentPanelModel()
-        ));
+        ));     */
+
+        PropertyChangeListener listener = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                decoratorsPanels.init(decorators, decoratorModel);
+
+                Bindings.bind(decoratorPanelSelector, new SelectionInList<>(
+                        decorators,
+                        decoratorsPanels.getCurrentPanelModel()
+                ));
+            }
+        };
+        listener.propertyChange(null);
+        header.addPropertyChangeListener(HeatmapHeader.PROPERTY_DECORATOR, listener);
 
         colorScaleSave.setCursor(new Cursor(Cursor.HAND_CURSOR));
         colorScaleSave.addMouseListener(new MouseAdapter() {

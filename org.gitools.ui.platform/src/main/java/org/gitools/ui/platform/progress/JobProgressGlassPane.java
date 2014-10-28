@@ -156,6 +156,11 @@ class JobProgressGlassPane extends GitoolsGlassPane implements IProgressComponen
 
 
     @Override
+    protected void escapePressed() {
+        // do nothing
+    }
+
+    @Override
     public void start() {
         super.start();
     }

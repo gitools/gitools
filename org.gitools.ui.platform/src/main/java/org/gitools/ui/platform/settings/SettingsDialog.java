@@ -22,6 +22,7 @@
 package org.gitools.ui.platform.settings;
 
 import org.gitools.ui.platform.dialog.AbstractDialog;
+import org.gitools.ui.platform.dialog.DialogButtonsPanel;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
 
 import javax.swing.*;
@@ -31,7 +32,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
-import java.util.List;
 
 
 public abstract class SettingsDialog extends AbstractDialog {
@@ -105,14 +105,13 @@ public abstract class SettingsDialog extends AbstractDialog {
     }
 
     @Override
-    protected void escapePressed() {
+    public void escapePressed() {
         close();
     }
 
     protected abstract void apply();
 
-    @Override
-    protected List<JButton> createButtons() {
+    public DialogButtonsPanel getButtonsPanel() {
         closeButton = new JButton("Close");
         closeButton.addActionListener(new ActionListener() {
             @Override
@@ -130,7 +129,7 @@ public abstract class SettingsDialog extends AbstractDialog {
         });
 
         closeButton.setDefaultCapable(true);
-        return Arrays.asList(applyButton, closeButton);
+        return new DialogButtonsPanel(Arrays.asList(applyButton, closeButton));
     }
 
     private void updateState() {
@@ -139,6 +138,22 @@ public abstract class SettingsDialog extends AbstractDialog {
         header.setLeftLogo(panel.getLogo());
         header.setMessageStatus(panel.getStatus());
         header.setMessage(panel.getMessage());
+    }
+
+
+    @Override
+    public void helpActionPerformed() {
+
+    }
+
+    @Override
+    public void cancelActionPerformed() {
+        setVisible(false);
+    }
+
+    @Override
+    public void finishActionPerformed() {
+
     }
 
 }
