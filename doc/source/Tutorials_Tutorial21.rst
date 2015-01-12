@@ -18,7 +18,7 @@ Files needed
 Import human KEGG pathway modules using Gitools
 -----------------------------------------------
 
-- Import human KEGG pathways. See  `this chapter <UserGuide_KEGG.rst>`__  of the user guide for further guidance.
+- Import human KEGG pathways. See  :doc:`this chapter <UserGuide_KEGG>` of the user guide for further guidance.
 
 - Select “Affy HG U133-PLUS-2” as identifiers for the genes, which correspond to the probe identifiers we have in our dataset. 
 
@@ -30,7 +30,7 @@ Import human KEGG pathway modules using Gitools
 Perform an enrichment analysis with Gitools
 -------------------------------------------
 
-- See  `this chapter <UserGuide_Enrichment.rst>`__  for details on how to perform enrichment analysis
+- See  :doc:`this chapter <UserGuide_Enrichment>`  for details on how to perform enrichment analysis
 
 - Select gse19188\_median-centered.cdm.gz as data file
 
@@ -42,7 +42,7 @@ Perform an enrichment analysis with Gitools
 
 - Give a name to the analysis. Select a directory where to safe it and click Finish.
 
-- If you have a memory problem, see memory configuration in (  `Installation Guide <UserGuide_Installation.rst>`__ ) to increase the memory allocated to run Gitools.
+- If you have a memory problem, see memory configuration in (  `Installation Guide <UserGuide_Installation>` ) to increase the memory allocated to run Gitools.
 
 
 Use annotations for pathways and annotation colors for samples
