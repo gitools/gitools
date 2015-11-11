@@ -90,7 +90,7 @@ public class SortByLabelComparator implements Comparator<String> {
         String v1 = transformFunction.apply(idx1);
         String v2 = transformFunction.apply(idx2);
 
-        if (v1 == null && v2 == null) {
+        if (Strings.isNullOrEmpty(v1) && Strings.isNullOrEmpty(v2)) {
             return 0;
         }
 
