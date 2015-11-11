@@ -134,6 +134,7 @@ public class HierarchicalClusterer {
         // Set cluster names ordered by weight
         HierarchicalCluster root = builder.getRootCluster();
         root.setName("");
+        root.setSortName("");
         Color color = nameClusters(root.getChildren(), 1);
         root.setColor(color.getRGB());
         root.setName("root");
@@ -168,20 +169,20 @@ public class HierarchicalClusterer {
             } else {
                 child.setName(child.getParentName() + createLabel(i, digits));
             }
+            child.setSortName(child.getParentName() + createLabel(i, digits));
             Color colorChild = nameClusters(child.getChildren(), level+1);
             child.setColor(colorChild.getRGB());
 
             if (colorParent == null) {
                 colorParent = colorChild;
-                weightParent = (child.getChildren().isEmpty() ? 0.0 : child.getWeight());
             } else {
                 colorParent = mixColors(colorParent, weightParent, colorChild, child.getWeight());
-                weightParent += (child.getChildren().isEmpty() ? 0.0 : child.getWeight());
             }
+            weightParent = child.getWeight();
 
         }
 
-        if (level > 10) {
+        if (level > 20) {
             return next();
         }
 

@@ -45,10 +45,12 @@ import javax.xml.bind.annotation.*;
 import java.util.*;
 
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(propOrder = {"name", "parentName", "leaves", "distance", "weight", "color", "children"})
+@XmlType(propOrder = {"name", "sortName", "parentName", "leaves", "distance", "weight", "color", "children"})
 public class HierarchicalCluster implements Clusters, Comparable<HierarchicalCluster> {
 
     private String name;
+
+    private String sortName;
 
     private String parentName;
 
@@ -116,7 +118,7 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
 
     public Map<String, String> getMaxLevel(Map<String, String> idSet) {
         if (isLeaf()) {
-            idSet.put(name, parentName);
+            idSet.put(name, sortName == null ? parentName : sortName );
         } else {
             for (HierarchicalCluster child : children) {
                 child.getMaxLevel(idSet);
@@ -138,6 +140,14 @@ public class HierarchicalCluster implements Clusters, Comparable<HierarchicalClu
         for (HierarchicalCluster child : children) {
             child.setParentName(name);
         }
+    }
+
+    public String getSortName() {
+        return sortName;
+    }
+
+    public void setSortName(String sortName) {
+        this.sortName = sortName;
     }
 
     public void addChild(HierarchicalCluster cluster) {
