@@ -60,9 +60,11 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         super(hdim);
         clusterLevels = new ArrayList<>();
         reportLastInteraction = false;
+        setMargin(1);
     }
 
     public void addLevel(HeatmapColoredLabelsHeader level) {
+        level.setMargin(1);
         clusterLevels.add(level);
     }
 
@@ -72,6 +74,14 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
         for (HeatmapColoredLabelsHeader levels : clusterLevels) {
             levels.init(heatmapDimension);
         }
+    }
+
+    @Override
+    public void setMargin(int margin) {
+        for (HeatmapColoredLabelsHeader levelHeader : getClusterLevels()) {
+            levelHeader.setMargin(margin);
+        }
+        super.setMargin(margin);
     }
 
     public List<HeatmapColoredLabelsHeader> getClusterLevels() {
