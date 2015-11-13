@@ -30,6 +30,7 @@ import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 import org.gitools.heatmap.header.HierarchicalCluster;
+import org.gitools.heatmap.header.HierarchicalClusterNamer;
 
 import java.awt.*;
 import java.util.*;
@@ -135,114 +136,14 @@ public class HierarchicalClusterer {
         HierarchicalCluster root = builder.getRootCluster();
         root.setName("");
         root.setSortName("");
-        Color color = nameClusters(root.getChildren(), 1);
+        Color color = HierarchicalClusterNamer.nameClusters(root, HierarchicalClusterNamer.DEFAULT_PALETTE);
         root.setColor(color.getRGB());
         root.setName("root");
 
         return root;
     }
 
-    private static final int[] DEFAULT_PALETTE = {0x4bb2c5, 0xEAA228, 0xc5b47f, 0x546D61, 0x958c12, 0x953579, 0xc12e2e, 0x4b5de4, 0xd8b83f, 0xff5800, 0x0085cc, 0xc747a3, 0xcddf54, 0xFBD178, 0x26B4E3, 0xbd70c7, 0xabdbeb, 0x40D800, 0x8AFF00, 0xD9EB00, 0xFFFF71, 0x777B00, 0x498991, 0xC08840, 0x9F9274, 0x579575, 0x646C4A, 0x6F6621, 0x6E3F5F, 0x4F64B0, 0xA89050, 0xC45923, 0x187399, 0x945381, 0x959E5C, 0xAF5714, 0x478396, 0x907294, 0x426c7a, 0x878166, 0xAEA480, 0xFFFFD3, 0xE9D5A4, 0xA29877};
-    private int index = -1;
 
-    private Color next() {
-        index++;
-        return new Color(DEFAULT_PALETTE[index % DEFAULT_PALETTE.length]);
-    }
-
-    private Color nameClusters(List<HierarchicalCluster> children, int level) {
-
-        if (children.isEmpty()) {
-            return next();
-        }
-
-        int digits = calculateDigits(children.size());
-
-        Collections.sort(children, Collections.reverseOrder());
-
-        Color colorParent = null;
-        Double weightParent = 0.0;
-        for (int i = 0; i < children.size(); i++) {
-            HierarchicalCluster child = children.get(i);
-            if (child.getChildren().isEmpty()) {
-                child.setName(JOINER.join(child.getIdentifiers()));
-            } else {
-                child.setName(child.getParentName() + createLabel(i, digits));
-            }
-            child.setSortName(child.getParentName() + createLabel(i, digits));
-            Color colorChild = nameClusters(child.getChildren(), level+1);
-            child.setColor(colorChild.getRGB());
-
-            if (colorParent == null) {
-                colorParent = colorChild;
-            } else {
-                colorParent = mixColors(colorParent, weightParent, colorChild, child.getWeight());
-            }
-            weightParent = child.getWeight();
-
-        }
-
-        if (level > 20) {
-            return next();
-        }
-
-        return colorParent;
-
-    }
-
-    private static Color mixColors(Color c1, double w1, Color c2, double w2) {
-
-        if (w1 == 0.0) {
-            return c2;
-        }
-
-        if (w2 == 0.0) {
-            return c1;
-        }
-
-        double wa1 = FastMath.abs(w1);
-        double wa2 = FastMath.abs(w2);
-
-        double total = wa1 + wa2;
-
-        double t1 = wa1 / total;
-        double t2 = wa2 / total;
-
-        if (t1 < 0.1) {
-            t1 = 0.1; t2 = 0.8;
-        }
-
-        if (t2 < 0.1) {
-            t1 = 0.8; t2 = 0.1;
-        }
-
-        int red = (int) (t1*(double)c1.getRed() + t2*(double)c2.getRed());
-        int green = (int) (t1*(double)c1.getGreen() + t2*(double)c2.getGreen());
-        int blue = (int) (t1*(double)c1.getBlue() + t2*(double)c2.getBlue());
-
-        return new Color(red, green, blue);
-    }
-
-    private static Joiner JOINER = Joiner.on("&");
-    private static char[] ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
-
-    public static int calculateDigits(int size) {
-        return ((int) FastMath.log(ALPHABET.length, size)) + 1;
-    }
-
-    public static String createLabel(int number, int digits) {
-
-        char[] label = new char[digits];
-        label[digits - 1] = ALPHABET[number % ALPHABET.length];
-
-        for (int d = 1; d < digits; d++) {
-            int quocient = number / (ALPHABET.length * d);
-            label[digits - d - 1] = ALPHABET[quocient % ALPHABET.length];
-        }
-
-        return String.valueOf(label);
-
-    }
 
     private static HierarchicalCluster newCluster(Map<String, HierarchicalCluster> clusters, String id) {
 

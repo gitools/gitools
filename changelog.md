@@ -8,6 +8,9 @@ Gitools 2.2.3
 * Fix empty string header sort
 * Fix proxy issues for downloading datasets
 * Improve hierarchical cluster sorting
+* Hierarchical clusters color palettes
+* Choose visible levels of hierarchical clustering
+* Choose amount of levels for hierarchical clusters
 
 Gitools 2.2.2
 ------------------------------------------------------------
