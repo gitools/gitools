@@ -6,6 +6,8 @@ Gitools 2.2.3
 * Use always the proxy settings if present
 * Reduce network connection timeout
 * Fix empty string header sort
+* Fix proxy issues for downloading datasets
+* Improve hierarchical cluster sorting
 
 Gitools 2.2.2
 ------------------------------------------------------------
