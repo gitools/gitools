@@ -29,15 +29,13 @@ import org.gitools.datasources.biomart.queryhandler.BiomartQueryHandler;
 import org.gitools.datasources.biomart.queryhandler.TsvFileQueryHandler;
 import org.gitools.datasources.biomart.restful.model.*;
 import org.gitools.datasources.biomart.settings.BiomartSource;
+import org.gitools.ui.platform.settings.Settings;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -88,7 +86,8 @@ public class BiomartRestfulService implements BiomartService {
     private <T> T xmlGET(String url, Class<T> responseClass) throws IOException, JAXBException {
 
         URL u = new URL(url);
-        HttpURLConnection conn = (HttpURLConnection) u.openConnection();
+        HttpURLConnection conn;
+        conn = getHttpURLConnection(u);
         conn.setRequestMethod("GET");
         conn.connect();
 
@@ -96,6 +95,17 @@ public class BiomartRestfulService implements BiomartService {
         Unmarshaller unm = jc.createUnmarshaller();
         T response = (T) unm.unmarshal(conn.getInputStream());
         return (T) response;
+    }
+
+    private HttpURLConnection getHttpURLConnection(URL u) throws IOException {
+        HttpURLConnection conn;
+        if (Settings.get().isProxyEnabled()) {
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(Settings.get().getProxyHost(), Settings.get().getProxyPort()));
+            conn = (HttpURLConnection) u.openConnection(proxy);
+        }  else {
+            conn = (HttpURLConnection) u.openConnection();
+        }
+        return conn;
     }
 
     /**
@@ -152,7 +162,7 @@ public class BiomartRestfulService implements BiomartService {
 
         try {
             URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            HttpURLConnection conn = getHttpURLConnection(url);
             conn.setRequestMethod("GET");
             conn.connect();
 
@@ -260,7 +270,7 @@ public class BiomartRestfulService implements BiomartService {
 
         try {
             URL url = new URL(urlString);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            HttpURLConnection conn = getHttpURLConnection(url);
             conn.setRequestMethod("GET");
             conn.connect();
             return conn.getInputStream();

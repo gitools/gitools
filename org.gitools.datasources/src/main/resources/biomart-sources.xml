@@ -30,7 +30,7 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
-        <release>last</release>
+        <release>82</release>
     </mart>
     <mart>
     <name>biomart_central</name>
@@ -47,7 +47,7 @@
         <version>0.7</version>
         <host>biomart.intogen.org</host>
         <port>80</port>
-        <restPath>/martservice</restPath>
+        <restPath>/martse   rvice</restPath>
         <wsdlPath></wsdlPath>
     </mart>
     <mart>
@@ -58,7 +58,7 @@
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>
-        <release>grch37</release>
+        <release>75</release>
     </mart>
     <mart>
         <name>ensembl_81</name>
