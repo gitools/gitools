@@ -23,8 +23,12 @@ package org.gitools.analysis.stats.calc;
 
 import com.google.common.collect.Lists;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.google.common.base.Predicates.notNull;
+import static com.google.common.collect.Iterables.filter;
 
 public class MedianStatistic implements Statistic {
 
@@ -36,7 +40,7 @@ public class MedianStatistic implements Statistic {
     @Override
     public Double calc(Iterable<Double> input) {
 
-        List<Double> values = Lists.newArrayList(input);
+        List<Double> values = Lists.newArrayList(filter(input, notNull()));
 
         if (values.isEmpty()) {
             return null;
