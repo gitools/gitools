@@ -37,9 +37,10 @@ public abstract class TestFactory {
     private static final String HYPERGEOMETRIC_TEST = "hypergeometric";
     private static final String CHI_SQUARE_TEST = "chi-square";
     private static final String MANN_WHITNEY_WILCOXON = "mannWhitneyWilcoxon";
+    private static final String ONE_WAY_ANOVA = "oneWayAnova";
 
     private static enum TestEnum {
-        zscore, binomial, hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
+        zscore, binomial, hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon, oneWayAnova
     }
 
     private static final Map<String, TestEnum> testNameMap = new HashMap<>();
@@ -51,12 +52,14 @@ public abstract class TestFactory {
         testNameMap.put(HYPERGEOMETRIC_TEST, TestEnum.hypergeometric);
         testNameMap.put(CHI_SQUARE_TEST, TestEnum.chiSquare);
         testNameMap.put(MANN_WHITNEY_WILCOXON, TestEnum.mannWhitneyWilcoxon);
+        testNameMap.put(ONE_WAY_ANOVA, TestEnum.oneWayAnova);
     }
 
     private static enum TestConfigEnum {
         zscoreMean, zscoreMedian,
         binomial, binomialExact, binomialNormal, binomialPoisson,
-        hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon
+        hypergeometric, fisherExact, chiSquare, mannWhitneyWilcoxon,
+        oneWayAnova
     }
 
 
@@ -76,6 +79,7 @@ public abstract class TestFactory {
         testAliases.put("hypergeometric", TestConfigEnum.hypergeometric);
         testAliases.put("chi-square", TestConfigEnum.chiSquare);
         testAliases.put("mannWhitneyWilcoxon", TestConfigEnum.mannWhitneyWilcoxon);
+        testAliases.put("oneWayAnova", TestConfigEnum.oneWayAnova);
     }
 
 
@@ -107,6 +111,10 @@ public abstract class TestFactory {
                 //break;
             case mannWhitneyWilcoxon:
                 testFactory = new MannWhitneyWilcoxonTestFactory(config);
+                break;
+            case oneWayAnova:
+                testFactory = new OneWayAnovaTestFactory(config);
+                break;
         }
 
         return testFactory;
@@ -157,6 +165,9 @@ public abstract class TestFactory {
                 break;
             case mannWhitneyWilcoxon:
                 config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.MANN_WHITNEY_WILCOXON);
+                break;
+            case oneWayAnova:
+                config.put(TestFactory.TEST_NAME_PROPERTY, TestFactory.ONE_WAY_ANOVA);
                 break;
         }
 

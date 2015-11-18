@@ -24,6 +24,7 @@ package org.gitools.ui.app.analysis.groupcomparison.wizard;
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
+import org.gitools.analysis.stats.test.OneWayAnovaTest;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -51,7 +52,10 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
         setComplete(true);
 
-        testCb.setModel(new DefaultComboBoxModel(new TestElement[]{new TestElement(new MannWhitneyWilcoxonTest())}));
+        testCb.setModel(new DefaultComboBoxModel(new TestElement[]{
+                new TestElement(new MannWhitneyWilcoxonTest()),
+                new TestElement(new OneWayAnovaTest())
+        }));
 
         mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Bonferroni", "Benjamini Hochberg FDR"}));
         mtcCb.setSelectedIndex(1);

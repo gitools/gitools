@@ -25,8 +25,11 @@ import org.gitools.analysis.AnalysisProcessor;
 import org.gitools.analysis.groupcomparison.dimensiongroups.DimensionGroup;
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.mtc.MTCFactory;
+import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
+import org.gitools.analysis.stats.test.OneWayAnovaTest;
 import org.gitools.analysis.stats.test.results.GroupComparisonResult;
+import org.gitools.analysis.stats.test.results.OneWayAnovaResult;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.matrix.*;
 import org.gitools.api.resource.ResourceReference;
@@ -73,9 +76,109 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
         IMatrixDimension sourceRows = (analysis.isTransposeData() ? dataMatrix.getDimension(COLUMNS) : dataMatrix.getDimension(ROWS));
         IMatrixDimension sourceColumns = (analysis.isTransposeData() ? dataMatrix.getDimension(ROWS) : dataMatrix.getDimension(COLUMNS));
 
+        EnrichmentTest test = analysis.getTest();
+        Heatmap resultHeatmap;
+        // Prepare group predicates
+        NullConversion nullConversionFunction = new NullConversion(analysis.getNullConversion());
+
+        if (test.getClass() == MannWhitneyWilcoxonTest.class) {
+            resultHeatmap = mannWhitneyWilcoxon(monitor, dataMatrix, layer, sourceRows, sourceColumns, (MannWhitneyWilcoxonTest) test, nullConversionFunction);
+        } else {
+            resultHeatmap = oneWayAnova(monitor, dataMatrix, layer, sourceRows, sourceColumns, (OneWayAnovaTest) test, nullConversionFunction);
+        }
+
+
+        // Finish
+        analysis.setStartTime(startTime);
+        analysis.setElapsedTime(System.currentTimeMillis() - startTime.getTime());
+        analysis.setResults(new ResourceReference<>("results", resultHeatmap));
+
+    }
+
+
+    private Heatmap oneWayAnova(IProgressMonitor monitor, IMatrix dataMatrix, IMatrixLayer<Double> layer, IMatrixDimension sourceRows, IMatrixDimension sourceColumns, OneWayAnovaTest test, NullConversion nullConversionFunction) {
+
+        LayerAdapter<OneWayAnovaResult> adapter = new LayerAdapter<>(OneWayAnovaResult.class);
+        DimensionGroup[] groups = analysis.getGroups().toArray(new DimensionGroup[analysis.getGroups().size()]);
+
+        ArrayList<String> resultColnames = new ArrayList<>();
+        resultColnames.add("oneWayAnova");
+
+        HashMatrixDimension resultColumns = new HashMatrixDimension(COLUMNS, resultColnames);
+        HashMatrixDimension resultsRows = new HashMatrixDimension(ROWS, sourceRows);
+
+        Heatmap resultHeatmap = new Heatmap(
+                new HashMatrix(
+                        adapter.getMatrixLayers(),
+                        resultsRows,
+                        resultColumns
+                )
+        );
+
+        // Run comparison
+        dataMatrix.newPosition()
+                .iterate(sourceRows)
+                .monitor(monitor, "Running group comparison analysis")
+                .transform(
+                        new OneWayAnovaFunction(
+                                test,
+                                sourceColumns,
+                                layer,
+                                nullConversionFunction,
+                                groups)
+                )
+                .store(resultHeatmap, new MapLayerAdapter<>(resultColumns, adapter));
+
+        // Run multiple test correction
+        IMatrixPosition position = resultHeatmap.newPosition();
+        IMatrixFunction<Double, Double> mtcFunction = MTCFactory.createFunction(analysis.getMtc());
+
+        for (String condition : position.iterate(resultColumns)) {
+            // Two-tail p-Value
+            position.iterate(adapter.getLayer(Double.class, "two-tail-p-value"), resultsRows)
+                    .transform(mtcFunction)
+                    .store(resultHeatmap, adapter.getLayer(Double.class, "corrected-two-tail-p-value"));
+        }
+
+
+        // Results formatting
+
+        for (HeatmapLayer resultLayer : resultHeatmap.getLayers()) {
+            if (resultLayer.getId().contains("p-value")) {
+                resultLayer.setDecorator(new PValueDecorator());
+            }
+        }
+
+        resultHeatmap.setTitle(analysis.getTitle() + " (results)");
+
+        if (analysis.isCopyAnnotation() && dataMatrix instanceof Heatmap &&
+                ((Heatmap) dataMatrix).getRows().getAnnotations() != null) {
+
+            resultHeatmap.getRows().addAnnotations(
+                    ((Heatmap) dataMatrix).getRows().getAnnotations()
+            );
+
+            for (HeatmapHeader header : ((Heatmap) dataMatrix).getRows().getHeaders()) {
+
+                HeatmapHeader headerClone = null;
+                try {
+                    headerClone = CloneUtils.clone(header);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                resultHeatmap.getRows().addHeader(headerClone);
+                headerClone.init(resultHeatmap.getRows());
+            }
+        }
+
+
+        return resultHeatmap;
+    }
+
+    private Heatmap mannWhitneyWilcoxon(IProgressMonitor monitor, IMatrix dataMatrix, IMatrixLayer<Double> layer, IMatrixDimension sourceRows, IMatrixDimension sourceColumns, MannWhitneyWilcoxonTest test, NullConversion nullConversionFunction) {
         // Prepare results data matrix
         LayerAdapter<GroupComparisonResult> adapter = new LayerAdapter<>(GroupComparisonResult.class);
-        MannWhitneyWilcoxonTest test = (MannWhitneyWilcoxonTest) analysis.getTest();
 
         DimensionGroup[] groups = analysis.getGroups().toArray(new DimensionGroup[analysis.getGroups().size()]);
         ArrayList<String> resultColnames = new ArrayList<>();
@@ -105,8 +208,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
                 )
         );
         resultHeatmap.getColumns().addAnnotations(resultColumnAnnotations);
-        // Prepare group predicates
-        NullConversion nullConversionFunction = new NullConversion(analysis.getNullConversion());
+
 
         // Run comparison
         dataMatrix.newPosition()
@@ -205,12 +307,7 @@ public class GroupComparisonProcessor implements AnalysisProcessor {
         group2Header.setTitle("Group 2");
         resultHeatmap.getColumns().addHeader(group1Header);
         resultHeatmap.getColumns().addHeader(group2Header);
-
-        // Finish
-        analysis.setStartTime(startTime);
-        analysis.setElapsedTime(System.currentTimeMillis() - startTime.getTime());
-        analysis.setResults(new ResourceReference<>("results", resultHeatmap));
-
+        return resultHeatmap;
     }
 
 
