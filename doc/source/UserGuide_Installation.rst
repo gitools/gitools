@@ -28,7 +28,7 @@ Specific instructions for Windows
 Java JDK installation
 ##########################
 
-If Java is not yet installed download the **Java 7 JDK** from `www.oracle.com/technetwork/java/javase/downloads <www.oracle.com/technetwork/java/javase/downloads>`__.
+If Java is not yet installed download the **Java 7 JDK** from `http://www.oracle.com/technetwork/java/javase/downloads <http://www.oracle.com/technetwork/java/javase/downloads>`__.
 
  * If your machine is not a 64-bit machine, download the x86 version.
  * Install the .exe file
@@ -56,7 +56,7 @@ Specific instructions for OS X
 Java JDK installation
 ##########################
 
-If Java is not yet installed download the **Java 7 JDK** from `www.oracle.com/technetwork/java/javase/downloads <www.oracle.com/technetwork/java/javase/downloads>`__.
+If Java is not yet installed download the **Java 7 JDK** from `http://www.oracle.com/technetwork/java/javase/downloads <http://www.oracle.com/technetwork/java/javase/downloads>`__.
 
 
 Install the .dmg file normally. Note that you need to install the JDK version of Java, otherwise Gitools
@@ -101,7 +101,7 @@ Specific instructions for Linux
 Java JDK installation
 ##########################
 
-If Java is not yet installed download the **Java 7 JDK** from `www.oracle.com/technetwork/java/javase/downloads <www.oracle.com/technetwork/java/javase/downloads>`__.
+If Java is not yet installed download the **Java 7 JDK** from `http://www.oracle.com/technetwork/java/javase/downloads <http://www.oracle.com/technetwork/java/javase/downloads>`__.
 
  * If your machine is not a 64-bit machine, download the x86 version.
  * Extract the download Java file into a folder
@@ -131,7 +131,7 @@ Imagine that you have uncompressed the zip file into */opt/gitools-2.2.0-bin*. I
 Gitools to the command  line changing the *PATH* variable. In order to do this, just open **~/.bashrc** file and add
 this line at the bottom :
 
-``export PATH=/opt/gitools-2.2.0-bin/bin:$PATH``
+``export PATH=/opt/gitools-2.2.0-bin:$PATH``
 
 Start a new terminal and you should be able to run Gitools graphical interface typing:
 
@@ -166,7 +166,7 @@ Download from github or checkout via the command ``git@github.com:gitools/gitool
 
     # Extract it and run
     cd target
-    unzip gitools-2.0.0-bin.zip
-    gitools-2.0.0/bin/gitools
+    unzip gitools-2.2.3-bin.zip
+    gitools-2.2.3/gitools
 
 
