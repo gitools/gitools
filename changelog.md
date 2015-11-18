@@ -1,3 +1,17 @@
+Gitools 2.2.3
+------------------------------------------------------------
+* Biomart sources update
+* Windows .executable at root: gitools.exe
+* Unix (Linux & OS X) executable at root: gitools
+* Use always the proxy settings if present
+* Reduce network connection timeout
+* Fix empty string header sort
+* Fix proxy issues for downloading datasets
+* Improve hierarchical cluster sorting
+* Hierarchical clusters color palettes
+* Choose visible levels of hierarchical clustering
+* Choose amount of levels for hierarchical clusters
+
 Gitools 2.2.2
 ------------------------------------------------------------
 * Preliminary mutex analysis
@@ -6,7 +20,7 @@ Gitools 2.2.2
 * Bugfix: Numeric header sorting
 * Non-0 event function for linear numeric (color) scale
 * Numeric Header value formatter
-
+* Update color scale load in numeric header wizard
 
 Gitools 2.2.1
 -------------------------------------------------------------

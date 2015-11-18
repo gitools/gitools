@@ -23,7 +23,17 @@
 
 <mart-registry>
     <mart>
-        <name>biomart_central</name>
+        <name>ensembl_last</name>
+        <description>Ensembl Last release</description>
+        <version>0.6</version>
+        <host>www.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>82</release>
+    </mart>
+    <mart>
+    <name>biomart_central</name>
         <description>BioMart Central Portal</description>
         <version>0.7</version>
         <host>www.biomart.org</host>
@@ -37,14 +47,74 @@
         <version>0.7</version>
         <host>biomart.intogen.org</host>
         <port>80</port>
-        <restPath>/martservice</restPath>
+        <restPath>/martse   rvice</restPath>
         <wsdlPath></wsdlPath>
     </mart>
     <mart>
-        <name>ensembl_last</name>
-        <description>Ensembl Last release</description>
+        <name>ensembl_grch37</name>
+        <description>Ensembl GRCh73 (Feb 2014)</description>
         <version>0.6</version>
-        <host>www.ensembl.org</host>
+        <host>grch37.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>75</release>
+    </mart>
+    <mart>
+        <name>ensembl_81</name>
+        <description>Ensembl 81 (Jul 2015)</description>
+        <version>0.6</version>
+        <host>jul2015.archive.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>81</release>
+    </mart>
+    <mart>
+        <name>ensembl_80</name>
+        <description>Ensembl 80 (May 2015)</description>
+        <version>0.6</version>
+        <host>may2015.archive.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>80</release>
+    </mart>
+    <mart>
+        <name>ensembl_78</name>
+        <description>Ensembl 78 (Dec 2014)</description>
+        <version>0.6</version>
+        <host>dec2014.archive.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>78</release>
+    </mart>
+    <mart>
+        <name>ensembl_77</name>
+        <description>Ensembl 77 (Oct 2014)</description>
+        <version>0.6</version>
+        <host>oct2014.archive.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>77</release>
+    </mart>
+    <mart>
+        <name>ensembl_76</name>
+        <description>Ensembl 76 (Aug 2014)</description>
+        <version>0.6</version>
+        <host>aug2014.archive.ensembl.org</host>
+        <port>80</port>
+        <restPath>/biomart/martservice</restPath>
+        <wsdlPath>biomart/martwsdl</wsdlPath>
+        <release>76</release>
+    </mart>
+    <mart>
+        <name>ensembl_75</name>
+        <description>Ensembl 75 (Feb 2014)</description>
+        <version>0.6</version>
+        <host>feb2014.archive.ensembl.org</host>
         <port>80</port>
         <restPath>/biomart/martservice</restPath>
         <wsdlPath>biomart/martwsdl</wsdlPath>

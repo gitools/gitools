@@ -24,11 +24,15 @@ package org.gitools.datasources.kegg.service;
 import org.gitools.datasources.kegg.service.domain.IdConversion;
 import org.gitools.datasources.kegg.service.domain.KeggOrganism;
 import org.gitools.datasources.kegg.service.domain.KeggPathway;
+import org.gitools.ui.platform.settings.Settings;
 import org.gitools.utils.readers.text.CSVReader;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -134,7 +138,15 @@ public class KeggService {
      */
 
     private static CSVReader createReader(String url) throws IOException {
-        URL restUrl = new URL(url);
-        return new CSVReader(new BufferedReader(new InputStreamReader(restUrl.openStream())));
+        URL u = new URL(url);
+
+        InputStream inputStream;
+        if (Settings.get().isProxyEnabled()) {
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(Settings.get().getProxyHost(), Settings.get().getProxyPort()));
+            inputStream = u.openConnection(proxy).getInputStream();
+        }  else {
+            inputStream = u.openConnection().getInputStream();
+        }
+        return new CSVReader(new BufferedReader(new InputStreamReader(inputStream)));
     }
 }

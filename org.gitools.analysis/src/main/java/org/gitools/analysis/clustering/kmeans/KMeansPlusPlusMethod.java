@@ -31,6 +31,7 @@ import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
 import org.gitools.api.analysis.Clusters;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.heatmap.header.HierarchicalClusterNamer;
 
 import java.util.*;
 
@@ -164,7 +165,7 @@ public class KMeansPlusPlusMethod extends AbstractClusteringMethod {
         public KMeansClusters(List<? extends Cluster<Slide>> clusters, Set<String> noData) {
 
             this.clusters = new HashMap<>();
-            int digits = HierarchicalClusterer.calculateDigits(clusters.size());
+            int digits = HierarchicalClusterNamer.calculateDigits(clusters.size());
 
             for (int i=0; i < clusters.size(); i++) {
                 Cluster<Slide> cluster = clusters.get(i);
@@ -176,7 +177,7 @@ public class KMeansPlusPlusMethod extends AbstractClusteringMethod {
                     identifiers.add(slide.getIdentifier());
                 }
 
-                this.clusters.put(HierarchicalClusterer.createLabel(i, digits), identifiers);
+                this.clusters.put(HierarchicalClusterNamer.createLabel(i, digits), identifiers);
             }
 
             this.clusters.put("Empty", noData);

@@ -1,15 +1,18 @@
 #!/bin/bash
 
 SOURCE="${BASH_SOURCE[0]}"
-BINDIR="$( dirname "$SOURCE" )"
+BINDIR="$( dirname "$SOURCE/bin" )"
 while [ -h "$SOURCE" ]
 do
   SOURCE="$(readlink "$SOURCE")"
   [[ $SOURCE != /* ]] && SOURCE="$BINDIR/$SOURCE"
   BINDIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd )"
 done
-BINDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"
+BINDIR="$( cd -P "$( dirname "$SOURCE" )" && pwd )"/bin
 
-source $BINDIR/common.sh
+source "$BINDIR/common.sh"
 
-$javacmd -jar $LIBDIR/org.gitools.ui.app-${project.version}.jar $*
+echo "STARTING UP GITOOLS"
+echo ""
+
+$javacmd -jar "$LIBDIR/org.gitools.ui.app-${project.version}.jar" $*

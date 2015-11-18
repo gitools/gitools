@@ -443,8 +443,15 @@ public class HttpUtils {
 
     private HttpURLConnection openConnection(URL url, Map<String, String> requestProperties, String method, int redirectCount) throws IOException {
 
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        Object proxyHost = System.getProperties().get("http.proxyHost");
+        Object proxyPort = System.getProperties().get("http.proxyPort");
 
+        Proxy proxy = Proxy.NO_PROXY;
+        if (proxyHost != null && proxyPort != null && proxyPort instanceof Integer) {
+            proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost.toString(), (Integer) proxyPort));
+        }
+
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection(proxy);
 
         if (GSUtils.isGenomeSpace(url)) {
             String token = GSUtils.getGSToken();

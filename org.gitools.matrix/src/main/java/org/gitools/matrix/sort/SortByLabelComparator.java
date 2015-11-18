@@ -23,6 +23,7 @@ package org.gitools.matrix.sort;
 
 
 import com.google.common.base.Function;
+import com.google.common.base.Strings;
 import org.gitools.api.matrix.SortDirection;
 import org.gitools.api.matrix.view.IMatrixViewDimension;
 
@@ -89,15 +90,15 @@ public class SortByLabelComparator implements Comparator<String> {
         String v1 = transformFunction.apply(idx1);
         String v2 = transformFunction.apply(idx2);
 
-        if (v1 == null && v2 == null) {
+        if (Strings.isNullOrEmpty(v1) && Strings.isNullOrEmpty(v2)) {
             return 0;
         }
 
-        if (v1 == null) {
+        if (Strings.isNullOrEmpty(v1)) {
             return 1;
         }
 
-        if (v2 == null) {
+        if (Strings.isNullOrEmpty(v2)) {
             return -1;
         }
 

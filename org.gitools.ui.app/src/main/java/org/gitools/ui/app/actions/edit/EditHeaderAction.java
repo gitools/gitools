@@ -31,6 +31,7 @@ import org.gitools.ui.app.heatmap.header.wizard.coloredlabels.ColoredLabelsGroup
 import org.gitools.ui.app.heatmap.panel.settings.headers.ColorScaleSection;
 import org.gitools.ui.app.heatmap.panel.settings.headers.DetailsSection;
 import org.gitools.ui.app.heatmap.panel.settings.headers.FormatSection;
+import org.gitools.ui.app.heatmap.panel.settings.headers.HierarchicalLevelsSection;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapHeaderAction;
@@ -88,9 +89,10 @@ public class EditHeaderAction extends HeatmapDimensionAction implements IHeatmap
         } else if (header instanceof HierarchicalClusterHeatmapHeader) {
             sections.add(headerDetails);
             sections.add(new FormatSection(false, false, header));
-            for (HeatmapColoredLabelsHeader level : ((HierarchicalClusterHeatmapHeader) header).getClusterLevels()) {
+            sections.add(new HierarchicalLevelsSection((HierarchicalClusterHeatmapHeader) header));
+            /*for (HeatmapColoredLabelsHeader level : ((HierarchicalClusterHeatmapHeader) header).getClusterLevels()) {
                 sections.add(new ColoredLabelsGroupsPage(level.getClusters(), level.getTitle()));
-            }
+            }*/
         } else {
             sections.add(new FormatSection(true, false, header));
         }

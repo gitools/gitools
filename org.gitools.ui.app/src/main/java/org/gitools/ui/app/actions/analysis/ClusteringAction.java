@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.app.actions.analysis;
 
-import org.apache.commons.math3.util.FastMath;
 import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.hierarchical.HierarchicalMethod;
 import org.gitools.analysis.clustering.kmeans.KMeansPlusPlusMethod;
@@ -33,7 +32,6 @@ import org.gitools.heatmap.Bookmark;
 import org.gitools.heatmap.Bookmarks;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HierarchicalCluster;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
@@ -50,11 +48,9 @@ import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
 import org.gitools.ui.platform.wizard.WizardDialog;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.util.*;
-import java.util.List;
 
 public class ClusteringAction extends HeatmapAction {
 
@@ -135,7 +131,6 @@ public class ClusteringAction extends HeatmapAction {
     private static void processHierarchical(Clusters results, HeatmapDimension clusteringDimension, AnnotationMatrix annotationMatrix, String layerId, HierarchicalMethod method, Heatmap heatmap, IProgressMonitor monitor) {
 
         HierarchicalCluster rootCluster = (HierarchicalCluster) results;
-        List<HierarchicalCluster> children = rootCluster.getChildren();
         rootCluster.setName("");
 
         // Sort
@@ -148,57 +143,20 @@ public class ClusteringAction extends HeatmapAction {
                 ", Link type used: " + method.getLinkageStrategy().toString() + ".";
         Bookmark b = addBookmarkHierarchical(clusteringDimension, layerId, heatmap, method, clusterDesc);
 
-        // Add to annotations
-        String annotationPrefix = b.getName() + " L";
-        Map<Integer, List<HierarchicalCluster>> clustersMapPerLevel = new HashMap<>();
-        int maxLevel = 0;
-        while (maxLevel < 10) {
-            maxLevel++;
 
-            List<HierarchicalCluster> nextLevel = new ArrayList<>();
-            for (HierarchicalCluster cluster : children) {
-                if (!cluster.getChildren().isEmpty()) {
-                    for (String identifier : cluster.getIdentifiers()) {
-                        annotationMatrix.setAnnotation(identifier, annotationPrefix + maxLevel, cluster.getName());
-                    }
-                }
-                nextLevel.addAll(cluster.getChildren());
-            }
-
-            clustersMapPerLevel.put(maxLevel, children);
-            children = nextLevel;
-
-            if (children.isEmpty()) {
-                maxLevel--;
-                break;
-            }
-        }
-
-        // Hierarchical clustering headers
-        int depth = FastMath.min(10, maxLevel);
+        // Hierarchical cluster header
+        int maxLevels = 20;
         rootCluster.setName(b.getName());
         HierarchicalClusterHeatmapHeader hierarchicalHeader = new HierarchicalClusterHeatmapHeader(clusteringDimension);
         hierarchicalHeader.setDescription(clusterDesc);
         hierarchicalHeader.setTitle("Clust. " + layerId);
         hierarchicalHeader.setHierarchicalCluster(rootCluster);
 
-        for (int l = depth; l >= 1; l--) {
-            HeatmapColoredLabelsHeader levelHeader = new HeatmapColoredLabelsHeader(clusteringDimension);
+        // Add to annotations
+        String annotationPrefix = b.getName() + " L";
 
-            List<HierarchicalCluster> clusters = clustersMapPerLevel.get(l);
-            List<ColoredLabel> coloredLabels = new ArrayList<>(clusters.size());
-            for (HierarchicalCluster cluster : clusters) {
-                coloredLabels.add(new ColoredLabel(cluster.getName(), new Color(cluster.getColor())));
-            }
+        HierarchicalClusterHeatmapHeader.createHierarchicalLevelsHeaders(hierarchicalHeader, maxLevels, annotationPrefix);
 
-            levelHeader.setClusters(coloredLabels);
-
-
-            levelHeader.setTitle(annotationPrefix + l);
-            levelHeader.setSize(7);
-            levelHeader.setAnnotationPattern("${" + annotationPrefix + l + "}");
-            hierarchicalHeader.addLevel(levelHeader);
-        }
         clusteringDimension.addHeader(hierarchicalHeader);
 
         // Open a tree editor

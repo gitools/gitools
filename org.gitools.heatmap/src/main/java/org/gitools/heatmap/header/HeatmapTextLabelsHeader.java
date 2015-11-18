@@ -134,6 +134,10 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
 
     @Override
     public String getAnnotationPattern() {
+
+        if (labelSource == LabelSource.ID) {
+            return getLabelPattern();
+        }
         return "${" + getLabelAnnotation() + "}";
     }
 
