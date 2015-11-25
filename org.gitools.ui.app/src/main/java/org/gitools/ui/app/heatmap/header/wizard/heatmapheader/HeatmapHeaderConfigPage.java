@@ -22,7 +22,11 @@
 package org.gitools.ui.app.heatmap.header.wizard.heatmapheader;
 
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
+import org.gitools.ui.core.utils.DocumentChangeListener;
+import org.gitools.ui.platform.dialog.MessageStatus;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
+
+import javax.swing.event.DocumentEvent;
 
 public class HeatmapHeaderConfigPage extends AbstractWizardPage {
 
@@ -44,7 +48,30 @@ public class HeatmapHeaderConfigPage extends AbstractWizardPage {
 
         setTitle("Header configuration");
         setComplete(true);
+
+        titleField.getDocument().addDocumentListener(new DocumentChangeListener() {
+            @Override
+            protected void update(DocumentEvent e) {
+                if (titleField.getText().length() > 20) {
+                    setMessage(MessageStatus.WARN, "Try to shorten the title");
+                } else {
+                    setMessage(MessageStatus.INFO, "");
+                }
+
+                if (titleField.getText().length() == 0) {
+                    setComplete(false);
+                    setMessage(MessageStatus.ERROR, "Choose a title");
+                    return;
+                } else {
+                    setComplete(true);
+                }
+
+                updateModel();
+            }
+        });
     }
+
+
 
     @Override
     public void updateControls() {

@@ -38,19 +38,19 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AggregationDataSourcePage extends AbstractWizardPage {
+public class DataAggregationPage extends AbstractWizardPage {
 
     private final IAggregator[] aggregatorsArray;
     private final HeatmapDimension headerDimension;
     private final HeatmapDimension aggregationDimension;
     private final Heatmap heatmap;
 
-    public AggregationDataSourcePage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, final Heatmap heatmap) {
+    public DataAggregationPage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, final Heatmap heatmap) {
         this.headerDimension = headerDimension;
         this.aggregationDimension = aggregationDimension;
         this.heatmap = heatmap;
 
-        //public AggregationDataSourcePage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, List<String> layerNames, int selectedLayer) {
+        //public DataAggregationPage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, List<String> layerNames, int selectedLayer) {
 
         List<String> layerNames = heatmap.getLayers().getLayerNames();
         int selectedLayer = heatmap.getLayers().getTopLayerIndex();
