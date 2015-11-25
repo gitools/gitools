@@ -21,23 +21,39 @@
  */
 package org.gitools.ui.app.heatmap.header.wizard.heatmapheader;
 
+import com.jgoodies.binding.adapter.ComboBoxAdapter;
+import com.jgoodies.binding.list.SelectionInList;
 import org.gitools.api.analysis.IAggregator;
+import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.TransformFunction;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.aggregation.AggregatorFactory;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AggregationDataSourcePage extends AbstractWizardPage {
 
     private final IAggregator[] aggregatorsArray;
+    private final HeatmapDimension headerDimension;
+    private final HeatmapDimension aggregationDimension;
+    private final Heatmap heatmap;
 
+    public AggregationDataSourcePage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, final Heatmap heatmap) {
+        this.headerDimension = headerDimension;
+        this.aggregationDimension = aggregationDimension;
+        this.heatmap = heatmap;
 
-    public AggregationDataSourcePage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, List<String> layerNames, int selectedLayer) {
+        //public AggregationDataSourcePage(HeatmapDimension headerDimension, HeatmapDimension aggregationDimension, List<String> layerNames, int selectedLayer) {
 
+        List<String> layerNames = heatmap.getLayers().getLayerNames();
+        int selectedLayer = heatmap.getLayers().getTopLayerIndex();
 
         this.aggregatorsArray = AggregatorFactory.getAggregatorsArray();
         String[] aggregatorNames = new String[aggregatorsArray.length];
@@ -55,6 +71,7 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
         valueCb.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                setTransformFunctions(heatmap);
                 updateControls();
             }
         });
@@ -68,17 +85,60 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
             }
         });
 
-        useAllRb.setText("Use values from all " + headerDimension.getId());
-        useSelectedRb.setText("Use values from selected " + headerDimension.getId());
+        setTransformFunctions(heatmap);
+        transformationCb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateControls();
+            }
+        });
+
+        useAllRb.setText("Use values from all " + aggregationDimension.getId());
+        useSelectedRb.setText("Use values from " + aggregationDimension.getSelected().size() + " selected " + aggregationDimension.getId());
         separateAggregationCb.setText("aggregate by " + aggregationDimension.getId() + " annotations groups");
 
-        setTitle("Choose the data source for the header to add");
+        setTitle("Choose the data to aggregate");
+
+    }
+
+    @Override
+    public Container getParent() {
+        return rootPanel;
+    }
+
+    private void setTransformFunctions(Heatmap heatmap) {
+        List<TransformFunction> transformFunctions = new ArrayList<>();
+        transformFunctions.add(new TransformFunction("") {
+
+            @Override
+            public String getDescription() {
+                return "No transformation of values";
+            }
+
+            @Override
+            public Double apply(Double value, IMatrixPosition position) {
+                return value;
+            }
+        });
+        transformFunctions.addAll(heatmap.getLayers().getTopLayer().getDecorator().getEventFunctionAlternatives());
+        transformationCb.setModel(
+                new ComboBoxAdapter<>(
+                        new SelectionInList<>(
+                                transformFunctions
+                        )
+                )
+        );
+        transformationCb.setSelectedIndex(0);
+        functionDescription.setText(((TransformFunction) transformationCb.getSelectedItem()).getDescription());
+
 
     }
 
     public IAggregator getAggregator() {
         return aggregatorsArray[aggregatorCb.getSelectedIndex()];
     }
+
+    public TransformFunction getTransformFunction() { return (TransformFunction) transformationCb.getSelectedItem(); }
 
     public int getAggregationLayer() {
         return valueCb.getSelectedIndex();
@@ -103,101 +163,71 @@ public class AggregationDataSourcePage extends AbstractWizardPage {
 
     @Override
     public void updateControls() {
+        functionDescription.setText(((TransformFunction) transformationCb.getSelectedItem()).getDescription());
+        useAllRb.setEnabled(!separateAggregationCb.isSelected());
+        useSelectedRb.setEnabled(!separateAggregationCb.isSelected() && aggregationDimension.getSelected().size() > 0);
         updateCompleted();
     }
 
 
-    @Override
-    public void updateModel() {
-        super.updateModel();
-    }
-
-
-    /**
-     * This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        allOrSelected = new javax.swing.ButtonGroup();
-        valueCb = new javax.swing.JComboBox();
-        jLabel1 = new javax.swing.JLabel();
-        aggregatorCb = new javax.swing.JComboBox();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        useAllRb = new javax.swing.JRadioButton();
-        useSelectedRb = new javax.swing.JRadioButton();
-        separateAggregationCb = new javax.swing.JCheckBox();
+        allOrSelected = new ButtonGroup();
 
-        valueCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
-
-        jLabel1.setText("Select data value");
-
-        aggregatorCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
-
-        jLabel2.setText("Value aggregation");
-
-        jLabel3.setFont(new java.awt.Font("DejaVu Sans", 0, 11));
-        jLabel3.setText("The way the the row/column will be aggregated into one value");
+        aggregatorCb.setModel(new DefaultComboBoxModel(new String[]{"Item 1", "Item 2", "Item 3", "Item 4"}));
 
         allOrSelected.add(useAllRb);
         useAllRb.setSelected(true);
         useAllRb.setText("use all");
-        useAllRb.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        useAllRb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 useAllRbActionPerformed(evt);
             }
         });
 
         allOrSelected.add(useSelectedRb);
         useSelectedRb.setText("use selected");
-        useSelectedRb.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        useSelectedRb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 useSelectedRbActionPerformed(evt);
             }
         });
 
         separateAggregationCb.setText("aggregate sperately for annotation groups");
-        separateAggregationCb.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        separateAggregationCb.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 separateAggregationCbActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(jLabel1).addComponent(jLabel2).addComponent(jLabel3).addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE).addComponent(useAllRb).addComponent(useSelectedRb).addComponent(separateAggregationCb)).addContainerGap(204, Short.MAX_VALUE)));
-        layout.setVerticalGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGroup(layout.createSequentialGroup().addContainerGap().addComponent(jLabel1).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED).addComponent(valueCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(18, 18, 18).addComponent(jLabel2).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(jLabel3).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(aggregatorCb, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE).addGap(15, 15, 15).addComponent(separateAggregationCb).addGap(18, 18, 18).addComponent(useAllRb).addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED).addComponent(useSelectedRb).addContainerGap(83, Short.MAX_VALUE)));
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
-    private void useAllRbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useAllRbActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_useAllRbActionPerformed
+    private void useAllRbActionPerformed(ActionEvent evt) {
 
-    private void useSelectedRbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_useSelectedRbActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_useSelectedRbActionPerformed
+    }
 
-    private void separateAggregationCbActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_separateAggregationCbActionPerformed
-        useAllRb.setEnabled(!separateAggregationCb.isSelected());
-        useSelectedRb.setEnabled(!separateAggregationCb.isSelected());
-    }//GEN-LAST:event_separateAggregationCbActionPerformed
+    private void useSelectedRbActionPerformed(ActionEvent evt) {
+    }
+
+    private void separateAggregationCbActionPerformed(java.awt.event.ActionEvent evt) {
+        updateControls();
+    }
 
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JComboBox aggregatorCb;
-    private javax.swing.ButtonGroup allOrSelected;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JCheckBox separateAggregationCb;
-    private javax.swing.JRadioButton useAllRb;
-    private javax.swing.JRadioButton useSelectedRb;
-    private javax.swing.JComboBox valueCb;
-    // End of variables declaration//GEN-END:variables
+    private JComboBox aggregatorCb;
+    private ButtonGroup allOrSelected;
+    private JCheckBox separateAggregationCb;
+    private JRadioButton useAllRb;
+    private JRadioButton useSelectedRb;
+    private JComboBox valueCb;
+    private JPanel rootPanel;
+    private JComboBox transformationCb;
+    private JLabel functionDescription;
+
+    @Override
+    public JComponent createControls() {
+        return rootPanel;
+    }
 
 }

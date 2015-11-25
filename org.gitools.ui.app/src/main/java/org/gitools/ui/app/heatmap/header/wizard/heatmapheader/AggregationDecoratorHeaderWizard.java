@@ -30,11 +30,12 @@ import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.Clusters;
 import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
+import org.gitools.api.matrix.IMatrixIterable;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.api.matrix.IMatrixPosition;
+import org.gitools.api.matrix.TransformFunction;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.HeatmapDimension;
-import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -68,8 +69,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
     @Override
     public void addPages() {
 
-        HeatmapLayers layers = heatmap.getLayers();
-        dataSourceAggregationPage = new AggregationDataSourcePage(headerDimension, aggregationDimension, layers.getLayerNames(), layers.getTopLayerIndex());
+        dataSourceAggregationPage = new AggregationDataSourcePage(headerDimension, aggregationDimension, heatmap);
         addPage(dataSourceAggregationPage);
 
         dataSourceAnnotationPage = new AnnotationSourcePage(aggregationDimension, "The aggregation is calculated for each distinct value of the chosen annotation individually");
@@ -86,7 +86,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
                 return dataSourceAnnotationPage;
             } else {
                 try {
-                    prepareAggregationByColumns();
+                    prepareAggregation();
                 } catch (Exception e) {
                     dataSourceAggregationPage.setMessage(MessageStatus.ERROR, "Error aggregating the values");
                     e.printStackTrace();
@@ -128,7 +128,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
         aggregationIndicesByAnnotation = results.getClustersMap();
     }
 
-    private void prepareAggregationByColumns() {
+    private void prepareAggregation() {
 
         String annotationLabel = dataSourceAggregationPage.getAggregator() + " of ";
 
@@ -155,6 +155,7 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
                 // Compute the annotations and store the results.
                 AnnotationMatrix annotations = headerDimension.getAnnotations();
+                TransformFunction tfunc = dataSourceAggregationPage.getTransformFunction();
                 IAggregator aggregator = dataSourceAggregationPage.getAggregator();
                 IMatrixLayer<Double> aggregationLayer = heatmap.getLayers().get(dataSourceAggregationPage.getAggregationLayer());
 
@@ -165,7 +166,8 @@ public class AggregationDecoratorHeaderWizard extends DecoratorHeaderWizard {
 
                     for (String identifier : position.iterate(headerDimension).monitor(monitor, "Aggregating")) {
 
-                        Double aggregatedValue = aggregator.aggregate(position.iterate(aggregationLayer, aggregationDimension.subset(aggregationIdentifiers)));
+                        IMatrixIterable<Double> iterator = position.iterate(aggregationLayer, aggregationDimension.subset(aggregationIdentifiers));
+                        Double aggregatedValue = aggregator.aggregate(iterator.transform(tfunc));
 
                         if (aggregatedValue != null) {
                             annotations.setAnnotation(identifier, annotationLabel, Double.toString(aggregatedValue));
