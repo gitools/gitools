@@ -1,6 +1,8 @@
 Gitools 2.2.4
 -----------------------------------------------------------
-* Added Mode aggregator
+* Added Median aggregator
+* Added transformation methods to aggregation header wizard
+* Added OneWayAnova test to GroupComparison analysis options
 
 Gitools 2.2.3
 ------------------------------------------------------------
