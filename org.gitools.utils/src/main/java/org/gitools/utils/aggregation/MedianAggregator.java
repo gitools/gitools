@@ -21,26 +21,22 @@
  */
 package org.gitools.utils.aggregation;
 
+import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.gitools.api.analysis.IAggregator;
 
-public class AggregatorFactory {
 
-    private static IAggregator[] AGGREGATORS = new IAggregator[]{
-            MultAggregator.INSTANCE,
-            SumAggregator.INSTANCE,
-            SumAbsAggregator.INSTANCE,
-            MeanAggregator.INSTANCE,
-            MedianAggregator.INSTANCE,
-            LogSumAggregator.INSTANCE,
-            StdDevAggregator.INSTANCE,
-            VarianceAggregator.INSTANCE,
-            FrequencyAggregator.INSTANCE,
-            NonZeroCountAggregator.INSTANCE,
-            MinAggregator.INSTANCE,
-            MaxAggregator.INSTANCE
-    };
+public class MedianAggregator extends AbstractAggregator {
 
-    public static IAggregator[] getAggregatorsArray() {
-        return AGGREGATORS;
+    public final static IAggregator INSTANCE = new MedianAggregator();
+    private final Median median;
+
+    private MedianAggregator() {
+        super("Median");
+        this.median = new Median();
+    }
+
+    @Override
+    public Double aggregateNoNulls(double[] data) {
+        return median.evaluate(data);
     }
 }
