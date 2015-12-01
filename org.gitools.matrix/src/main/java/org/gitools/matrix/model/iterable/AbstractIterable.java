@@ -124,8 +124,17 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
                 public void run() {
 
                     IMatrixPosition position = output.newPosition();
-                    while (iterator.hasNext()) {
-                        T value = iterator.next();
+                    while (true) {
+
+                        T value;
+                        synchronized (AbstractIterable.this) {
+                            if (iterator.hasNext()) {
+                                value = iterator.next();
+                            } else {
+                                break;
+                            }
+                        }
+
                         mapping.map(getPosition(), position);
                         output.set(layer, value, position);
                     }
@@ -134,8 +143,17 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
         }
 
         IMatrixPosition position = output.newPosition();
-        while (iterator.hasNext()) {
-            T value = iterator.next();
+        while (true) {
+
+            T value;
+            synchronized (AbstractIterable.this) {
+                if (iterator.hasNext()) {
+                    value = iterator.next();
+                } else {
+                    break;
+                }
+            }
+
             mapping.map(getPosition(), position);
             output.set(layer, value, position);
         }
