@@ -83,8 +83,17 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
                 public void run() {
 
                     IMatrixPosition position = output.newPosition();
-                    while (iterator.hasNext()) {
-                        T value = iterator.next();
+                    while (true) {
+
+                        T value;
+                        synchronized (AbstractIterable.this) {
+                            if (iterator.hasNext()) {
+                                value = iterator.next();
+                            } else {
+                                break;
+                            }
+                        }
+
                         mapping.map(getPosition(), position);
                         layerAdapter.set(output, value, position);
                     }
@@ -93,8 +102,17 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
         }
 
         IMatrixPosition position = output.newPosition();
-        while (iterator.hasNext()) {
-            T value = iterator.next();
+        while (true) {
+
+            T value;
+            synchronized (AbstractIterable.this) {
+                if (iterator.hasNext()) {
+                    value = iterator.next();
+                } else {
+                    break;
+                }
+            }
+
             mapping.map(getPosition(), position);
             layerAdapter.set(output, value, position);
         }
@@ -181,15 +199,35 @@ public abstract class AbstractIterable<T> implements IMatrixIterable<T> {
             tasks.add(EXECUTOR.submit(new Runnable() {
                 @Override
                 public void run() {
-                    while (iterator.hasNext()) {
-                        output.add(iterator.next());
+                    while (true) {
+
+                        T value;
+                        synchronized (AbstractIterable.this) {
+                            if (iterator.hasNext()) {
+                                value = iterator.next();
+                            } else {
+                                break;
+                            }
+                        }
+
+                        output.add(value);
                     }
                 }
             }));
         }
 
-        while (iterator.hasNext()) {
-            output.add(iterator.next());
+        while (true) {
+
+            T value;
+            synchronized (AbstractIterable.this) {
+                if (iterator.hasNext()) {
+                    value = iterator.next();
+                } else {
+                    break;
+                }
+            }
+
+            output.add(value);
         }
 
         // Wait other tasks to finish
