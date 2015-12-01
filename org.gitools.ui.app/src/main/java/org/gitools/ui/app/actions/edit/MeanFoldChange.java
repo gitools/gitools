@@ -18,7 +18,6 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 
 public class MeanFoldChange extends TransformFunction {
-    private final boolean initiated;
     private IMatrixLayer aggLayer;
     private final static Key<HashMatrix> CACHEKEY = new Key<HashMatrix>() {};
     private Heatmap heatmap;
@@ -34,59 +33,38 @@ public class MeanFoldChange extends TransformFunction {
         this.heatmap = heatmap;
         this.layer = layer;
         this.monitor = monitor;
-        this.initiated = false;
-        this.latch = new CountDownLatch(1);
-        //System.out.println("\nMFC CREATED");
     }
 
-    public void init() {
-        String threadName = Thread.currentThread().getName();
+    @Override
+    public void onBeforeIterate(IMatrixIterable<Double> parentIterable) {
+        super.onBeforeIterate(parentIterable);
 
-        synchronized (this) {
-            //System.out.println("I'll try \t" + threadName);
-            if (latch.getCount() > 0) {
-                System.out.println("INIT \t" + threadName);
-                //Thread.currentThread().setPriority(Thread.MAX_PRIORITY-2);
+        AggregationFunction aggfunc = new AggregationFunction(layer, MeanAggregator.INSTANCE, heatmap.getDimension(MatrixDimensionKey.COLUMNS));
 
-                AggregationFunction aggfunc = new AggregationFunction(layer, MeanAggregator.INSTANCE, heatmap.getDimension(MatrixDimensionKey.COLUMNS));
+        IMatrixLayer aggLayer = new MatrixLayer("agg", Double.class);
+        HashMatrix aggregationMatrix = new HashMatrix(
+                new MatrixLayers(aggLayer),
+                new HashMatrixDimension(ROWS, heatmap.getRows())
+        );
 
-                IMatrixLayer aggLayer = new MatrixLayer("agg", Double.class);
-                HashMatrix aggregationMatrix = new HashMatrix(
-                        new MatrixLayers(aggLayer),
-                        new HashMatrixDimension(ROWS, heatmap.getRows())
+        heatmap.newPosition()
+                .iterate(heatmap.getDimension(MatrixDimensionKey.ROWS))
+                .monitor(monitor.subtask(), "Preparing for '" + this.name + "' transformation")
+                .transform(aggfunc)
+                .store(
+                        aggregationMatrix,
+                        new PositionMapping().map(heatmap.getRows(), ROWS),
+                        aggLayer
                 );
-
-                heatmap.newPosition()
-                        .iterate(heatmap.getDimension(MatrixDimensionKey.ROWS))
-                        //.monitor(monitor.subtask(), "Prep")
-                        .transform(aggfunc)
-                        .store(
-                                aggregationMatrix,
-                                new PositionMapping().map(heatmap.getRows(), ROWS),
-                                aggLayer
-                        );
-                layer.setCache(CACHEKEY, aggregationMatrix);
-                latch.countDown();
-                //Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
-                System.out.println("INIT DONE\t" + threadName);
-            } else {
-                //System.out.println("mehh: " + latch.getCount() + "\t" + threadName);
-            }
-        }
+        layer.setCache(CACHEKEY, aggregationMatrix);
     }
-
 
     private Double getMean(String identifier) {
-
-        if (data == null && layer.getCache(CACHEKEY) == null) {
-            init();
-        }
 
         if (data == null) {
             data = (HashMatrix) layer.getCache(CACHEKEY);
             aggLayer = data.getLayers().get(0);
         }
-
 
         return (Double) data.get(aggLayer, identifier);
     }
@@ -101,7 +79,7 @@ public class MeanFoldChange extends TransformFunction {
                 return null;
             }
             String uuid = UUID.randomUUID().toString();
-            System.out.println("\n" + position.get(MatrixDimensionKey.ROWS) + "/" + position.get(MatrixDimensionKey.COLUMNS) + ": " + mean + ": " + uuid.substring(0,8));
+            System.out.println("\n" + position.get(MatrixDimensionKey.ROWS) + "/" + position.get(MatrixDimensionKey.COLUMNS) + ": " + mean +  ": " + value + ": " + uuid.substring(0,8));
             return value - mean;
         }
         return null;

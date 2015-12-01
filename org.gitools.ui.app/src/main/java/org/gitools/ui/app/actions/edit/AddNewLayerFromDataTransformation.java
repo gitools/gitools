@@ -60,7 +60,7 @@ public class AddNewLayerFromDataTransformation extends HeatmapAction {
                 MatrixLayer layer = heatmap.getLayers().getTopLayer();
                 IMatrixPosition matrixPointer = heatmap.newPosition();
 
-                MatrixLayer<Double> newLayer = new MatrixLayer<>("log", Double.class, "log", "description");
+                MatrixLayer<Double> newLayer = new MatrixLayer<>("log-FC", Double.class, "log", "Calculated logN mean fold change");
                 HashMatrix mainData = (HashMatrix) heatmap.getContents();
                 mainData.addLayer(newLayer);
                 heatmap.getLayers().initLayer(newLayer);
@@ -68,11 +68,11 @@ public class AddNewLayerFromDataTransformation extends HeatmapAction {
                 //monitor.begin("Aggregating values...", clusterDimension.size());
 
                 ArrayList<TransformFunction> transformFunctions = new ArrayList<>();
-                transformFunctions.add(new TransformFunction("log10") {
+                transformFunctions.add(new TransformFunction("logN") {
                     @Override
                     public Double apply(Double value, IMatrixPosition position) {
                         if (value != null) {
-                            return Math.log10(value);
+                            return Math.log(value);
                         }
                         return null;
                     }
@@ -90,7 +90,6 @@ public class AddNewLayerFromDataTransformation extends HeatmapAction {
 
 
                 for (TransformFunction transformFunction : transformFunctions) {
-                    transformFunction.init();
                     matrixPointer.iterate(layer)
                             .monitor(monitor, "<html><body>Applying data transformation <b>'" + transformFunction.getName() + "'</b></html></body>")
                             .transform(transformFunction)
