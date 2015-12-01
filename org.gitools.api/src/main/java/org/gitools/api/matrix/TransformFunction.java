@@ -14,6 +14,8 @@ public abstract class TransformFunction  extends AbstractMatrixFunction<Double, 
         this.description = "";
     }
 
+    public void init() { }
+
     public String getName() {
         return name;
     }

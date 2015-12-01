@@ -64,6 +64,7 @@ public class DefaultProgressMonitor implements IProgressMonitor {
         if (worked > totalWork) {
             worked = totalWork;
         }
+        //System.out.println("\t"+worked);
     }
 
     @Override
@@ -107,6 +108,7 @@ public class DefaultProgressMonitor implements IProgressMonitor {
 
     @Override
     public void debug(String msg) {
+        System.out.println(msg);
     }
 
     @Override
