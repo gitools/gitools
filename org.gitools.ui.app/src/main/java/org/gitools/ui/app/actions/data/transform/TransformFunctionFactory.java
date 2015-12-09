@@ -3,10 +3,7 @@ package org.gitools.ui.app.actions.data.transform;
 import org.gitools.api.matrix.ConfigurableTransformFunction;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixLayer;
-import org.gitools.matrix.transform.FoldChangeFunction;
-import org.gitools.matrix.transform.Log10Function;
-import org.gitools.matrix.transform.LogNFunction;
-import org.gitools.matrix.transform.SumConstantFunction;
+import org.gitools.matrix.transform.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +16,7 @@ public class TransformFunctionFactory {
         funcs.add(new Log10Function());
         funcs.add(new SumConstantFunction());
         funcs.add(new FoldChangeFunction(heatmap, resultLayer));
+        funcs.add(new ReplaceValueFunction());
         return funcs;
     }
 }

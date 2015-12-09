@@ -2,6 +2,7 @@ package org.gitools.api.matrix;
 
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public abstract class ConfigurableTransformFunction extends TransformFunction {
@@ -14,7 +15,7 @@ public abstract class ConfigurableTransformFunction extends TransformFunction {
 
     public Map<String, IFunctionParameter> getParameters() {
         if (functionParameters == null) {
-            functionParameters = new HashMap<>();
+            functionParameters = new LinkedHashMap<>();
         }
         return functionParameters;
     }
@@ -26,7 +27,7 @@ public abstract class ConfigurableTransformFunction extends TransformFunction {
 
     protected void addParameter(String name, IFunctionParameter parameter) {
         if (functionParameters == null) {
-            functionParameters = new HashMap<>();
+            functionParameters = new LinkedHashMap<>();
         }
         functionParameters.put(name, parameter);
     }
