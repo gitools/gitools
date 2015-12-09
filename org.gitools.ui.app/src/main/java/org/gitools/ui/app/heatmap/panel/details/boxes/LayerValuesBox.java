@@ -77,7 +77,7 @@ public class LayerValuesBox extends DetailsBox {
      * @param actions
      */
     public LayerValuesBox(String title, ActionSet actions, Heatmap heatmap) {
-        super(ID, title, actions, new ActionSet(new AddNewLayerFromDataTransformation(), actions), heatmap);
+        super(ID, title, actions, new ActionSet(new AddNewLayersFromFileAction(), new AddNewLayerFromDataTransformation(), actions), heatmap);
         addGroupSelector();
     }
 

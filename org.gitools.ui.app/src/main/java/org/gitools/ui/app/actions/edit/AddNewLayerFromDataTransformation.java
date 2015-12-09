@@ -26,21 +26,27 @@ import org.gitools.api.matrix.*;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.matrix.transform.LogNFunction;
+import org.gitools.matrix.transform.FoldChangeFunction;
+import org.gitools.matrix.transform.SumConstantFunction;
+import org.gitools.ui.app.actions.data.transform.TransformWizard;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.progress.JobRunnable;
 import org.gitools.ui.platform.progress.JobThread;
+import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class AddNewLayerFromDataTransformation extends HeatmapAction {
 
 
     public AddNewLayerFromDataTransformation() {
-        super("New data layer...");
+        super("New data layer from calculations...");
         setSmallIconFromResource(IconNames.add16);
     }
 
@@ -60,33 +66,26 @@ public class AddNewLayerFromDataTransformation extends HeatmapAction {
                 MatrixLayer layer = heatmap.getLayers().getTopLayer();
                 IMatrixPosition matrixPointer = heatmap.newPosition();
 
-                MatrixLayer<Double> newLayer = new MatrixLayer<>("log-FC", Double.class, "log", "Calculated logN mean fold change");
+                MatrixLayer<Double> newLayer = new MatrixLayer<>("log-FC3", Double.class, "log-FC3", "Calculated logN mean fold change");
                 HashMatrix mainData = (HashMatrix) heatmap.getContents();
                 mainData.addLayer(newLayer);
                 heatmap.getLayers().initLayer(newLayer);
 
-                //monitor.begin("Aggregating values...", clusterDimension.size());
-
                 ArrayList<TransformFunction> transformFunctions = new ArrayList<>();
-                transformFunctions.add(new TransformFunction("logN") {
+                /*transformFunctions.add(new TransformFunction("Sum 0.1") {
                     @Override
                     public Double apply(Double value, IMatrixPosition position) {
                         if (value != null) {
-                            return Math.log(value);
-                        }
-                        return null;
-                    }
-                });
-                /*transformFunctions.add(new TransformFunction("times2") {
-                    @Override
-                    public Double apply(Double value, IMatrixPosition position) {
-                        if (value != null) {
-                            return value*2;
+                            return value + 0.1;
                         }
                         return null;
                     }
                 });*/
-                transformFunctions.add(new MeanFoldChange(heatmap, newLayer, monitor));
+                SumConstantFunction sum = new SumConstantFunction();
+                sum.getParameter(SumConstantFunction.CONSTANT).setParameterValue(0.1);
+                transformFunctions.add(sum);
+                transformFunctions.add(new LogNFunction());
+                transformFunctions.add(new FoldChangeFunction(heatmap, newLayer));
 
 
                 for (TransformFunction transformFunction : transformFunctions) {
@@ -108,7 +107,59 @@ public class AddNewLayerFromDataTransformation extends HeatmapAction {
                 //copyLayerValues(heatmap, layer, );
             }
         };
-        JobThread.execute(Application.get(), transformer);
+
+
+
+
+        final TransformWizard wizard = new TransformWizard(getHeatmap());
+
+        WizardDialog wizDlg = new WizardDialog(Application.get(), wizard);
+        wizDlg.open();
+        if (wizDlg.isCancelled()) {
+            return;
+        }
+
+        //final
+
+
+
+        final JobRunnable transformer2 = new JobRunnable() {
+
+            @Override
+            public void run(IProgressMonitor monitor) throws Exception {
+                List<ConfigurableTransformFunction>transformFunctions = wizard.getFunctions();
+                IMatrixLayer layer = wizard.getLayer();
+                MatrixLayer<Double> newLayer = wizard.getNewLayer();
+
+                IMatrixPosition matrixPointer = heatmap.newPosition();
+
+                HashMatrix mainData = (HashMatrix) heatmap.getContents();
+                mainData.addLayer(newLayer);
+                heatmap.getLayers().initLayer(newLayer);
+
+
+                for (TransformFunction transformFunction : transformFunctions) {
+                    matrixPointer.iterate(layer)
+                            .monitor(monitor, "<html><body>Applying data transformation <b>'" + transformFunction.getName() + "'</b></html></body>")
+                            .transform(transformFunction)
+                            .store(heatmap, newLayer);
+                    if (newLayer != layer) {
+                        layer = newLayer;
+                    }
+                }
+                monitor.end();
+
+
+
+                heatmap.getLayers().updateLayers();
+                heatmap.getLayers().setTopLayer(heatmap.getLayers().get(newLayer.getId()));
+                Application.get().showNotification("New data layer added");
+            }
+        };
+
+
+
+        JobThread.execute(Application.get(), transformer2);
 
     }
 

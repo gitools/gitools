@@ -1,6 +1,7 @@
 Gitools 2.2.4
 -----------------------------------------------------------
 * Added Mode aggregator
+* New data layers from data transformation
 
 Gitools 2.2.3
 ------------------------------------------------------------
