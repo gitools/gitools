@@ -3,25 +3,23 @@ package org.gitools.api.matrix;
 
 
 public abstract class TransformFunction  extends AbstractMatrixFunction<Double, Double>{
-    //abstract IMatrixPosition getPosition();
 
     protected String name;
     protected String description;
     protected IMatrixPosition position;
 
     public TransformFunction(String name) {
+        this(name, "");
+    }
+
+    public TransformFunction(String name, String description) {
         this.name = name;
-        this.description = "";
+        this.description = description;
     }
 
     public String getName() {
         return name;
     }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
 
     public String getDescription() {
         return description;
@@ -34,7 +32,7 @@ public abstract class TransformFunction  extends AbstractMatrixFunction<Double, 
 
     @Override
     public String toString() {
-        return name;
+        return getName();
     }
 
 }

@@ -51,7 +51,7 @@ public class TransformIterable<F, T> extends AbstractChainIterable<F, T> {
         }
 
         @Override
-        public boolean hasNext() {
+        public synchronized boolean hasNext() {
 
             if (!super.hasNext()) {
                 function.onAfterIterate(getParentIterable());
@@ -62,7 +62,7 @@ public class TransformIterable<F, T> extends AbstractChainIterable<F, T> {
         }
 
         @Override
-        public F next() {
+        public synchronized F next() {
             return function.apply(parentNext(), getPosition());
         }
     }

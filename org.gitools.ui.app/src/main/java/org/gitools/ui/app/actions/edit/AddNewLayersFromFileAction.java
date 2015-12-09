@@ -93,7 +93,7 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
     }
 
     public AddNewLayersFromFileAction() {
-        super("New data layer...");
+        super("New data from file...");
         setSmallIconFromResource(IconNames.add16);
     }
 

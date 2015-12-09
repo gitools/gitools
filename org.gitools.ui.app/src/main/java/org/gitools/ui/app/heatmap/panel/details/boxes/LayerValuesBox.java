@@ -32,6 +32,7 @@ import org.gitools.heatmap.HeatmapLayers;
 import org.gitools.heatmap.decorator.Decoration;
 import org.gitools.heatmap.decorator.Decorator;
 import org.gitools.heatmap.decorator.DetailsDecoration;
+import org.gitools.ui.app.actions.edit.AddNewLayerFromDataTransformation;
 import org.gitools.ui.app.actions.edit.AddNewLayersFromFileAction;
 import org.gitools.ui.app.actions.edit.EditLayerAction;
 import org.gitools.ui.app.actions.edit.SetLayerAction;
@@ -76,7 +77,7 @@ public class LayerValuesBox extends DetailsBox {
      * @param actions
      */
     public LayerValuesBox(String title, ActionSet actions, Heatmap heatmap) {
-        super(ID, title, actions, new ActionSet(new AddNewLayersFromFileAction(), actions), heatmap);
+        super(ID, title, actions, new ActionSet(new AddNewLayersFromFileAction(), new AddNewLayerFromDataTransformation(), actions), heatmap);
         addGroupSelector();
     }
 
