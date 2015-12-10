@@ -27,6 +27,10 @@ public class FillEmptyFunction extends ConfigurableTransformFunction {
         addParameter(REPLACEMENT_PARAM, replaceValue);
     }
 
+    @Override
+    public String getName() {
+        return name + " with " + replaceValue.getParameterValue();
+    }
 
     @Override
     public Double apply(Double value, IMatrixPosition position) {

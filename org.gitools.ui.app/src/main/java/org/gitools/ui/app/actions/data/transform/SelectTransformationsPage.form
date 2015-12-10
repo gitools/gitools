@@ -18,7 +18,7 @@
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <constraints>
-      <xy x="20" y="20" width="503" height="634"/>
+      <xy x="20" y="20" width="503" height="777"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -47,9 +47,7 @@
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
         <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:max(d;4px):noGrow"/>
-        <rowspec value="top:4dlu:noGrow"/>
-        <rowspec value="center:112px:grow"/>
+        <rowspec value="center:d:grow"/>
         <rowspec value="top:4dlu:noGrow"/>
         <rowspec value="center:max(d;4px):noGrow"/>
         <colspec value="fill:d:grow"/>
@@ -72,26 +70,31 @@
               <text value="Add new transformation"/>
             </properties>
           </component>
-          <component id="2389a" class="javax.swing.JList" binding="transformFunctionJList" default-binding="true">
-            <constraints>
-              <grid row="4" column="0" row-span="3" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
-                <preferred-size width="150" height="50"/>
-              </grid>
-              <forms defaultalign-vert="false"/>
-            </constraints>
-            <properties>
-              <selectionMode value="0"/>
-            </properties>
-          </component>
           <component id="58c3e" class="javax.swing.JLabel" binding="transformFunctionDescription">
             <constraints>
-              <grid row="8" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <grid row="6" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties>
               <text value="Label"/>
             </properties>
           </component>
+          <scrollpane id="4623">
+            <constraints>
+              <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-horz="false" defaultalign-vert="false"/>
+            </constraints>
+            <properties/>
+            <border type="none"/>
+            <children>
+              <component id="2389a" class="javax.swing.JList" binding="transformFunctionJList" default-binding="true">
+                <constraints/>
+                <properties>
+                  <selectionMode value="0"/>
+                </properties>
+              </component>
+            </children>
+          </scrollpane>
           <grid id="9c158" layout-manager="FormLayout">
             <rowspec value="center:d:grow"/>
             <rowspec value="top:4dlu:noGrow"/>
@@ -100,7 +103,7 @@
             <rowspec value="center:max(d;4px):noGrow"/>
             <colspec value="fill:d:grow"/>
             <constraints>
-              <grid row="6" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <grid row="4" column="2" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
               <forms/>
             </constraints>
             <properties/>
