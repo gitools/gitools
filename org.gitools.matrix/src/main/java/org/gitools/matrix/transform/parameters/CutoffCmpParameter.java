@@ -8,9 +8,8 @@ public class CutoffCmpParameter extends AbstractFunctionParameter<CutoffCmp> {
     @Override
     public boolean validate(CutoffCmp parameter) {
 
-        super.validate(parameter);
+        return super.validate(parameter);
 
-        return true;
     }
 
 }

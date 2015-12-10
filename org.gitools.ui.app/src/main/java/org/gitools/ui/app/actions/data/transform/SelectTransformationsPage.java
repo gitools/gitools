@@ -10,6 +10,7 @@ import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.transform.FoldChangeFunction;
 import org.gitools.matrix.transform.LogNFunction;
+import org.gitools.matrix.transform.TransformFunctionFactory;
 import org.gitools.matrix.transform.parameters.AbstractFunctionParameter;
 import org.gitools.matrix.transform.parameters.DoubleParameter;
 import org.gitools.ui.core.utils.DocumentChangeListener;

@@ -1,19 +1,29 @@
-package org.gitools.ui.app.actions.data.transform;
+package org.gitools.matrix.transform;
 
 import org.gitools.api.matrix.ConfigurableTransformFunction;
-import org.gitools.heatmap.Heatmap;
-import org.gitools.matrix.model.MatrixLayer;
-import org.gitools.matrix.transform.*;
+import org.gitools.api.matrix.IMatrix;
+import org.gitools.api.matrix.IMatrixLayer;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class TransformFunctionFactory {
 
-    public static List<ConfigurableTransformFunction> get(Heatmap heatmap, MatrixLayer<Double> resultLayer) {
+    public static List<ConfigurableTransformFunction> get(IMatrix matrix, IMatrixLayer<Double> resultLayer) {
         List<ConfigurableTransformFunction> funcs = new ArrayList<>();
         funcs.add(new FillEmptyFunction());
-        funcs.add(new FoldChangeFunction(heatmap, resultLayer));
+        funcs.add(new FoldChangeFunction(matrix, resultLayer));
+        funcs.add(new LogNFunction());
+        funcs.add(new Log10Function());
+        funcs.add(new PartialApplyFunction());
+        funcs.add(new ReplaceValueFunction());
+        funcs.add(new SumConstantFunction());
+        return funcs;
+    }
+
+    public static List<ConfigurableTransformFunction> get() {
+        List<ConfigurableTransformFunction> funcs = new ArrayList<>();
+        funcs.add(new FillEmptyFunction());
         funcs.add(new LogNFunction());
         funcs.add(new Log10Function());
         funcs.add(new ReplaceValueFunction());
