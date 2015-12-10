@@ -97,6 +97,11 @@ public class FoldChangeFunction extends ConfigurableTransformFunction {
 
 
     @Override
+    public FoldChangeFunction createNew() {
+        return new FoldChangeFunction(matrix, newLayer);
+    }
+
+    @Override
     protected void createDefaultParameters() {
         dimensionParameter = new DimensionParameter();
         dimensionParameter.setDescription("Select if the fold change should be relative to the rows or columns dimension");

@@ -3,14 +3,14 @@ package org.gitools.ui.app.actions.data.transform;
 import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
-import org.gitools.api.matrix.IFunctionParameter;
-import org.gitools.matrix.transform.parameters.AbstractFunctionParameter;
 import org.gitools.api.matrix.ConfigurableTransformFunction;
+import org.gitools.api.matrix.IFunctionParameter;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.transform.FoldChangeFunction;
 import org.gitools.matrix.transform.LogNFunction;
+import org.gitools.matrix.transform.parameters.AbstractFunctionParameter;
 import org.gitools.matrix.transform.parameters.DoubleParameter;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.platform.IconUtils;
@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static com.jgoodies.binding.adapter.Bindings.bind;
-import static com.jgoodies.binding.value.ConverterFactory.createStringConverter;
 
 
 public class SelectTransformationsPage extends AbstractWizardPage {
@@ -439,7 +438,7 @@ public class SelectTransformationsPage extends AbstractWizardPage {
         }
 
         public void add(ConfigurableTransformFunction func) {
-            this.funcs.add(func);
+            this.funcs.add(TransformFunctionFactory.createFromTemplate(func));
         }
 
         public void moveUp(int selectedRow) {

@@ -3,7 +3,6 @@ package org.gitools.matrix.transform;
 
 import org.gitools.api.matrix.ConfigurableTransformFunction;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.TransformFunction;
 
 public class LogNFunction extends ConfigurableTransformFunction {
 
@@ -17,6 +16,11 @@ public class LogNFunction extends ConfigurableTransformFunction {
             return Math.log(value);
         }
         return null;
+    }
+
+    @Override
+    public LogNFunction createNew() {
+        return new LogNFunction();
     }
 
     @Override

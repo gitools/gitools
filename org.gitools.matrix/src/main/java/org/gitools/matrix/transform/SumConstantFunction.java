@@ -23,6 +23,11 @@ public class SumConstantFunction extends ConfigurableTransformFunction {
     }
 
     @Override
+    public SumConstantFunction createNew() {
+        return new SumConstantFunction();
+    }
+
+    @Override
     protected void createDefaultParameters() {
         doubleParameter = new DoubleParameter();
         doubleParameter.setDescription("Define a constant which will be summed to all values");

@@ -3,12 +3,16 @@ package org.gitools.matrix.transform;
 
 import org.gitools.api.matrix.ConfigurableTransformFunction;
 import org.gitools.api.matrix.IMatrixPosition;
-import org.gitools.api.matrix.TransformFunction;
 
 public class Log10Function extends ConfigurableTransformFunction {
 
     public Log10Function() {
         super("Log10", "Returns base 10 Log of given value");
+    }
+
+    @Override
+    public Log10Function createNew() {
+        return new Log10Function();
     }
 
     @Override

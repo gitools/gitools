@@ -33,6 +33,12 @@ public class ReplaceValueFunction extends ConfigurableTransformFunction {
     }
 
     @Override
+    public ReplaceValueFunction createNew() {
+        ReplaceValueFunction newInstance = new ReplaceValueFunction();
+        return newInstance;
+    }
+
+    @Override
     protected void createDefaultParameters() {
         cutoffParameter = new DoubleParameter();
         cutoffParameter.setDescription("Define the cutoff value");
