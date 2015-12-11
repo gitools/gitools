@@ -39,8 +39,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.jgoodies.binding.adapter.Bindings.bind;
-
 public class ChangeAnnotationValueSection implements ISettingsSection {
     private final HeatmapHeader heatmapHeader;
     private final List<String> selected;
@@ -140,14 +138,6 @@ public class ChangeAnnotationValueSection implements ISettingsSection {
                 sb.append(token.toString());
             }
         }
-
-/*
-        for (String s : inputMap.keySet()) {
-            if (sb.length() > 0) {
-                sb.append(',');
-            }
-            sb.append(inputMap.get(s).getText());
-        }*/
         return sb.toString();
 
     }
