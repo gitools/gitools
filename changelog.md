@@ -5,6 +5,7 @@ Gitools 2.2.4
 * Added OneWayAnova test to GroupComparison analysis options
 * Added Mode aggregator
 * New data layers from data transformation
+* Edit annotation values within the application
 
 Gitools 2.2.3
 ------------------------------------------------------------
