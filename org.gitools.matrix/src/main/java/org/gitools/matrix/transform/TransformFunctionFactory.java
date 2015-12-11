@@ -15,7 +15,6 @@ public class TransformFunctionFactory {
         funcs.add(new FoldChangeFunction(matrix, resultLayer));
         funcs.add(new LogNFunction());
         funcs.add(new Log10Function());
-        funcs.add(new PartialApplyFunction());
         funcs.add(new ReplaceValueFunction());
         funcs.add(new SumConstantFunction());
         return funcs;
