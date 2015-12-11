@@ -84,6 +84,7 @@ public class PopupMenuActions {
                 new PopupSectionTitleAction(dimensionLabel + " headers"),
                 new AddHeaderAction(dimensionKey),
                 new EditHeaderAction(dimensionKey, "<html><i>Edit</i> header</html>"),
+                new EditAnnotationValueAction(dimensionKey, "<html><i>Edit</i> annotation value</html>"),
                 new RemoveHeaderAction(dimensionKey, "Remove " + dimensionLabel + " header")
 
 

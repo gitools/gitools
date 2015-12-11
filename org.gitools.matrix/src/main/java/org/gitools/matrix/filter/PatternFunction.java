@@ -72,4 +72,8 @@ public class PatternFunction implements Function<String, String>, TextPattern.Va
 
         return pattern.generate(this);
     }
+
+    public TextPattern getPattern() {
+        return pattern;
+    }
 }
