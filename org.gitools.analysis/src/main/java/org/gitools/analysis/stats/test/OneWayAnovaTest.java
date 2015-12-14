@@ -23,24 +23,15 @@ package org.gitools.analysis.stats.test;
 
 import com.google.common.collect.Lists;
 import com.google.common.primitives.Doubles;
-import org.apache.commons.math3.distribution.NormalDistribution;
-import org.apache.commons.math3.exception.ConvergenceException;
-import org.apache.commons.math3.exception.MaxCountExceededException;
-import org.apache.commons.math3.stat.StatUtils;
 import org.apache.commons.math3.stat.inference.OneWayAnova;
 import org.apache.commons.math3.stat.ranking.NaNStrategy;
 import org.apache.commons.math3.stat.ranking.NaturalRanking;
 import org.apache.commons.math3.stat.ranking.TiesStrategy;
-import org.apache.commons.math3.util.FastMath;
-import org.gitools.analysis.stats.test.results.GroupComparisonResult;
 import org.gitools.analysis.stats.test.results.OneWayAnovaResult;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
-import static org.gitools.matrix.filter.MatrixPredicates.notNull;
-import static org.gitools.matrix.filter.MatrixViewValueFilter.filter;
 
 
 public class OneWayAnovaTest extends AbstractEnrichmentTest {
@@ -73,9 +64,9 @@ public class OneWayAnovaTest extends AbstractEnrichmentTest {
         }
 
         OneWayAnova anova = new OneWayAnova();
-        double pvalue = anova.anovaPValue(groupsCollection);
-        double fvalue = anova.anovaFValue(groupsCollection);
         if (groupNs.size() > 1) {
+            double pvalue = anova.anovaPValue(groupsCollection);
+            double fvalue = anova.anovaFValue(groupsCollection);
             return new OneWayAnovaResult(totalN, minN, groupNs.size(), pvalue, fvalue);
         } else {
             return new OneWayAnovaResult(totalN, minN, groupNs.size(), Double.NaN, Double.NaN);
