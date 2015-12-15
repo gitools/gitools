@@ -1,7 +1,6 @@
 package org.gitools.matrix.transform;
 
 import org.gitools.api.matrix.ConfigurableTransformFunction;
-import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 
 import java.util.ArrayList;
@@ -9,13 +8,16 @@ import java.util.List;
 
 public class TransformFunctionFactory {
 
-    public static List<ConfigurableTransformFunction> get(IMatrix matrix, IMatrixLayer<Double> resultLayer) {
+    public static List<ConfigurableTransformFunction> get(IMatrixLayer<Double> resultLayer) {
         List<ConfigurableTransformFunction> funcs = new ArrayList<>();
+        funcs.add(new AbsoluteFunction());
         funcs.add(new FillEmptyFunction());
-        funcs.add(new FoldChangeFunction(matrix, resultLayer));
-        funcs.add(new LogNFunction());
-        funcs.add(new Log10Function());
+        funcs.add(new FoldChangeFunction(resultLayer));
+        funcs.add(new LogitFunction());
+        funcs.add(new LogFunction());
+        funcs.add(new MultiplyByConstantFunction());
         funcs.add(new ReplaceValueFunction());
+        funcs.add(new ScaleFunction(resultLayer));
         funcs.add(new SumConstantFunction());
         return funcs;
     }
@@ -23,8 +25,8 @@ public class TransformFunctionFactory {
     public static List<ConfigurableTransformFunction> get() {
         List<ConfigurableTransformFunction> funcs = new ArrayList<>();
         funcs.add(new FillEmptyFunction());
-        funcs.add(new LogNFunction());
-        funcs.add(new Log10Function());
+        funcs.add(new LogitFunction());
+        funcs.add(new LogFunction());
         funcs.add(new ReplaceValueFunction());
         funcs.add(new SumConstantFunction());
         return funcs;

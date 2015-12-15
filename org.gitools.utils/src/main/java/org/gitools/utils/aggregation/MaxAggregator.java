@@ -45,7 +45,9 @@ public class MaxAggregator extends AbstractAggregator {
         Double max = iterator.next();
         while(iterator.hasNext()) {
             Double next = iterator.next();
-            if (next!=null && next > max) {
+            if (next!=null && max == null) {
+                max = next;
+            } else if (next!=null && next > max) {
                 max = next;
             }
         }

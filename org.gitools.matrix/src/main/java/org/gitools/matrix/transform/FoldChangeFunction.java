@@ -29,15 +29,13 @@ public class FoldChangeFunction extends ConfigurableTransformFunction {
 
     private IMatrixLayer aggLayer;
     private final static Key<HashMatrix> CACHEKEY = new Key<HashMatrix>() {};
-    private IMatrix matrix;
     private IMatrixLayer newLayer;
     private IProgressMonitor monitor;
     private HashMatrix data;
 
 
-    public FoldChangeFunction(IMatrix matrix, IMatrixLayer newLayer) {
+    public FoldChangeFunction(IMatrixLayer newLayer) {
         super("Fold-Change");
-        this.matrix = matrix;
         this.newLayer = newLayer;
     }
 
@@ -60,6 +58,8 @@ public class FoldChangeFunction extends ConfigurableTransformFunction {
         super.onBeforeIterate(parentIterable);
         monitor = ApplicationContext.getProgressMonitor().subtask();
 
+
+        IMatrix matrix = parentIterable.getPosition().getMatrix();
         IMatrixDimension transformDimension = matrix.getDimension(dimensionParameter.getParameterValue());
         IMatrixDimension aggDimension = matrix.getDimension(COLUMNS == dimensionParameter.getParameterValue() ? ROWS : COLUMNS);
         IAggregator aggregator = aggregatorParameter.getParameterValue();
@@ -98,7 +98,7 @@ public class FoldChangeFunction extends ConfigurableTransformFunction {
 
     @Override
     public FoldChangeFunction createNew() {
-        return new FoldChangeFunction(matrix, newLayer);
+        return new FoldChangeFunction(newLayer);
     }
 
     @Override

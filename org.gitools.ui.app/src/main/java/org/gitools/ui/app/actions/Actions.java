@@ -145,7 +145,9 @@ public class Actions {
 
     public static final BaseAction searchRowsAction = new HeatmapSearchAction(ROWS);
 
-    public static final BaseAction addNewLayers = new AddNewLayersFromFileAction();
+    public static final BaseAction addNewLayersFromFile = new AddNewLayersFromFileAction();
+
+    public static final BaseAction addNewLayersFromTransformation = new AddNewLayerFromDataTransformation();
 
     public static final BaseAction heatmapSettings = new HeatmapSettingsAction();
 

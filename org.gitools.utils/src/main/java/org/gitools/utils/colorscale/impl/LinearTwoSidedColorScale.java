@@ -47,7 +47,7 @@ public class LinearTwoSidedColorScale extends NumericColorScale {
     }
 
     public LinearTwoSidedColorScale() {
-        this(new ColorScalePoint(-2, Color.GREEN), new ColorScalePoint(0, Color.WHITE), new ColorScalePoint(2, Color.RED));
+        this(new ColorScalePoint(-2, Color.GREEN), new ColorScalePoint(0, new Color(243, 243, 243)), new ColorScalePoint(2, Color.RED));
     }
 
     @Override

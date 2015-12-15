@@ -9,7 +9,7 @@ import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.transform.FoldChangeFunction;
-import org.gitools.matrix.transform.LogNFunction;
+import org.gitools.matrix.transform.LogFunction;
 import org.gitools.matrix.transform.TransformFunctionFactory;
 import org.gitools.matrix.transform.parameters.AbstractFunctionParameter;
 import org.gitools.matrix.transform.parameters.DoubleParameter;
@@ -80,9 +80,9 @@ public class SelectTransformationsPage extends AbstractWizardPage {
         switchToSelectedFunctionPanel();
 
         tableModel = new TransformationFunctionTableModel();
-        ArrayList<ConfigurableTransformFunction> funcs = new ArrayList<>();
-        funcs.add(new LogNFunction());
-        funcs.add(new FoldChangeFunction(heatmap, resultLayer));
+        final ArrayList<ConfigurableTransformFunction> funcs = new ArrayList<>();
+        funcs.add(new LogFunction());
+        funcs.add(new FoldChangeFunction(resultLayer));
         tableModel.setFunctions(funcs);
         transformationTable.setModel(tableModel);
         transformationTable.getColumnModel().getColumn(0).setMaxWidth(100);
@@ -95,8 +95,8 @@ public class SelectTransformationsPage extends AbstractWizardPage {
                 updateControls();
             }
         });
-        List<ConfigurableTransformFunction> selectFuncs = TransformFunctionFactory.get(heatmap, resultLayer);
-        ConfigurableTransformFunction[] transformFunctions = selectFuncs.toArray(new ConfigurableTransformFunction[selectFuncs.size()]);
+        List<ConfigurableTransformFunction> selectFuncs = TransformFunctionFactory.get(resultLayer);
+        final ConfigurableTransformFunction[] transformFunctions = selectFuncs.toArray(new ConfigurableTransformFunction[selectFuncs.size()]);
         /*transformationsCB.setModel(new DefaultComboBoxModel(transformFunctions));
         transformationsCB.setSelectedIndex(0);*/
 
@@ -133,7 +133,14 @@ public class SelectTransformationsPage extends AbstractWizardPage {
         removeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                tableModel.remove(transformationTable.getSelectedRow());
+                int selectedRow = transformationTable.getSelectedRow();
+                if (selectedRow == funcs.size()-1) {
+                    transformationTable.clearSelection();
+                    if (funcs.size() != 1) {
+                        transformationTable.addRowSelectionInterval(funcs.size()-2, funcs.size()-2);
+                    }
+                }
+                tableModel.remove(selectedRow);
                 updateControls();
             }
         });
@@ -225,8 +232,7 @@ public class SelectTransformationsPage extends AbstractWizardPage {
 
     private boolean validLayerName() {
         String newLayerName = getNewLayerName();
-        if(newLayerName.toLowerCase().contains("transform-") || newLayerName.toLowerCase().equals("transform")
-                || newLayerName.equals("")) {
+        if(newLayerName.equals("")) {
             setMessage("Define a layer name and choose the transformation(s)");
             return false;
         }
@@ -426,9 +432,9 @@ public class SelectTransformationsPage extends AbstractWizardPage {
             if (columnIndex == 0) {
                 return rowIndex+1 + ". ";
             }
-            else if (columnIndex == 1) {
+            else if (columnIndex == 1 && funcs.size() > 0) {
                 return funcs.get(rowIndex);
-            } else if (columnIndex == 2) {
+            } else if (columnIndex == 2 && funcs.size() > 0) {
                 return funcs.get(rowIndex).getDescription();
             }
             return null;
