@@ -40,6 +40,7 @@ public class TransformFunctionFactory {
         funcs.add(new ReplaceValueFunction());
         funcs.add(new ScaleFunction(resultLayer));
         funcs.add(new SumConstantFunction());
+        funcs.add(new ZScoreFunction());
         return funcs;
     }
 
