@@ -63,6 +63,8 @@ public abstract class ReaderProfile {
         this.commentChar = '#';
         this.ignoredColumns = new int[0];
         this.valueColumns = new int[0];
+        this.rowAnnotationColumns = new int[0];
+        this.columnAnnotationColumns = new int[0];
     }
 
     public static ReaderProfile fromProfile(ReaderProfile profile) {

@@ -25,9 +25,12 @@ import org.apache.commons.io.IOUtils;
 import org.gitools.api.PersistenceException;
 import org.gitools.api.analysis.IProgressMonitor;
 import org.gitools.api.resource.IResource;
+import org.gitools.api.resource.ResourceReference;
+import org.gitools.heatmap.Heatmap;
 import org.gitools.matrix.model.MatrixLayer;
 import org.gitools.matrix.model.MatrixLayers;
 import org.gitools.matrix.model.hashmatrix.HashMatrix;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.app.commands.CommandLoadFile;
 import org.gitools.ui.app.fileimport.wizard.text.reader.FlatTextImporter;
 import org.gitools.ui.app.fileimport.wizard.text.reader.ReaderAssistant;
@@ -67,6 +70,9 @@ public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
 
             MatrixLayer[] layers = assistant.getHeatmapLayers();
             HashMatrix resultsMatrix = new HashMatrix(new MatrixLayers<>(layers), ROWS, COLUMNS);
+            AnnotationMatrix rowAnnMatrix = new AnnotationMatrix();
+            AnnotationMatrix colAnnMatrix = new AnnotationMatrix();
+
 
             // read the file body
             while ((reader.readNext())) {
@@ -76,12 +82,17 @@ public class CommandConvertAndLoadCsvFile extends CommandLoadFile {
                 }
 
                 // Write the read line into the Matrix
-                assistant.fillMatrix(resultsMatrix);
+                assistant.fillMatrixAndAnnotations(resultsMatrix, rowAnnMatrix, colAnnMatrix);
             }
 
             reader.close();
 
-            return resultsMatrix;
+            progressMonitor.info("Data loaded - preparing Heatmap");
+
+            Heatmap h = new Heatmap(resultsMatrix);
+            h.getRows().setAnnotationsReference(new ResourceReference<AnnotationMatrix>(h.getRows().toString().toLowerCase()+"annotations", rowAnnMatrix));
+            h.getColumns().setAnnotationsReference(new ResourceReference<AnnotationMatrix>(h.getColumns().toString().toLowerCase()+"annotations", colAnnMatrix));
+            return h;
 
         } catch (Exception e) {
             throw new PersistenceException(e);

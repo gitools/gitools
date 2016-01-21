@@ -46,6 +46,8 @@ public class TableReaderProfile extends ReaderProfile {
         TableReaderProfile newProfile = new TableReaderProfile();
         newProfile.setCommentChar(profile.getCommentChar());
         newProfile.setIgnoredColumns(profile.getIgnoredColumns());
+        newProfile.setColumnAnnotationColumns(profile.getColumnAnnotationColumns());
+        newProfile.setRowAnnotationColumns(profile.getRowAnnotationColumns());
         newProfile.setSeparator(profile.getSeparator());
         newProfile.setSkipLines(profile.getSkipLines());
         return newProfile;
