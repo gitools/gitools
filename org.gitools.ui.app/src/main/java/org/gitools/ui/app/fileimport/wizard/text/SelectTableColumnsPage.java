@@ -51,6 +51,8 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
     private JButton previewRowIdsButton;
     private JButton previewColumnIdsButton;
     private JLabel previewLabel;
+    private JList<FileHeader> colAnnList;
+    private JList<FileHeader> rowAnnList;
     private List<FileHeader> allheaders;
     private List<List<FileField>> preview;
 
@@ -214,7 +216,10 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
             DefaultListModel<FileHeader> values = new DefaultListModel<FileHeader>();
             DefaultListModel<FileHeader> ignored = new DefaultListModel<FileHeader>();
             DefaultListModel<FileHeader> rows = new DefaultListModel<FileHeader>();
+            DefaultListModel<FileHeader> rowAnnotation = new DefaultListModel<FileHeader>();
             DefaultListModel<FileHeader> columns = new DefaultListModel<FileHeader>();
+            DefaultListModel<FileHeader> colAnnotation = new DefaultListModel<FileHeader>();
+
 
             for (FileHeader header : allheaders) {
                 if (columns.getSize() == 0) {
@@ -236,6 +241,8 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
             initJList(rowsHeaderList, transferHandler, rows, true, false);
             initJList(columnsHeaderLists, transferHandler, columns, true, false);
             initJList(valuesHeaderList, transferHandler, values, false, false);
+            initJList(colAnnList, transferHandler, colAnnotation, false, false);
+            initJList(rowAnnList, transferHandler, rowAnnotation, false, false);
             initJList(ignoredHeaderList, transferHandler, ignored, false, true);
         }
     }
@@ -265,6 +272,8 @@ public class SelectTableColumnsPage extends AbstractWizardPage implements IFileI
         profile.setHeatmapRowsIds(getPositions(rowsHeaderList));
         profile.setHeatmapColumnsIds(getPositions(columnsHeaderLists));
         profile.setValueColumns(getPositions(valuesHeaderList));
+        profile.setRowAnnotationColumns(getPositions(rowAnnList));
+        profile.setColumnAnnotationColumns(getPositions(colAnnList));
         profile.setIgnoredColumns(getPositions(ignoredHeaderList));
 
         reader.getReaderProfile().validate(allheaders);

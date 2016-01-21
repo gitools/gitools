@@ -48,6 +48,9 @@ public abstract class ReaderProfile {
      * columns that will be ignored upon reading
      */
     protected int[] ignoredColumns;
+    protected int[] rowAnnotationColumns;
+
+    protected int[] columnAnnotationColumns;
 
     public abstract void validate(List<FileHeader> inFileHeaders) throws ReaderProfileValidationException;
 
@@ -109,6 +112,22 @@ public abstract class ReaderProfile {
 
     public void setIgnoredColumns(int[] ignoredColumns) {
         this.ignoredColumns = ignoredColumns;
+    }
+
+    public int[] getColumnAnnotationColumns() {
+        return columnAnnotationColumns;
+    }
+
+    public void setColumnAnnotationColumns(int[] columnAnnotationColumns) {
+        this.columnAnnotationColumns = columnAnnotationColumns;
+    }
+
+    public int[] getRowAnnotationColumns() {
+        return rowAnnotationColumns;
+    }
+
+    public void setRowAnnotationColumns(int[] rowAnnotationColumns) {
+        this.rowAnnotationColumns = rowAnnotationColumns;
     }
 
     public int[] getValueColumns() {
