@@ -117,6 +117,9 @@ public class IconNames {
     public static final String view16 = "/img/view16.png";
     public static final String view24 = "/img/view24.png";
 
+    public static final String hide16 = "/img/hide16.png";
+    public static final String hide24 = "/img/hide24.png";
+
     public static final String biomart16 = "/img/Biomart16.png";
     public static final String biomart24 = "/img/Biomart24.png";
 

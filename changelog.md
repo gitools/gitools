@@ -6,6 +6,7 @@ Gitools 2.2.4
 * Added Mode aggregator
 * New data layers from data transformation
 * Edit annotation values within the application
+* Enable show/hide headers from details box
 
 Gitools 2.2.3
 ------------------------------------------------------------
