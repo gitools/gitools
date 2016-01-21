@@ -158,7 +158,7 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
         setHeader(object);
         setPosition(position);
 
-        setEnabled(!object.getTitle().toLowerCase().equals("id"));
+        setEnabled(!object.getTitle().toLowerCase().equals("id") & getDimension().getSelected().size() > 0);
 
     }
 

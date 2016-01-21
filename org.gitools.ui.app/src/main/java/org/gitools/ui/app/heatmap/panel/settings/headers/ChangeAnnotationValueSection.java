@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.app.heatmap.panel.settings.headers;
 
-import com.jgoodies.binding.PresentationModel;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.matrix.filter.PatternFunction;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
@@ -65,7 +64,6 @@ public class ChangeAnnotationValueSection implements ISettingsSection {
         }
 
 
-        PresentationModel<HeatmapHeader> header = new PresentationModel<>(heatmapHeader);
         heatmapHeader.getHeatmapDimension();
 
         currentValuesTable.setRowSelectionAllowed(false);
