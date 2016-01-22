@@ -21,12 +21,10 @@
  */
 package org.gitools.ui.app.heatmap.panel.settings.headers;
 
-import org.gitools.heatmap.header.HeatmapHeader;
-import org.gitools.matrix.filter.PatternFunction;
+
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.core.utils.DocumentChangeListener;
 import org.gitools.ui.platform.settings.AbstractSettingsSection;
-import org.gitools.utils.textpattern.TextPattern;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -34,45 +32,36 @@ import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class ChangeAnnotationValueSection extends AbstractSettingsSection {
-    private final HeatmapHeader heatmapHeader;
+public class AddNewManualAnnotationSection extends AbstractSettingsSection {
     private final List<String> selected;
     private final AnnotationMatrix annotations;
-    private final PatternFunction patternFunction;
 
     private JPanel root;
     private JTable currentValuesTable;
-    private JPanel changePanel;
-    private Map<String, JTextField> inputMap;
-    private boolean dirty;
+    private JTextField annotationLabel;
+    private JTextField annotationValue;
 
-    public ChangeAnnotationValueSection(final HeatmapHeader heatmapHeader, final List<String> selected) {
-        super();
-        this.heatmapHeader = heatmapHeader;
-        this.annotations = heatmapHeader.getHeatmapDimension().getAnnotations();
-        this.patternFunction = new PatternFunction(heatmapHeader.getAnnotationPattern(), annotations);
+    public AddNewManualAnnotationSection(final AnnotationMatrix annotations, final List<String> selected) {
+        this.annotations = annotations;
         this.selected = selected;
-        this.dirty = false;
-
-        inputMap = new HashMap<>();
-
-        changePanel.removeAll();
-        changePanel.setLayout(new GridLayout(0,2));
-        for (TextPattern.VariableToken variableToken : patternFunction.getPattern().getVariableTokens()) {
-            addChangeInput(variableToken.getVariableName());
-        }
 
 
-        heatmapHeader.getHeatmapDimension();
+        DocumentChangeListener docListener = new DocumentChangeListener() {
+            @Override
+            protected void update(DocumentEvent e) {
+
+                setDirty(annotationLabel.getText().length() > 0 && validName() && annotationValue.getText().length() > 0);
+            }
+        };
+        annotationValue.getDocument().addDocumentListener(docListener);
+        annotationLabel.getDocument().addDocumentListener(docListener);
 
         currentValuesTable.setRowSelectionAllowed(false);
         currentValuesTable.setModel(new AbstractTableModel() {
 
-            String[] columns = {"Id", "Current annotation", "Changed"};
+            String[] columns = {"Id",  "New annotation"};
 
             @Override
             public String getColumnName(int column) {
@@ -86,7 +75,7 @@ public class ChangeAnnotationValueSection extends AbstractSettingsSection {
 
             @Override
             public int getColumnCount() {
-                return 3;
+                return 2;
             }
 
             @Override
@@ -97,13 +86,7 @@ public class ChangeAnnotationValueSection extends AbstractSettingsSection {
                 else if (columnIndex == 0) {
                     return selected.get(rowIndex);
                 } else if (columnIndex == 1) {
-                    try {
-                        return patternFunction.apply(selected.get(rowIndex));
-                    } catch (NullPointerException e) {
-                        return "";
-                    }
-                } else if (columnIndex == 2){
-                    return getNewValue(selected.get(rowIndex));
+                    return annotationValue.getText();
                 }
 
                 return null;
@@ -113,7 +96,7 @@ public class ChangeAnnotationValueSection extends AbstractSettingsSection {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (column == 2 && !value.equals("")) {
+                if (column == 1 && !value.equals("")) {
                     Object changedValue = currentValuesTable.getValueAt(row, column);
                     Object oldValue = currentValuesTable.getValueAt(row, column - 1);
                     if (!changedValue.equals(oldValue)) {
@@ -125,53 +108,26 @@ public class ChangeAnnotationValueSection extends AbstractSettingsSection {
                 return c;
             }
         };
-        currentValuesTable.getColumnModel().getColumn(2).setCellRenderer(renderer);
+        currentValuesTable.getColumnModel().getColumn(1).setCellRenderer(renderer);
 
 
     }
 
-    private String getNewValue(String id) {
-        StringBuilder sb = new StringBuilder();
-        for (TextPattern.Token token : patternFunction.getPattern().getTokens()) {
-            if (inputMap.containsKey(token.toString())) {
-                sb.append(inputMap.get(token.toString()).getText());
-            } else {
-                sb.append(token.toString());
+    private boolean validName() {
+        boolean ok = true;
+        for (String s : annotations.getLabels()) {
+            if (s.toLowerCase().equals(annotationLabel.getText().toLowerCase())) {
+                annotationLabel.setBackground(Color.red);
+                return false;
             }
         }
-        return sb.toString();
-
-    }
-
-
-    private void addChangeInput(String name) {
-
-        changePanel.add(new JLabel("<html><body>Change <b>" + name + "</b> annotation to:</body></html>"));
-        final JTextField input = new JTextField("");
-        input.getDocument().addDocumentListener(new DocumentChangeListener() {
-            @Override
-            protected void update(DocumentEvent e) {
-                SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        currentValuesTable.updateUI();
-                        setDirty(input.getText().length() > 0);
-                    }
-                });
-            }
-        });
-
-
-        changePanel.add(input);
-        inputMap.put(name, input);
-
-
-        changePanel.revalidate();
-        changePanel.repaint();
+        annotationLabel.setBackground(Color.white);
+        return ok;
     }
 
     @Override
     public String getName() {
-        return "Edit \"" + this.heatmapHeader.getTitle() + "\" annotation" ;
+        return "Add new annotation" ;
     }
 
     @Override
@@ -189,8 +145,12 @@ public class ChangeAnnotationValueSection extends AbstractSettingsSection {
         };
     }
 
-    public List<TextPattern.VariableToken> getAnnotationKeys() {
-        return patternFunction.getPattern().getVariableTokens();
+    public String getAnnotationLabel() {
+        return annotationLabel.getText();
+    }
+
+    public String getAnnotationValue() {
+        return annotationValue.getText();
     }
 
     public List<String> getSelected() {
@@ -201,11 +161,4 @@ public class ChangeAnnotationValueSection extends AbstractSettingsSection {
         return annotations;
     }
 
-    public Map<String, String> getInputMap() {
-        Map<String, String> m = new HashMap<>();
-        for (String key : inputMap.keySet()) {
-            m.put(key, inputMap.get(key).getText());
-        }
-        return m;
-    }
 }

@@ -105,4 +105,7 @@ public class SettingsPanel {
         return sections.get(sectionName).getPanel();
     }
 
+    public ISettingsSection getSection(String name) {
+        return sections.get(name);
+    }
 }

@@ -25,18 +25,14 @@ import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.ComboBoxAdapter;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
-import org.gitools.analysis.clustering.hierarchical.HierarchicalClusterer;
-import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.heatmap.header.HierarchicalClusterNamer;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.utils.formatter.IntegerFormat;
 
 import javax.swing.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static com.jgoodies.binding.adapter.Bindings.bind;
 import static com.jgoodies.binding.value.ConverterFactory.createStringConverter;
@@ -77,6 +73,11 @@ public class HierarchicalLevelsSection implements ISettingsSection {
     @Override
     public JPanel getPanel() {
         return root;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return false;
     }
 
     private void createUIComponents() {

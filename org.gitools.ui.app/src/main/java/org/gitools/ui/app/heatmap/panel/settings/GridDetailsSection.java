@@ -78,4 +78,9 @@ public class GridDetailsSection implements ISettingsSection {
     public JPanel getPanel() {
         return root;
     }
+
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
 }

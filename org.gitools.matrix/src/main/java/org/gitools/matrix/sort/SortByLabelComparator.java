@@ -103,7 +103,19 @@ public class SortByLabelComparator implements Comparator<String> {
         }
 
         if (asNumeric) {
-            return direction.compare(Double.valueOf(v1), Double.valueOf(v2));
+            Double d1;
+            Double d2;
+            try {
+                d1 = Double.valueOf(v1);
+            } catch (NumberFormatException e) {
+                return 1;
+            }
+            try {
+                d2 = Double.valueOf(v2);
+            } catch (NumberFormatException e) {
+                return -1;
+            }
+            return direction.compare(Double.valueOf(d1), Double.valueOf(d2));
         }
 
         return direction.compare(v1, v2);

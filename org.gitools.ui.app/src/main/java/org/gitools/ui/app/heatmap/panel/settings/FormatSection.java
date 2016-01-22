@@ -107,4 +107,9 @@ public class FormatSection implements ISettingsSection {
         return mainPanel;
     }
 
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
+
 }

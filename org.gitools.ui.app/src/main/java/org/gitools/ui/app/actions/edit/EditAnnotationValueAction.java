@@ -24,8 +24,10 @@ package org.gitools.ui.app.actions.edit;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
+import org.gitools.ui.app.heatmap.panel.settings.headers.AddNewManualAnnotationSection;
 import org.gitools.ui.app.heatmap.panel.settings.headers.ChangeAnnotationValueSection;
 import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
@@ -47,9 +49,9 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
     private HeatmapHeader header;
     private HeatmapPosition position;
 
-    public EditAnnotationValueAction(MatrixDimensionKey dimensionKey, String name) {
-        super(dimensionKey, name);
-        setSmallIconFromResource(IconNames.edit16);
+    public EditAnnotationValueAction(MatrixDimensionKey dimensionKey) {
+        super(dimensionKey, "<html><i>Annotate</i> selected ...</html>");
+        setSmallIconFromResource(IconNames.anno16);
     }
 
     public EditAnnotationValueAction(HeatmapHeader header) {
@@ -77,6 +79,8 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
         return false;
     }
 
+
+
     @Override
     public void actionPerformed(ActionEvent e) {
         execute(header, position);
@@ -84,17 +88,26 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
 
     public static void execute(final HeatmapHeader header, final HeatmapPosition position) {
 
-        List<ISettingsSection> sections = new ArrayList<>();
+        final List<ISettingsSection> sections = new ArrayList<>();
         final Set<String> selected = header.getHeatmapDimension().getSelected();
 
-        final ChangeAnnotationValueSection annotationValueSection = new ChangeAnnotationValueSection(header, new ArrayList<>(selected));
+        if (editable(header)) {
+            final ChangeAnnotationValueSection annotationValueSection = new ChangeAnnotationValueSection(header, new ArrayList<>(selected));
+            sections.add(annotationValueSection);
+        }
 
-        sections.add(annotationValueSection);
+        for (HeatmapHeader heatmapHeader : header.getHeatmapDimension().getHeaders()) {
+            if (editable(heatmapHeader) && !header.getTitle().equals(heatmapHeader.getTitle())) {
+                sections.add(new ChangeAnnotationValueSection(heatmapHeader, new ArrayList<String>(selected)));
+            }
+        }
+
+        sections.add(new AddNewManualAnnotationSection(header.getHeatmapDimension().getAnnotations(), new ArrayList<String>(selected)));
 
 
         SettingsPanel settingsPanel = new SettingsPanel(
-                header.getTitle() + " annotation values",
-                header.getDescription(),
+                "Edit & add annotation",
+                "<html><body>Change the annotation of the selected " + header.getHeatmapDimension().getId().toString().toLowerCase() + " and/or add a new annotation.</body></html>",
                 IconNames.logoNoText,
                 sections
         );
@@ -108,9 +121,19 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
 
             @Override
             protected void apply() {
-                applyChanges(selected, annotationValueSection);
+                for (ISettingsSection section : sections) {
+                    if (section.isDirty()) {
+                        if (section instanceof ChangeAnnotationValueSection) {
+                            applyChanges((ChangeAnnotationValueSection) section);
+                        } else if (section instanceof AddNewManualAnnotationSection) {
+                            addNewAnnotation((AddNewManualAnnotationSection) section);
+                        }
+                    }
+                }
                 header.getHeatmapDimension().updateHeaders();
             }
+
+
 
             @Override
             public DialogButtonsPanel getButtonsPanel() {
@@ -122,7 +145,8 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
                     }
                 });
 
-                JButton applyButton = new JButton("OK");
+                JButton applyButton = new JButton("Apply");
+
                 applyButton.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -140,16 +164,27 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
 
     }
 
-    private static void applyChanges(Set<String> selected, ChangeAnnotationValueSection annotationValueSection) {
+    private static boolean editable(HeatmapHeader header) {
+        return !header.getTitle().toLowerCase().equals("id")
+                && !(header instanceof HierarchicalClusterHeatmapHeader);
+    }
+
+    private static void applyChanges(ChangeAnnotationValueSection annotationValueSection) {
         Map<String, String> inputs = annotationValueSection.getInputMap();
         List<TextPattern.VariableToken> annotationKeys = annotationValueSection.getAnnotationKeys();
         AnnotationMatrix annotations = annotationValueSection.getAnnotations();
-        for (String s : selected) {
+        for (String s : annotationValueSection.getSelected()) {
             for (TextPattern.VariableToken annotationKey : annotationKeys) {
                 annotations.setAnnotation(s, annotationKey.toString(), inputs.get(annotationKey.getVariableName()));
 
             }
+        }
+    }
 
+    private static void addNewAnnotation(AddNewManualAnnotationSection section) {
+        AnnotationMatrix annotations = section.getAnnotations();
+        for (String s : section.getSelected()) {
+                annotations.setAnnotation(s, section.getAnnotationLabel(), section.getAnnotationValue());
         }
     }
 
@@ -157,8 +192,7 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
     public void onConfigure(HeatmapHeader object, HeatmapPosition position) {
         setHeader(object);
         setPosition(position);
-
-        setEnabled(!object.getTitle().toLowerCase().equals("id") & getDimension().getSelected().size() > 0);
+        setEnabled(getDimension().getSelected().size() > 0);
 
     }
 

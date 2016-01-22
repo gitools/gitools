@@ -25,7 +25,6 @@ import com.jgoodies.binding.PresentationModel;
 import com.jgoodies.binding.adapter.ComboBoxAdapter;
 import com.jgoodies.binding.beans.PropertyAdapter;
 import com.jgoodies.binding.list.SelectionInList;
-import org.gitools.heatmap.HeatmapLayer;
 import org.gitools.heatmap.header.HeatmapDecoratorHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.ui.core.utils.FontUtils;
@@ -117,6 +116,11 @@ public class FormatSection implements ISettingsSection {
     @Override
     public JPanel getPanel() {
         return root;
+    }
+
+    @Override
+    public boolean isDirty() {
+        return false;
     }
 
     private void createUIComponents() {

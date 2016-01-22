@@ -67,7 +67,7 @@ public class SortByHeaderAction extends HeatmapAction implements IHeatmapHeaderA
                 HeatmapDimension dimension = header.getHeatmapDimension();
                 MatrixViewSorter.sortByLabel(dimension,
                         header.isSortAscending() ? ASCENDING : DESCENDING,
-                        header.getAnnotationPattern(),
+                        header.getSortAnnotationPattern(),
                         header instanceof HeatmapDecoratorHeader);
                 header.setSortAscending(!header.isSortAscending());
 

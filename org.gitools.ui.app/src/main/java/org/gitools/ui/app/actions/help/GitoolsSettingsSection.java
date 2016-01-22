@@ -62,4 +62,9 @@ public class GitoolsSettingsSection implements ISettingsSection {
         return panel;
     }
 
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
+
 }
