@@ -42,10 +42,12 @@ public class AddNewManualAnnotationSection extends AbstractSettingsSection {
     private JTable currentValuesTable;
     private JTextField annotationLabel;
     private JTextField annotationValue;
+    private JLabel explanationLabel;
 
     public AddNewManualAnnotationSection(final AnnotationMatrix annotations, final List<String> selected) {
         this.annotations = annotations;
         this.selected = selected;
+        this.explanationLabel.setText("<html><body><i>The annotation is not automatically added as header</i></body></html>");
 
 
         DocumentChangeListener docListener = new DocumentChangeListener() {

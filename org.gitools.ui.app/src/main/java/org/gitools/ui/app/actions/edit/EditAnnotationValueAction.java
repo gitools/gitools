@@ -21,8 +21,11 @@
  */
 package org.gitools.ui.app.actions.edit;
 
+import org.gitools.api.analysis.Clusters;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
 import org.gitools.heatmap.header.HierarchicalClusterHeatmapHeader;
 import org.gitools.matrix.model.matrix.AnnotationMatrix;
@@ -37,12 +40,17 @@ import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.settings.ISettingsSection;
 import org.gitools.ui.platform.settings.SettingsDialog;
 import org.gitools.ui.platform.settings.SettingsPanel;
+import org.gitools.utils.color.ColorGenerator;
 import org.gitools.utils.textpattern.TextPattern;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
+import java.util.List;
+
+import static org.gitools.ui.app.commands.AddHeaderColoredLabelsCommand.makeAnnotationClustering;
 
 public class EditAnnotationValueAction extends HeatmapDimensionAction implements IHeatmapHeaderAction {
 
@@ -169,14 +177,31 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
                 && !(header instanceof HierarchicalClusterHeatmapHeader);
     }
 
-    private static void applyChanges(ChangeAnnotationValueSection annotationValueSection) {
-        Map<String, String> inputs = annotationValueSection.getInputMap();
-        List<TextPattern.VariableToken> annotationKeys = annotationValueSection.getAnnotationKeys();
-        AnnotationMatrix annotations = annotationValueSection.getAnnotations();
-        for (String s : annotationValueSection.getSelected()) {
+    private static void applyChanges(ChangeAnnotationValueSection section) {
+        Map<String, String> inputs = section.getInputMap();
+        List<TextPattern.VariableToken> annotationKeys = section.getAnnotationKeys();
+        AnnotationMatrix annotations = section.getAnnotations();
+        for (String s : section.getSelected()) {
             for (TextPattern.VariableToken annotationKey : annotationKeys) {
                 annotations.setAnnotation(s, annotationKey.toString(), inputs.get(annotationKey.getVariableName()));
+            }
+        }
 
+        if (section.getHeatmapHeader() instanceof HeatmapColoredLabelsHeader) {
+            HeatmapColoredLabelsHeader h = (HeatmapColoredLabelsHeader) section.getHeatmapHeader();
+            List<Color> usedColors = new ArrayList<>();
+            for (ColoredLabel coloredLabel : h.getClusters()) {
+                usedColors.add(coloredLabel.getColor());
+            }
+            ColorGenerator cg = new ColorGenerator();
+            cg.initUsed(usedColors);
+
+
+            Clusters results = makeAnnotationClustering(h);
+            for (String s : results.getClusters()) {
+                if (!h.getClusters().contains(s)) {
+                    h.getClusters().add(new ColoredLabel(s, cg.next(s)));
+                }
             }
         }
     }

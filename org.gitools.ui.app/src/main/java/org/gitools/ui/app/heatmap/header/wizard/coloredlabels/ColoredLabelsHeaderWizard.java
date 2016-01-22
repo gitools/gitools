@@ -21,7 +21,6 @@
  */
 package org.gitools.ui.app.heatmap.header.wizard.coloredlabels;
 
-import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
@@ -42,7 +41,6 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
     private final String lastPattern;
     private final HeatmapColoredLabelsHeader header;
 
-    private final AnnPatClusteringMethod clusteringMethod;
 
     private PatternSourcePage sourcePage;
     private ColoredLabelsConfigPage headerPage;
@@ -56,7 +54,6 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
         this.lastPattern = "";
         this.header = header;
 
-        clusteringMethod = new AnnPatClusteringMethod();
     }
 
     @Override
@@ -99,7 +96,7 @@ public class ColoredLabelsHeaderWizard extends AbstractWizard {
             header.setAnnotationMetadata(sourcePage.getSelectedValues()[0]);
         }
 
-        AddHeaderColoredLabelsCommand.autoGenerateColoredLabels(header, clusteringMethod);
+        AddHeaderColoredLabelsCommand.autoGenerateColoredLabels(header);
 
         clustersPage.setColoredLabels(header.getClusters());
     }

@@ -201,6 +201,10 @@ public class ChangeAnnotationValueSection extends AbstractSettingsSection {
         return annotations;
     }
 
+    public HeatmapHeader getHeatmapHeader() {
+        return heatmapHeader;
+    }
+
     public Map<String, String> getInputMap() {
         Map<String, String> m = new HashMap<>();
         for (String key : inputMap.keySet()) {

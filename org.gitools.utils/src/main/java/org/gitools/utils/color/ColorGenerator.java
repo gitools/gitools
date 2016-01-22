@@ -23,6 +23,8 @@ package org.gitools.utils.color;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class ColorGenerator {
 
@@ -45,6 +47,9 @@ public class ColorGenerator {
         for (int i = 0; i < palette.length; i++)
             this.palette[i] = new Color(palette[i]);
         colorRegistry = ColorRegistry.get();
+        int max = palette.length - 1;
+        int min = 0;
+        index = new Random().nextInt((max - min) + 1) + min;
     }
 
     public void reset() {
@@ -88,6 +93,10 @@ public class ColorGenerator {
             }
         }
         return false;
+    }
+
+    public void initUsed(List<Color> colors) {
+        used.addAll(colors);
     }
 
     public int getCount() {
