@@ -47,7 +47,7 @@ public class AddNewManualAnnotationSection extends AbstractSettingsSection {
     public AddNewManualAnnotationSection(final AnnotationMatrix annotations, final List<String> selected) {
         this.annotations = annotations;
         this.selected = selected;
-        this.explanationLabel.setText("<html><body><i>The annotation is not automatically added as header</i></body></html>");
+        this.explanationLabel.setText("<html><body><i>The annotation will automatically added as a colored header</i></body></html>");
 
 
         DocumentChangeListener docListener = new DocumentChangeListener() {

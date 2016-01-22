@@ -24,6 +24,7 @@ package org.gitools.ui.app.actions.edit;
 import org.gitools.api.analysis.Clusters;
 import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.Heatmap;
+import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.ColoredLabel;
 import org.gitools.heatmap.header.HeatmapColoredLabelsHeader;
 import org.gitools.heatmap.header.HeatmapHeader;
@@ -51,6 +52,7 @@ import java.util.*;
 import java.util.List;
 
 import static org.gitools.ui.app.commands.AddHeaderColoredLabelsCommand.makeAnnotationClustering;
+import static org.gitools.ui.app.commands.AddHeaderColoredLabelsCommand.updateFromClusterResults;
 
 public class EditAnnotationValueAction extends HeatmapDimensionAction implements IHeatmapHeaderAction {
 
@@ -94,7 +96,7 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
         execute(header, position);
     }
 
-    public static void execute(final HeatmapHeader header, final HeatmapPosition position) {
+    public void execute(final HeatmapHeader header, final HeatmapPosition position) {
 
         final List<ISettingsSection> sections = new ArrayList<>();
         final Set<String> selected = header.getHeatmapDimension().getSelected();
@@ -206,11 +208,20 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
         }
     }
 
-    private static void addNewAnnotation(AddNewManualAnnotationSection section) {
+    private void addNewAnnotation(AddNewManualAnnotationSection section) {
         AnnotationMatrix annotations = section.getAnnotations();
         for (String s : section.getSelected()) {
                 annotations.setAnnotation(s, section.getAnnotationLabel(), section.getAnnotationValue());
         }
+        HeatmapDimension dim = getHeader().getHeatmapDimension();
+        HeatmapColoredLabelsHeader newHeader = new HeatmapColoredLabelsHeader(dim);
+        newHeader.setAnnotationPattern("${" + section.getAnnotationLabel() + "}");
+        newHeader.setTitle(section.getAnnotationLabel());
+        Clusters results = makeAnnotationClustering(newHeader);
+        updateFromClusterResults(newHeader, results.getClusters());
+        dim.addHeader(newHeader);
+
+
     }
 
     @Override
