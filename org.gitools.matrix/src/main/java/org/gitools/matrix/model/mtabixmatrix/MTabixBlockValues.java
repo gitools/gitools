@@ -21,13 +21,10 @@
  */
 package org.gitools.matrix.model.mtabixmatrix;
 
-import edu.upf.bg.mtabix.MTabixConfig;
 import edu.upf.bg.mtabix.parse.IKeyParser;
 import gnu.trove.map.TLongDoubleMap;
 import gnu.trove.map.hash.TLongDoubleHashMap;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MTabixBlockValues {
@@ -36,20 +33,12 @@ public class MTabixBlockValues {
     private Map<Integer, Map<String, Integer>> identifierToPosition;
     private TLongDoubleMap map;
 
-    public MTabixBlockValues(IKeyParser keyParser, Map<Integer, List<String>> identifiers) {
+    public MTabixBlockValues(IKeyParser keyParser, Map<Integer, Map<String, Integer>> identifierToPosition) {
         super();
 
         this.map = new TLongDoubleHashMap();
         this.keyParser = keyParser;
-        this.identifierToPosition = new HashMap<>();
-        for (Map.Entry<Integer, List<String>> e : identifiers.entrySet()) {
-            Map<String, Integer> pos = new HashMap<>();
-            List<String> ids = e.getValue();
-            for (int i=0; i < ids.size(); i++) {
-                pos.put(ids.get(i), i);
-            }
-            this.identifierToPosition.put(e.getKey(), pos);
-        }
+        this.identifierToPosition = identifierToPosition;
     }
 
     public Double get(String... identifiers) {

@@ -48,6 +48,8 @@ public class MTabixMatrix extends HashMatrix {
     private MTabixIndex index;
     private BlockCompressedReader dataStream;
     private Set<String> indexedLayers;
+    private Map<Integer, Map<String, Integer>> identifierToPosition;
+
 
     // Cache
     private Map<String, LoadingCache<Long, MTabixBlockValues>> indexedCache;
@@ -65,6 +67,16 @@ public class MTabixMatrix extends HashMatrix {
             IMatrixLayer layer = layers.get(l);
             indexedLayers.add(layer.getId());
             indexedCache.put(layer.getId(), CacheBuilder.newBuilder().build(new BlockLoader(l)));
+        }
+
+        this.identifierToPosition = new HashMap<>();
+        for (Map.Entry<Integer, List<String>> e : this.index.getIndexIdentifiers().entrySet()) {
+            Map<String, Integer> pos = new HashMap<>();
+            List<String> ids = e.getValue();
+            for (int i = 0; i < ids.size(); i++) {
+                pos.put(ids.get(i), i);
+            }
+            this.identifierToPosition.put(e.getKey(), pos);
         }
 
         hasChanged = false;
@@ -130,7 +142,7 @@ public class MTabixMatrix extends HashMatrix {
 
         long block = getBlockAddress(filePointer);
         LOGGER.info("Loading block '" + Long.toHexString(block) + "' column " + column);
-        MTabixBlockValues matrix = new MTabixBlockValues(this.index.getConfig().getKeyParser(), this.index.getIndexIdentifiers());
+        MTabixBlockValues matrix = new MTabixBlockValues(this.index.getConfig().getKeyParser(), this.identifierToPosition);
         dataStream.seek(filePointer);
 
         while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((lineLength = dataStream.readLine(line)) != -1)) {
