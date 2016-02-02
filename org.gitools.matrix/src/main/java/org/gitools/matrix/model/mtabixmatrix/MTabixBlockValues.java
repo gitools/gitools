@@ -21,16 +21,35 @@
  */
 package org.gitools.matrix.model.mtabixmatrix;
 
+import edu.upf.bg.mtabix.MTabixConfig;
+import edu.upf.bg.mtabix.parse.IKeyParser;
 import gnu.trove.map.TLongDoubleMap;
 import gnu.trove.map.hash.TLongDoubleHashMap;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class MTabixBlockValues {
 
+    private IKeyParser keyParser;
+    private Map<Integer, Map<String, Integer>> identifierToPosition;
     private TLongDoubleMap map;
 
-    public MTabixBlockValues() {
+    public MTabixBlockValues(IKeyParser keyParser, Map<Integer, List<String>> identifiers) {
         super();
+
         this.map = new TLongDoubleHashMap();
+        this.keyParser = keyParser;
+        this.identifierToPosition = new HashMap<>();
+        for (Map.Entry<Integer, List<String>> e : identifiers.entrySet()) {
+            Map<String, Integer> pos = new HashMap<>();
+            List<String> ids = e.getValue();
+            for (int i=0; i < ids.size(); i++) {
+                pos.put(ids.get(i), i);
+            }
+            this.identifierToPosition.put(e.getKey(), pos);
+        }
     }
 
     public Double get(String... identifiers) {
@@ -48,9 +67,9 @@ public class MTabixBlockValues {
         map.put(key, value);
     }
 
-    public static long hash(String... identifiers) {
-        int a = identifiers[0].hashCode();
-        int b = identifiers[1].hashCode();
+    public long hash(String... identifiers) {
+        int a = identifierToPosition.get(keyParser.getKeys()[0]).get(identifiers[0]);
+        int b = identifierToPosition.get(keyParser.getKeys()[1]).get(identifiers[1]);
         return (long) a << 32 | b & 0xFFFFFFFFL;
     }
 }

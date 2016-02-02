@@ -130,19 +130,18 @@ public class MTabixMatrix extends HashMatrix {
 
         long block = getBlockAddress(filePointer);
         LOGGER.info("Loading block '" + Long.toHexString(block) + "' column " + column);
-        MTabixBlockValues matrix = new MTabixBlockValues();
+        MTabixBlockValues matrix = new MTabixBlockValues(this.index.getConfig().getKeyParser(), this.index.getIndexIdentifiers());
         dataStream.seek(filePointer);
 
         while ((getBlockAddress(dataStream.getFilePointer()) == block) && ((lineLength = dataStream.readLine(line)) != -1)) {
 
             final Double value = DoubleTranslator.get().stringToValue(parseLine(line, column, lineLength));
             if (value!=null) {
-                int a = parseHash(line, 1, lineLength);
-                int b = parseHash(line, 0, lineLength);
-                long key = (long) a << 32 | b & 0xFFFFFFFFL;
+                String id1 = parseLine(line, 1, lineLength);
+                String id0 = parseLine(line, 0, lineLength);
+                long key = matrix.hash(id1, id0);
                 matrix.put(key, value);
             }
-
         }
 
         return matrix;
@@ -197,22 +196,6 @@ public class MTabixMatrix extends HashMatrix {
         }
 
         return new String(str, start, size);
-    }
-
-    public int parseHash(byte[] str, int pos, int length) {
-
-        int size = parseTab(str, pos, length);
-
-        if (size == -1) {
-            return 0;
-        }
-
-        int hash = 0;
-        for (int i=start; i < end; i++) {
-            hash = 31 * hash + str[i];
-        }
-
-        return hash;
     }
 
     private class BlockLoader extends CacheLoader<Long, MTabixBlockValues> {
