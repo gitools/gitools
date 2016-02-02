@@ -50,7 +50,7 @@ public class AddNewLayerFromDataTransformation extends HeatmapAction {
 
     public AddNewLayerFromDataTransformation() {
         super("New data from transformations...");
-        setSmallIconFromResource(IconNames.add16);
+        setSmallIconFromResource(IconNames.calc16);
     }
 
     @Override

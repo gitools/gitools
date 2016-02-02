@@ -85,6 +85,8 @@ public class IconNames {
     public static final String add16 = "/img/add16.png";
     public static final String remove16 = "/img/remove16.png";
 
+    public static final String calc16 = "/img/calc16.png";
+    public static final String calc24 = "/img/calc24.png";
 
     public static final String close16 = "/img/close16.png";
     public static final String close24 = "/img/close24.png";

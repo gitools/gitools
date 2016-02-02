@@ -45,7 +45,7 @@ public class MenuActionSet extends ActionSet {
     public static final String ACTION_SCOPE_HELP = "Help";
     public static final String ACTION_SCOPE_ROWS = "Rows";
     public static final String ACTION_SCOPE_COLUMNS = "Columns";
-    public static final String ACTION_SCOPE_LAYERS = "Layers";
+    public static final String ACTION_SCOPE_LAYERS = "Value Layers";
 
     public static MenuActionSet INSTANCE = new MenuActionSet();
 
