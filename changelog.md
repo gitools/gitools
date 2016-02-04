@@ -7,6 +7,7 @@ Gitools 2.2.4
 * New data layers from data transformation
 * Edit annotation values within the application
 * Enable show/hide headers from details box
+* Remove Layer Action
 
 Gitools 2.2.3
 ------------------------------------------------------------
