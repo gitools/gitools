@@ -28,6 +28,7 @@ import org.gitools.api.resource.adapter.ResourceReferenceXmlAdapter;
 import org.gitools.heatmap.header.HeatmapTextLabelsHeader;
 import org.gitools.heatmap.plugins.Plugins;
 import org.gitools.matrix.model.MatrixPosition;
+import org.gitools.matrix.model.hashmatrix.HashMatrix;
 import org.gitools.resource.Resource;
 
 import javax.xml.bind.annotation.*;
@@ -280,6 +281,17 @@ public class Heatmap extends Resource implements IMatrixView {
 
     public Plugins getPluggedBoxes() {
         return pluggedBoxes;
+    }
+
+    public void removeLayer(HeatmapLayer layer) {
+        // Remove Heatmap Layer
+        getLayers().remove(layer);
+        // Remove HashMatrix Layer
+        IMatrix data = getContents();
+        if (data instanceof HashMatrix) {
+            IMatrixLayer dataLayer = data.getLayers().get(layer.getId());
+            ((HashMatrix) data).removeLayer(dataLayer);
+        }
     }
 
 

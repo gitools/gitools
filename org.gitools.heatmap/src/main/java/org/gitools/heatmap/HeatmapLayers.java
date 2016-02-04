@@ -168,6 +168,21 @@ public class HeatmapLayers extends Model implements IMatrixViewLayers<HeatmapLay
         EventUtils.moveListeners(oldLayer, newLayer);
     }
 
+    public void remove(HeatmapLayer layer) {
+        if(getTopLayer() == layer) {
+            int idx = layers.indexOf(layer) - 1;
+            if (idx < 0) {
+                setTopLayer(get(idx));
+            } else {
+                setTopLayer(get(0));
+            }
+        } else if(layers.indexOf(getTopLayer()) == layers.size()-1 ) {
+            setTopLayer(layers.get(layers.size()-2));
+        }
+        this.layers.remove(layer);
+        this.updateLayers();
+    }
+
     @Override
     public String[] getIds() {
         return layersIdToIndex.keySet().toArray(new String[size()]);

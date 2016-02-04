@@ -122,7 +122,10 @@ public class PopupMenuActions {
             new EditLayerAction("Edit..."),
             BaseAction.separator,
             new MoveUpLayerAction(),
-            new MoveDownLayerAction()
+            new MoveDownLayerAction(),
+            BaseAction.separator,
+            new RemoveLayerAction(),
+
     });
 
 

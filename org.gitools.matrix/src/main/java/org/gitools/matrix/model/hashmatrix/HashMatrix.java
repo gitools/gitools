@@ -135,6 +135,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers<IMatrixLayer>, HashM
     public void removeLayer(IMatrixLayer layer) {
         getLayers().remove(layer);
         values.remove(layer.getId());
+        hasChanged = true;
     }
 
     public void copyLayerValues(String layerId, HashMatrix fromMatrix) {
