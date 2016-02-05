@@ -169,6 +169,7 @@ public class HeatmapColoredLabelsHeader extends HeatmapHeader {
             decorate(decoration, getColoredLabel(identifier), true);
         }
         decoration.setSelected(selected);
+        decoration.setVisible(isVisible());
 
         details.add(decoration);
     }

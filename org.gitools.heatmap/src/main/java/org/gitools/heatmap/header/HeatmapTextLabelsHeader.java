@@ -153,6 +153,7 @@ public class HeatmapTextLabelsHeader extends HeatmapHeader {
                 getValueUrl()
         );
         decoration.setSelected(selected);
+        decoration.setVisible(isVisible());
 
         decoration.setReference(this);
         details.add(decoration);

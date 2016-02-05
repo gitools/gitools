@@ -163,6 +163,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
                 decorate(decoration, index, annotation, true);
             }
             decoration.setSelected(selected);
+            decoration.setVisible(isVisible());
             details.add(decoration);
         }
 
