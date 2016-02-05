@@ -51,8 +51,8 @@ public class ExitAction extends AbstractAction {
         }
 
         if (dirty) {
-            int dialogResult = JOptionPane.showConfirmDialog(Application.get(), "Do you want to save changes?", "Warning", JOptionPane.YES_NO_OPTION);
-            if(dialogResult == JOptionPane.YES_OPTION) {
+            int dialogResult = JOptionPane.showConfirmDialog(Application.get(), "Do you want to close Gitools without saving changes?", "Warning", JOptionPane.YES_NO_CANCEL_OPTION);
+            if (dialogResult != JOptionPane.YES_OPTION) {
                 return;
             }
         }
