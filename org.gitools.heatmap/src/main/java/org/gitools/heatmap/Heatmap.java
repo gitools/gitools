@@ -133,21 +133,17 @@ public class Heatmap extends Resource implements IMatrixView {
         firePropertyChange(PROPERTY_COLUMNS, old, columns);
     }
 
-    public void detach() {
+    public void detach(IMatrixLayer topLayer) {
         if (data != null && data.isLoaded()) {
-            data.get().detach();
+            data.get().detach(topLayer);
         }
-
-        // Detach heatmap cache
-        //this.cache = null;
 
         // Detach layers cache
         for (HeatmapLayer layer : layers) {
-            layer.detach();
+            if (layer != topLayer) {
+                layer.detach();
+            }
         }
-
-        // Force garbage collection
-        System.gc();
     }
 
     public void init() {

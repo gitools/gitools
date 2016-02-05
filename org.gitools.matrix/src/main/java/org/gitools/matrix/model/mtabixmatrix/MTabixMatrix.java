@@ -102,11 +102,13 @@ public class MTabixMatrix extends HashMatrix {
         super.set(layer, value, identifiers);
     }
 
-    public void detach() {
+    public void detach(IMatrixLayer topLayer) {
 
         //TODO improve evict policy
-        for (LoadingCache<Long, MTabixBlockValues> cache : indexedCache.values()) {
-            cache.invalidateAll();
+        for (String layerKey : indexedCache.keySet()) {
+            if (topLayer != null && !layerKey.equals(topLayer.getId())) {
+                indexedCache.get(layerKey).invalidateAll();
+            }
         }
 
     }

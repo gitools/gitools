@@ -452,7 +452,7 @@ public class HeatmapEditor extends AbstractEditor {
         timer.cancel();
         timer.purge();
 
-        heatmap.detach();
+        heatmap.detach(null);
 
         if (heatmap.getData().getLocator() != null) {
             heatmap.getData().unload();
@@ -481,7 +481,7 @@ public class HeatmapEditor extends AbstractEditor {
 
     @Override
     public void detach() {
-        this.heatmap.detach();
+        this.heatmap.detach(heatmap.getLayers().getTopLayer());
     }
 
     @Override

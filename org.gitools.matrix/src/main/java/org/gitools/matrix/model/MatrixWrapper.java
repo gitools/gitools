@@ -79,8 +79,8 @@ public abstract class MatrixWrapper implements IMatrix {
     }
 
     @Override
-    public void detach() {
-        wrapMatrix.detach();
+    public void detach(IMatrixLayer topLayer) {
+        wrapMatrix.detach(topLayer);
     }
 
     @Override
