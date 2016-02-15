@@ -93,8 +93,9 @@ public abstract class AbstractWizardPage extends JPanel implements IWizardPage, 
 
 
     @Override
+    @Deprecated
     public JComponent createControls() {
-        return this;
+        return getPanel();
     }
 
     @Override

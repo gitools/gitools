@@ -104,7 +104,7 @@ public class GlassPanePageDialog extends GitoolsGlassPane implements IDialog {
 
     private void updateHeaderPanel(IWizardPage page) {
         headerPanel.setTitle(page.getTitle());
-        headerPanel.setMessage(page.getTitle());
+        headerPanel.setMessage(page.getMessage());
         headerPanel.setMessageStatus(page.getStatus());
         headerPanel.setRightLogo(page.getLogo());
     }
