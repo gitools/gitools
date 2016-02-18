@@ -96,4 +96,9 @@ public class DataManipulationSection implements ISettingsSection {
     public JPanel getPanel() {
         return mainPanel;
     }
+
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
 }

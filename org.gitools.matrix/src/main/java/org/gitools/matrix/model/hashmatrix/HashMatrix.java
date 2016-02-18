@@ -57,7 +57,13 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers<IMatrixLayer>, HashM
     @Override
     public <T> T get(IMatrixLayer<T> layer, String... identifiers) {
 
-        Map result = values.get(layer.getId());
+        Map result;
+        try {
+            result = values.get(layer.getId());
+        } catch (NullPointerException e) {
+            return null;
+        }
+
         if (result == null) {
             return null;
         }
@@ -135,6 +141,7 @@ public class HashMatrix extends AbstractMatrix<MatrixLayers<IMatrixLayer>, HashM
     public void removeLayer(IMatrixLayer layer) {
         getLayers().remove(layer);
         values.remove(layer.getId());
+        hasChanged = true;
     }
 
     public void copyLayerValues(String layerId, HashMatrix fromMatrix) {

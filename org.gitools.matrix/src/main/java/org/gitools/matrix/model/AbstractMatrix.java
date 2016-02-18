@@ -98,10 +98,13 @@ public abstract class AbstractMatrix<ML extends IMatrixLayers<? extends IMatrixL
     }
 
     @Override
-    public void detach() {
+    public void detach(IMatrixLayer topLayer) {
         this.cache = null;
 
         for (IMatrixLayer layer : layers) {
+            if (topLayer == layer) {
+                continue;
+            }
             layer.detach();
         }
     }

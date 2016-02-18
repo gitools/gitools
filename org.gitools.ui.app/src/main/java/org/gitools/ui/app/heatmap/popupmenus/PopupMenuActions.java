@@ -84,6 +84,7 @@ public class PopupMenuActions {
                 new PopupSectionTitleAction(dimensionLabel + " headers"),
                 new AddHeaderAction(dimensionKey),
                 new EditHeaderAction(dimensionKey, "<html><i>Edit</i> header</html>"),
+                new EditAnnotationValueAction(dimensionKey),
                 new RemoveHeaderAction(dimensionKey, "Remove " + dimensionLabel + " header")
 
 
@@ -96,6 +97,8 @@ public class PopupMenuActions {
     // Details popup menus
     public static final ActionSet DETAILS_ROWS = new ActionSet(new BaseAction[]{
             new EditHeaderAction(MatrixDimensionKey.ROWS, "Edit..."),
+            new ShowHeaderAction(MatrixDimensionKey.ROWS, "Show header"),
+            new HideHeaderAction(MatrixDimensionKey.ROWS, "Hide header"),
             BaseAction.separator,
             new MoveUpHeaderAction("Move up (left)", MatrixDimensionKey.ROWS, IconNames.moveUp16),
             new MoveDownHeaderAction("Move down (right)", MatrixDimensionKey.ROWS, IconNames.moveDown16),
@@ -105,6 +108,9 @@ public class PopupMenuActions {
 
     public static final ActionSet DETAILS_COLUMNS = new ActionSet(new BaseAction[]{
             new EditHeaderAction(MatrixDimensionKey.COLUMNS, "Edit..."),
+            new ShowHeaderAction(MatrixDimensionKey.COLUMNS, "Show header"),
+            new HideHeaderAction(MatrixDimensionKey.COLUMNS, "Hide header"),
+
             BaseAction.separator,
             new MoveDownHeaderAction("Move up", MatrixDimensionKey.COLUMNS, IconNames.moveUp16),
             new MoveUpHeaderAction("Move down", MatrixDimensionKey.COLUMNS, IconNames.moveDown16),
@@ -116,7 +122,10 @@ public class PopupMenuActions {
             new EditLayerAction("Edit..."),
             BaseAction.separator,
             new MoveUpLayerAction(),
-            new MoveDownLayerAction()
+            new MoveDownLayerAction(),
+            BaseAction.separator,
+            new RemoveLayerAction(),
+
     });
 
 

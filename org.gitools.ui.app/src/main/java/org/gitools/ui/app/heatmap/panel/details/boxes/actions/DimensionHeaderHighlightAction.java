@@ -23,6 +23,7 @@ package org.gitools.ui.app.heatmap.panel.details.boxes.actions;
 
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.heatmap.header.HeatmapHeader;
+import org.gitools.ui.core.Application;
 import org.gitools.ui.core.HeatmapPosition;
 import org.gitools.ui.core.actions.HeatmapAction;
 import org.gitools.ui.core.actions.dynamicactions.IHeatmapDimensionAction;
@@ -64,30 +65,35 @@ public class DimensionHeaderHighlightAction extends HeatmapAction implements IHe
             highlighter.switchTarget(dimension, header);
         }
 
+        if (header.isVisible()) {
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
 
-                while(highlighter.getAlpha() > 0) {
-                    try {
+                    while (highlighter.getAlpha() > 0) {
+                        try {
 
-                        setInteractionStatus(highlighting);
-                        Thread.currentThread().sleep(100);
-                        highlighter.highlight();
+                            setInteractionStatus(highlighting);
+                            Thread.currentThread().sleep(100);
+                            highlighter.highlight();
 
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
                     }
+
+                    highlighter.resetDimension();
+                    highlighter = null;
+                    setInteractionStatus(none);
+
                 }
-
-                highlighter.resetDimension();
-                highlighter = null;
-                setInteractionStatus(none);
-
-            }
-        };
-        updating = EXECUTOR.schedule(runnable, 10, TimeUnit.MILLISECONDS);
+            };
+            updating = EXECUTOR.schedule(runnable, 10, TimeUnit.MILLISECONDS);
+        } else {
+            // header is not visible
+            Application.get().showNotification("Header '" + header.getTitle() + "' is hidden.", 2000);
+        }
 
 
     }

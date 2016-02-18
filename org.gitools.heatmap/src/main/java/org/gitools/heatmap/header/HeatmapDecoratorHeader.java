@@ -163,6 +163,7 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
                 decorate(decoration, index, annotation, true);
             }
             decoration.setSelected(selected);
+            decoration.setVisible(isVisible());
             details.add(decoration);
         }
 
@@ -191,6 +192,16 @@ public class HeatmapDecoratorHeader extends HeatmapHeader {
 
     @Override
     public String getAnnotationPattern() {
+        StringBuilder sb = new StringBuilder();
+        for (String annotation : getAnnotationLabels()) {
+            sb.append(sb.length() > 0 ? "," : "");
+            sb.append("${" + annotation + "}");
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String getSortAnnotationPattern() {
         return "${" + getSortLabel() + "}";
     }
 

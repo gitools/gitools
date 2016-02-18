@@ -47,8 +47,9 @@ public interface IMatrix extends IResource {
      * This method is called when the matrix is not in use.
      * <p/>
      * It's a good practice to free all the caching memory usage.
+     * @param topLayer
      */
-    void detach();
+    void detach(IMatrixLayer topLayer);
 
     <T> void setMetadata(IKey<T> key, T value);
 

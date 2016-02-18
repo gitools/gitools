@@ -67,4 +67,9 @@ public class DetailsSection implements ISettingsSection {
     public JPanel getPanel() {
         return rootPanel;
     }
+
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
 }

@@ -24,6 +24,7 @@ package org.gitools.ui.app.fileimport.wizard.text.reader;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 
 public abstract class ReaderAssistant {
 
@@ -36,7 +37,7 @@ public abstract class ReaderAssistant {
         update();
     }
 
-    abstract public void fillMatrix(IMatrix matrix);
+    abstract public void fillMatrixAndAnnotations(IMatrix matrix, AnnotationMatrix rowAnnMatrix, AnnotationMatrix colAnnMatrix);
 
     public abstract String[] getHeatmapHeaders();
 
@@ -46,5 +47,9 @@ public abstract class ReaderAssistant {
         return heatmapLayers;
     }
 
+    public abstract boolean hasColAnnotation();
 
+    public abstract boolean hasRowAnnotation();
+
+    public abstract void updateAnnotationNames();
 }

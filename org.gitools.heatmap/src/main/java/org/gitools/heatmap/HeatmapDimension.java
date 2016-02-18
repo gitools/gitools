@@ -236,9 +236,7 @@ public class HeatmapDimension extends AbstractMatrixViewDimension {
         }
 
         for (HeatmapHeader header : itHeaders) {
-            if (header.isVisible()) {
                 header.populateDetails(details, getFocus(), getSelectedHeader() == header);
-            }
         }
     }
 

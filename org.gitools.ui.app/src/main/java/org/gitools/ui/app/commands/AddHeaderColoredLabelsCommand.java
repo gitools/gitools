@@ -23,7 +23,6 @@ package org.gitools.ui.app.commands;
 
 import org.gitools.analysis.clustering.ClusteringData;
 import org.gitools.analysis.clustering.ClusteringException;
-import org.gitools.analysis.clustering.ClusteringMethod;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringData;
 import org.gitools.analysis.clustering.annotations.AnnPatClusteringMethod;
 import org.gitools.api.analysis.Clusters;
@@ -80,7 +79,7 @@ public class AddHeaderColoredLabelsCommand extends HeaderCommand {
 
         if (autoGenerateColors) {
             cls = header.getClusters();
-            autoGenerateColoredLabels(header, new AnnPatClusteringMethod());
+            autoGenerateColoredLabels(header);
         }
 
 
@@ -141,16 +140,21 @@ public class AddHeaderColoredLabelsCommand extends HeaderCommand {
     }
 
 
-    public static void autoGenerateColoredLabels(HeatmapColoredLabelsHeader header, ClusteringMethod clusteringMethod) {
+    public static void autoGenerateColoredLabels(HeatmapColoredLabelsHeader header) {
 
+        Clusters results = makeAnnotationClustering(header);
+        updateFromClusterResults(header, results.getClusters());
+
+    }
+
+    public static Clusters makeAnnotationClustering(HeatmapColoredLabelsHeader header) {
         ClusteringData data = new AnnPatClusteringData(header.getHeatmapDimension(), header.getAnnotationPattern());
         Clusters results = null;
         try {
-            results = clusteringMethod.cluster(data, new DefaultProgressMonitor());
+            results = new AnnPatClusteringMethod().cluster(data, new DefaultProgressMonitor());
         } catch (ClusteringException e) {
             e.printStackTrace();
         }
-        updateFromClusterResults(header, results.getClusters());
-
+        return results;
     }
 }

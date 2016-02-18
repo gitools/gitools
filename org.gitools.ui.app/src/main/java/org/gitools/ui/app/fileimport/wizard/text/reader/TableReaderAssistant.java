@@ -25,6 +25,7 @@ package org.gitools.ui.app.fileimport.wizard.text.reader;
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.utils.readers.FileHeader;
 import org.gitools.utils.readers.profile.TableReaderProfile;
 import org.gitools.utils.translators.DoubleTranslator;
@@ -40,6 +41,10 @@ public class TableReaderAssistant extends ReaderAssistant {
     private String currentRowId;
     private String[] currentFields;
     private Map<IMatrixLayer, Map<String,Integer>> factorMap;
+    private String[] rowAnnFieldNames;
+    private String[] rowAnnFields;
+    private String[] colAnnFieldNames;
+    private String[] colAnnFields;
 
     public TableReaderAssistant(FlatTextImporter reader) {
         super(reader);
@@ -47,7 +52,7 @@ public class TableReaderAssistant extends ReaderAssistant {
     }
 
     @Override
-    public void fillMatrix(IMatrix matrix) {
+    public void fillMatrixAndAnnotations(IMatrix matrix, AnnotationMatrix rowAnnMatrix, AnnotationMatrix colAnnMatrix) {
         processLine();
         for (int i = 0; i < heatmapLayers.length; i++) {
             Double value = DoubleTranslator.get().stringToValue(currentFields[i]);
@@ -55,6 +60,16 @@ public class TableReaderAssistant extends ReaderAssistant {
                 value = factorize(heatmapLayers[i],currentFields[i]);
             }
             matrix.set(heatmapLayers[i], value, currentRowId, currentColId);
+        }
+        if (hasRowAnnotation()) {
+            for (int i = 0; i < rowAnnFields.length; i++) {
+                rowAnnMatrix.setAnnotation(currentRowId, rowAnnFieldNames[i], rowAnnFields[i]);
+            }
+        }
+        if (hasColAnnotation()) {
+            for (int i = 0; i < colAnnFields.length; i++) {
+                rowAnnMatrix.setAnnotation(currentColId, colAnnFieldNames[i], colAnnFields[i]);
+            }
         }
     }
 
@@ -91,6 +106,36 @@ public class TableReaderAssistant extends ReaderAssistant {
     public void update() {
         this.profile = (TableReaderProfile) reader.getReaderProfile();
         this.heatmapLayers = createHeatmapLayers();
+        this.updateAnnotationNames();
+    }
+
+    @Override
+    public boolean hasColAnnotation() {
+        return profile.getColumnAnnotationColumns().length > 0;
+    }
+
+    @Override
+    public boolean hasRowAnnotation() {
+        return profile.getRowAnnotationColumns().length > 0;
+    }
+
+    @Override
+    public void updateAnnotationNames() {
+        List<FileHeader> fileHeaders = reader.getFileHeaders();
+        if (hasRowAnnotation()) {
+            int[] idx = profile.getRowAnnotationColumns();
+            this.rowAnnFieldNames = new String[idx.length];
+            for (int i = 0; i < idx.length; i++) {
+                rowAnnFieldNames[i] = fileHeaders.get(i).toString();
+            }
+        }
+        if (hasColAnnotation()) {
+            int[] idx = profile.getColumnAnnotationColumns();
+            this.colAnnFieldNames = new String[idx.length];
+            for (int i = 0; i < idx.length; i++) {
+                colAnnFieldNames[i] = fileHeaders.get(i).toString();
+            }
+        }
     }
 
     protected MatrixLayer[] createHeatmapLayers() {
@@ -108,10 +153,20 @@ public class TableReaderAssistant extends ReaderAssistant {
         this.currentColId = getColId(currentLine);
         this.currentRowId = getRowId(currentLine);
         this.currentFields = getDataFields(currentLine);
+        this.rowAnnFields = getFields(currentLine, profile.getRowAnnotationColumns());
+        this.colAnnFields = getFields(currentLine, profile.getColumnAnnotationColumns());
     }
 
     public String[] getDataFields(String[] fields) {
         int[] dataColumns = profile.getValueColumns();
+        String[] data = new String[dataColumns.length];
+        for (int i = 0; i < dataColumns.length; i++) {
+            data[i] = fields[dataColumns[i]];
+        }
+        return data;
+    }
+
+    private String[] getFields(String[] fields, int[] dataColumns) {
         String[] data = new String[dataColumns.length];
         for (int i = 0; i < dataColumns.length; i++) {
             data[i] = fields[dataColumns[i]];

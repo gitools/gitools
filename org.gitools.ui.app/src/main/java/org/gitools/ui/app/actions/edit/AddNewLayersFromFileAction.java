@@ -93,7 +93,7 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
     }
 
     public AddNewLayersFromFileAction() {
-        super("New data layer...");
+        super("New data from file...");
         setSmallIconFromResource(IconNames.add16);
     }
 
@@ -143,6 +143,7 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
 
                         mainData.addLayer(newLayer);
                         getHeatmap().getLayers().initLayer(newLayer);
+                        mainLayer = mainData.getLayers().get(newLayer.getId());
 
                         copyLayerValues(newData, newLayer, mainData, mainLayer);
 

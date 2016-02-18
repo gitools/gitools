@@ -57,5 +57,10 @@ public class HeatmapDetailsSection implements ISettingsSection {
     public JPanel getPanel() {
         return root;
     }
+
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
 }
 

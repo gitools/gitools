@@ -30,6 +30,7 @@ public class AggregatorFactory {
             SumAggregator.INSTANCE,
             SumAbsAggregator.INSTANCE,
             MeanAggregator.INSTANCE,
+            MedianAggregator.INSTANCE,
             LogSumAggregator.INSTANCE,
             StdDevAggregator.INSTANCE,
             VarianceAggregator.INSTANCE,

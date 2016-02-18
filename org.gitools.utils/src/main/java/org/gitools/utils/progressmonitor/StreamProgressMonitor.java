@@ -60,7 +60,7 @@ public class StreamProgressMonitor extends DefaultProgressMonitor {
         flag = false;
         showingbar = false;
         tabs = tabbulate(level);
-        print("\n" + tabs + title);
+        print("\n" + tabs + title + ": " + totalWork);
     }
 
     @Override

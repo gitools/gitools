@@ -175,6 +175,7 @@ public abstract class DetailsBox extends Box {
         if (detail instanceof JComponentDetailsDecoration) {
             Component c = createComponentNameLabel((JComponentDetailsDecoration) detail);
             if (c != null) {
+                c.setForeground(detail.isVisible() ? Color.BLACK : Color.lightGray);
                 return c;
             }
         }
@@ -204,6 +205,7 @@ public abstract class DetailsBox extends Box {
             return new GroupPanel(GroupingType.fillFirst, 5, webLabel, label);
         }
 
+        label.setForeground(detail.isVisible() ? Color.BLACK : Color.lightGray);
         return label;
     }
 
@@ -252,6 +254,7 @@ public abstract class DetailsBox extends Box {
             return new GroupPanel(4, colorBox, label);
         }
 
+        label.setForeground(property.isVisible() ? Color.BLACK : Color.lightGray);
         return label;
     }
 

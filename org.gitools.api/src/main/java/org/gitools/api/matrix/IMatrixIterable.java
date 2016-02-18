@@ -21,6 +21,7 @@
  */
 package org.gitools.api.matrix;
 
+import org.gitools.api.analysis.IAggregator;
 import org.gitools.api.analysis.IProgressMonitor;
 
 import java.util.Collection;

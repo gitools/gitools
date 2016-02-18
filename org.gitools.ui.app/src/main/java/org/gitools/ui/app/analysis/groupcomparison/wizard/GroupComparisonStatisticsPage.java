@@ -24,6 +24,7 @@ package org.gitools.ui.app.analysis.groupcomparison.wizard;
 import org.gitools.analysis.groupcomparison.format.math33Preview.CombinatoricsUtils;
 import org.gitools.analysis.stats.test.EnrichmentTest;
 import org.gitools.analysis.stats.test.MannWhitneyWilcoxonTest;
+import org.gitools.analysis.stats.test.OneWayAnovaTest;
 import org.gitools.api.matrix.IMatrixLayer;
 import org.gitools.ui.platform.IconUtils;
 import org.gitools.ui.platform.dialog.MessageStatus;
@@ -31,6 +32,8 @@ import org.gitools.ui.platform.icons.IconNames;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class GroupComparisonStatisticsPage extends AbstractWizardPage {
@@ -51,7 +54,16 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
         setComplete(true);
 
-        testCb.setModel(new DefaultComboBoxModel(new TestElement[]{new TestElement(new MannWhitneyWilcoxonTest())}));
+        testCb.setModel(new DefaultComboBoxModel(new TestElement[]{
+                new TestElement(new OneWayAnovaTest()),
+                new TestElement(new MannWhitneyWilcoxonTest())
+        }));
+        testCb.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateControls();
+            }
+        });
 
         mtcCb.setModel(new javax.swing.DefaultComboBoxModel(new String[]{"Bonferroni", "Benjamini Hochberg FDR"}));
         mtcCb.setSelectedIndex(1);
@@ -102,6 +114,13 @@ public class GroupComparisonStatisticsPage extends AbstractWizardPage {
 
         if (testCb.getSelectedIndex() == 0) {
 
+            testExplanation.setText("<html><body style=\"font-size: 9px;\">" +
+                    "A one-way ANOVA (analysis of variance) test will be carried out" +
+                    " for each data row. <br/>" +
+                    "Wikipedia explains: The ANOVA tests the <b>null hypothesis<b> that samples in two or more groups are " +
+                    "drawn from populations with the same mean values. To do this, two estimates are made of the population variance. </body></html>");
+
+        } else if (testCb.getSelectedIndex() == 1) {
             testExplanation.setText("<html><body style=\"font-size: 9px;\">" +
                     "The two-sample Mann-Whitney-Wilcoxon rank sum test will be carried out" +
                     " for each pair of groups. The <b>null hypothesis</b> is that the distributions of Group 1 and Group 2 do " +

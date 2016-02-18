@@ -11,7 +11,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="8fe54" class="javax.swing.JComboBox" binding="bookmarkComboBox">
+      <component id="8fe54" class="org.gitools.ui.app.actions.BookmarksDropdown$WideComboBox" binding="bookmarkComboBox">
         <constraints>
           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
           <forms top="0" left="5" bottom="0" right="5"/>

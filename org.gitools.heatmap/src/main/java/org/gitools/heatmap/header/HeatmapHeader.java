@@ -268,6 +268,10 @@ public abstract class HeatmapHeader extends Model {
         return annotationPattern;
     }
 
+    public String getSortAnnotationPattern() {
+        return getAnnotationPattern();
+    }
+
     public void setAnnotationPattern(String annotationPattern) {
         this.annotationPattern = annotationPattern;
     }

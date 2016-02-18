@@ -44,13 +44,14 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Vector;
 
 
 //FIXME: always two listeners.
 
 public class BookmarksDropdown extends HeatmapAction implements IPanelAction, PropertyChangeListener {
 
-    private JComboBox<Bookmark> bookmarkComboBox;
+    private WideComboBox<Bookmark> bookmarkComboBox;
     private JPanel bookmarksSelectPanel;
     private Bookmarks bookmarks;
     private static Bookmark NO_OPTION = new Bookmark();
@@ -234,5 +235,40 @@ public class BookmarksDropdown extends HeatmapAction implements IPanelAction, Pr
         }
     }
 
+    public static class WideComboBox<E> extends JComboBox<E> {
+
+        public WideComboBox() {
+        }
+
+        public WideComboBox(final E items[]) {
+            super(items);
+        }
+
+        public WideComboBox(Vector items) {
+            super(items);
+        }
+
+        public WideComboBox(ComboBoxModel aModel) {
+            super(aModel);
+        }
+
+        private boolean layingOut = false;
+
+        public void doLayout() {
+            try {
+                layingOut = true;
+                super.doLayout();
+            } finally {
+                layingOut = false;
+            }
+        }
+
+        public Dimension getSize() {
+            Dimension dim = super.getSize();
+            if (!layingOut)
+                dim.width = Math.max(dim.width, getPreferredSize().width);
+            return dim;
+        }
+    }
 }
 

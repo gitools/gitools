@@ -147,6 +147,11 @@ public class TextPattern {
         public void generate(VariableValueResolver resolver, StringBuilder sb) {
             sb.append(text);
         }
+
+        @Override
+        public String toString() {
+            return text;
+        }
     }
 
     public static class VariableToken implements Token {
@@ -163,6 +168,11 @@ public class TextPattern {
         @Override
         public void generate(VariableValueResolver resolver, StringBuilder sb) {
             sb.append(resolver.resolveValue(variableName));
+        }
+
+        @Override
+        public String toString() {
+            return variableName;
         }
     }
 

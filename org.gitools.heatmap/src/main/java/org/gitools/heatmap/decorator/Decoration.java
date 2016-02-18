@@ -35,6 +35,7 @@ public class Decoration implements Serializable {
     private boolean rotate;
 
     private Color bgColor;
+    private Color fgColor;
 
     public Decoration(String value, Color bgColor) {
         this.value = value;

@@ -21,6 +21,7 @@
  */
 package org.gitools.ui.platform.settings;
 
+import com.alee.laf.list.WebListCellRenderer;
 import org.gitools.ui.platform.dialog.AbstractDialog;
 import org.gitools.ui.platform.dialog.DialogButtonsPanel;
 import org.gitools.ui.platform.dialog.DialogHeaderPanel;
@@ -31,6 +32,8 @@ import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Arrays;
 
 
@@ -46,13 +49,24 @@ public abstract class SettingsDialog extends AbstractDialog {
 
     private JPanel sectionPanel;
 
-    public SettingsDialog(Window owner, SettingsPanel panel, String selectedSection) {
+    public SettingsDialog(Window owner, final SettingsPanel panel, String selectedSection) {
         super(owner, panel.getTitle(), panel.getLogo(), new Dimension(700, 500), new Dimension(700, 500));
 
         this.panel = panel;
 
+        WebListCellRenderer w = new WebListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                Component c = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+                Font f = panel.getSection((String) value).isDirty() ? c.getFont().deriveFont(Font.BOLD) : c.getFont().deriveFont(Font.PLAIN);
+                c.setFont(f);
+                return c;
+            }
+        };
+
         // Sections list
         final JList<String> list = new JList<>(panel.getSectionNames());
+        list.setCellRenderer(w);
         list.setSelectedValue(selectedSection, true);
         list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         list.addListSelectionListener(new ListSelectionListener() {
@@ -65,12 +79,22 @@ public abstract class SettingsDialog extends AbstractDialog {
         sectionPanel.add(list);
 
         // Selected panel
-        for (String section : panel.getSectionNames()) {
-            JComponent components = panel.createComponents(section);
+        PropertyChangeListener listener = new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                list.updateUI();
+            }
+        };
+        for (String sectionName : panel.getSectionNames()) {
+            JComponent components = panel.createComponents(sectionName);
             components.setPreferredSize(new Dimension(450, -1));
             components.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
             JScrollPane scrollPane = new JScrollPane(components);
-            selectedPanel.add(scrollPane, section);
+            selectedPanel.add(scrollPane, sectionName);
+            ISettingsSection section = panel.getSection(sectionName);
+            if (section instanceof AbstractSettingsSection) {
+                ((AbstractSettingsSection) section).addPropertyChangeListener(listener);
+            }
         }
 
         // Show current section

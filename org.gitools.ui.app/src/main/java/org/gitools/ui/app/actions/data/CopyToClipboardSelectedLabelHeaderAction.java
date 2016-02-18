@@ -73,5 +73,6 @@ public class CopyToClipboardSelectedLabelHeaderAction extends HeatmapAction impl
     public void onConfigure(HeatmapHeader header, HeatmapPosition position) {
         setEnabled(header instanceof HeatmapTextLabelsHeader);
         this.header = header;
+        this.setName("<html><i>Copy</i> selected <b>" + header.getTitle() + "</b> to clipboard<html>");
     }
 }

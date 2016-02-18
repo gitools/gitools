@@ -23,6 +23,7 @@ package org.gitools.ui.app.fileimport.wizard.text.reader;
 
 import org.gitools.api.matrix.IMatrix;
 import org.gitools.matrix.model.MatrixLayer;
+import org.gitools.matrix.model.matrix.AnnotationMatrix;
 import org.gitools.utils.readers.FileHeader;
 import org.gitools.utils.readers.MatrixReaderProfile;
 import org.gitools.utils.translators.DoubleTranslator;
@@ -41,7 +42,7 @@ public class MatrixReaderAssistant extends ReaderAssistant {
     }
 
     @Override
-    public void fillMatrix(IMatrix matrix) {
+    public void fillMatrixAndAnnotations(IMatrix matrix, AnnotationMatrix rowAnnMatrix, AnnotationMatrix colAnnMatrix) {
         processLine();
         for (int i = 0; i < currentFields.length; i++) {
             Double value = DoubleTranslator.get().stringToValue(currentFields[i]);
@@ -73,6 +74,21 @@ public class MatrixReaderAssistant extends ReaderAssistant {
         this.profile = (MatrixReaderProfile) reader.getReaderProfile();
         this.heatmapLayers = createHeatmapLayers();
         this.columnHeaders = getColumnHeaders();
+    }
+
+    @Override
+    public boolean hasColAnnotation() {
+        return false;
+    }
+
+    @Override
+    public boolean hasRowAnnotation() {
+        return false;
+    }
+
+    @Override
+    public void updateAnnotationNames() {
+        //TODO
     }
 
     private String[] getColumnHeaders() {

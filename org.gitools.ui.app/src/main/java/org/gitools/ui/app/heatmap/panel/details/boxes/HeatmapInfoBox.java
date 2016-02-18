@@ -97,7 +97,6 @@ public class HeatmapInfoBox extends DetailsBox {
         }
 
         Heatmap heatmap = getHeatmap();
-        this.setTitle(heatmap.getTitle());
 
 
         List<DetailsDecoration> details = new ArrayList<>();
@@ -119,19 +118,26 @@ public class HeatmapInfoBox extends DetailsBox {
         }
 
         int rows = heatmap.getRows().size();
-        int visibleRows = heatmap.getContents().getRows().size();
+        int allRows = heatmap.getContents().getRows().size();
         int columns = heatmap.getColumns().size();
-        int visibleColumns = heatmap.getContents().getColumns().size();
+        int allColumns = heatmap.getContents().getColumns().size();
 
-        boolean showShownData = (rows != visibleRows || columns != visibleColumns);
+        boolean showShownData = (rows != allRows || columns != allColumns);
 
-        DetailsDecoration alldata = new DetailsDecoration("Size (all data)", visibleRows + " x " + visibleColumns);
+        DetailsDecoration alldata = new DetailsDecoration("Size (all data)", allRows + " x " + allColumns);
+
+        int rowsPct = (int) Math.round(((double) rows) / ((double) allRows) * 100.0);
+        int colsPct = (int) Math.round(((double) columns) / ((double) allColumns) * 100.0);
 
         if (showShownData) {
+            this.setTitle("<html>" + heatmap.getTitle() + " ("
+                    + rowsPct + "% x "
+                    + colsPct + "%)</html>");
             DetailsDecoration shown = new DetailsDecoration("Size (shown)", rows + " x " + columns);
             shown.setSelected(true);
             details.add(shown);
         } else {
+            this.setTitle("<html>" + heatmap.getTitle() + "</html>");
             alldata.setSelected(true);
         }
 

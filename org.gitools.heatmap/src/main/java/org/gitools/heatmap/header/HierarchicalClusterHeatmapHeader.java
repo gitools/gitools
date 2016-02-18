@@ -251,6 +251,7 @@ public class HierarchicalClusterHeatmapHeader extends HeatmapHeader {
 
         if (desiredDecoration != null) {
             desiredDecoration.setSelected(selected);
+            desiredDecoration.setVisible(isVisible());
             details.add(desiredDecoration);
         }
     }

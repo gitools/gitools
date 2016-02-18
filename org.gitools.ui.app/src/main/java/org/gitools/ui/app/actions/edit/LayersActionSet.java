@@ -60,7 +60,8 @@ public class LayersActionSet extends HeatmapDynamicActionSet {
         }
 
         menu.addSeparator();
-        menu.add(updateEnable(Actions.addNewLayers));
+        menu.add(updateEnable(Actions.addNewLayersFromFile));
+        menu.add(updateEnable(Actions.addNewLayersFromTransformation));
 
     }
 }

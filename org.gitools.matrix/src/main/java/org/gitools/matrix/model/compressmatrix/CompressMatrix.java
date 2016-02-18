@@ -188,7 +188,7 @@ public class CompressMatrix extends AbstractMatrix<MatrixLayers<? extends IMatri
         }
     }
 
-    public void detach() {
+    public void detach(IMatrixLayer topLayer) {
         this.rowsCache.invalidateAll();
     }
 

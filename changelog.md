@@ -1,3 +1,15 @@
+Gitools 2.3.0
+-----------------------------------------------------------
+* Added Median aggregator
+* Added transformation methods to aggregation header wizard
+* Added OneWayAnova test to GroupComparison analysis options
+* Added Mode aggregator
+* New data layers from data transformation
+* Edit annotation values within the application
+* Enable show/hide headers from details box
+* Remove Layer Action
+* Biomart sources update
+
 Gitools 2.2.3
 ------------------------------------------------------------
 * Biomart sources update

@@ -30,7 +30,7 @@ public class ColorConstants {
     public static final Color negInfinityColor = Color.CYAN;
     public static final Color emptyColor = Color.WHITE;
 
-    public static final Color nonSignificantColor = new Color(221, 221, 221);
+    public static final Color nonSignificantColor = new Color(243, 243, 243);
 
     public static final Color minColor = new Color(255, 0, 0);
     public static final Color maxColor = new Color(255, 255, 0);

@@ -25,7 +25,7 @@ import org.gitools.api.matrix.MatrixDimensionKey;
 import org.gitools.heatmap.HeatmapDimension;
 import org.gitools.ui.app.actions.HeatmapDimensionAction;
 import org.gitools.ui.core.Application;
-import org.gitools.ui.core.pages.common.PatternSourcePage;
+import org.gitools.ui.core.pages.common.AnnotationEditPage;
 import org.gitools.ui.platform.dialog.GlassPanePageDialog;
 import org.gitools.ui.platform.icons.IconNames;
 
@@ -44,7 +44,8 @@ public class AnnotationAction extends HeatmapDimensionAction {
 
         HeatmapDimension heatmapDimension = getDimension();
 
-        PatternSourcePage annotationPage = new PatternSourcePage(heatmapDimension, true, true);
+        //PatternSourcePage annotationPage = new PatternSourcePage(heatmapDimension, true, true);
+        AnnotationEditPage annotationPage = new AnnotationEditPage(heatmapDimension);
         annotationPage.setTitle("View and load available " + heatmapDimension.getId().getLabel() + " annotations");
 
         GlassPanePageDialog p = new GlassPanePageDialog(Application.get(), annotationPage);

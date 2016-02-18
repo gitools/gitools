@@ -38,6 +38,7 @@ public class DetailsDecoration extends Decoration implements Serializable {
 
     private int index;
     private boolean selected = false;
+    private boolean visible;
 
     /**
      * Instantiates a new Property item.
@@ -75,6 +76,7 @@ public class DetailsDecoration extends Decoration implements Serializable {
         this.descriptionLink = descriptionLink;
         this.name = name;
         this.valueLink = valueLink;
+        this.visible = true;
     }
 
     /**
@@ -147,5 +149,13 @@ public class DetailsDecoration extends Decoration implements Serializable {
 
     public void setReference(Object reference) {
         this.reference = reference;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
+    }
+
+    public boolean isVisible() {
+        return visible;
     }
 }

@@ -31,7 +31,7 @@ public class DecoratorHeaderWizard extends AbstractWizard {
     private final HeatmapDecoratorHeader header;
 
     private ColorScalePage colorScalePage;
-    private HeatmapHeaderConfigPage configPage;
+    protected HeatmapHeaderConfigPage configPage;
     private TextLabelsConfigPage textConfigPage;
 
     public DecoratorHeaderWizard(HeatmapDecoratorHeader header) {

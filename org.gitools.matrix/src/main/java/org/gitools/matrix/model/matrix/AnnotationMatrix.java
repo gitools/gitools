@@ -38,6 +38,8 @@ import static org.gitools.api.matrix.MatrixDimensionKey.ROWS;
 
 public class AnnotationMatrix extends HashMatrix implements IAnnotations {
 
+    public static String METADATA_DESCRIPTION = "description";
+
     private Map<String, Map<String, String>> layersMetadata;
     private Collection<String> labels;
 
@@ -66,7 +68,6 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
                 }
             }
         }
-
     }
 
     @Override
@@ -106,13 +107,13 @@ public class AnnotationMatrix extends HashMatrix implements IAnnotations {
         return getLayers().get(label);
     }
 
-    public void setAnnotation(String dimensionId, String annotationLabel, String annotationValue) {
+    public void setAnnotation(String identifier, String layerId, String annotationValue) {
 
-        if (getLayer(annotationLabel) == null) {
-            addLayer(new MatrixLayer<>(annotationLabel, String.class));
+        if (getLayer(layerId) == null) {
+            addLayer(new MatrixLayer<>(layerId, String.class));
         }
 
-        set(getLayer(annotationLabel), annotationValue, dimensionId);
+        set(getLayer(layerId), annotationValue, identifier);
     }
 
     @Override

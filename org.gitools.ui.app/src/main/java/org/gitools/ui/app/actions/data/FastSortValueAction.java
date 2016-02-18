@@ -110,7 +110,7 @@ public class FastSortValueAction extends HeatmapDimensionAction implements IHeat
                 "all " + dimension.getLabel() + "s"
         );
 
-        setName("<html><i>Sort</i> " + dimCount + " " + currentSort.toString().substring(0, 3).toLowerCase() + ". by " + selected + " '" + layer + "'</html>");
+        setName("<html><i>Sort</i> " + dimCount + " " + currentSort.toString().substring(0, 3).toLowerCase() + ". by " + selected + " <b>'" + layer + "'</b></html>");
 
     }
 }

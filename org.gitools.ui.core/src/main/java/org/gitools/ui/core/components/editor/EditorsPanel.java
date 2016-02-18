@@ -72,6 +72,13 @@ public class EditorsPanel extends WebTabbedPane {
                 }
 
                 refreshActions();
+
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        System.gc();
+                    }
+                });
             }
         });
     }

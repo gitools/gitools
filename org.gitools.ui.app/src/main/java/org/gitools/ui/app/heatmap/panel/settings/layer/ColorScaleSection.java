@@ -104,6 +104,11 @@ public class ColorScaleSection implements ISettingsSection {
         return rootPanel;
     }
 
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
+
     private void createUIComponents() {
         this.decoratorPanels = new DecoratorPanelContainer();
     }

@@ -51,4 +51,9 @@ public class GitoolsSatsSection implements ISettingsSection {
     public JPanel getPanel() {
         return panel;
     }
+
+    @Override
+    public boolean isDirty() {
+        return false;
+    }
 }

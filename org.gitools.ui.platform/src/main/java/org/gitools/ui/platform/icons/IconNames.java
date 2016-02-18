@@ -85,6 +85,8 @@ public class IconNames {
     public static final String add16 = "/img/add16.png";
     public static final String remove16 = "/img/remove16.png";
 
+    public static final String calc16 = "/img/calc16.png";
+    public static final String calc24 = "/img/calc24.png";
 
     public static final String close16 = "/img/close16.png";
     public static final String close24 = "/img/close24.png";
@@ -117,10 +119,14 @@ public class IconNames {
     public static final String view16 = "/img/view16.png";
     public static final String view24 = "/img/view24.png";
 
+    public static final String hide16 = "/img/hide16.png";
+    public static final String hide24 = "/img/hide24.png";
+
     public static final String biomart16 = "/img/Biomart16.png";
     public static final String biomart24 = "/img/Biomart24.png";
 
 
+    public static final String anno16 = "/img/anno16.png";
     public static final String annotation16 = "/img/annotationtag16.png";
     public static final String annotation512 = "/img/annotationtag512.png";
 

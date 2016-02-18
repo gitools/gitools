@@ -29,4 +29,6 @@ public interface ISettingsSection {
     String getName();
 
     JPanel getPanel();
+
+    boolean isDirty();
 }
