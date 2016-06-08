@@ -44,6 +44,7 @@ public class ClusteringWizard extends AbstractWizard {
     private MethodSelectionPage methodPage;
     private HCLParamsPage hclPage;
     private KMeansPlusPlusPage kmeansPage;
+    private OptionsPage optionsPage;
 
     private static HierarchicalMethod HCL_METHOD = new HierarchicalMethod();
     private static KMeansPlusPlusMethod KMEANS_METHOD = new KMeansPlusPlusMethod();
@@ -52,6 +53,9 @@ public class ClusteringWizard extends AbstractWizard {
         super();
         this.heatmap = heatmap;
         this.methods = Arrays.asList(HCL_METHOD, KMEANS_METHOD);
+
+        HCL_METHOD.setUserGivenName(null);
+        KMEANS_METHOD.setUserGivenName(null);
 
         setTitle("Clustering by value");
         setLogo(IconUtils.getImageIconResourceScaledByHeight(IconNames.LOGO_CLUSTERING, 96));
@@ -68,25 +72,41 @@ public class ClusteringWizard extends AbstractWizard {
 
         kmeansPage = new KMeansPlusPlusPage(KMEANS_METHOD);
         addPage(kmeansPage);
+
+        optionsPage = new OptionsPage();
+        addPage(optionsPage);
     }
 
     @Override
     public boolean canFinish() {
-        return currentPage == hclPage || currentPage == kmeansPage;
+        return currentPage == optionsPage;
     }
 
     @Override
     public boolean isLastPage(IWizardPage page) {
-        return currentPage != methodPage;
+        return currentPage == optionsPage;
     }
 
     @Override
     public IWizardPage getNextPage(IWizardPage currentPage) {
 
         if (currentPage == methodPage) {
+            optionsPage.updatePage(methodPage.getSelectedMethod(), getClusteringDimension(), getClusteringLayer());
             return getMethodConfigPage();
         }
+        if (currentPage == hclPage || currentPage == kmeansPage) {
+            return optionsPage;
+        }
+        return null;
+    }
 
+    public IWizardPage getPreviousPage(IWizardPage currentPage) {
+        if (currentPage == optionsPage) {
+            return getMethodConfigPage();
+        }
+        if (currentPage == hclPage || currentPage == kmeansPage) {
+            return methodPage;
+        }
         return null;
     }
 
@@ -123,5 +143,9 @@ public class ClusteringWizard extends AbstractWizard {
 
     public ClusteringMethod getMethod() {
         return methodPage.getSelectedMethod();
+    }
+
+    public boolean doCreateBookmark() {
+        return optionsPage.doCreateBookmark();
     }
 }

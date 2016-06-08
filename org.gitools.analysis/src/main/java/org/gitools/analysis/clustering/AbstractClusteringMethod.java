@@ -28,6 +28,8 @@ import org.gitools.api.analysis.IProgressMonitor;
 public abstract class AbstractClusteringMethod extends Model implements ClusteringMethod {
 
     private String name;
+    private String userGivenName;
+    private boolean createBookmark;
 
     protected AbstractClusteringMethod(String name) {
         this.name = name;
@@ -42,5 +44,17 @@ public abstract class AbstractClusteringMethod extends Model implements Clusteri
     @Override
     public String toString() {
         return name;
+    }
+
+    public void setUserGivenName(String userGivenName) {
+        this.userGivenName = userGivenName;
+    }
+
+    public String getUserGivenName() {
+        if (userGivenName == null) {
+            return "";
+        } else {
+            return userGivenName;
+        }
     }
 }

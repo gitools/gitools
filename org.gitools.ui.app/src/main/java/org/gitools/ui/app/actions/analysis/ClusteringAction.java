@@ -50,7 +50,7 @@ import org.gitools.ui.platform.wizard.WizardDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.Collection;
 
 public class ClusteringAction extends HeatmapAction {
 
@@ -83,6 +83,8 @@ public class ClusteringAction extends HeatmapAction {
                 // Target dimension
                 HeatmapDimension clusteringDimension = heatmap.getDimension(wiz.getClusteringDimension());
 
+                boolean createBookmark = wiz.doCreateBookmark();
+
                 // Annotations
                 AnnotationMatrix annotationMatrix = clusteringDimension.getAnnotations();
 
@@ -103,7 +105,11 @@ public class ClusteringAction extends HeatmapAction {
         String annotationLabel = "Cluster " + layerId;
 
         if (method instanceof KMeansPlusPlusMethod) {
-            annotationLabel = annotationLabel + " #" + ((KMeansPlusPlusMethod) method).getNumClusters();
+            if (method.getUserGivenName().trim().length() > 0) {
+                annotationLabel = method.getUserGivenName();
+            } else {
+                annotationLabel = annotationLabel + " #" + ((KMeansPlusPlusMethod) method).getNumClusters();
+            }
         }
 
         // Save annotations
@@ -149,7 +155,7 @@ public class ClusteringAction extends HeatmapAction {
         rootCluster.setName(b.getName());
         HierarchicalClusterHeatmapHeader hierarchicalHeader = new HierarchicalClusterHeatmapHeader(clusteringDimension);
         hierarchicalHeader.setDescription(clusterDesc);
-        hierarchicalHeader.setTitle("Clust. " + layerId);
+        hierarchicalHeader.setTitle(rootCluster.getName());
         hierarchicalHeader.setHierarchicalCluster(rootCluster);
 
         // Add to annotations
@@ -165,7 +171,7 @@ public class ClusteringAction extends HeatmapAction {
 
     private static Bookmark addBookmarkHierarchical(HeatmapDimension clusteringDimension, String layerId, Heatmap heatmap, HierarchicalMethod method, String clusterDesc) {
         boolean rowsUsed = clusteringDimension.getId().equals(MatrixDimensionKey.ROWS);
-        String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3).toLowerCase() + "s-" + layerId;
+        String bookmarkName = method.getUserGivenName().trim().length() > 0 ? method.getUserGivenName().trim() : method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3).toLowerCase() + "s-" + layerId;
         int[] include = new int[]{rowsUsed ? Bookmarks.ROWS : Bookmarks.COLUMNS,
                 Bookmarks.LAYER};
         String description = "Automatically generated bookmark for " + clusterDesc;
@@ -174,7 +180,7 @@ public class ClusteringAction extends HeatmapAction {
 
     private static Bookmark addBookmarkKMeans(HeatmapDimension clusteringDimension, String layerId, Heatmap heatmap, KMeansPlusPlusMethod method) {
         boolean rowsUsed = clusteringDimension.getId().equals(MatrixDimensionKey.ROWS);
-        String bookmarkName = method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3) + "-" + layerId;
+        String bookmarkName = method.getUserGivenName().trim().length() > 0 ? method.getUserGivenName().trim() : method.getName() + "-" + clusteringDimension.getId().toString().substring(0, 3).toLowerCase() + "s-" + layerId;
         int[] include = new int[]{rowsUsed ? Bookmarks.ROWS : Bookmarks.COLUMNS,
                 Bookmarks.LAYER};
         String description = "Automatically generated bookmark for K-Means clustering of " +

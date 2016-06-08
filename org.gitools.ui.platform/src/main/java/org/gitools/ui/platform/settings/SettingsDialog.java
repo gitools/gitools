@@ -76,7 +76,7 @@ public abstract class SettingsDialog extends AbstractDialog {
             }
         });
 
-        sectionPanel.add(list);
+        sectionPanel.add(new JScrollPane(list));
 
         // Selected panel
         PropertyChangeListener listener = new PropertyChangeListener() {

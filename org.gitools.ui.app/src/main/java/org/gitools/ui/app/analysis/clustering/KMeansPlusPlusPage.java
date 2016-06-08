@@ -47,6 +47,7 @@ public class KMeansPlusPlusPage extends AbstractWizardPage {
         super("K-means++");
 
         setTitle("Clustering using K-means++ algorithm");
+        setComplete(true);
 
         bind(
                 distance,

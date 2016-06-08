@@ -30,4 +30,7 @@ public interface ClusteringMethod {
 
     public Clusters cluster(ClusteringData data, IProgressMonitor monitor);
 
+    public String getUserGivenName();
+
+    void setUserGivenName(String text);
 }
