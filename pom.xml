@@ -38,7 +38,6 @@
 
     <modules>
         <module>org.gitools.utils</module>
-        <module>org.gitools.datasources</module>
         <module>org.gitools.cli</module>
         <module>org.gitools.ui.platform</module>
         <module>org.gitools.ui.app</module>
@@ -50,6 +49,7 @@
         <module>org.gitools.heatmap</module>
         <module>org.gitools.plugins.mutex</module>
         <module>org.gitools.ui.core</module>
+        <module>org.gitools.datasources</module>
     </modules>
 
     <properties>
