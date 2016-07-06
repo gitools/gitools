@@ -380,10 +380,10 @@ public class AnnotationEditPage extends AbstractWizardPage {
             DefaultListModel<AnnotationOption> model = new DefaultListModel<>();
             FilterCellRenderer cellRenderer = new FilterCellRenderer();
 
-
+            // show all annotations except hierarchical clusters..
             annotation = new ArrayList<>();
             for (String key : hdim.getAnnotations().getLabels()) {
-                if (key.toLowerCase().startsWith("hierarchical-cols") || key.toLowerCase().startsWith("hierarchical-rows")) {
+                if (key.matches(".* L[0-9]{1,2}$")) {
                     continue;
                 }
                 String description = hdim.getAnnotations().getAnnotationMetadata(AnnotationMatrix.METADATA_DESCRIPTION, key);
