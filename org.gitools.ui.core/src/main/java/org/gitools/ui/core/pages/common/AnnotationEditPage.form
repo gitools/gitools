@@ -32,15 +32,15 @@
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:212px:noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:60px:grow"/>
+    <colspec value="fill:201px:grow"/>
     <colspec value="left:4dlu:noGrow"/>
-    <colspec value="fill:209px:noGrow"/>
+    <colspec value="fill:143px:noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:80dlu:noGrow"/>
     <colspec value="left:4dlu:noGrow"/>
     <colspec value="fill:max(d;4px):noGrow"/>
     <constraints>
-      <xy x="20" y="20" width="739" height="791"/>
+      <xy x="20" y="20" width="814" height="791"/>
     </constraints>
     <properties/>
     <border type="none"/>
@@ -68,7 +68,7 @@
           <forms/>
         </constraints>
         <properties>
-          <text value="load Annotations"/>
+          <text value="load from File"/>
         </properties>
       </component>
       <component id="dd937" class="javax.swing.JButton" binding="removeSelected">
@@ -88,15 +88,6 @@
         <properties>
           <font style="1"/>
           <text value="Available Annotations"/>
-        </properties>
-      </component>
-      <component id="8b7c" class="javax.swing.JLabel">
-        <constraints>
-          <grid row="4" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-          <forms/>
-        </constraints>
-        <properties>
-          <text value="Add/Remove"/>
         </properties>
       </component>
       <component id="726" class="javax.swing.JLabel" binding="edit_titledesc">
@@ -208,6 +199,16 @@
         <properties>
           <font style="1"/>
           <text value="Search:"/>
+        </properties>
+      </component>
+      <component id="a782" class="javax.swing.JLabel">
+        <constraints>
+          <grid row="4" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+          <forms/>
+        </constraints>
+        <properties>
+          <font style="1"/>
+          <text value="Add/Remove annotations"/>
         </properties>
       </component>
     </children>

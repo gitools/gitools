@@ -150,6 +150,8 @@ public class AddNewLayersFromFileAction extends HeatmapAction {
                     }
 
                     getHeatmap().getLayers().updateLayers();
+
+                    super.afterLoad(resource, monitor);
                 }
             }
         };
