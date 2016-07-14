@@ -183,6 +183,7 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
         Map<String, String> inputs = section.getInputMap();
         List<TextPattern.VariableToken> annotationKeys = section.getAnnotationKeys();
         AnnotationMatrix annotations = section.getAnnotations();
+        String newValue = null;
         for (String s : section.getSelected()) {
             for (TextPattern.VariableToken annotationKey : annotationKeys) {
                 annotations.setAnnotation(s, annotationKey.toString(), inputs.get(annotationKey.getVariableName()));
@@ -201,7 +202,7 @@ public class EditAnnotationValueAction extends HeatmapDimensionAction implements
 
             Clusters results = makeAnnotationClustering(h);
             for (String s : results.getClusters()) {
-                if (!h.getClusters().contains(s)) {
+                if (h.getAssignedColoredLabel(s) == null) {
                     h.getClusters().add(new ColoredLabel(s, cg.next(s)));
                 }
             }

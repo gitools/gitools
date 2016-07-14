@@ -1,3 +1,9 @@
+Gitools 2.3.x
+-----------------------------------------------------------
+* Fix ignore rows and columns for bookmarks
+* Name clusters (Analysis->Clustering)
+* Fix assigning new color when annotating
+
 Gitools 2.3.0
 -----------------------------------------------------------
 * Added Median aggregator

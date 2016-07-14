@@ -72,6 +72,7 @@ public class AnnotationEditPage extends AbstractWizardPage {
     private JTextField descriptionField;
     private JButton applyDescriptionButton;
     private JScrollPane previewScrollPane;
+    private JLabel edit_titledesc;
 
     private HeatmapDimension hdim;
 
@@ -127,6 +128,8 @@ public class AnnotationEditPage extends AbstractWizardPage {
             }
         };
         previewTable.setModel(tableModel);
+        previewTable.setRowSelectionAllowed(false);
+
 
         initComponents();
 
@@ -169,8 +172,17 @@ public class AnnotationEditPage extends AbstractWizardPage {
                 if (selectedValue == null) {
                     return;
                 }
-                annTitleField.setText(selectedValue.getKey());
-                descriptionField.setText(selectedValue.getDescription());
+                if (annList.getSelectedIndices().length == 1) {
+                    edit_titledesc.setText("<html>Edit <i>'" + selectedValue.getKey() + "'</i> title and description</html>");
+                    annTitleField.setEnabled(true);
+                    descriptionField.setEnabled(true);
+                    annTitleField.setText(selectedValue.getKey());
+                    descriptionField.setText(selectedValue.getDescription());
+                } else {
+                    edit_titledesc.setText("");
+                    annTitleField.setEnabled(false);
+                    descriptionField.setEnabled(false);
+                }
             }
         });
 
