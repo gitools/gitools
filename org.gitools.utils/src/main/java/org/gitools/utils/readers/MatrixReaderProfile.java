@@ -47,6 +47,8 @@ public class MatrixReaderProfile extends ReaderProfile {
         MatrixReaderProfile newProfile = new MatrixReaderProfile();
         newProfile.setCommentChar(profile.getCommentChar());
         newProfile.setIgnoredColumns(profile.getIgnoredColumns());
+        newProfile.setColumnAnnotationColumns(profile.getColumnAnnotationColumns());
+        newProfile.setRowAnnotationColumns(profile.getRowAnnotationColumns());
         newProfile.setSeparator(profile.getSeparator());
         newProfile.setSkipLines(profile.getSkipLines());
         return newProfile;

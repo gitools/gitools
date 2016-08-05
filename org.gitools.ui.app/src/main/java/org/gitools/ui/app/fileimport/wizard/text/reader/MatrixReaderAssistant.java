@@ -36,6 +36,8 @@ public class MatrixReaderAssistant extends ReaderAssistant {
     private MatrixReaderProfile profile;
     private String currentRowId;
     private String[] currentFields;
+    private String[] rowAnnFieldNames;
+    private String[] rowAnnFields;
 
     public MatrixReaderAssistant(FlatTextImporter reader) {
         super(reader);
@@ -48,12 +50,19 @@ public class MatrixReaderAssistant extends ReaderAssistant {
             Double value = DoubleTranslator.get().stringToValue(currentFields[i]);
             matrix.set(heatmapLayers[0], value, currentRowId, columnHeaders[i]);
         }
+        if (hasRowAnnotation()) {
+            for (int i = 0; i < rowAnnFields.length; i++) {
+                rowAnnMatrix.setAnnotation(currentRowId, rowAnnFieldNames[i], rowAnnFields[i]);
+            }
+        }
     }
 
     private void processLine() {
         String[] currentLine = reader.getCurrentLine();
         currentFields = extractFields(currentLine, profile.getValueColumns());
         currentRowId = currentLine[profile.getRowIdsPosition()];
+        this.rowAnnFields = extractFields(currentLine, profile.getRowAnnotationColumns());
+
     }
 
     private String[] extractFields(String[] fields, int[] indices) {
@@ -74,6 +83,12 @@ public class MatrixReaderAssistant extends ReaderAssistant {
         this.profile = (MatrixReaderProfile) reader.getReaderProfile();
         this.heatmapLayers = createHeatmapLayers();
         this.columnHeaders = getColumnHeaders();
+        updateAnnotationNames();
+    }
+
+    @Override
+    public boolean hasRowAnnotation() {
+        return profile.getRowAnnotationColumns().length > 0;
     }
 
     @Override
@@ -82,13 +97,15 @@ public class MatrixReaderAssistant extends ReaderAssistant {
     }
 
     @Override
-    public boolean hasRowAnnotation() {
-        return false;
-    }
-
-    @Override
     public void updateAnnotationNames() {
-        //TODO
+        List<FileHeader> fileHeaders = reader.getFileHeaders();
+        if (hasRowAnnotation()) {
+            int[] idx = profile.getRowAnnotationColumns();
+            this.rowAnnFieldNames = new String[idx.length];
+            for (int i = 0; i < idx.length; i++) {
+                rowAnnFieldNames[i] = fileHeaders.get(idx[i]).toString();
+            }
+        }
     }
 
     private String[] getColumnHeaders() {

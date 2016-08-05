@@ -51,6 +51,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
     private JButton previewColumnIdsButton;
     private JFormattedTextField valueNameBox;
     private JLabel previewLabel;
+    private JList rowAnnList;
     private List<FileHeader> allheaders;
     private List<List<FileField>> preview;
     private FileHeader lastSelected;
@@ -325,6 +326,8 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
 
             DefaultListModel<FileHeader> values = new DefaultListModel<FileHeader>();
             DefaultListModel<FileHeader> ignored = new DefaultListModel<FileHeader>();
+            DefaultListModel<FileHeader> rowAnnotation = new DefaultListModel<FileHeader>();
+
 
             for (FileHeader header : allheaders) {
                 if (header.getPos() != (int) rowIdsSpinner.getValue() - 1) {
@@ -339,6 +342,8 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
 
             initJList(valuesHeaderList, transferHandler, values, false, false);
             initJList(ignoredHeaderList, transferHandler, ignored, false, true);
+            initJList(rowAnnList, transferHandler, rowAnnotation, false, false);
+
         }
     }
 
@@ -351,6 +356,7 @@ public class SelectMatrixColumnsPage extends AbstractWizardPage implements IFile
         profile.setColumnIdsPosition((int) columnIdsSpinner.getValue() - 1);
         profile.setValueColumns(getPositions(valuesHeaderList));
         profile.setIgnoredColumns(getPositions(ignoredHeaderList));
+        profile.setRowAnnotationColumns(getPositions(rowAnnList));
         profile.setDataName(valueNameBox.getText());
         reader.getReaderProfile().validate(allheaders);
     }
