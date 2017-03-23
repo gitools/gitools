@@ -68,7 +68,7 @@ public class TableReaderAssistant extends ReaderAssistant {
         }
         if (hasColAnnotation()) {
             for (int i = 0; i < colAnnFields.length; i++) {
-                rowAnnMatrix.setAnnotation(currentColId, colAnnFieldNames[i], colAnnFields[i]);
+                colAnnMatrix.setAnnotation(currentColId, colAnnFieldNames[i], colAnnFields[i]);
             }
         }
     }
@@ -126,14 +126,14 @@ public class TableReaderAssistant extends ReaderAssistant {
             int[] idx = profile.getRowAnnotationColumns();
             this.rowAnnFieldNames = new String[idx.length];
             for (int i = 0; i < idx.length; i++) {
-                rowAnnFieldNames[i] = fileHeaders.get(i).toString();
+                rowAnnFieldNames[i] = fileHeaders.get(idx[i]).toString();
             }
         }
         if (hasColAnnotation()) {
             int[] idx = profile.getColumnAnnotationColumns();
             this.colAnnFieldNames = new String[idx.length];
             for (int i = 0; i < idx.length; i++) {
-                colAnnFieldNames[i] = fileHeaders.get(i).toString();
+                colAnnFieldNames[i] = fileHeaders.get(idx[i]).toString();
             }
         }
     }

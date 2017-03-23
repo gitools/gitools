@@ -22,6 +22,8 @@
 package org.gitools.ui.app.heatmap.header.wizard.coloredlabels;
 
 import org.gitools.heatmap.header.ColoredLabel;
+import org.gitools.ui.core.utils.FileChoose;
+import org.gitools.ui.core.utils.FileChooserUtils;
 import org.gitools.ui.platform.wizard.AbstractWizardPage;
 import org.gitools.utils.color.ColorRegistry;
 
@@ -38,19 +40,19 @@ import java.util.ArrayList;
 
 public class ColoredLabelsGroupsPage extends AbstractWizardPage {
 
-    private void setSync() {
+    private void runToClipboard() {
         ColorRegistry cr = ColorRegistry.get();
         for (ColoredLabel cl : getColoredLabels()) {
-            cr.registerId(cl.getValue(), cl.getColor());
+            cr.registerId(cl.getDisplayedLabel(), cl.getColor());
         }
     }
 
-    private void sync() {
+    private void runFromClipboard() {
         java.util.List<ColoredLabel> oldList = getColoredLabels();
         java.util.List<ColoredLabel> newList = new ArrayList<>();
         ColorRegistry cr = ColorRegistry.get();
         for (ColoredLabel cl : oldList) {
-            newList.add(new ColoredLabel(cl.getValue(), cl.getDisplayedLabel(), cr.getColor(cl.getValue(), cl.getColor())));
+            newList.add(new ColoredLabel(cl.getValue(), cl.getDisplayedLabel(), cr.getColor(cl.getDisplayedLabel(), cl.getColor())));
         }
         setColoredLabels(newList);
     }
@@ -289,16 +291,16 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
             }
         });
 
-        syncBtn.setText("Get colors");
-        syncBtn.setToolTipText("Get value-color relations with other heatmaps whithin the current Gitools instance");
+        syncBtn.setText("From clipboard");
+        syncBtn.setToolTipText("Apply display-color relations from Gitools clipboard");
         syncBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 syncBtnActionPerformed(evt);
             }
         });
 
-        syncBtn1.setText("Set colors");
-        syncBtn1.setToolTipText("Set value-color relations so other heatmaps can sync");
+        syncBtn1.setText("To clipboard");
+        syncBtn1.setToolTipText("Copy display-color relations to Gitools clipboard");
         syncBtn1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 syncBtn1ActionPerformed(evt);
@@ -327,7 +329,7 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
                     .addComponent(removeBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(syncBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(tableAddBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(syncBtn1, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(syncBtn1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -361,17 +363,18 @@ public class ColoredLabelsGroupsPage extends AbstractWizardPage {
     }//GEN-LAST:event_removeBtnActionPerformed
 
     private void syncBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncBtnActionPerformed
-        sync();
+        runFromClipboard();
     }//GEN-LAST:event_syncBtnActionPerformed
 
     private void syncBtn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_syncBtn1ActionPerformed
-        setSync();
+        runToClipboard();
     }//GEN-LAST:event_syncBtn1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton removeBtn;
+    private javax.swing.JButton importBtn;
     private javax.swing.JButton syncBtn;
     private javax.swing.JButton syncBtn1;
     private javax.swing.JTable table;
